@@ -13,7 +13,7 @@ static long long bm_pow(long long a, long long e, long long mod) {
     return r;
 }
 
-// 根据序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...。
+// 根据序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...，mod 必须为质数。
 vector<long long> berlekamp_massey(const vector<long long> &s, long long mod) {
     vector<long long> c{1}, b{1};
     int length = 0, shift = 1;
@@ -73,7 +73,9 @@ long long linear_recurrence_kth(const vector<long long> &init,
     if (k < int(init.size())) return bm_norm(init[int(k)], mod);
     if (n == 0) return 0;
     vector<long long> pol(n, 0), e(n, 0);
-    pol[0] = e[1 % n] = 1;
+    pol[0] = 1;
+    if (n == 1) e[0] = bm_norm(rec[0], mod);
+    else e[1] = 1;
     while (k > 0) {
         if (k & 1) pol = bm_combine(pol, e, rec, mod);
         e = bm_combine(e, e, rec, mod);

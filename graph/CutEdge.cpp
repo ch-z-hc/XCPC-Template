@@ -32,6 +32,10 @@ struct BridgeFinder {
         }
     }
     vector<int> find() {
+        timer = 0;
+        fill(dfn.begin(), dfn.end(), 0);
+        fill(low.begin(), low.end(), 0);
+        fill(is_bridge.begin(), is_bridge.end(), 0);
         for (int u = 1; u <= n; ++u) if (!dfn[u]) dfs(u, -1);
         vector<int> answer;
         for (int id = 1; id < int(is_bridge.size()); ++id)

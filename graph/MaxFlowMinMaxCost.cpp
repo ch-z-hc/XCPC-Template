@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 最小费用最大流；允许反向边费用为负，要求不存在可达负环。
+// 最小费用最大流；容量非负、顶点编号 1-based，要求不存在可达负环。
+// 使用 SPFA 求最短增广路，最坏复杂度 O(flow * V * E)。
 struct MinCostMaxFlow {
     struct Edge { int to, rev; long long cap, cost; };
     int n = 0;
@@ -13,6 +14,7 @@ struct MinCostMaxFlow {
         graph[u].push_back(a); graph[v].push_back(b);
     }
     pair<long long, long long> flow(int s, int t) {
+        if (s == t) return {0, 0};
         long long total_flow = 0, total_cost = 0;
         const long long INF = 1LL << 62;
         while (true) {

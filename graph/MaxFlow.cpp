@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Dinic 最大流；容量非负，顶点编号 1-based。一般图复杂度 O(V^2 E)。
 struct Dinic {
     struct Edge { int to, rev; long long cap; };
     int n = 0;
@@ -33,6 +34,7 @@ struct Dinic {
         return 0;
     }
     long long max_flow(int s, int t) {
+        if (s == t) return 0;
         long long ans = 0, flow;
         while (bfs(s, t)) { fill(ptr.begin(), ptr.end(), 0); while ((flow = dfs(s, t, 1LL << 62))) ans += flow; }
         return ans;

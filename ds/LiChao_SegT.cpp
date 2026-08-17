@@ -38,11 +38,13 @@ struct LiChaoTree {
     }
 
     ld calc(int id, int x) {
-        if (id == 0) return -1e10;
+        if (id == 0) return -numeric_limits<ld>::infinity();
         return a[id].k * x + a[id].b;
     }
 
     bool cmp(int x, int y, int p) {
+        if (x == 0) return false;
+        if (y == 0) return true;
         const ld eps = 1e-9;
         if (fabs(calc(x, p) - calc(y, p)) < eps)
             return x < y;
@@ -117,6 +119,6 @@ struct LiChaoTree {
     // ask(x) 返回最优直线编号；value(x) 返回对应函数值。
     long double value(int x) {
         int id = ask(x);
-        return id ? calc(id, x) : -1e10L;
+        return calc(id, x);
     }
 };

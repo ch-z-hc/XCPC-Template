@@ -31,6 +31,10 @@ struct ArticulationFinder {
         if (parent == 0 && children > 1) is_cut[u] = 1;
     }
     vector<int> find() {
+        timer = 0;
+        fill(dfn.begin(), dfn.end(), 0);
+        fill(low.begin(), low.end(), 0);
+        fill(is_cut.begin(), is_cut.end(), 0);
         for (int u = 1; u <= n; ++u) if (!dfn[u]) dfs(u, 0);
         vector<int> answer;
         for (int u = 1; u <= n; ++u) if (is_cut[u]) answer.push_back(u);
