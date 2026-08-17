@@ -34,6 +34,8 @@ mkdocs serve
 | 文件 | 对外接口 |
 | --- | --- |
 | `ds/LiChao_SegT.cpp` | `LiChaoTree::add_line`、`add_segment`、`query_line`、`query` |
+| `ds/disjoint_set_union.cpp` | `DisjointSetUnion::unite`、`same`、`component_size` |
+| `ds/fenwick_tree.cpp` | `FenwickTree::add`、`prefix_sum`、`range_sum` |
 | `ds/rollback_dsu.cpp` | `RollbackDSU::unite`、`snapshot`、`rollback` |
 | `ds/segment_tree.cpp` | `SegmentTree::build`、`add`、`query` |
 | `geometry/geo.cpp` | `Point`、`segments_intersect`、`convex_hull`、`convex_diameter`、`minkowski_sum` 等 |
@@ -45,6 +47,7 @@ mkdocs serve
 | `graph/DSUOnTree.cpp` | `DSUOnTree::add_edge`、`build` |
 | `graph/Hierholzer_D.cpp` | `directed_euler_trail` |
 | `graph/Hierholzer_UnD.cpp` | `undirected_euler_trail` |
+| `graph/kruskal.cpp` | `kruskal_mst` |
 | `graph/LCA.cpp` | `BinaryLCA::add_edge`、`build`、`lca` |
 | `graph/MaxFlow.cpp` | `Dinic::add_edge`、`max_flow` |
 | `graph/MaxFlowMinMaxCost.cpp` | `MinCostMaxFlow::add_edge`、`flow` |
@@ -64,6 +67,8 @@ mkdocs serve
 | `others/template.cpp` | `chmin`、`chmax` 及常用类型别名 |
 | `others/ThirdMid.cpp` | `ternary_min`、`ternary_max` |
 | `string/AC-automaton.cpp` | `AhoCorasick::add_pattern`、`build`、`count_occurrences` |
+| `string/KMP.cpp` | `prefix_function`、`kmp_search` |
+| `string/Manacher.cpp` | `Manacher::build`、`is_palindrome`、`longest_palindrome` |
 | `string/SAM.cpp` | `SuffixAutomaton::build`、`occurrence_count`、`longest_repeated_product` |
 | `string/Trie.cpp` | `Trie::insert`、`prefix_count`、`word_count` |
 | `others/discretization.cpp` | `discretize` |
@@ -71,6 +76,7 @@ mkdocs serve
 | `graph/olca.cpp` | `O1LCA::add_edge`、`build`、`lca` |
 | `graph/reroot.cpp` | `tree_distance_sums` |
 | `graph/tree_diameter.cpp` | `tree_diameter` |
+| `graph/topological_sort.cpp` | `topological_sort` |
 | `others/tree_hash.cpp` | `rooted_tree_hash` |
 | `math/matrix.cpp` | `matrix_mul`、`matrix_pow` |
 | `math/interpolation.cpp` | `interpolation_eval` |

@@ -2,20 +2,34 @@
 #include <string>
 #include <vector>
 
+#include "../ds/disjoint_set_union.cpp"
+#include "../ds/fenwick_tree.cpp"
 #include "../ds/rollback_dsu.cpp"
 #include "../ds/segment_tree.cpp"
 #include "../graph/DSUOnTree.cpp"
+#include "../graph/kruskal.cpp"
 #include "../graph/olca.cpp"
 #include "../graph/reroot.cpp"
+#include "../graph/topological_sort.cpp"
 #include "../graph/tree_diameter.cpp"
 #include "../math/bm.cpp"
 #include "../math/interpolation.cpp"
 #include "../math/matrix.cpp"
 #include "../others/discretization.cpp"
 #include "../others/tree_hash.cpp"
+#include "../string/KMP.cpp"
+#include "../string/Manacher.cpp"
 #include "../string/SA.cpp"
 
 int main() {
+    {
+        FenwickTree fenwick(std::vector<long long>{0, 1, 2, 3});
+        fenwick.add(2, 4);
+        assert(fenwick.range_sum(2, 3) == 9);
+        DisjointSetUnion dsu(3);
+        dsu.unite(1, 2);
+        assert(dsu.same(1, 2) && !dsu.same(1, 3));
+    }
     {
         std::vector<int> a{10, 5, 10};
         auto id = discretize(a);
@@ -65,6 +79,15 @@ int main() {
         O1LCA lca(3);
         lca.add_edge(1, 2); lca.add_edge(2, 3); lca.build();
         assert(lca.lca(1, 3) == 1);
+    }
+    {
+        auto mst = kruskal_mst(3, {{1, 2, 1, 3}, {2, 3, 2, 4}, {1, 3, 3, 10}});
+        assert(mst.connected && mst.total_weight == 7);
+        std::vector<std::vector<int>> graph{{}, {2}, {3}, {}};
+        assert(topological_sort(graph).has_value());
+        assert((kmp_search("ababa", "aba") == std::vector<int>{0, 2}));
+        Manacher manacher("abacaba");
+        assert(manacher.is_palindrome(0, 6));
     }
     {
         RerootTree g(4);
