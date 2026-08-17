@@ -3,7 +3,8 @@ using namespace std;
 
 struct MoQuery { int left, right, id; };
 
-// 莫队排序并执行；Add/Remove 接收数组下标，Answer 将当前答案写入 result[id]。
+// 普通莫队；查询区间 [left, right] 和数组下标均为 1-based。
+// Add/Remove 接收数组下标，Answer 写入 result[id]；复杂度 O((n + q) sqrt(n)) 次移动。
 template <class Add, class Remove, class Answer>
 void run_mo(int n, vector<MoQuery> queries, Add add, Remove remove, Answer answer) {
     int block = max(1, int(n / max(1.0, sqrt(double(max(1, int(queries.size())))))));

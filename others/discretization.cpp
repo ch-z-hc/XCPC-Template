@@ -2,6 +2,7 @@
 using namespace std;
 
 // 返回 1-based 离散化编号；原数组不会被修改。
+// 输入和结果位置均为 0-based；复杂度 O(n log n)，空间 O(n)。
 template <class T>
 vector<int> discretize(const vector<T> &a) {
     vector<T> key = a;

@@ -2,6 +2,7 @@
 using namespace std;
 
 // 区间加、区间求和；下标约定为 1-based。
+// build 复杂度 O(n)，add 和 query 复杂度 O(log n)，空间 O(n)。
 struct SegmentTree {
     int n = 0;
     vector<long long> sum, lazy;

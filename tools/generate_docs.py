@@ -18,7 +18,7 @@ CATEGORIES = {
 }
 
 INTERFACE_ROW = re.compile(r"^\|\s*`([^`]+\.cpp)`\s*\|\s*(.*?)\s*\|\s*$")
-COMPLEXITY_MARKERS = ("复杂度",)
+COMPLEXITY_MARKERS = ("复杂度", "O(")
 INDEX_MARKERS = ("下标", "编号", "0-based", "1-based")
 PITFALL_MARKERS = ("要求", "必须", "不能", "注意", "概率", "递归", "非负", "质数", "负环")
 

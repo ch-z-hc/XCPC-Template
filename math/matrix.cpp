@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// 模矩阵乘法与快速幂；矩阵下标 0-based，乘法维度必须匹配，快速幂底数必须为方阵。
+// n 阶方阵乘法 O(n^3)，k 次幂 O(n^3 log k)，结果元素对 mod 取模。
 using Matrix = vector<vector<long long>>;
 
 Matrix matrix_mul(const Matrix &a, const Matrix &b, long long mod) {

@@ -2,7 +2,7 @@
 using namespace std;
 
 // 换根 DP 示例：求树上每个点到所有点的距离和。
-// 边权可为非负整数；复杂度 O(n)。
+// 输入必须是连通树，顶点编号 1-based，边权可为任意整数；复杂度 O(n)。
 using RerootTree = vector<vector<pair<int, long long>>>;
 
 vector<long long> tree_distance_sums(const RerootTree &g) {

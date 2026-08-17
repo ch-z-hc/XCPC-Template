@@ -2,6 +2,7 @@
 using namespace std;
 
 // 差分约束：add_constraint(u, v, w) 表示 x[u] - x[v] <= w。
+// 变量编号 1-based；Bellman-Ford 复杂度 O(nm)，空间 O(n + m)。
 struct DifferenceConstraints {
     using ll = long long;
     int n = 0;

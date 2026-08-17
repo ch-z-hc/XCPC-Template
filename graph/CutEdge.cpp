@@ -2,6 +2,7 @@
 using namespace std;
 
 // 无向图桥（割边）；边编号从 1 开始。
+// 顶点编号 1-based；find 复杂度 O(n + m)，空间 O(n + m)。
 struct BridgeFinder {
     int n = 0, timer = 0;
     vector<vector<pair<int, int>>> graph;

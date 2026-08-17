@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 小写字母 Trie；prefix_count 查询以 prefix 开头的字符串数量。
+// 小写字母 Trie；字符串下标和内部节点编号 0-based。
+// 单次插入和查询复杂度 O(字符串长度)，空间与所有插入字符串总长度同阶。
 struct Trie {
     struct Node { array<int, 26> next{}; int pass = 0, terminal = 0; };
     vector<Node> node;

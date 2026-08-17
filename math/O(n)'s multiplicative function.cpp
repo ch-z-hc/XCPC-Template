@@ -2,6 +2,7 @@
 using namespace std;
 
 // 线性筛：返回最小质因子和质数表；下标 0..n。
+// build 复杂度 O(n)，空间 O(n)。
 struct LinearSieve {
     vector<int> primes, least;
     void build(int n) {

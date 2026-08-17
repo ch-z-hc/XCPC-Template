@@ -13,7 +13,8 @@ static long long bm_pow(long long a, long long e, long long mod) {
     return r;
 }
 
-// 根据序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...，mod 必须为质数。
+// 根据 0-based 序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...。
+// mod 必须为质数；BM 复杂度 O(n^2)，d 阶递推第 k 项复杂度 O(d^2 log k)。
 vector<long long> berlekamp_massey(const vector<long long> &s, long long mod) {
     vector<long long> c{1}, b{1};
     int length = 0, shift = 1;

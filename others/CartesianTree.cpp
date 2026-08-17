@@ -2,6 +2,7 @@
 using namespace std;
 
 // 建立小根笛卡尔树；数组和节点编号均为 1-based。
+// build 复杂度 O(n)，空间 O(n)；相等值不会弹出较早节点。
 struct CartesianTree {
     int root = 0;
     vector<int> left, right, parent;

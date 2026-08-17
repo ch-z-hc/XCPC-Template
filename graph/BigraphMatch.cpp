@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 二分图最大匹配（Kuhn）；左部点 1..n_left，右部点 1..n_right。
+// 二分图最大匹配（Kuhn）；左右部顶点编号均为 1-based。
+// 复杂度 O(n_left * m)，空间 O(n_left + n_right + m)。
 struct BipartiteMatcher {
     int n_left = 0, n_right = 0;
     vector<vector<int>> graph;

@@ -2,6 +2,7 @@
 using namespace std;
 
 // 无向图欧拉路。edges 按输入顺序编号，返回顶点序列；不存在时返回空。
+// 顶点编号 1-based；复杂度 O(n + m)，空间 O(n + m)。
 vector<int> undirected_euler_trail(int n, const vector<pair<int, int>> &edges) {
     vector<vector<pair<int, int>>> graph(n + 1);
     vector<int> degree(n + 1), ptr(n + 1);

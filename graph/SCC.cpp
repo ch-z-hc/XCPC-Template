@@ -2,6 +2,7 @@
 using namespace std;
 
 // Tarjan 强连通分量；component[u] 为顶点 u 所属编号。
+// 顶点编号 1-based；build 复杂度 O(n + m)，空间 O(n + m)。
 struct SCC {
     int n = 0, timer = 0, count = 0;
     vector<vector<int>> graph;

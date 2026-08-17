@@ -8,6 +8,8 @@ static uint64_t tree_hash_mix(uint64_t x) {
     return x ^ (x >> 31);
 }
 
+// 无根图顶点下标遵循 g，通常使用 1-based；调用时显式传入根和父节点哨兵。
+// 每个节点排序子树哈希，复杂度 O(sum(deg(u) log deg(u)))，递归空间 O(n)。
 uint64_t rooted_tree_hash(int u, int parent, const vector<vector<int>> &g) {
     vector<uint64_t> child;
     for (int v : g[u]) if (v != parent)

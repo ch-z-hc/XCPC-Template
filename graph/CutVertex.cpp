@@ -2,6 +2,7 @@
 using namespace std;
 
 // 无向图割点；顶点编号从 1 开始。
+// find 复杂度 O(n + m)，空间 O(n + m)。
 struct ArticulationFinder {
     int n = 0, timer = 0;
     vector<vector<int>> graph;

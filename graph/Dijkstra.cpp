@@ -4,6 +4,7 @@ using namespace std;
 using WeightedGraph = vector<vector<pair<int, long long>>>;
 
 // 非负边权单源最短路；图和距离均为 1-based。
+// 使用二叉堆，复杂度 O((n + m) log n)，空间 O(n + m)。
 vector<long long> dijkstra(const WeightedGraph &graph, int source,
                            long long inf = (1LL << 62)) {
     int n = int(graph.size()) - 1;

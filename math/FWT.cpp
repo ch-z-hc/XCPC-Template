@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// FWT：输入数组下标 0-based，长度必须是 2 的幂，元素应先对 mod 归一化。
+// 单次变换复杂度 O(n log n)，空间 O(1)；XOR 逆变换要求 n 在 mod 下可逆。
 static void fwt_check(const vector<long long> &a) {
     if (a.empty() || (a.size() & (a.size() - 1))) throw invalid_argument("FWT size must be a power of two");
 }

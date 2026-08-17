@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 小写字母后缀自动机；occurrence_count() 返回每个状态对应的出现次数。
+// 小写字母后缀自动机；字符串和状态下标 0-based。
+// build 与 occurrence_count 均为 O(n)，状态数和空间为 O(n)。
 struct SuffixAutomaton {
     struct State { array<int, 26> next{}; int link = -1, len = 0; long long occurrence = 0; };
     vector<State> state;

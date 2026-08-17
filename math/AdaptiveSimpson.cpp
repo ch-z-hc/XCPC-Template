@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 自适应 Simpson 积分；函数在 [l, r] 上连续时使用，复杂度随函数变化而定。
+// 自适应 Simpson 积分；函数在 [l, r] 上连续时使用，接口不涉及数组下标。
+// 复杂度随被积函数和误差要求变化，递归深度不超过 max_depth。
 template <class Function>
 double adaptive_simpson(Function f, double l, double r, double eps = 1e-8,
                         int max_depth = 20) {

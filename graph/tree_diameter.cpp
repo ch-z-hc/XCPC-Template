@@ -3,6 +3,8 @@ using namespace std;
 
 using WeightedTree = vector<vector<pair<int, long long>>>;
 
+// 连通树的边权必须非负，顶点编号 1-based；两次遍历复杂度 O(n)。
+
 pair<int, long long> tree_farthest(int start, const WeightedTree &g) {
     pair<int, long long> best = {start, 0};
     vector<tuple<int, int, long long>> st;
@@ -17,7 +19,7 @@ pair<int, long long> tree_farthest(int start, const WeightedTree &g) {
     return best;
 }
 
-// 返回树的两个端点和直径长度；默认下标 1-based、边权非负。
+// 返回树的两个端点和直径长度。
 tuple<int, int, long long> tree_diameter(const WeightedTree &g) {
     if (g.size() <= 1) return {0, 0, 0};
     int u = tree_farthest(1, g).first;

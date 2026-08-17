@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 可撤销并查集；不使用路径压缩，摊销合并复杂度 O(log n)。
+// 可撤销并查集；元素编号 1..n，不使用路径压缩，单次操作 O(log n)。
 struct RollbackDSU {
     vector<int> parent, size;
     vector<pair<int, int>> history;

@@ -4,6 +4,7 @@ using namespace std;
 // 二维浮点几何基础；坐标类型为 long double，几何判定使用 EPS。
 // Point 的排序和相等运算使用精确坐标，以满足 STL 排序要求；近似比较请使用 almost_equal。
 // 凸包按逆时针顺序返回且不重复首点，点和容器下标均为 0-based。
+// 基础操作 O(1)，凸包 O(n log n)，凸包直径和凸包切割 O(n)。
 using GeometryReal = long double;
 constexpr GeometryReal GEOMETRY_EPS = 1e-9L;
 

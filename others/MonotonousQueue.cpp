@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// 滑动窗口最值；数组下标 0-based，要求 1 <= window <= a.size()。
+// 复杂度 O(n)，空间 O(window)。
 template <class T>
 vector<T> sliding_window_minimum(const vector<T> &a, int window) {
     deque<int> q; vector<T> result;

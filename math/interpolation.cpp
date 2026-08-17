@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// 拉格朗日插值单点求值；x、y 使用 0-based 下标且长度相同，横坐标两两不同。
+// mod 必须为质数；复杂度 O(n^2)，额外空间 O(1)。
 static long long interpolation_pow(long long a, long long e, long long mod) {
     long long r = 1 % mod;
     for (; e; e >>= 1, a = a * a % mod)
@@ -24,5 +26,3 @@ long long interpolation_eval(const vector<long long> &x,
     }
     return answer;
 }
-
-// 点的横坐标需要两两不同，且 mod 为质数；复杂度 O(n^2)。

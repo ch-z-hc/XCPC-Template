@@ -8,6 +8,8 @@ using pll = pair<ll, ll>;
 
 constexpr ll MOD = 1000000007LL;
 
+// 公共类型别名和 O(1) 的 chmin/chmax；不涉及数组下标。
+
 template <class T>
 bool chmin(T &a, const T &b) { return b < a ? (a = b, true) : false; }
 template <class T>
