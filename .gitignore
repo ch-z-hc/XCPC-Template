@@ -1,0 +1,14 @@
+# Local build products
+*.exe
+*.o
+*.obj
+*.out
+build/
+dist/
+
+# Editor and temporary files
+.vscode/
+.idea/
+*.tmp
+*.swp
+~$*
