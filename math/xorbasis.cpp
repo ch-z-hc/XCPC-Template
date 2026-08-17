@@ -1,55 +1,27 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+// 64 位线性基；默认处理 bit 0..62 的非负 long long。
+struct XorBasis {
+    array<unsigned long long, 63> basis{};
 
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n; ll ans = 0; cin >> n;
-    V < ll > p(64 + 5), a(n + 1);
-    for (int i = 1; i <= n; ++ i) cin >> a[i];
-
-    auto insert = [&](ll x) {
-        for (int i = 59; i >= 0; -- i)
-            if ((x >> i) & 1) {
-                if (p[i]) x ^= p[i];
-                else { p[i] = x; break; }
-            }
-    };
-
-    auto getans = [&]() {
-        ll ans0 = 0;
-        for (int i = 59; i >= 0; -- i)
-            if ((ans0 ^ p[i]) > ans0)
-                ans0 = ans0 ^ p[i];
-        ans = max(ans, ans0);
-    };
-
-    auto xorbasis = [&]() {
-        for (auto &x : p) x = 0;
-        for (int i = 1; i <= n; ++ i)
-            insert(a[i]);
-        getans();
-    };
-
-    xorbasis();
-
-    cout << ans << '\n';
-
-    return 0;
-}   
+    void clear() { basis.fill(0); }
+    bool insert(unsigned long long x) {
+        for (int i = 62; i >= 0; --i) if (x >> i & 1ULL) {
+            if (basis[i]) x ^= basis[i];
+            else { basis[i] = x; return true; }
+        }
+        return false;
+    }
+    bool can_represent(unsigned long long x) const {
+        for (int i = 62; i >= 0; --i) if (x >> i & 1ULL) {
+            if (!basis[i]) return false;
+            x ^= basis[i];
+        }
+        return true;
+    }
+    unsigned long long max_xor(unsigned long long seed = 0) const {
+        for (int i = 62; i >= 0; --i) seed = max(seed, seed ^ basis[i]);
+        return seed;
+    }
+};

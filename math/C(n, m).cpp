@@ -1,39 +1,24 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << ' '
-
 using namespace std;
 
-const int N0 = 1e6;
-const int mod = 998244353;
-int frac[N0 + 5], invfrac[N0 + 5];
+// 质数模数下的组合数；预处理 O(n)，查询 O(1)。
+struct CombinationMod {
+    long long mod = 1;
+    vector<long long> fact, inv_fact;
 
-int quick_pow(int a, int b) {
-    int res = 1;
-    for (; b; b >>= 1) {
-        if (b & 1) res = 1ll * res * a % mod;
-        a = 1ll * a * a % mod;
+    void init(int n, long long mod_) {
+        mod = mod_; fact.assign(n + 1, 1); inv_fact.assign(n + 1, 1);
+        for (int i = 1; i <= n; ++i) fact[i] = fact[i - 1] * i % mod;
+        auto power = [&](long long a, long long e) {
+            long long r = 1;
+            for (; e; e >>= 1, a = a * a % mod) if (e & 1) r = r * a % mod;
+            return r;
+        };
+        inv_fact[n] = power(fact[n], mod - 2);
+        for (int i = n; i >= 1; --i) inv_fact[i - 1] = inv_fact[i] * i % mod;
     }
-    return res;
-}
-
-void sieve() {
-    frac[0] = invfrac[0] = 1;
-    for (int i = 1; i <= N0; ++ i)
-        frac[i] = 1ll * frac[i - 1] * i % mod;
-    invfrac[N0] = quick_pow(frac[N0], mod - 2);
-    for (int i = N0 - 1; i >= 1; -- i)
-        invfrac[i] = 1ll * invfrac[i + 1] * (i + 1) % mod;
-}
-
-int C(int n, int m) {
-    if (n < m || n < 0 || m < 0) return 0;
-    return 1ll * frac[n] * invfrac[m] % mod * invfrac[n - m] % mod;
-}
-
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    sieve();
-    return 0;
-}
+    long long choose(int n, int k) const {
+        if (n < 0 || k < 0 || k > n || n >= int(fact.size())) return 0;
+        return fact[n] * inv_fact[k] % mod * inv_fact[n - k] % mod;
+    }
+};
