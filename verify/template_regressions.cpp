@@ -12,9 +12,9 @@
 int main() {
     {
         LiChaoTree tree(4);
-        int id = tree.addline(0, -1e20L);
-        assert(tree.ask(2) == id);
-        assert(tree.value(2) == -1e20L);
+        int id = tree.add_line(0, -1e20L);
+        assert(tree.query_line(2) == id);
+        assert(tree.query(2) == -1e20L);
     }
     {
         const long long mod = 1000000007;

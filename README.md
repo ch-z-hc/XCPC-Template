@@ -33,7 +33,7 @@ mkdocs serve
 
 | 文件 | 对外接口 |
 | --- | --- |
-| `ds/LiChao_SegT.cpp` | `LiChaoTree::insert`、`addline`、`ask`、`value` |
+| `ds/LiChao_SegT.cpp` | `LiChaoTree::add_line`、`add_segment`、`query_line`、`query` |
 | `ds/rollback_dsu.cpp` | `RollbackDSU::unite`、`snapshot`、`rollback` |
 | `ds/segment_tree.cpp` | `SegmentTree::build`、`add`、`query` |
 | `geometry/geo.cpp` | `P`、`convexHull`、`convexHullNonStrict`、`convexDiameter`、`convexCut` 等 |
