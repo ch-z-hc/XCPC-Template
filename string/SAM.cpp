@@ -34,8 +34,10 @@ struct SuffixAutomaton {
         for (auto &x : state) ++count[x.len];
         for (int i = 1; i <= max_len; ++i) count[i] += count[i - 1];
         for (int i = int(state.size()) - 1; i >= 0; --i) order[--count[state[i].len]] = i;
-        for (int i = int(order.size()) - 1; i > 0; --i) state[state[order[i]].link].occurrence += state[order[i]].occurrence;
-        vector<long long> answer(state.size()); for (int i = 0; i < int(state.size()); ++i) answer[i] = state[i].occurrence;
+        vector<long long> answer(state.size());
+        for (int i = 0; i < int(state.size()); ++i) answer[i] = state[i].occurrence;
+        for (int i = int(order.size()) - 1; i > 0; --i)
+            answer[state[order[i]].link] += answer[order[i]];
         return answer;
     }
     long long longest_repeated_product() {

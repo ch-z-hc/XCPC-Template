@@ -17,6 +17,7 @@ struct SCC {
         if (dfn[u] == low[u]) { ++count; while (true) { int v = stack_nodes.back(); stack_nodes.pop_back(); in_stack[v] = 0; component[v] = count; if (v == u) break; } }
     }
     int build() {
+        timer = count = 0;
         dfn.assign(n + 1, 0); low.assign(n + 1, 0); component.assign(n + 1, 0); in_stack.assign(n + 1, 0); stack_nodes.clear();
         for (int u = 1; u <= n; ++u) if (!dfn[u]) dfs(u);
         return count;

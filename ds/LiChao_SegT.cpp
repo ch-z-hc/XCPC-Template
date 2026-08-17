@@ -37,13 +37,13 @@ struct LiChaoTree {
         a.assign(1, {0, 0, 0});
     }
 
-    double calc(int id, int x) {
+    ld calc(int id, int x) {
         if (id == 0) return -1e10;
         return a[id].k * x + a[id].b;
     }
 
     bool cmp(int x, int y, int p) {
-        const double eps = 1e-9;
+        const ld eps = 1e-9;
         if (fabs(calc(x, p) - calc(y, p)) < eps)
             return x < y;
         return calc(x, p) > calc(y, p);
