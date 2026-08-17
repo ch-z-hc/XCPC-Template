@@ -13,6 +13,12 @@ int main() {
         assert((convex_hull(points, true) == std::vector<Point>{{0, 0}, {1, 0}, {2, 0}}));
         assert(segments_intersect({0, 0}, {2, 2}, {0, 2}, {2, 0}));
         assert(!segments_intersect({0, 0}, {1, 0}, {1, 0}, {2, 0}, true));
+
+        std::vector<Point> square{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
+        assert(is_convex_polygon(square));
+        std::reverse(square.begin(), square.end());
+        assert(is_convex_polygon(square));
+        assert(!is_convex_polygon({{0, 0}, {2, 0}, {1, 1}, {2, 2}, {0, 2}}));
     }
 
     std::mt19937 rng(998244353);

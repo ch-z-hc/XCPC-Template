@@ -48,7 +48,7 @@ python tools/stress/run.py --tests 1000 --seed 1
 | `ds/fenwick_tree.cpp` | `FenwickTree::add`、`prefix_sum`、`range_sum` |
 | `ds/rollback_dsu.cpp` | `RollbackDSU::unite`、`snapshot`、`rollback` |
 | `ds/segment_tree.cpp` | `SegmentTree::build`、`add`、`query` |
-| `geometry/geo.cpp` | `Point`、`segments_intersect`、`convex_hull`、`convex_diameter`、`minkowski_sum` 等 |
+| `geometry/geo.cpp` | `Point`、`segments_intersect`、`convex_hull`、`is_convex_polygon`、`convex_diameter`、`minkowski_sum` 等 |
 | `graph/BigraphMatch.cpp` | `BipartiteMatcher::add_edge`、`max_matching` |
 | `graph/CutEdge.cpp` | `BridgeFinder::add_edge`、`find` |
 | `graph/CutVertex.cpp` | `ArticulationFinder::add_edge`、`find` |
@@ -101,7 +101,3 @@ python tools/stress/run.py --tests 1000 --seed 1
 - `graph/reroot.cpp` 是“所有点到所有点距离和”的换根 DP 实例；其他换根转移需按题目修改。
 - `graph/DSUOnTree.cpp` 通过加点、删点和读取答案回调维护题目状态；回调必须支持可逆更新。
 - `others/tree_hash.cpp` 是随机化哈希，不能当作严格同构判定。
-
-## 待补模板
-
-- `凸包计数`：待确认具体题型后实现；当前 `geometry/geo.cpp` 只有基础凸包、凸包切割和旋转卡壳等操作。

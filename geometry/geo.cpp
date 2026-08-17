@@ -193,6 +193,8 @@ vector<Point> convex_hull(vector<Point> points, bool keep_collinear = false) {
     return hull;
 }
 
+// 输入为按边界顺序排列的简单多边形；顺、逆时针均可，相邻边允许共线。
+// 少于 3 个点或完全共线时也视为非严格凸，复杂度 O(n)。
 bool is_convex_polygon(const vector<Point> &polygon) {
     int direction = 0;
     for (int i = 0; i < int(polygon.size()); ++i) {
