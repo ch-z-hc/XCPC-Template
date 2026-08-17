@@ -113,36 +113,10 @@ struct LiChaoTree {
         fill(t.begin(), t.end(), 0);
         a.assign(1, {0, 0, 0});
     }
-};
 
-void solve() {
-    int n; cin >> n;
-
-    LiChaoTree T(40000);
-
-    for (int i = 1; i <= n; ++ i) {
-        int op; cin >> op;
-        if (op == 0) {
-            int k; cin >> k;
-            cout << T.ask(k) << '\n';
-            // T.ask(k) 是线段编号
-            // 值是 T.calc(T.ask(k), k)
-        } else {
-            int x0, y0, x1, y1;
-            cin >> x0 >> y0 >> x1 >> y1;
-            T.insert(x0, y0, x1, y1);
-            // 表示添加一条 (x0, y0) - (x1, y1) 的线段
-            // or T.addline(k, b)
-            // 表示添加一条 x \in [1, len] 的 y = kx + b 的直线
-        }
+    // ask(x) 返回最优直线编号；value(x) 返回对应函数值。
+    long double value(int x) {
+        int id = ask(x);
+        return id ? calc(id, x) : -1e10L;
     }
-}
-
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    int t = 1;
-    // cin >> t;
-    while (t --) solve();
-    return 0;
-}
+};

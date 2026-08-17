@@ -1,43 +1,24 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
-
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n, k; cin >> n >> k;
-    V < int > a(n + 1);
-    struct node { int val, id; };
-    deque < node > Q;
-
-    for (int i = 1; i <= n; ++ i) cin >> a[i];
-    for (int i = 1; i <= n; ++ i) { // min
-        while (Q.size() && Q.front().id < i - k + 1) Q.pop_front();
-        while (Q.size() && Q.back().val >= a[i]) Q.pop_back();
-        Q.push_back(node{a[i], i});
-        if (i >= k) cout << Q.front().val << ' ';
+template <class T>
+vector<T> sliding_window_minimum(const vector<T> &a, int window) {
+    deque<int> q; vector<T> result;
+    for (int i = 0; i < int(a.size()); ++i) {
+        while (!q.empty() && q.front() <= i - window) q.pop_front();
+        while (!q.empty() && a[q.back()] >= a[i]) q.pop_back();
+        q.push_back(i); if (i + 1 >= window) result.push_back(a[q.front()]);
     }
-    cout << '\n'; Q.clear();
-    for (int i = 1; i <= n; ++ i) { // max
-        while (Q.size() && Q.front().id < i - k + 1) Q.pop_front();
-        while (Q.size() && Q.back().val <= a[i]) Q.pop_back();
-        Q.push_back(node{a[i], i});
-        if (i >= k) cout << Q.front().val << ' ';
+    return result;
+}
+
+template <class T>
+vector<T> sliding_window_maximum(const vector<T> &a, int window) {
+    deque<int> q; vector<T> result;
+    for (int i = 0; i < int(a.size()); ++i) {
+        while (!q.empty() && q.front() <= i - window) q.pop_front();
+        while (!q.empty() && a[q.back()] <= a[i]) q.pop_back();
+        q.push_back(i); if (i + 1 >= window) result.push_back(a[q.front()]);
     }
-    return 0;
-} 
+    return result;
+}

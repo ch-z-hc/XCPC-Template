@@ -1,31 +1,16 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+using ll = long long;
+using i128 = __int128_t;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
 
-void solve() {
+constexpr ll MOD = 1000000007LL;
 
-}
+template <class T>
+bool chmin(T &a, const T &b) { return b < a ? (a = b, true) : false; }
+template <class T>
+bool chmax(T &a, const T &b) { return a < b ? (a = b, true) : false; }
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    int t = 1;
-    cin >> t;
-    while (t --) solve();
-    return 0;
-}
+// 这是公共代码片段，不包含 main()；比赛时自行添加 solve() 和唯一的 main()。
