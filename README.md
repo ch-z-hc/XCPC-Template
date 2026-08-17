@@ -18,6 +18,17 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 唯一的 `main()` 在 `verify/` 中，用于烟测。正式比赛代码自行保留一个入口。
 
+## 文档站
+
+文档站使用 MkDocs Material，并从模板 `.cpp` 文件自动生成页面：
+
+```text
+python -m pip install -r requirements-docs.txt
+mkdocs serve
+```
+
+严格构建使用 `mkdocs build --strict`。`main` 分支更新后，GitHub Actions 会构建并部署到 GitHub Pages；首次部署前需在仓库设置中将 Pages 来源设为 GitHub Actions。
+
 ## 接口索引
 
 | 文件 | 对外接口 |
@@ -25,6 +36,7 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 | `ds/LiChao_SegT.cpp` | `LiChaoTree::insert`、`addline`、`ask`、`value` |
 | `ds/rollback_dsu.cpp` | `RollbackDSU::unite`、`snapshot`、`rollback` |
 | `ds/segment_tree.cpp` | `SegmentTree::build`、`add`、`query` |
+| `geometry/geo.cpp` | `P`、`convexHull`、`convexHullNonStrict`、`convexDiameter`、`convexCut` 等 |
 | `graph/BigraphMatch.cpp` | `BipartiteMatcher::add_edge`、`max_matching` |
 | `graph/CutEdge.cpp` | `BridgeFinder::add_edge`、`find` |
 | `graph/CutVertex.cpp` | `ArticulationFinder::add_edge`、`find` |
@@ -49,6 +61,7 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 | `others/Mo's algorithm.cpp` | `run_mo` |
 | `others/MonotonousQueue.cpp` | `sliding_window_minimum`、`sliding_window_maximum` |
 | `others/S.T..cpp` | `SparseTable::build`、`query` |
+| `others/template.cpp` | `chmin`、`chmax` 及常用类型别名 |
 | `others/ThirdMid.cpp` | `ternary_min`、`ternary_max` |
 | `string/AC-automaton.cpp` | `AhoCorasick::add_pattern`、`build`、`count_occurrences` |
 | `string/SAM.cpp` | `SuffixAutomaton::build`、`occurrence_count`、`longest_repeated_product` |

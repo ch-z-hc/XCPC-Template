@@ -5,10 +5,14 @@
 *.out
 build/
 dist/
+/site/
+/docs/algorithms/
 
 # Editor and temporary files
 .vscode/
 .idea/
+__pycache__/
+*.py[cod]
 *.tmp
 *.swp
 ~$*
