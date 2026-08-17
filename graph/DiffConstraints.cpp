@@ -1,60 +1,30 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+// 差分约束：add_constraint(u, v, w) 表示 x[u] - x[v] <= w。
+struct DifferenceConstraints {
+    using ll = long long;
+    int n = 0;
+    vector<tuple<int, int, ll>> edges;
 
-const int INF = INT_MAX;
+    explicit DifferenceConstraints(int n = 0) : n(n) {}
+    void init(int n_) { n = n_; edges.clear(); }
+    void add_constraint(int u, int v, ll w) { edges.push_back({u, v, w}); }
 
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n, m; cin >> n >> m;
-
-    V < V < pii > > nxt(n + 1);
-    V < int > dis(n + 1, INF), vis(n + 1), cnt(n + 1);
-
-    for (int i = 1; i <= m; ++ i) {
-        int u, v, w; cin >> u >> v >> w;
-        // x_u - x_v <= w
-        nxt[v].push_back({u, w});
-    }
-
-    for (int i = 1; i <= n; ++ i)
-        nxt[0].push_back({i, 0});
-
-    auto spfa = [&]() -> int {
-        queue < int > Q; Q.push(0); dis[0] = 0;
-    
-        while (Q.size()) {
-            int u = Q.front(); Q.pop();
-            vis[u] = 0;
-            if (cnt[u] > n) return 1;
-            for (auto [v, w] : nxt[u]) {
-                if (dis[v] > dis[u] + w) {
-                    dis[v] = dis[u] + w;
-                    if (! vis[v]) Q.push(v), cnt[v] ++;
+    // 返回 false 表示存在负环（无解），否则 dist 是一组可行解。
+    bool solve(vector<ll> &dist) const {
+        dist.assign(n + 1, 0);
+        for (int round = 1; round <= n; ++round) {
+            bool changed = false;
+            for (auto [u, v, w] : edges) {
+                if (dist[u] > dist[v] + w) {
+                    dist[u] = dist[v] + w;
+                    changed = true;
                 }
             }
+            if (!changed) return true;
+            if (round == n) return false;
         }
-        return 0;
-    };
-
-    if (spfa()) cout << "NO" << '\n';
-    else for (int i = 1; i <= n; ++ i)
-        cout << dis[i] << ' ';
-    return 0;
-}
+        return true;
+    }
+};

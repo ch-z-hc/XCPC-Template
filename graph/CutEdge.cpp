@@ -1,67 +1,41 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+// 无向图桥（割边）；边编号从 1 开始。
+struct BridgeFinder {
+    int n = 0, timer = 0;
+    vector<vector<pair<int, int>>> graph;
+    vector<int> dfn, low;
+    vector<char> is_bridge;
 
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n, m, tot = 1, tim = 0; cin >> n >> m;
-    V < int > head(n + 1), nxt(m * 2 + 1), from(m * 2 + 1), to(m * 2 + 1);
-    V < int > dfn(n + 1), low(n + 1), bridge(m * 2 + 1);
-    auto add = [&](int u, int v) {
-        nxt[++ tot] = head[u];
-        head[u] = tot;
-        from[tot] = u;
-        to[tot] = v;
-    };
-
-    for (int i = 1; i <= m; ++ i) {
-        int u, v; cin >> u >> v;
-        add(u, v); add(v, u);
+    explicit BridgeFinder(int n = 0) { init(n); }
+    void init(int n_) {
+        n = n_; timer = 0;
+        graph.assign(n + 1, {});
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
+        is_bridge.clear();
     }
-
-    auto tarjan = [&](auto&&self, int u, int edge) -> void {
-        low[u] = dfn[u] = ++ tim;
-    
-        for (int i = head[u]; i; i = nxt[i]) {
-            int v = to[i];
-            if (i == (edge ^ 1)) continue;
-            if (! dfn[v]) {
-                self(self, v, i);
+    void add_edge(int id, int u, int v) {
+        if (int(is_bridge.size()) <= id) is_bridge.resize(id + 1);
+        graph[u].push_back({v, id});
+        graph[v].push_back({u, id});
+    }
+    void dfs(int u, int parent_edge) {
+        dfn[u] = low[u] = ++timer;
+        for (auto [v, id] : graph[u]) {
+            if (id == parent_edge) continue;
+            if (!dfn[v]) {
+                dfs(v, id);
                 low[u] = min(low[u], low[v]);
-                if (low[v] > dfn[u])
-                    bridge[i] = bridge[i ^ 1] = 1;
-            }
-            else low[u] = min(low[u], dfn[v]);
+                if (low[v] > dfn[u]) is_bridge[id] = 1;
+            } else low[u] = min(low[u], dfn[v]);
         }
-    };
-
-    for (int i = 1; i <= n; ++ i)
-        if (! dfn[i]) tarjan(tarjan, i, 0);
-
-
-    V < int > ans;
-
-    for (int i = 1; i <= m; ++ i)
-        if (bridge[i * 2]) ans.push_back(i);
-
-    cout << ans.size() << '\n';
-    for (auto x : ans) cout << x << ' ';
-
-    return 0;
-}
+    }
+    vector<int> find() {
+        for (int u = 1; u <= n; ++u) if (!dfn[u]) dfs(u, -1);
+        vector<int> answer;
+        for (int id = 1; id < int(is_bridge.size()); ++id)
+            if (is_bridge[id]) answer.push_back(id);
+        return answer;
+    }
+};

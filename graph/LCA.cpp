@@ -1,69 +1,38 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+// 倍增 LCA；预处理 O(n log n)，查询 O(log n)，顶点编号 1-based。
+struct BinaryLCA {
+    int n = 0, levels = 0;
+    vector<vector<int>> graph, up;
+    vector<int> depth;
 
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n, m, s; cin >> n >> m >> s;
-    V < V < int > > nxt(n + 1), f(n + 1, V < int > (26));
-    V < int > dep(n + 1);
-
-    for (int i = 1; i < n; ++ i) {
-        int u, v; cin >> u >> v;
-        nxt[u].push_back(v);
-        nxt[v].push_back(u);
+    explicit BinaryLCA(int n = 0) { init(n); }
+    void init(int n_) {
+        n = n_; levels = 1;
+        while ((1 << levels) <= max(1, n)) ++levels;
+        graph.assign(n + 1, {}); up.assign(levels, vector<int>(n + 1));
+        depth.assign(n + 1, 0);
     }
-
-    auto dfs = [&](auto&&self, int u, int fa) -> void {
-        dep[u] = dep[fa] + 1;
-        for (auto v : nxt[u]) {
-            if (v == fa) continue;
-            self(self, v, u);
-            f[v][0] = u;
+    void add_edge(int u, int v) { graph[u].push_back(v); graph[v].push_back(u); }
+    void build(int root = 1) {
+        vector<int> order{root}; up[0][root] = 0; depth[root] = 0;
+        for (int i = 0; i < int(order.size()); ++i) {
+            int u = order[i];
+            for (int v : graph[u]) if (v != up[0][u]) {
+                up[0][v] = u; depth[v] = depth[u] + 1; order.push_back(v);
+            }
         }
-    };
-
-    dfs(dfs, s, 0);
-
-    for (int k = 1; k <= 25; ++ k)
-        for (int u = 1; u <= n; ++ u)
-            f[u][k] = f[f[u][k - 1]][k - 1];
-
-    auto LCA = [&](int u, int v) {
-        if (dep[u] < dep[v])
-            swap(u, v);
-        for (int i = 25; i >= 0; -- i) {
-            if (dep[f[u][i]] >= dep[v])
-                u = f[u][i];
-            if (u == v) return u;
-        }
-    
-        for (int i = 25; i >= 0; -- i)
-            if (f[u][i] != f[v][i])
-                u = f[u][i],
-                v = f[v][i];
-        return f[u][0];
-    };
-
-    while (m --) {
-        int u, v; cin >> u >> v;
-        std::cout << LCA(u, v) << '\n';
+        for (int k = 1; k < levels; ++k)
+            for (int u = 1; u <= n; ++u) up[k][u] = up[k - 1][up[k - 1][u]];
     }
-    return 0;
-}
+    int lca(int u, int v) const {
+        if (depth[u] < depth[v]) swap(u, v);
+        int diff = depth[u] - depth[v];
+        for (int k = 0; k < levels; ++k) if (diff >> k & 1) u = up[k][u];
+        if (u == v) return u;
+        for (int k = levels - 1; k >= 0; --k)
+            if (up[k][u] != up[k][v]) u = up[k][u], v = up[k][v];
+        return up[0][u];
+    }
+};

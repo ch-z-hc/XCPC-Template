@@ -1,72 +1,33 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << ' '
-#define V vector
-#define fi first
-#define se second
-#define pii pair < ll, int >
-
-typedef long long ll;
-typedef long double ld;
-
-const ld eps = 1e-7;
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void mul(T &x, T y) { x = 1ll * x * y % mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
-
-void solve() {
-    int n, m, minV; cin >> n >> m;
-    minV = n;
-    V < int > pos(n + 1), in(n + 1), out(n + 1), ans;
-    V < V < int > > nxt(n + 1);
-    for (int i = 1; i <= m; ++ i) {
-        int u, v; cin >> u >> v;
-        chkmin(minV, min(u, v));
-        nxt[u].push_back(v);
-        in[v] ++; out[u] ++;
+// 有向图欧拉路。edges 按输入顺序编号，返回顶点序列；不存在时返回空。
+vector<int> directed_euler_trail(int n, const vector<pair<int, int>> &edges) {
+    vector<vector<int>> graph(n + 1);
+    vector<int> in(n + 1), out(n + 1), ptr(n + 1);
+    for (int i = 0; i < int(edges.size()); ++i) {
+        auto [u, v] = edges[i]; graph[u].push_back(v);
+        ++out[u]; ++in[v];
     }
-
-    int cnt = 0;
-    for (int i = 1; i <= n; ++ i) {
-        if (in[i] != out[i]) { // 若是回路 该处直接 No
-            cnt ++;
-            if (out[i] > in[i]) minV = i;
-        }
-        if (abs(in[i] - out[i]) >= 2) {
-            cout << "No\n";
-            return;
-        }
-        sort(nxt[i].begin(), nxt[i].end());
+    int start = 1, plus = 0, minus = 0;
+    for (int u = 1; u <= n; ++u) {
+        if (out[u] - in[u] == 1) { start = u; ++plus; }
+        else if (in[u] - out[u] == 1) ++minus;
+        else if (in[u] != out[u]) return {};
     }
-    if (cnt > 2) {
-        cout << "No\n";
-        return;
+    if (!((plus == 1 && minus == 1) || (plus == 0 && minus == 0))) return {};
+    if (plus == 0) {
+        while (start <= n && graph[start].empty()) ++start;
+        if (start > n) return edges.empty() ? vector<int>{1} : vector<int>{};
     }
-
-    auto dfs = [&](auto&&self, int u) -> void {
-        while (pos[u] < (int)nxt[u].size()) {
-            int v = nxt[u][pos[u]]; pos[u] ++;
-            self(self, v);
-        }
-        ans.push_back(u);
-    };
-
-    dfs(dfs, minV);
-    reverse(ans.begin(), ans.end());
-    for (auto x : ans) cout << x << ' ';
-}
-
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int t = 1; 
-    // cin >> t;
-    while (t --) solve();
-    return 0;
+    vector<int> answer;
+    vector<int> st{start};
+    while (!st.empty()) {
+        int u = st.back();
+        if (ptr[u] < int(graph[u].size())) st.push_back(graph[u][ptr[u]++]);
+        else answer.push_back(u), st.pop_back();
+    }
+    if (int(answer.size()) != int(edges.size()) + 1) return {};
+    reverse(answer.begin(), answer.end());
+    return answer;
 }

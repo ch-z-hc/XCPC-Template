@@ -1,55 +1,43 @@
 #include <bits/stdc++.h>
-
-#define debug(a) cout << #a << " = " << (a) << '\n'
-#define V vector
-#define fi first
-#define se second
-#define pii pair < int, int >
-
-typedef long long ll;
-
-const int mod = 1e9 + 7;
-
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; } 
-template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
+// 二分图最大匹配（Kuhn）；左部点 1..n_left，右部点 1..n_right。
+struct BipartiteMatcher {
+    int n_left = 0, n_right = 0;
+    vector<vector<int>> graph;
+    vector<int> match_left, match_right;
 
-int main() {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    int n, m, c, ans = 0; cin >> n >> m >> c;
-    V < V < int > > nxt(2 * n + 1);
-    V < int > vis(2 * n + 1), match(2 * n + 1);
+    BipartiteMatcher(int left = 0, int right = 0) { init(left, right); }
 
-    auto add = [&](int u, int v) {
-        nxt[u].push_back(v);
-    };
-
-    for (int i = 1; i <= c; ++ i) {
-        int u, v; cin >> u >> v;
-        add(u, v + n); 
+    void init(int left, int right) {
+        n_left = left; n_right = right;
+        graph.assign(n_left + 1, {});
+        match_left.assign(n_left + 1, 0);
+        match_right.assign(n_right + 1, 0);
     }
 
-    auto dfs = [&](auto&&self, int u) -> bool {
-        for (auto v : nxt[u]) {
-            if (vis[v]) continue;
+    void add_edge(int u, int v) { graph[u].push_back(v); }
+
+    bool augment(int u, vector<int> &vis) {
+        for (int v : graph[u]) if (!vis[v]) {
             vis[v] = 1;
-            if (! match[v] || self(self, match[v])) {
-                match[v] = u;
-                return 1;
+            if (!match_right[v] || augment(match_right[v], vis)) {
+                match_left[u] = v;
+                match_right[v] = u;
+                return true;
             }
         }
-        return 0;
-    };
-
-    for (int i = 1; i <= n; ++ i) {
-        for (auto &x : vis) x = 0;
-        if (dfs(dfs, i)) ans ++;
+        return false;
     }
 
-    cout << ans << '\n';
-    return 0;
-}
+    int max_matching() {
+        fill(match_left.begin(), match_left.end(), 0);
+        fill(match_right.begin(), match_right.end(), 0);
+        int answer = 0;
+        for (int u = 1; u <= n_left; ++u) {
+            vector<int> vis(n_right + 1, 0);
+            answer += augment(u, vis);
+        }
+        return answer;
+    }
+};
