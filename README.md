@@ -36,7 +36,7 @@ mkdocs serve
 | `ds/LiChao_SegT.cpp` | `LiChaoTree::add_line`、`add_segment`、`query_line`、`query` |
 | `ds/rollback_dsu.cpp` | `RollbackDSU::unite`、`snapshot`、`rollback` |
 | `ds/segment_tree.cpp` | `SegmentTree::build`、`add`、`query` |
-| `geometry/geo.cpp` | `P`、`convexHull`、`convexHullNonStrict`、`convexDiameter`、`convexCut` 等 |
+| `geometry/geo.cpp` | `Point`、`segments_intersect`、`convex_hull`、`convex_diameter`、`minkowski_sum` 等 |
 | `graph/BigraphMatch.cpp` | `BipartiteMatcher::add_edge`、`max_matching` |
 | `graph/CutEdge.cpp` | `BridgeFinder::add_edge`、`find` |
 | `graph/CutVertex.cpp` | `ArticulationFinder::add_edge`、`find` |
