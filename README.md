@@ -30,6 +30,7 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 | `graph/CutVertex.cpp` | `ArticulationFinder::add_edge`、`find` |
 | `graph/DiffConstraints.cpp` | `DifferenceConstraints::add_constraint`、`solve` |
 | `graph/Dijkstra.cpp` | `dijkstra` |
+| `graph/DSUOnTree.cpp` | `DSUOnTree::add_edge`、`build` |
 | `graph/Hierholzer_D.cpp` | `directed_euler_trail` |
 | `graph/Hierholzer_UnD.cpp` | `undirected_euler_trail` |
 | `graph/LCA.cpp` | `BinaryLCA::add_edge`、`build`、`lca` |
@@ -69,10 +70,10 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 - `math/interpolation.cpp` 要求横坐标互异且模数为质数。
 - `graph/tree_diameter.cpp` 的边权默认为非负数。
 - `graph/reroot.cpp` 是“所有点到所有点距离和”的换根 DP 实例；其他换根转移需按题目修改。
+- `graph/DSUOnTree.cpp` 通过加点、删点和读取答案回调维护题目状态；回调必须支持可逆更新。
 - `others/tree_hash.cpp` 是随机化哈希，不能当作严格同构判定。
 
 ## 待补模板
 
 - `对拍`：待增加生成器、暴力程序、标准程序和运行脚本。
-- `DSU on Tree`：待增加无 `main()` 的可复用实现。
 - `凸包计数`：待确认具体题型后实现；当前 `geometry/geo.cpp` 只有基础凸包、凸包切割和旋转卡壳等操作。

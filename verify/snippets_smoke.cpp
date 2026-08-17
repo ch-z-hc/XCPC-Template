@@ -4,6 +4,7 @@
 
 #include "../ds/rollback_dsu.cpp"
 #include "../ds/segment_tree.cpp"
+#include "../graph/DSUOnTree.cpp"
 #include "../graph/olca.cpp"
 #include "../graph/reroot.cpp"
 #include "../graph/tree_diameter.cpp"
@@ -49,6 +50,18 @@ int main() {
         g[3].push_back({4, 3}); g[4].push_back({3, 3});
         auto [u, v, d] = tree_diameter(g);
         assert(((u == 1 && v == 4) || (u == 4 && v == 1)) && d == 6);
+    }
+    {
+        DSUOnTree dsu(4);
+        dsu.add_edge(1, 2); dsu.add_edge(1, 3); dsu.add_edge(3, 4);
+        std::vector<int> value{0, 1, 2, 2, 3}, count(4), answer(5);
+        int distinct = 0;
+        auto add = [&](int u) { if (count[value[u]]++ == 0) ++distinct; };
+        auto remove = [&](int u) { if (--count[value[u]] == 0) --distinct; };
+        auto query = [&](int u) { answer[u] = distinct; };
+        dsu.build(1, add, remove, query);
+        assert((answer == std::vector<int>{0, 3, 1, 2, 1}));
+        assert(distinct == 0);
     }
     {
         O1LCA lca(3);
