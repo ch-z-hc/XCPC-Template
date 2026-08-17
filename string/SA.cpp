@@ -1,77 +1,92 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 后缀数组、Height 和 LCP 查询；复杂度 O(n log n)，下标 0-based。
-void build_sa(const string &s, vector<int> &sa, vector<int> &rk,
-              vector<int> &height, vector<int> &lg,
-              vector<vector<int>> &st) {
-    int n = int(s.size()), m = 256;
-    sa.resize(n);
-    rk.resize(n);
-    height.assign(n, 0);
-    lg.assign(n + 1, 0);
-    st.clear();
-    if (!n) return;
+// 后缀数组；字符串下标 0-based。build 复杂度 O(n log n)，lcp 查询 O(1)，空间 O(n log n)。
+// suffix 按字典序保存后缀起点，rank[i] 是后缀 s[i..] 的排名。
+struct SuffixArray {
+    string text;
+    vector<int> suffix, rank, height, log_table;
+    vector<vector<int>> sparse_table;
 
-    vector<int> oldrk(n), id(n), px(n), cnt(max(n, m));
-    for (int i = 0; i < n; ++i) ++cnt[rk[i] = static_cast<unsigned char>(s[i])];
-    for (int i = 1; i < m; ++i) cnt[i] += cnt[i - 1];
-    for (int i = n - 1; i >= 0; --i) sa[--cnt[rk[i]]] = i;
+    SuffixArray() = default;
+    explicit SuffixArray(const string &s) { build(s); }
 
-    for (int w = 1, p;; w <<= 1, m = p) {
-        p = 0;
-        for (int i = n - w; i < n; ++i) if (i >= 0) id[p++] = i;
-        for (int i = 0; i < n; ++i) if (sa[i] >= w) id[p++] = sa[i] - w;
+    void build(const string &s) {
+        text = s;
+        int n = int(text.size()), alphabet = 256;
+        suffix.resize(n);
+        rank.resize(n);
+        height.assign(n, 0);
+        log_table.assign(n + 1, 0);
+        sparse_table.clear();
+        if (n == 0) return;
 
-        fill(cnt.begin(), cnt.begin() + m, 0);
-        for (int i = 0; i < n; ++i) ++cnt[px[i] = rk[id[i]]];
-        for (int i = 1; i < m; ++i) cnt[i] += cnt[i - 1];
-        for (int i = n - 1; i >= 0; --i) sa[--cnt[px[i]]] = id[i];
+        vector<int> old_rank(n), second_key(n), first_key(n), count(max(n, alphabet));
+        for (int i = 0; i < n; ++i)
+            ++count[rank[i] = static_cast<unsigned char>(text[i])];
+        for (int i = 1; i < alphabet; ++i) count[i] += count[i - 1];
+        for (int i = n - 1; i >= 0; --i) suffix[--count[rank[i]]] = i;
 
-        oldrk = rk;
-        p = 1;
-        rk[sa[0]] = 0;
-        for (int i = 1; i < n; ++i) {
-            int a = sa[i], b = sa[i - 1];
-            bool same = oldrk[a] == oldrk[b];
-            same = same && (a + w < n ? oldrk[a + w] : -1) ==
-                           (b + w < n ? oldrk[b + w] : -1);
-            rk[a] = same ? p - 1 : p++;
+        for (int width = 1, classes;; width <<= 1, alphabet = classes) {
+            classes = 0;
+            for (int i = n - width; i < n; ++i)
+                if (i >= 0) second_key[classes++] = i;
+            for (int i = 0; i < n; ++i)
+                if (suffix[i] >= width) second_key[classes++] = suffix[i] - width;
+
+            fill(count.begin(), count.begin() + alphabet, 0);
+            for (int i = 0; i < n; ++i) ++count[first_key[i] = rank[second_key[i]]];
+            for (int i = 1; i < alphabet; ++i) count[i] += count[i - 1];
+            for (int i = n - 1; i >= 0; --i)
+                suffix[--count[first_key[i]]] = second_key[i];
+
+            old_rank = rank;
+            classes = 1;
+            rank[suffix[0]] = 0;
+            for (int i = 1; i < n; ++i) {
+                int current = suffix[i], previous = suffix[i - 1];
+                bool same = old_rank[current] == old_rank[previous];
+                same = same && (current + width < n ? old_rank[current + width] : -1) ==
+                                   (previous + width < n ? old_rank[previous + width] : -1);
+                rank[current] = same ? classes - 1 : classes++;
+            }
+            if (classes == n) break;
         }
-        if (p == n) break;
+
+        for (int i = 2; i <= n; ++i) log_table[i] = log_table[i >> 1] + 1;
+        for (int i = 0, common = 0; i < n; ++i) {
+            if (rank[i] == 0) {
+                common = 0;
+                continue;
+            }
+            if (common) --common;
+            int previous = suffix[rank[i] - 1];
+            while (i + common < n && previous + common < n &&
+                   text[i + common] == text[previous + common])
+                ++common;
+            height[rank[i]] = common;
+        }
+
+        sparse_table.assign(log_table[n] + 1, vector<int>(n));
+        sparse_table[0] = height;
+        for (int level = 1; level <= log_table[n]; ++level)
+            for (int i = 0; i + (1 << level) <= n; ++i)
+                sparse_table[level][i] =
+                    min(sparse_table[level - 1][i],
+                        sparse_table[level - 1][i + (1 << (level - 1))]);
     }
 
-    for (int i = 2; i <= n; ++i) lg[i] = lg[i >> 1] + 1;
-    for (int i = 0, k = 0; i < n; ++i) {
-        if (!rk[i]) {
-            k = 0;
-            continue;
-        }
-        if (k) --k;
-        int j = sa[rk[i] - 1];
-        while (i + k < n && j + k < n && s[i + k] == s[j + k]) ++k;
-        height[rk[i]] = k;
+    int lcp(int first_suffix, int second_suffix) const {
+        if (first_suffix == second_suffix) return int(text.size()) - first_suffix;
+        int left_rank = rank[first_suffix], right_rank = rank[second_suffix];
+        if (left_rank > right_rank) swap(left_rank, right_rank);
+        ++left_rank;
+        int level = log_table[right_rank - left_rank + 1];
+        return min(sparse_table[level][left_rank],
+                   sparse_table[level][right_rank - (1 << level) + 1]);
     }
-
-    st.assign(lg[n] + 1, vector<int>(n));
-    st[0] = height;
-    for (int j = 1; j <= lg[n]; ++j)
-        for (int i = 0; i + (1 << j) <= n; ++i)
-            st[j][i] = min(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
-}
-
-int lcp_sa(int x, int y, const vector<int> &rk, const vector<int> &lg,
-           const vector<vector<int>> &st, int n) {
-    if (x == y) return n - x;
-    int l = rk[x], r = rk[y];
-    if (l > r) swap(l, r);
-    ++l;
-    int k = lg[r - l + 1];
-    return min(st[k][l], st[k][r - (1 << k) + 1]);
-}
+};
 
 // Usage:
-// vector<int> sa, rk, height, lg;
-// vector<vector<int>> st;
-// build_sa(s, sa, rk, height, lg, st);
-// int common = lcp_sa(x, y, rk, lg, st, int(s.size()));
+// SuffixArray suffix_array(s);
+// int common = suffix_array.lcp(x, y);

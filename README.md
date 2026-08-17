@@ -67,7 +67,7 @@ mkdocs serve
 | `string/SAM.cpp` | `SuffixAutomaton::build`、`occurrence_count`、`longest_repeated_product` |
 | `string/Trie.cpp` | `Trie::insert`、`prefix_count`、`word_count` |
 | `others/discretization.cpp` | `discretize` |
-| `string/SA.cpp` | `build_sa`、`lcp_sa` |
+| `string/SA.cpp` | `SuffixArray::build`、`lcp` |
 | `graph/olca.cpp` | `O1LCA::add_edge`、`build`、`lca` |
 | `graph/reroot.cpp` | `tree_distance_sums` |
 | `graph/tree_diameter.cpp` | `tree_diameter` |

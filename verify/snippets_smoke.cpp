@@ -29,11 +29,9 @@ int main() {
     }
     {
         std::string s = "banana";
-        std::vector<int> sa, rk, height, lg;
-        std::vector<std::vector<int>> sparse;
-        build_sa(s, sa, rk, height, lg, sparse);
-        assert((sa == std::vector<int>{5, 3, 1, 0, 4, 2}));
-        assert(lcp_sa(1, 3, rk, lg, sparse, int(s.size())) == 3);
+        SuffixArray suffix_array(s);
+        assert((suffix_array.suffix == std::vector<int>{5, 3, 1, 0, 4, 2}));
+        assert(suffix_array.lcp(1, 3) == 3);
     }
     {
         RollbackDSU dsu(3);
