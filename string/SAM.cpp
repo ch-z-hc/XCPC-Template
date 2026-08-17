@@ -1,76 +1,47 @@
 #include <bits/stdc++.h>
+using namespace std;
 
-template < typename T > 
-inline void read(T &cnt) {
-    cnt = 0; char ch = getchar(); bool op = 1;
-    for (; ! isdigit(ch); ch = getchar())
-        if (ch == '-') op = 0;
-    for (; isdigit(ch); ch = getchar())
-        cnt = cnt * 10 + ch - 48;
-    cnt = op ? cnt : - cnt;
-}
+// 小写字母后缀自动机；occurrence_count() 返回每个状态对应的出现次数。
+struct SuffixAutomaton {
+    struct State { array<int, 26> next{}; int link = -1, len = 0; long long occurrence = 0; };
+    vector<State> state;
+    int last = 0;
 
-const int N = 1e6 + 5;
-
-char s[N]; int n, siz[N * 2];
-
-namespace SAM {
-
-    struct SAMnode {
-        int trans[26];
-        int len, link;
-    } t[N * 2];
-    int tot = 1, lst = 1;
-
-    inline void extend(int c) {
-        int cur = ++ tot, p = lst;
-        lst = tot; siz[cur] ++;
-        t[cur].len = t[p].len + 1;
-
-        for (; ! t[p].trans[c] && p; p = t[p].link)
-            t[p].trans[c] = cur;
-
-        if (! p) t[cur].link = 1;
-        else if (t[t[p].trans[c]].len == t[p].len + 1)
-            t[cur].link = t[p].trans[c];
+    SuffixAutomaton() { state.emplace_back(); }
+    void clear() { state.assign(1, State{}); last = 0; }
+    void extend(char ch) {
+        int c = ch - 'a', cur = int(state.size()); state.emplace_back();
+        state[cur].len = state[last].len + 1; state[cur].occurrence = 1;
+        int p = last;
+        while (p >= 0 && !state[p].next[c]) state[p].next[c] = cur, p = state[p].link;
+        if (p < 0) state[cur].link = 0;
         else {
-            int q = t[p].trans[c];
-            int newq = ++ tot;
-            t[newq] = t[q]; t[newq].len = t[p].len + 1; 
-            t[cur].link = t[q].link = newq;
-            for (; t[p].trans[c] == q; p = t[p].link)
-                t[p].trans[c] = newq;
+            int q = state[p].next[c];
+            if (state[p].len + 1 == state[q].len) state[cur].link = q;
+            else {
+                int clone = int(state.size()); state.push_back(state[q]);
+                state[clone].len = state[p].len + 1; state[clone].occurrence = 0;
+                while (p >= 0 && state[p].next[c] == q) state[p].next[c] = clone, p = state[p].link;
+                state[q].link = state[cur].link = clone;
+            }
         }
+        last = cur;
     }
-}
-
-int nxt[N * 2], to[N * 2], head[N * 2], tot;
-long long ans;
-
-inline void add(int u, int v) {
-    nxt[++ tot] = head[u];
-    head[u] = tot;
-    to[tot] = v;
-}
-
-inline void dfs(int u) {
-    for (int i = head[u]; i; i = nxt[i]) {
-        int v = to[i];
-        dfs(v);
-        siz[u] += siz[v];
+    void build(const string &s) { clear(); for (char ch : s) extend(ch); }
+    vector<long long> occurrence_count() {
+        int max_len = 0; for (auto &x : state) max_len = max(max_len, x.len);
+        vector<int> count(max_len + 1), order(state.size());
+        for (auto &x : state) ++count[x.len];
+        for (int i = 1; i <= max_len; ++i) count[i] += count[i - 1];
+        for (int i = int(state.size()) - 1; i >= 0; --i) order[--count[state[i].len]] = i;
+        for (int i = int(order.size()) - 1; i > 0; --i) state[state[order[i]].link].occurrence += state[order[i]].occurrence;
+        vector<long long> answer(state.size()); for (int i = 0; i < int(state.size()); ++i) answer[i] = state[i].occurrence;
+        return answer;
     }
-    if (siz[u] > 1)
-        ans = std::max(ans, 1ll * siz[u] * SAM::t[u].len);
-}
-
-int main() {
-    scanf("%s", s);
-    n = strlen(s);
-    for (int i = 0; i < n; ++ i)
-        SAM::extend(s[i] - 'a');
-    for (int i = 2; i <= SAM::tot; ++ i)
-        add(SAM::t[i].link, i);
-    dfs(1);
-    std::cout << ans << '\n';
-    return 0;
-}
+    long long longest_repeated_product() {
+        auto occurrence = occurrence_count(); long long answer = 0;
+        for (int i = 0; i < int(state.size()); ++i) if (occurrence[i] > 1)
+            answer = max(answer, occurrence[i] * state[i].len);
+        return answer;
+    }
+};
