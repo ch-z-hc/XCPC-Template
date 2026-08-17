@@ -5,6 +5,7 @@
 ## 浏览模板
 
 - [模板索引](algorithms/index.md)：按数据结构、图论、数学等分类浏览全部模板。
+- [对拍工具](stress-testing.md)：生成随机数据并比较暴力程序与标准程序。
 - [使用说明](guide.md)：本地预览、严格构建和 GitHub Pages 部署方法。
 
 ## 项目约定

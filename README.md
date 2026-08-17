@@ -29,6 +29,16 @@ mkdocs serve
 
 严格构建使用 `mkdocs build --strict`。`main` 分支更新后，GitHub Actions 会构建并部署到 GitHub Pages；首次部署前需在仓库设置中将 Pages 来源设为 GitHub Actions。
 
+## 对拍工具
+
+`tools/stress/` 包含随机数据生成器、暴力程序、标准程序和统一运行脚本。当前示例对拍非空最大子段和：
+
+```text
+python tools/stress/run.py --tests 1000 --seed 1
+```
+
+发现差异时，失败种子、输入和两份输出会保存在 `build/stress/`。修改三个 `.cpp` 文件即可用于具体题目，详细约定见文档站的“对拍工具”页面。
+
 ## 接口索引
 
 | 文件 | 对外接口 |
@@ -94,5 +104,4 @@ mkdocs serve
 
 ## 待补模板
 
-- `对拍`：待增加生成器、暴力程序、标准程序和运行脚本。
 - `凸包计数`：待确认具体题型后实现；当前 `geometry/geo.cpp` 只有基础凸包、凸包切割和旋转卡壳等操作。
