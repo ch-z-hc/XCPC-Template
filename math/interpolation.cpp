@@ -1,13 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 // 拉格朗日插值单点求值；x、y 使用 0-based 下标且长度相同，横坐标两两不同。
 // mod 必须为质数；复杂度 O(n^2)，额外空间 O(1)。
-static long long interpolation_pow(long long a, long long e, long long mod) {
-    long long r = 1 % mod;
-    for (; e; e >>= 1, a = a * a % mod)
-        if (e & 1) r = r * a % mod;
-    return r;
+static ll interpolation_pow(ll a, ll b, ll mod) {
+    ll res = 1 % mod;
+    for (; b; b >>= 1) {
+        if (b & 1) res = 1ll * res * a % mod;
+        a = 1ll * a * a % mod;
+    }
+    return res;
 }
 
 long long interpolation_eval(const vector<long long> &x,

@@ -1,16 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 static long long bm_norm(long long x, long long mod) {
     x %= mod;
     return x < 0 ? x + mod : x;
 }
 
-static long long bm_pow(long long a, long long e, long long mod) {
-    long long r = 1 % mod;
-    for (; e; e >>= 1, a = a * a % mod)
-        if (e & 1) r = r * a % mod;
-    return r;
+static ll bm_pow(ll a, ll b, ll mod) {
+    ll res = 1 % mod;
+    for (; b; b >>= 1) {
+        if (b & 1) res = 1ll * res * a % mod;
+        a = 1ll * a * a % mod;
+    }
+    return res;
 }
 
 // 根据 0-based 序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...。

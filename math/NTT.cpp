@@ -1,16 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 // NTT：固定模数 998244353，数组下标 0-based，长度必须是 2 的幂且不超过 2^23。
 // 输入系数应先归一化到 [0, NTT_MOD)；复杂度 O(n log n)，空间 O(1)。
-using NTTInt = long long;
+using NTTInt = ll;
 constexpr NTTInt NTT_MOD = 998244353;
 constexpr NTTInt NTT_ROOT = 3;
 
-NTTInt ntt_pow(NTTInt a, NTTInt e) {
-    NTTInt r = 1;
-    for (; e; e >>= 1, a = a * a % NTT_MOD) if (e & 1) r = r * a % NTT_MOD;
-    return r;
+NTTInt ntt_pow(NTTInt a, NTTInt b) {
+    NTTInt res = 1;
+    for (; b; b >>= 1) {
+        if (b & 1) res = 1ll * res * a % NTT_MOD;
+        a = 1ll * a * a % NTT_MOD;
+    }
+    return res;
 }
 void ntt(vector<NTTInt> &a, bool inverse) {
     int n = int(a.size());
