@@ -8,12 +8,13 @@ using namespace std;
 // 先复制 Point.cpp、Line.cpp；简单多边形按边界顺序给点，0-based。
 // area、contain、convexCut 时间 O(n)；convexCut 要求输入为凸多边形。
 // 浮点采用 EPS；area 是有向面积，逆时针为正，切割保留直线左侧。
+// area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。
 
 db area(V < P > ps) {
     // 求多边形面积（逆时针顺序给出点 -> 面积为正）
     db ret = 0; if (ps.size() == 0) return 0;
-    for (int i = 0; i < (int)ps.size(); ++ i) {
-        ret += ps[i].det(ps[(i + 1) % ps.size()]);
+    for (int i = 1; i + 1 < (int)ps.size(); ++ i) {
+        ret += (ps[i] - ps[0]).det(ps[i + 1] - ps[0]);
     }
     return ret / 2;
 }

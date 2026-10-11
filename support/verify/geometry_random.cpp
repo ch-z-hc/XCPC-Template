@@ -46,6 +46,26 @@ void check_order(const std::vector<P> &points, Less less) {
 
 int main() {
     {
+        assert(area({}) == 0);
+        assert(area({{1, 2}}) == 0);
+        assert(area({{1, 2}, {3, 4}}) == 0);
+        for (db shift : {0.L, 1e6L, 1e9L}) {
+            db side = 1.L / 3;
+            V < P > square{{shift, shift}, {shift + side, shift},
+                          {shift + side, shift + side}, {shift, shift + side}};
+            db expected = (square[1].x - square[0].x) *
+                          (square[3].y - square[0].y);
+            assert(abs(area(square) - expected) < 1e-12L);
+            reverse(square.begin(), square.end());
+            assert(abs(area(square) + expected) < 1e-12L);
+            square.push_back(square[0]);
+            assert(abs(area(square) + expected) < 1e-12L);
+        }
+        V < P > concave{{0, 0}, {4, 0}, {4, 4}, {2, 1}, {0, 4}};
+        for (P &p : concave) p = p + P(1e9L, -1e9L);
+        assert(area(concave) == 10);
+    }
+    {
         P a(0, 200), b(0.75L * EPS, 90), c(1.5L * EPS, 0);
         assert(a < b && b < c && a < c);
         assert(cross(P(0, 0) + P(1, 1), P(2, 1), P(1, 2)) == 1);

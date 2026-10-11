@@ -40,7 +40,11 @@ db numerical_area(const V < Circle > &cs) {
 }
 
 // 独立等距圆周采样；每次只判断样点是否落入其他圆内部。
-db numerical_perimeter(const V < Circle > &cs) {
+db numerical_perimeter(V < Circle > cs) {
+    if (! cs.empty()) {
+        P origin = cs[0].o;
+        for (Circle &c : cs) c.o = c.o - origin;
+    }
     const int steps = 24000;
     db ans = 0;
     for (int i = 0; i < (int)cs.size(); ++ i) {
@@ -90,30 +94,34 @@ int main() {
     check({{{0, 0}, 1e-12L}}, pi * 1e-24L, 2 * pi * 1e-12L);
     auto near = circle_union({{{0, 0}, 1}, {{1e-10L, 0}, 1}});
     assert(near.first > 3 && near.second > 6);
-    mt19937 rng(712311);
-    for (int tc = 0; tc < 100; ++ tc) {
-        V < Circle > cs;
-        int n = 1 + rng() % 6;
-        for (int i = 0; i < n; ++ i)
-            cs.push_back({{(db)((int)(rng() % 17) - 8) / 3,
-                           (db)((int)(rng() % 17) - 8) / 3},
-                          (db)(rng() % 9) / 3});
-        if (tc == 0) {
-            // 三圆包围一个洞，检验内边界积分的方向。
-            cs = {{{0, 0}, 1}, {{1.8L, 0}, 1},
-                  {{0.9L, 0.9L * sqrtl(3)}, 1}};
+    for (unsigned seed : {712311u, 2654840782u}) {
+        mt19937 rng(seed);
+        for (int tc = 0; tc < 100; ++ tc) {
+            V < Circle > cs;
+            int n = 1 + rng() % 6;
+            for (int i = 0; i < n; ++ i)
+                cs.push_back({{(db)((int)(rng() % 17) - 8) / 3,
+                               (db)((int)(rng() % 17) - 8) / 3},
+                              (db)(rng() % 9) / 3});
+            if (tc == 0) {
+                // 三圆包围一个洞，检验内边界积分的方向。
+                cs = {{{0, 0}, 1}, {{1.8L, 0}, 1},
+                      {{0.9L, 0.9L * sqrtl(3)}, 1}};
+            }
+            if (tc % 7 == 0) cs.push_back(cs[0]);
+            auto [a, p] = circle_union(cs);
+            close(a, numerical_area(cs), 2e-5L);
+            db sum = 0;
+            for (Circle c : cs) sum += c.r;
+            db error = 4 * pi * cs.size() * sum / 24000 + 1e-9L;
+            assert(fabsl(p - numerical_perimeter(cs)) <= error);
+            shuffle(cs.begin(), cs.end(), rng);
+            auto [b, q] = circle_union(cs); close(a, b); close(p, q);
+            for (Circle &c : cs) c.o = c.o + P(1e6L, -1e6L);
+            auto [c, r] = circle_union(cs); close(a, c);
+            // 相切经坐标舍入后可能微交；校验平移后实际输入，而非强求周长不变。
+            assert(fabsl(r - numerical_perimeter(cs)) <= error);
         }
-        if (tc % 7 == 0) cs.push_back(cs[0]);
-        auto [a, p] = circle_union(cs);
-        close(a, numerical_area(cs), 2e-5L);
-        db sum = 0;
-        for (Circle c : cs) sum += c.r;
-        db error = 4 * pi * cs.size() * sum / 24000 + 1e-9L;
-        assert(fabsl(p - numerical_perimeter(cs)) <= error);
-        shuffle(cs.begin(), cs.end(), rng);
-        auto [b, q] = circle_union(cs); close(a, b); close(p, q);
-        for (Circle &c : cs) c.o = c.o + P(1e6L, -1e6L);
-        auto [c, r] = circle_union(cs); close(a, c); close(p, r);
     }
-    cout << "circle_union_random OK: analytic cases and 100 numerical sets\n";
+    cout << "circle_union_random OK: analytic cases and 200 numerical sets\n";
 }
