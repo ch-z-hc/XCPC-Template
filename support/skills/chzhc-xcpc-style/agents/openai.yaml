@@ -1,0 +1,4 @@
+interface:
+  display_name: "chzhc 的 XCPC 码风"
+  short_description: "按个人习惯编写 C++17 竞赛代码，保留短命名、适度压行和直接可改的模板。"
+  default_prompt: "使用 $chzhc-xcpc-style，按我的竞赛码风编写或整理这份 C++17 算法代码。"

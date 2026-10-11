@@ -1,0 +1,35 @@
+# Linux / Bash；源文件为 a.cpp，可执行文件为 a。
+
+# 普通编译：C++17、O2 优化、常用警告。
+g++ -std=c++17 -O2 -Wall -Wextra a.cpp -o a
+./a
+
+# 文件输入输出；> 会覆盖输出文件。
+./a < input.txt
+./a < input.txt > output.txt
+
+# 只检查语法和警告，不生成可执行文件。
+g++ -std=c++17 -Wall -Wextra -fsyntax-only a.cpp
+
+# 调试编译：检查容器越界、非法内存访问和未定义行为。
+g++ -std=c++17 -O0 -g -Wall -Wextra a.cpp -o a_dbg \
+    -D_GLIBCXX_DEBUG -fsanitize=address,undefined \
+    -fno-omit-frame-pointer -fno-sanitize-recover=all
+./a_dbg < input.txt
+
+# 深递归前将栈设为 256 MiB，单位为 KiB；查看当前栈大小。
+# 只影响当前终端启动的程序，不能超过系统硬限制。
+ulimit -s 262144
+ulimit -s
+
+# 统计实际用时和最大常驻内存；使用普通版本测时。
+/usr/bin/time -f '%e s, %M KiB' ./a < input.txt > output.txt
+
+# 限时运行：2 秒后发送终止信号，再过 1 秒强制结束。
+timeout -k 1s 2s ./a < input.txt > output.txt
+
+# 比较答案，忽略空白字符和空行；一致时无输出。
+diff -wB output.txt answer.txt
+
+# 调试版本较慢且占用更多内存，不用于测时。
+# 多行命令末尾的反斜杠表示续行，其后不能有空格。

@@ -5,8 +5,8 @@
 *.out
 build/
 dist/
-/site/
-/docs/algorithms/
+/output/pdf/
+/tmp/pdfs/
 
 # Editor and temporary files
 .vscode/

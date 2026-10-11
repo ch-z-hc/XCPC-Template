@@ -1,0 +1,154 @@
+# 模板题源与正确性审查
+
+日期：2026-10-11。范围：`template/` 下全部 135 个 C++17 模板。
+
+## 结论
+
+已为每个算法文件整理原题或公开验证题，见 [逐文件题源索引](SOURCES.md)。`Common.cpp` 是辅助定义，没有独立题目，不虚构题源。
+
+**已修复本轮发现的李超树 P4097 数学同值判定错误。** 整数参数改用有理数与 `__int128` 精确比较，浮点参数保留浮点比较。以下测试已通过，但没有逐题在线 AC，也不能代替正确性证明。题源索引中的“应用”“部分”不代表完整题解。
+
+继续整理时新增了单调栈、快速幂与逆元、矩阵求逆、单调凸包优化、左偏树和原根，共 6 个片段；接口索引、题源与打印目录同步更新。
+
+本轮再补子集卷积、多项式多点求值与快速插值、Kruskal 重构树、圆方树、边双缩点树、长链剖分第 k 级祖先和 Gomory-Hu 最小割树，共 7 个片段。复用现有 FPS、Dinic 和双连通分量实现，没有改写它们的接口。
+
+继续补充吉司机线段树、可持久化数组、点分树和斯坦纳树，共 4 个片段。可持久化数组与静态区间第 k 小的主席树分开；点分树维护动态点权的距离范围和，不替换已有的静态点对统计。
+
+本次继续补齐前次列出的全部 14 项：可持久化 01 Trie、k 短游走、上下界最小费用流、Min_25、一般图最大团 / 最大独立集、单纯形、圆并、KD-tree、DLX、支配树、一般图带权匹配、三维凸包、Lyndon 分解与 runs。接口、题源、复制依赖和打印目录同步更新，未重写旧算法。
+
+## 本次验证（135 个模板阶段）
+
+| 检查 | 结果与边界 |
+| --- | --- |
+| Linux C++17 语法检查 | 135 个模板、验证程序和工具通过，复制依赖用 -include 补齐；无 main 的模板约定保持不变。 |
+| Linux 随机 / 回归验证 | 40 个无输入程序通过，启用 ASan / UBSan、标准库断言，栈为 256 MiB。 |
+| 整数真值与对拍工具 | 李超树 200 组在线解码、200 组大整数端点通过 Python 整数真值；6 组工具示例各 200 轮及故障保存、崩溃、超时路径通过，完整 run_linux.sh 退出状态为 0。 |
+| 新增独立测试 | 12 个入口覆盖全部 14 项，真值、轮数和边界逐项见验证说明；带权匹配额外回归公开历史反例，不把反例回归写成官方全量数据通过。 |
+| 题源与接口索引 | 135 个文件一一对应且均有本地测试入口；本次未对全部题源重新做在线哈希核对。 |
+| 打印册 | 137 个打印条目、221 页；目录、接口索引、源码逐行逐字符、字体与版心检查通过；渲染并检查全部 27 页新增正文、2 页目录，未见裁切或乱码。 |
+
+证据保存在 `build/batch-linux.log`、`build/source-audit/results.json`、`build/batch-pdf-preview/`，打印册及排版清单在 `output/pdf/`。本次未新增在线提交，也未运行新增公开题的完整官方数据。
+
+新增能力的主要边界：k 短路允许重复顶点，不是简单路径；最大团最坏指数时间；Min_25 的素数值限二次多项式；KD-tree 是静态二维；单纯形求实数 LP；三维凸包对低维输入返回空面，浮点几何不保证近退化数据的精确拓扑。完整数值范围与调用约定见各文件头。
+
+## 之前已执行的验证（121 个模板阶段）
+
+| 检查 | 结果与边界 |
+| --- | --- |
+| Linux C++17 语法检查 | 121 个模板，以及验证程序和工具通过；使用 `-Wall -Wextra -pedantic`。 |
+| Linux 随机 / 回归验证 | 28 个无输入程序通过，启用 ASan、UBSan、标准库断言；含 20 万点深链和 50 万点祖先长链，栈为 256 MiB。 |
+| 新补的薄弱项 | 离散化与树哈希各 2000 轮；离散化用有序集合排名作真值，树哈希对照排序括号编码，并检查换编号、打乱邻接顺序后的不变性。采样未碰撞不代表哈希无碰撞。 |
+| Library Checker 完整官方生成数据 | 20 题、409 组通过，输入与答案核对官方 `hash.json`。除最小树形图只核对最优权值外，均使用官方 checker；不是在线提交，不证明在线时限。 |
+| 洛谷题面样例 | P4213、P4720、P5490、P1856，共 5 组通过。样例来自交叉核对的题面转载，不是官方全量数据。 |
+| 对拍工具自身 | 6 组示例各 200 轮、C++ 对拍及故障保存流程通过。 |
+| 题源索引 | 121 个文件一一对应且均有本地测试入口；前轮 65 个不同 Library Checker 题目的官方题面在线读取，并与固定提交的 Git 内容逐字节核对。本次另读取吉司机线段树的固定版本题面和三道洛谷官方题面。入口存在不代表分支覆盖完整。 |
+| P4097 题意回归 | 原反例及数学相等、竖直线、极值回归通过；另有 200 组在线解码、200 组大整数端点，与 Python 任意精度整数真值对拍通过。 |
+| 新增模板 | 单调栈、CHT / P3195 DP、左偏树各 3000 轮；求逆矩阵 2000 轮；快速幂、逆元与原根的专项恒等式及边界检查通过。详见验证说明。 |
+| 本轮补充 | 子集卷积、多点求值、插值、重构树、圆方树、桥树、祖先查询、最小割树各 2000 轮暴力对拍通过；最小割树另测 LLONG_MAX 容量，具体真值见验证说明。 |
+| 四项常用补充 | 吉司机线段树、可持久化数组、点分树、斯坦纳树各 2000 轮暴力对拍通过，启用 ASan / UBSan；另测点分树 20 万点深链、重初始化、旧版本分叉、零权、负点权及大整数边界。 |
+| 打印册 | 123 个打印条目、193 页，目录、接口索引、源码逐行一致性及版心检查通过；本次渲染并目视检查两页目录及四项新增算法的全部 9 页正文，共 11 页。 |
+
+官方数据版本为 `library-checker-problems` 的 `1814c4e5205517e368bb57a8d1127eb961cfeaae`。20 道题及逐题组数见 [验证说明](README.md#library-checker-官方数据)。
+
+本次证据：`build/more-linux.log`、`build/more-public.log`、`build/more-pdf-preview/`。前一轮证据保留在 `build/advanced-linux.log`、`build/advanced-public.log`、`build/advanced-public-generate.log`、`build/advanced-sources.log`。上一批记录保留在 `build/priority-*.log`，之前的样例记录保留在 `build/audit-luogu-20261010.log`。结构化结果分别在 `build/public-verify/`、`build/luogu-samples/`、`build/source-audit/` 的 `results.json` 中；题源核对结果包含模板与验证程序的 SHA-256。
+
+复跑命令：
+
+```sh
+bash support/verify/run_linux.sh
+python3 support/verify/run_public.py
+python3 support/verify/run_luogu_samples.py
+python3 support/verify/check_sources.py --network
+```
+
+`run_public.py` 与 `check_sources.py --network` 依赖已准备的 `build/library-checker-problems/`；公开数据准备方法见验证说明。部分 LOJ 页面本轮未能读到题面，索引已注明，不把网页访问失败当成代码测试结果。
+
+## 已修复的问题：李超树数学同值返回错误编号
+
+对应文件：`template/ds/LiChaoTree.cpp`。对应题目：[P4097 / HEOI2013 Segment](https://www.luogu.com.cn/problem/P4097)。
+
+先插入线段 `(1, 1) → (24, 1)`，再插入 `(1, 1000000000) → (24, 1)`，查询 `x = 24`。两条线段数学上都取值 `1`，题意要求返回较早的编号 `1`，修复前模板返回 `2`。
+
+对应的完整题目输入为：
+
+```text
+3
+1 1 1 24 1
+1 1 1000000000 24 1
+0 24
+```
+
+预期输出 `1`。这些端点在题目范围内，查询前没有上次答案，在线解码不改变输入。
+
+独立复现保存在 `fixtures/lichao_p4097_tie.cpp`：
+
+```sh
+g++ -std=c++17 -O2 -Wall -Wextra -pedantic \
+    support/verify/fixtures/lichao_p4097_tie.cpp -o build/lichao-p4097-tie
+build/lichao-p4097-tie
+```
+
+修复前 Linux / GCC 实测退出状态为 `1`，输出：
+
+```text
+expected=1 actual=2
+1 1.00000000005820766091346740723
+```
+
+原因是第二条线的 `k * x + b` 有舍入误差。旧接口只在计算得到的浮点数完全相等时比较编号，因此不满足原题的数学同值规则。原随机对拍用相同浮点表达式作真值，只验证了这个较弱的接口约定，没有验证题意。
+
+修复没有引入 `EPS`，而是对整数参数保留 `(a * x + c) / d` 的有理数表示，比较时用 `__int128` 交叉乘积；同值再比较编号。整数 k、b、y 的绝对值不超过 `10^18`，横坐标为 int。浮点参数仍走原浮点语义，混用浮点与整数直线时不能要求精确判等。
+
+修复后原反例退出状态为 `0`，输出 `expected=1 actual=1` 和 `1 1`；反例已加入常规回归，并另用 Python 大整数直接按端点插值比较，避免重复浮点表达式作真值。
+
+## 使用时仍须遵守的限制
+
+- 题目要求恢复路径 / 方案，而模板只返回权值时，需补恢复逻辑。例如 Dijkstra、树直径、最小树形图；模意义高斯消元也没有直接输出零空间基。
+- 扩展 Lucas 需要完整质数幂阶乘表，不能因为找到同名题就认定支持任意大模数全规模；组合数预处理要求 `n < mod`。
+- 树哈希是有根树哈希，不能直接当作无根树判同构；P5043 还需处理重心或换根，且哈希有碰撞风险。
+- 当前树上莫队是静态版，不支持 P4074 那样的带修改操作；虚树也不自动提供应用题需要的路径最小边权和 DP。
+- FFT、自适应 Simpson、几何与三分搜索依赖数值范围、精度或函数性质；随机样例通过不能推出任意输入上的数值可靠性。
+- 动态开点线段树合并 / 分裂会消耗原树，离线回滚 DSU 不是在线持久化 DSU；不要忽略接口语义差异。
+
+更多下标、范围和适配说明逐项写在 [题源索引](SOURCES.md) 中。
+
+## 还缺哪些常用模板
+
+以下是与现有文件、[Library Checker 官方题库](https://github.com/yosupo06/library-checker-problems) 和 [KACTL](https://github.com/kth-competitive-programming/kactl) 对照后的整理。优先级是按比赛使用便利性作出的判断，不是使用频率统计。
+
+### 上一批已补
+
+| 新增算法 | 对应文件 / 范围 | 公开题 |
+| --- | --- | --- |
+| 单调栈：左右最近更大 / 更小元素 | `others/MonotonicStack.cpp`，严格比较，1-based。 | [P5788 单调栈](https://www.luogu.com.cn/problem/P5788) |
+| 独立快速幂、线性逆元 / 批量逆元 | `math/ModArithmetic.cpp`，逆元要求质数模数。 | [P3811 乘法逆元](https://www.luogu.com.cn/problem/P3811)、[P5431 乘法逆元 2](https://www.luogu.com.cn/problem/P5431) |
+| 矩阵求逆 | `math/MatrixInverse.cpp`，质数模数的 Gauss-Jordan。 | [P4783 矩阵求逆](https://www.luogu.com.cn/problem/P4783) |
+| 单调凸包优化 / 斜率优化 | `others/ConvexHullTrick.cpp`，斜率不增、横坐标不减，截距为 `__int128`。 | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) |
+| 可并堆：左偏树 | `ds/LeftistHeap.cpp`，合并和删除均返回新根。 | [P3377 左偏树 / 可并堆](https://www.luogu.com.cn/problem/P3377) |
+| 原根 | `math/PrimitiveRoot.cpp`，复用 Pollard Rho，质数模数。 | [Primitive Root](https://judge.yosupo.jp/problem/primitive_root) |
+
+### 本轮已补
+
+| 新增算法 | 当前情况 | 公开题 / 参考 |
+| --- | --- | --- |
+| 子集卷积 | `math/SubsetConvolution.cpp`，显式传入模数，可为合数。 | [P6097 子集卷积](https://www.luogu.com.cn/problem/P6097) |
+| 多项式多点求值、快速插值 | `math/Multipoint.cpp`，复用 FPS；求值允许重复点，插值要求互异。 | [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation)、[Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) |
+| Kruskal 重构树 | `graph/KruskalTree.cpp`，支持递增 / 递减建树、不连通图与重复 build。 | [P2245 星际导航](https://www.luogu.com.cn/problem/P2245) |
+| 圆方树、边双缩点树 | `graph/BlockCutTree.cpp`、`graph/BridgeTree.cpp`，只补树构造，复用 VBCC / EBCC。 | [P4320 道路相遇](https://www.luogu.com.cn/problem/P4320)、[P2860 Redundant Paths](https://www.luogu.com.cn/problem/P2860)，还需应用题统计逻辑。 |
+| 长链剖分的第 k 级祖先 | `graph/KthAncestor.cpp`，预处理 O(n log n)，查询 O(1)。 | [P5903 树上 k 级祖先](https://www.luogu.com.cn/problem/P5903) |
+| Gomory-Hu 最小割树 | `graph/GomoryHu.cpp`，复用 Dinic；最小割树路径最小边权查询。 | [P3329 ZJOI2011 最小割](https://www.luogu.com.cn/problem/P3329)，还需点对计数。 |
+
+### 前次列出的专项缺项
+
+前次列出的一般图带权匹配、支配树、单纯形、KD-tree 和三维凸包本次均已补入独立片段。三维几何当前提供点向量与凸包，不代表覆盖所有三维几何算法。
+
+### 本次继续补充
+
+| 新增算法 | 当前情况 | 公开题 / 参考 |
+| --- | --- | --- |
+| 吉司机线段树 | `ds/SegmentTreeBeats.cpp`；区间加、取 min / max、求和与最值。 | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum)，33 组完整官方生成数据及官方 checker 已通过。 |
+| 可持久化数组 | `ds/PersistentArray.cpp`；从任意历史根单点赋值，查询旧根，调用者保存版本根。 | [P3919 可持久化数组](https://www.luogu.com.cn/problem/P3919)；查询产生的版本复用原根。 |
+| 点分树 | `graph/CentroidTree.cpp`；静态非负权树，单点增量修改、距离范围点权和，build 清空点权。 | [P6329 点分树 / 震波](https://www.luogu.com.cn/problem/P6329)；另需初始点权、赋值转增量与在线异或解码。 |
+| 斯坦纳树 | `graph/SteinerTree.cpp`；状压 DP + 多源 Dijkstra，不可连通返回 nullopt，不恢复边集。 | [P6192 最小斯坦纳树](https://www.luogu.com.cn/problem/P6192)；终端数和内存须遵守源码限制。 |
+
+上述三道洛谷题已读取官方题面，当前只记录本地随机与边界对拍，不声称在线 AC 或官方全量数据通过。本次新增验证入口为 `more_ds_random.cpp`、`more_graph_random.cpp`，全量脚本会自动收录。
