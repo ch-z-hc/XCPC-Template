@@ -1,6 +1,6 @@
 # 新增算法的参考资料
 
-本次 14 个片段均按项目接口和个人码风整理，不包含题目入口。论文链接用于核对算法，不表示复制论文代码；公开题链接与实际通过记录分开维护。
+前批 14 个片段均按项目接口和个人码风整理，不包含题目入口。论文链接用于核对算法，不表示复制论文代码；公开题链接与实际通过记录分开维护。
 
 | 片段 | 算法 / 实现参考 |
 | --- | --- |
@@ -18,6 +18,24 @@
 | `ConvexHull3D.cpp` | [CGAL 3D Convex Hulls](https://doc.cgal.org/latest/Convex_hull_3/index.html)；独立增量实现，不复制 CGAL 代码，不扰动输入。 |
 | `Lyndon.cpp` | Duval 算法；[Lyndon Factorization 官方题面与参考解](https://github.com/yosupo06/library-checker-problems/tree/master/string/lyndon_factorization)。独立实现字符串字节比较与分界点返回。 |
 | `Runs.cpp` | Bannai 等，[The Runs Theorem](https://arxiv.org/abs/1406.0263)；独立实现两种字符序的 Lyndon 根，复用本库后缀数组，不复制官方分治 Z 算法。 |
+
+## 常用补充的算法参考
+
+本批独立实现，不直接复制参考库代码；已有 Comb、NTT、FPS 和 P 定义按文件头复用。
+
+| 片段 | 算法参考 |
+| --- | --- |
+| `EquidistantLagrange.cpp` | [连续整数点拉格朗日插值](https://nyaannyaan.github.io/library/fps/lagrange-interpolation-point.hpp)，前后缀积与逆阶乘。 |
+| `SegTree.cpp` 搜索接口 | [ACL Segtree](https://github.com/atcoder/ac-library/blob/master/document_en/segtree.md)，树上二分思路；本库直接维护 sum / mx / lazy，不使用泛型骨架。 |
+| `LIS.cpp` | [LIS 方案恢复](https://nyaannyaan.github.io/library/dp/longest-increasing-sequence.hpp)，最小末尾与前驱下标。 |
+| `DivisorTransform.cpp` | [GCD 卷积](https://nyaannyaan.github.io/library/multiplicative-function/gcd-convolution.hpp)，整除偏序上的 zeta / Mobius 变换；本库采用 O(n log n) 的直接整除循环。 |
+| `FunctionalGraph.cpp` | [函数图](https://nyaannyaan.github.io/library/graph/functional-graph.hpp)，本库以入度剥离找环，再递归反向树与 64 层倍增。 |
+| `Stirling.cpp` | [常见数列](https://nyaannyaan.github.io/library/fps/fps-famous-series.hpp)，两类递推与第二类卷积恒等式。 |
+| `Hash2D.cpp` | [二维 Rolling Hash](https://nyaannyaan.github.io/library/string/rolling-hash-2d.hpp)，本库双模数二维前缀多项式哈希。 |
+| `MinRectangle.cpp` | [CGAL Bounding Volumes](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html)，凸多边形最小包围矩形；不复制 CGAL 实现。 |
+| `IntervalSet.cpp` | [Segment Set](https://nyaannyaan.github.io/library/data-structure/segment-set.hpp)，本库统一使用半开区间，避免极值端点加减溢出。 |
+| `SG.cpp` | [Grundy Number](https://nyaannyaan.github.io/library/math/grundy-number.hpp)，有限无环正常规则公平游戏的 mex 与异或。 |
+| `BostanMori.cpp` | [Bostan–Mori](https://nyaannyaan.github.io/library/fps/nth-term.hpp)，与 Q(-x) 相乘后按奇偶抽取系数，复用 FPS 卷积。 |
 
 ## Simplex 的 MIT 许可
 

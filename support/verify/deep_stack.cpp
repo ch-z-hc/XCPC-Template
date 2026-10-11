@@ -18,10 +18,23 @@
 #include "../../template/graph/BridgeTree.cpp"
 #include "../../template/graph/KruskalTree.cpp"
 #include "../../template/graph/KthAncestor.cpp"
+#include "../../template/graph/FunctionalGraph.cpp"
+#include "../../template/others/SG.cpp"
 
 // Linux 下先提高栈限制，再验证 200000 点长链。
 int main() {
     const int n = 200000;
+    {
+        V < int > to(n + 1);
+        V < V < int > > g(n + 1);
+        for (int i = 1; i < n; ++ i) to[i] = i + 1, g[i].push_back(i + 1);
+        to[n] = n;
+        FunctionalGraph graph; graph.build(to);
+        assert(graph.dep[1] == n - 1 && graph.jump(1, ULLONG_MAX) == n);
+        assert(graph.distance(1, n) == n - 1 && graph.distance(n, 1) == -1);
+        auto sg = grundy(g); assert(sg && (*sg)[1] == (n - 1) % 2);
+        g[n].push_back(1); assert(! grundy(g));
+    }
     {
         KthAncestor tree(500000);
         for (int i = 1; i < tree.n; ++ i) tree.add_edge(i, i + 1);

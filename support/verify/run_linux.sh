@@ -8,8 +8,12 @@ printf 'Stack limit: %s KiB\n' "$(ulimit -s)"
 
 for source in template/*/*.cpp support/tools/contest_main.cpp support/tools/stress/*.cpp support/tools/stress/cases/*/*.cpp support/verify/*.cpp support/verify/oj/*.cpp support/verify/fixtures/*.cpp; do
     includes=()
-    if [[ "$source" == template/math/Multipoint.cpp ]]; then
+    if [[ "$source" == template/math/Multipoint.cpp || "$source" == template/math/BostanMori.cpp ]]; then
         includes=(-include template/math/FPS.cpp)
+    elif [[ "$source" == template/math/EquidistantLagrange.cpp ]]; then
+        includes=(-include template/math/Combination.cpp)
+    elif [[ "$source" == template/math/Stirling.cpp ]]; then
+        includes=(-include template/math/NTT.cpp)
     elif [[ "$source" == template/graph/GomoryHu.cpp ]]; then
         includes=(-include template/graph/Dinic.cpp)
     elif [[ "$source" == template/graph/LowerBoundMinCostFlow.cpp ]]; then

@@ -1,6 +1,6 @@
 # 原题与验证题索引
 
-核对日期：2026-10-11。覆盖 `template/` 下全部 135 个 `.cpp` 文件。
+核对日期：2026-10-12。覆盖 `template/` 下全部 145 个 `.cpp` 文件。
 
 这里的链接是原题题面或公开模板题，不表示代码抄自该题，也不把通用算法强行归到某一道“最初原题”。洛谷收录的历史比赛题保留题目来源；Library Checker 使用其官方题面与数据仓库。
 
@@ -8,10 +8,11 @@
 
 验证链接不等于通过记录。本轮实际测试和限制见 [AUDIT.md](AUDIT.md)，每个文件对应的本地测试入口及源码哈希由 `check_sources.py` 记录。
 
-## 数据结构（18 个）
+## 数据结构（19 个）
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/ds/IntervalSet.cpp` | [Nyaan Segment Set](https://nyaannyaan.github.io/library/data-structure/segment-set.hpp) | 算法参考；维护整数半开区间的并、删除和 mex，不是逐段赋值 ODT。 |
 | `template/ds/AffineSegTree.cpp` | [Range Affine Range Sum](https://judge.yosupo.jp/problem/range_affine_range_sum)、[P3373 线段树 2](https://www.luogu.com.cn/problem/P3373) | 直接；闭区间与半开区间需转换，模数显式传入。 |
 | `template/ds/PersistentXorTrie.cpp` | [P4735 最大异或和](https://www.luogu.com.cn/problem/P4735) | 应用；保存前缀异或值的历史根，将询问转为两个前缀版本之差；不是任意两棵无关树的差。 |
 | `template/ds/KDTree.cpp` | [CGAL Spatial Searching](https://doc.cgal.org/latest/Spatial_searching/index.html) | 算法参考；静态二维最近邻与矩形计数，随机数据对照直接枚举，不声称在线通过。 |
@@ -26,15 +27,16 @@
 | `template/ds/PersistentSegTree.cpp` | [Range Kth Smallest](https://judge.yosupo.jp/problem/range_kth_smallest)、[P3834 静态区间第 k 小](https://www.luogu.com.cn/problem/P3834) | 直接；模板区间与 k 均为 1-based。不是任意单点改值版本。 |
 | `template/ds/PersistentArray.cpp` | [P3919 可持久化线段树 1 / 可持久化数组](https://www.luogu.com.cn/problem/P3919) | 直接；已读取官方题面。调用者保存各版本根，查询产生的新版本复用被查询根；与静态区间第 k 小的主席树分开。 |
 | `template/ds/RollbackDSU.cpp` | [Persistent Unionfind](https://judge.yosupo.jp/problem/persistent_unionfind) | 应用；需离线建立版本树，递归进入时合并、退出时回滚，并非在线持久化 DSU。 |
-| `template/ds/SegTree.cpp` | [P3372 线段树 1](https://www.luogu.com.cn/problem/P3372) | 直接；区间加、区间和，所有中间结果须不溢出 `ll`。 |
+| `template/ds/SegTree.cpp` | [P3372 线段树 1](https://www.luogu.com.cn/problem/P3372)、[ACL Segtree](https://github.com/atcoder/ac-library/blob/master/document_en/segtree.md) | 前者对应区间加、区间和；阈值搜索与第 k 个另做扫描对拍，`kth` 要求元素非负；所有中间结果须不溢出 `ll`。 |
 | `template/ds/SegmentTreeBeats.cpp` | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum) | 直接；题目为 0-based 半开区间，模板为 1-based 闭区间；另提供最小值与最大值查询。 |
 | `template/ds/WeightedDSU.cpp` | [AOJ DSL_1_B Weighted Union Find Trees](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_B) | 对应差值版 `WDSU`，方向为 `value[v] - value[u]`；异或版另由随机约束对拍覆盖。不是模意义下的势能 DSU。 |
 | `template/ds/XorTrie.cpp` | [P4551 最长异或路径](https://www.luogu.com.cn/problem/P4551) | 应用；先求根到各点的路径异或值，再插入、查询。模板返回最大异或值，不能直接套求最小值的 `set_xor_min`。 |
 
-## 图论（46 个）
+## 图论（47 个）
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/graph/FunctionalGraph.cpp` | [Nyaan Functional Graph](https://nyaannyaan.github.io/library/graph/functional-graph.hpp) | 算法参考；每点出度为 1，提供环分解、跳跃和最少到达步数；随机真值直接沿出边走。 |
 | `template/graph/BipartiteMatch.cpp` | [Bipartite Matching](https://judge.yosupo.jp/problem/bipartitematching)、[P3386 二分图最大匹配](https://www.luogu.com.cn/problem/P3386) | 直接；Kuhn 适合中小规模，大规模优先 `HopcroftKarp`。 |
 | `template/graph/KShortestWalk.cpp` | [K Shortest Walk](https://judge.yosupo.jp/problem/k_shortest_walk) | 直接能力；按边序列计数，允许重复顶点与零权环，源汇相同时包含空游走；非简单路径。 |
 | `template/graph/LowerBoundMinCostFlow.cpp` | [Minimum Cost b-flow](https://judge.yosupo.jp/problem/min_cost_b_flow) | 部分；计算最小费用和各边流量，不输出题目要求的对偶势；先复制 MinCostFlow.cpp。 |
@@ -82,10 +84,14 @@
 | `template/graph/VirtualTree.cpp` | [P2495 虚树 / SDOI2011 消耗战](https://www.luogu.com.cn/problem/P2495) | 应用；模板只构造虚树及距离。题目需原树路径最小边权与虚树 DP，距离不能代替最小边权。 |
 | `template/graph/ZeroOneBFS.cpp` | [AtCoder ABC077 D Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b) | 应用；构造余数图，边权只能为 0 / 1，起点代价另算。 |
 
-## 数学（30 个）
+## 数学（34 个）
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/math/EquidistantLagrange.cpp` | [Nyaan Equidistant Interpolation](https://nyaannyaan.github.io/library/fps/lagrange-interpolation-point.hpp) | 算法参考；连续整数采样，质数模数且采样数小于模数，与任意点插值分开。 |
+| `template/math/DivisorTransform.cpp` | [GCD Convolution](https://judge.yosupo.jp/problem/gcd_convolution)、[LCM Convolution](https://judge.yosupo.jp/problem/lcm_convolution) | 直接；输入 index 0 为 0；LCM 大于数组上界的项不返回，另测合数模数。 |
+| `template/math/Stirling.cpp` | [Stirling Number of the Second Kind](https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind)、[Nyaan Famous Series](https://nyaannyaan.github.io/library/fps/fps-famous-series.hpp) | 前者对应固定一行第二类卷积版；第一类为无符号版本，另用排列环数枚举验证。 |
+| `template/math/BostanMori.cpp` | [K-th Term of Linearly Recurrent Sequence](https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence)、[Nyaan Bostan–Mori](https://nyaannyaan.github.io/library/fps/nth-term.hpp) | 前者直接；递推系数顺序遵循文件头，模数固定 998244353；有理生成函数接口另对拍。 |
 | `template/math/AdaptiveSimpson.cpp` | [P4525 自适应辛普森法 1](https://www.luogu.com.cn/problem/P4525) | 应用；传入被积函数。局部采样误差不是对任意连续函数的严格误差保证。 |
 | `template/math/Min25.cpp` | [Counting Primes](https://judge.yosupo.jp/problem/counting_primes)、[Sum of Multiplicative Function (Large)](https://judge.yosupo.jp/problem/sum_of_multiplicative_function_large) | 前者对应 count_primes，后者传入 f(p^e) 回调；素数处支持二次多项式，规模须遵守 n <= 10^12 和内存限制，不声称全规模时限通过。 |
 | `template/math/Simplex.cpp` | [KACTL Simplex](https://github.com/kth-competitive-programming/kactl/blob/main/content/numerical/Simplex.h)、[P3980 志愿者招募](https://www.luogu.com.cn/problem/P3980) | 前者为算法参考，后者需建模；实数线性规划，不是整数规划，数值稳定性受条件数与缩放影响。 |
@@ -117,10 +123,11 @@
 | `template/math/QuotientBlocks.cpp` | [Enumerate Quotients](https://judge.yosupo.jp/problem/enumerate_quotients) | 直接能力；每块取一次商，题目要求递增输出时需调整顺序。 |
 | `template/math/XorBasis.cpp` | [P3812 线性基](https://www.luogu.com.cn/problem/P3812) | 直接求最大子集异或；`kth` 单独随机枚举验证，0-based 且包含 0、只算不同异或值。 |
 
-## 字符串（13 个）
+## 字符串（14 个）
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/string/Hash2D.cpp` | [Nyaan 2D Rolling Hash](https://nyaannyaan.github.io/library/string/rolling-hash-2d.hpp) | 算法参考；矩阵哈希，比较时同时检查尺寸；随机测试没有碰撞不代表严格判等。 |
 | `template/string/ACAutomaton.cpp` | [P5357 AC 自动机](https://www.luogu.com.cn/problem/P5357)、[P3808 AC 自动机（简单版）](https://www.luogu.com.cn/problem/P3808) | 直接返回每个模式串出现次数；P3808 统计次数非零的模式编号，重复模式串不能去重。仅小写字母。 |
 | `template/string/Lyndon.cpp` | [Lyndon Factorization](https://judge.yosupo.jp/problem/lyndon_factorization) | 直接；返回 0 和 n 在内的分界点，因子按字典序不增。 |
 | `template/string/Runs.cpp` | [Run Enumerate](https://judge.yosupo.jp/problem/runenumerate) | 直接；最小周期与 0-based 半开区间，结果按 period、l、r 排序；先复制 SuffixArray.cpp。 |
@@ -135,10 +142,12 @@
 | `template/string/Trie.cpp` | [P2580 于是他错误的点名开始了](https://www.luogu.com.cn/problem/P2580) | 应用；字典树判断存在性，重复点名需另维护已访问标记。仅小写字母。 |
 | `template/string/Z.cpp` | [Z Algorithm](https://judge.yosupo.jp/problem/zalgorithm)、[P5410 扩展 KMP](https://www.luogu.com.cn/problem/P5410) | 直接；P5410 还需按题目计算异或校验和。 |
 
-## 其他算法（16 个）
+## 其他算法（18 个）
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/others/LIS.cpp` | [Longest Increasing Subsequence](https://judge.yosupo.jp/problem/longest_increasing_subsequence) | 直接；输入转为 1-based，返回原下标；非递减版另做随机 DP 对拍。 |
+| `template/others/SG.cpp` | [Nyaan Grundy Number](https://nyaannyaan.github.io/library/math/grundy-number.hpp) | 算法参考；只适用有限无环正常规则公平游戏，组合状态另用直接胜负 DP 验证。 |
 | `template/others/CartesianTree.cpp` | [Cartesian Tree](https://judge.yosupo.jp/problem/cartesian_tree) | 直接；相等元素的决策、根父亲的输出形式按题目转换。 |
 | `template/others/DLX.cpp` | [P4929 Dancing Links](https://www.luogu.com.cn/problem/P4929) | 直接；精确覆盖第一解，输入行的列编号须合法且不重复；不是重复覆盖或带权最小覆盖。 |
 | `template/others/ConvexHullTrick.cpp` | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) | 应用；先展开 DP 转移成直线最小值。模板要求斜率不增、查询横坐标不减，不能直接用于任意顺序直线。 |
@@ -156,12 +165,13 @@
 | `template/others/TernarySearch.cpp` | [P3382 三分](https://www.luogu.com.cn/problem/P3382) | 应用；传入多项式求值，必须单峰，题面本身有精度警告。 |
 | `template/others/TreeHash.cpp` | [P5043 树同构 / BJOI2015 树的同构](https://www.luogu.com.cn/problem/P5043) | 应用；模板是有根树哈希，题面无根树需先处理重心或枚举根。固定哈希有碰撞风险。 |
 
-## 计算几何（12 个）
+## 计算几何（13 个）
 
 二维几何先复制 `Point.cpp`，再按文件头复制依赖；`ConvexHull3D.cpp` 独立使用 `P3`，不依赖二维定义。不引入自定义头文件。下列题目覆盖对应能力，不代表一个题验证了整份文件中的所有函数。
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
+| `template/geometry/MinRectangle.cpp` | [CGAL Minimum Rectangle](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html) | 算法参考；严格逆时针凸包，另测 0 / 1 / 2 点退化；枚举所有边方向作真值，不声称精确实数几何。 |
 | `template/geometry/Circle.cpp` | [AOJ CGL_7_D 圆与直线交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_D)、[CGL_7_E 两圆交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_E)、[CGL_7_F 点到圆切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F)、[CGL_7_G 公切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G)、[CGL_7_I 两圆交面积](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_I) | 分别对应交点、切点、公切线与交面积；无穷多交点不返回无限列表，退化圆按源码约定。 |
 | `template/geometry/ClosestPair.cpp` | [Closest Pair](https://judge.yosupo.jp/problem/closest_pair) | 直接；返回原输入点对下标，少于两点时为 `{-1, -1}`。 |
 | `template/geometry/CircleUnion.cpp` | [Green's Theorem](https://sites.science.oregonstate.edu/BridgeBook/talk/book/sguide/green) | 算法参考；面积用解析值与独立竖切片积分对拍，周长用解析值与独立圆弧采样验证；支持包含、重复圆和洞，浮点近退化须另核精度。 |

@@ -137,6 +137,16 @@
 #include "../../template/geometry/RectangleUnion.cpp"
 #include "../../template/geometry/CircleUnion.cpp"
 #include "../../template/geometry/ConvexHull3D.cpp"
+#include "../../template/ds/IntervalSet.cpp"
+#include "../../template/graph/FunctionalGraph.cpp"
+#include "../../template/math/EquidistantLagrange.cpp"
+#include "../../template/math/DivisorTransform.cpp"
+#include "../../template/math/Stirling.cpp"
+#include "../../template/math/BostanMori.cpp"
+#include "../../template/others/LIS.cpp"
+#include "../../template/others/SG.cpp"
+#include "../../template/string/Hash2D.cpp"
+#include "../../template/geometry/MinRectangle.cpp"
 
 int main() {
     {
@@ -368,6 +378,29 @@ int main() {
         assert(abs(circle.first - acosl(-1)) < 1e-9L);
         Hull3D hull; hull.build({{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}});
         assert(hull.dim == 3 && abs(hull.volume() - 1.L / 6) < 1e-9L);
+    }
+    {
+        LagrangeEq poly; poly.build({1, 4, 9}, 1000000007);
+        assert(poly.query(3) == 16);
+        SegTree tree; tree.init({0, 0, 2, 1});
+        assert(tree.first_ge(1, 3, 2) == 2 && tree.last_ge(1, 3, 1) == 3);
+        assert(tree.kth(3) == 3);
+        assert(lis(V < int > {0, 2, 2, 3}).size() == 2);
+        assert(lis(V < int > {0, 2, 2, 3}, false).size() == 3);
+        assert((gcd_convolution({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 13, 8}));
+        assert((lcm_convolution({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 3, 18}));
+        FunctionalGraph graph; graph.build({0, 2, 3, 2});
+        assert(graph.jump(1, 100) == 3 && graph.distance(1, 3) == 2);
+        assert((stirling_first(3, 97)[3] == V < ll > {0, 2, 3, 1}));
+        assert((stirling_second_row(3) == V < ll > {0, 1, 3, 1}));
+        Hash2D hash, small; hash.build({"ab", "cd"}); small.build({"b"});
+        assert(hash.query(0, 1, 0, 1) == small.query(0, 0, 0, 0));
+        auto rect = min_rectangle({{0, 0}, {3, 0}, {3, 2}, {0, 2}});
+        assert(abs(rect.area - 6) < 1e-9L && rect.corners.size() == 4);
+        IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
+        assert(seg.contains(1) && ! seg.contains(2) && seg.mex(1) == 2);
+        assert((grundy({{}, {2, 3}, {3}, {}}).value() == V < int > {0, 2, 1, 0}));
+        assert(linear_kth({0, 1}, {1, 1}, 10) == 55);
     }
     return 0;
 }

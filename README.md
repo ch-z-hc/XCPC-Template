@@ -24,7 +24,7 @@
 Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp` 片段。
 完成一个模板的标准是：代码整理、接口说明、验证题和一次编译/运行验证都完成。
 
-全部 135 个文件的原题 / 公开验证题见 [题源索引](support/verify/SOURCES.md)；实际验证范围和使用限制见 [审查报告](support/verify/AUDIT.md)。题目链接不等于整题通过记录；李超树已修复整数线段数学同值的编号判定，浮点调用仍受舍入误差影响。
+全部 145 个文件的原题 / 公开验证题见 [题源索引](support/verify/SOURCES.md)；实际验证范围和使用限制见 [审查报告](support/verify/AUDIT.md)。题目链接不等于整题通过记录；李超树已修复整数线段数学同值的编号判定，浮点调用仍受舍入误差影响。
 
 ## 调用方式
 
@@ -35,6 +35,8 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 计算几何按点与向量、直线与线段、多边形、凸包、圆等拆开，原函数接口不变。先复制 `Point.cpp`，再按文件头注明的依赖复制所需部分；基础定义只需一份。原凸多边形切割示例移至 `support/verify/geometry_cut_submission.cpp`；拆分前的两份完整文件备份在 `build/geometry-before-split-20261010/`。
 
 新增的三维凸包独立使用 `P3`，无需复制二维基础定义。`Runs.cpp` 先复制后缀数组，`LowerBoundMinCostFlow.cpp` 先复制常规费用流；依赖均写在各文件头。
+
+`EquidistantLagrange.cpp` 先复制组合数，`Stirling.cpp` 先复制 NTT，`BostanMori.cpp` 先复制 FPS；`MinRectangle.cpp` 只依赖点向量定义，输入需先取得严格逆时针凸包。
 
 ## 打印模板册
 
@@ -120,12 +122,24 @@ bash support/verify/run_linux.sh
 
 `more_ds_random.cpp`、`more_graph_random.cpp` 覆盖吉司机线段树、可持久化数组、点分树和斯坦纳树的随机暴力对拍、重初始化与边界回归。
 
-本次新增的 14 个片段由 `batch_math_random.cpp`、`batch_string_random.cpp` 和各专项 `*_random.cpp` 验证；包含匹配穷举、流量穷举、字符串穷举、几何独立真值和历史版本分叉。算法参考与改写来源见 [参考资料](support/verify/REFERENCES.md)。
+前批新增的 14 个片段由 `batch_math_random.cpp`、`batch_string_random.cpp` 和各专项 `*_random.cpp` 验证；包含匹配穷举、流量穷举、字符串穷举、几何独立真值和历史版本分叉。算法参考与改写来源见 [参考资料](support/verify/REFERENCES.md)。
+
+常用补充由 `completion_math_random.cpp`、`completion_structures_random.cpp` 和 `min_rectangle_random.cpp` 验证，覆盖等距插值、线段树搜索、LIS、整除变换、函数图、斯特林数、二维哈希、包围矩形、区间集合、SG 和 Bostan–Mori；递归深链另加入 `deep_stack.cpp`。
 
 ## 接口索引
 
 | 文件 | 对外接口 |
 | --- | --- |
+| `template/math/EquidistantLagrange.cpp` | `LagrangeEq::build`、`query`；连续整数采样的线性时间求值，依赖 `Combination.cpp` |
+| `template/others/LIS.cpp` | `lis(a, strict)`；1-based 数组，返回严格递增 / 非递减子序列的下标方案 |
+| `template/math/DivisorTransform.cpp` | `divisor_zeta`、`multiple_zeta`、`gcd_convolution`、`lcm_convolution`；支持合数模数 |
+| `template/graph/FunctionalGraph.cpp` | `FunctionalGraph::build`、`jump`、`distance`；每点恰有一条出边，保存环与入环信息 |
+| `template/math/Stirling.cpp` | `stirling_first`、`stirling_second`、`stirling_second_row`；无符号第一类、第二类与 NTT 求固定一行 |
+| `template/string/Hash2D.cpp` | `Hash2D::build`、`query`；字节矩阵双模哈希，0-based 闭矩形 |
+| `template/geometry/MinRectangle.cpp` | `min_rectangle(hull)`；严格逆时针凸包，返回面积与四角，依赖 `Point.cpp` |
+| `template/ds/IntervalSet.cpp` | `IntervalSet::insert`、`erase`、`contains`、`mex`、`clear`；维护整数半开区间的并 |
+| `template/others/SG.cpp` | `grundy(g)`；有限无环正常规则公平游戏，有向环返回 `nullopt` |
+| `template/math/BostanMori.cpp` | `bostan_mori`、`linear_kth`；有理生成函数系数与大阶递推，依赖 `FPS.cpp` |
 | `template/ds/PersistentXorTrie.cpp` | `PersistentXorTrie::init`、`insert`、`max_xor`；保存历史根，查询两个前缀版本之差 |
 | `template/ds/KDTree.cpp` | `KDTree::build`、`nearest`、`query`；静态二维最近邻与闭矩形点数 |
 | `template/graph/KShortestWalk.cpp` | `KShortestWalk::init`、`add_edge`、`query(s, t, k)`；非负边权，按边序列区分游走 |
@@ -161,7 +175,7 @@ bash support/verify/run_linux.sh
 | `template/ds/DSU.cpp` | `DSU::init`、`find`、`merge`、`same`、`size`，`cnt` 为连通块数 |
 | `template/ds/Fenwick.cpp` | `Fenwick::init`、`add`、`query`、`kth`；`kth` 要求原数组非负 |
 | `template/ds/RollbackDSU.cpp` | `RollbackDSU::merge`、`snapshot`、`rollback` |
-| `template/ds/SegTree.cpp` | `SegTree::init`、`modify`、`query` |
+| `template/ds/SegTree.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
 | `template/geometry/Point.cpp` | 原版 `P`、`db`、`EPS`、`sign`、`cmp`、`rad`、`polar_cmpX`、`polar_cmpY` |
 | `template/geometry/Line.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
 | `template/geometry/Polygon.cpp` | `area`、`contain`、`convexCut` |
