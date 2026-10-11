@@ -183,7 +183,7 @@ bash support/verify/run_linux.sh
 | `template/graph/BipartiteMatch.cpp` | `Kuhn::add_edge`、`solve` |
 | `template/graph/Bridge.cpp` | `Bridge::add_edge`、`find` |
 | `template/graph/CutVertex.cpp` | `CutVertex::add_edge`、`find` |
-| `template/graph/DiffConstraints.cpp` | `Diff::add`、`solve` |
+| `template/graph/DiffConstraints.cpp` | `Diff::add`、`solve`；负环返回 false，可行解必要时整体平移，无法用 ll 表示时抛 overflow_error |
 | `template/graph/Dijkstra.cpp` | `dijkstra` |
 | `template/graph/DSUOnTree.cpp` | `DSUOnTree::add_edge`、`build` |
 | `template/graph/DirectedEulerTrail.cpp` | `euler_d` |

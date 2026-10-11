@@ -8,10 +8,50 @@
 #include "../../template/graph/MinCostFlow.cpp"
 #include "../../template/graph/BipartiteMatch.cpp"
 #include "../../template/graph/ScalingMinCostFlow.cpp"
+#include "../../template/graph/DiffConstraints.cpp"
 #include "../../template/math/BerlekampMassey.cpp"
 #include "../../template/string/ACAutomaton.cpp"
 
 int main() {
+    {
+        Diff dc(2);
+        V < ll > dis;
+        dc.add(1, 1, -5000000000000000000LL);
+        assert(! dc.solve(dis));
+        dc.init(2);
+        dc.add(2, 1, LLONG_MIN);
+        dc.add(1, 2, LLONG_MAX);
+        assert(! dc.solve(dis));
+        dc.init(2);
+        dc.add(2, 1, LLONG_MIN);
+        assert(dc.solve(dis) && dis[2] == LLONG_MIN);
+        assert(dc.solve(dis) && dis[2] == LLONG_MIN);
+        dc.init(2);
+        dc.add(2, 1, -5000000000000000000LL);
+        dc.add(1, 2, 5000000000000000000LL);
+        assert(dc.solve(dis));
+        for (auto [u, v, w] : dc.edges)
+            assert(__int128_t(dis[u]) - dis[v] <= w);
+        dc.init(3);
+        dc.add(2, 1, -5000000000000000000LL);
+        dc.add(3, 2, -5000000000000000000LL);
+        assert(dc.solve(dis) && dis[3] == LLONG_MIN);
+        for (auto [u, v, w] : dc.edges)
+            assert(__int128_t(dis[u]) - dis[v] <= w);
+        dc.init(3);
+        dc.add(2, 1, LLONG_MIN);
+        dc.add(3, 2, -LLONG_MAX);
+        assert(dc.solve(dis));
+        assert(dis[1] == LLONG_MAX && dis[2] == -1 && dis[3] == LLONG_MIN);
+        dc.init(3);
+        dc.add(2, 1, LLONG_MIN);
+        dc.add(3, 2, LLONG_MIN);
+        bool overflow = false;
+        try { dc.solve(dis); } catch (const overflow_error &) { overflow = true; }
+        assert(overflow);
+        dc.init(0);
+        assert(dc.solve(dis) && dis == V < ll >{0});
+    }
     {
         MCMF mcf(2);
         mcf.add_edge(1, 2, 1, 1LL << 62);

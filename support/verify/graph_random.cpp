@@ -240,5 +240,27 @@ int main() {
             dsu.merge(int(rng() % n) + 1, int(rng() % n) + 1);
         }
     }
+    mt19937_64 large_rng(20261012);
+    for (int test = 0; test < 500; ++ test) {
+        int n = 1 + large_rng() % 6;
+        Diff dc(n);
+        const __int128_t inf = __int128_t(1) << 120;
+        V < V < __int128_t > > d(n + 1, V < __int128_t > (n + 1, inf));
+        for (int u = 1; u <= n; ++ u) d[u][u] = 0;
+        for (int i = 0, m = large_rng() % 25; i < m; ++ i) {
+            int u = 1 + large_rng() % n, v = 1 + large_rng() % n;
+            ll w = (ll(large_rng() % 19) - 9) * 100000000000000000LL;
+            dc.add(u, v, w); d[v][u] = min(d[v][u], __int128_t(w));
+        }
+        for (int k = 1; k <= n; ++ k) for (int u = 1; u <= n; ++ u)
+            for (int v = 1; v <= n; ++ v) if (d[u][k] != inf && d[k][v] != inf)
+                d[u][v] = min(d[u][v], d[u][k] + d[k][v]);
+        bool feasible = true;
+        for (int u = 1; u <= n; ++ u) if (d[u][u] < 0) feasible = false;
+        V < ll > val;
+        assert(dc.solve(val) == feasible);
+        if (feasible) for (auto [u, v, w] : dc.edges)
+            assert(__int128_t(val[u]) - val[v] <= w);
+    }
     return 0;
 }
