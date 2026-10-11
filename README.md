@@ -56,6 +56,25 @@ python support/verify/print_book_check.py
 
 排版参考：[justiceHui 2024 Astana](https://github.com/justiceHui/icpc-teamnote/blob/master/pdf/240919-icpc-world-finals-astana.pdf)、[tatyam 2026](https://github.com/tatyam-prime/ICPC_notebook/blob/main/notebook.pdf)、[brant 2026](https://github.com/brantwcw/codebook_generator/blob/main/codebook.pdf)、[KACTL](https://github.com/kth-competitive-programming/kactl)。参考标题层次、紧凑页眉和连续分页，不照搬为页数限制设计的小字号多栏。
 
+## OEIS 检索附册
+
+OEIS 独立于算法模板册，不保留常用数列详解。使用 [Dusker233/OEIS-PrintMirror 的 2025-07-11 快照](https://github.com/Dusker233/OEIS-PrintMirror/releases/tag/Daily_Update_2025-07-11)，实测正文收录 31,120 条不同数列，含简介共 975 页。直接保留原版 A4 竖向双栏排版、数列和公式，不重新抄录或改写。
+
+```text
+python -m pip install -r requirements-print.txt
+python support/tools/prepare_oeis.py
+```
+
+输出为 `output/pdf/oeis.pdf`。首次运行下载固定版本，校验 SHA-256、页数和 A4 页面尺寸后才保存；已有文件时只做离线校验，不访问网络。PDF 属于生成资料，不提交到 Git。
+
+正文按去掉前导 0、1 后的数值字典序排列，下划线标出检索前缀的第一项。先打表得到若干项，再按前缀定位，用定义、公式和后续项确认；不能只凭前几项相同认定规律。
+
+这是有公式、非负、单调不下降数列的筛选镜像，并非 OEIS 全库；上游还过滤重复项过多或数字过长的序列，最多保留前 25 项。数据范围截至 A385846，快照日期不是本项目的生成日期。镜像仓库已于 2025-08-07 归档，不会自动更新。
+
+原版由 Kaiqi Wang（Sun Yat-sen University）制作，见 [africamonkey/OEIS-Spider](https://github.com/africamonkey/OEIS-Spider)；后续镜像由 Dusker233 维护。数列数据和公式来自 [OEIS](https://oeis.org/)，按 [OEIS 的 CC BY-SA 4.0 许可](https://oeis.org/LICENSE) 使用，不改变其他代码的许可。
+
+附册单独打印：A4、竖向、100% 原尺寸、双面长边翻转，共需 488 张纸；不要再使用每张纸多页缩印。
+
 ## 对拍工具
 
 `support/tools/stress/stress.cpp` 是 C++ 对拍程序，已收录到打印册的 `template` 章节。将它复制到题目目录，同目录准备 `gen.cpp`、`brute.cpp`、`a.cpp`，Linux 下运行：
