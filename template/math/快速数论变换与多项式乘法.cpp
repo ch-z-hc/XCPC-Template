@@ -9,8 +9,8 @@ using namespace std;
 // NTT：固定模数 998244353，数组下标 0-based，长度必须是 2 的幂且不超过 2^23。
 // 输入系数应先归一化到 [0, NTT_MOD)；复杂度 O(n log n)，空间 O(1)。
 
-constexpr ll NTT_MOD = 998244353;
-constexpr ll NTT_ROOT = 3;
+const ll NTT_MOD = 998244353;
+const ll NTT_ROOT = 3;
 
 ll ntt_pow(ll a, ll b) {
     ll res = 1;

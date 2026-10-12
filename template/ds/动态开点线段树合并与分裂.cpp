@@ -32,16 +32,16 @@ struct MergeSegTree {
 
     void add(int &root, int x, ll v) { root = add(root, 1, n, x, v); }
 
-    ll query(int p, int l, int r, int x, int y) const {
+    ll query(int p, int l, int r, int x, int y) {
         if (! p || y < l || r < x) return 0;
         if (x <= l && r <= y) return tr[p].sum;
         int mid = l + (r - l) / 2;
         return query(tr[p].ls, l, mid, x, y) + query(tr[p].rs, mid + 1, r, x, y);
     }
 
-    ll query(int root, int l, int r) const { return query(root, 1, n, l, r); }
+    ll query(int root, int l, int r) { return query(root, 1, n, l, r); }
 
-    int kth(int p, int l, int r, ll k) const {
+    int kth(int p, int l, int r, ll k) {
         if (l == r) return l;
         int mid = l + (r - l) / 2;
         ll cnt = tr[tr[p].ls].sum;
@@ -49,7 +49,7 @@ struct MergeSegTree {
         return kth(tr[p].rs, mid + 1, r, k - cnt);
     }
 
-    int kth(int root, ll k) const {
+    int kth(int root, ll k) {
         return k >= 1 && k <= tr[root].sum ? kth(root, 1, n, k) : -1;
     }
 

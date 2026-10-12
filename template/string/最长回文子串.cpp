@@ -44,14 +44,14 @@ struct Manacher {
         }
     }
 
-    bool query(int l, int r) const {
+    bool query(int l, int r) {
         if (l > r) return true;
         int len = r - l + 1;
         if (len & 1) return odd[(l + r) / 2] >= len / 2 + 1;
         return even[(l + r + 1) / 2] >= len / 2;
     }
 
-    pair < int, int > longest() const {
+    pair < int, int > longest() {
         pair < int, int > ans{0, 0};
         for (int i = 0; i < int(s.size()); ++ i) {
             int len1 = 2 * odd[i] - 1;

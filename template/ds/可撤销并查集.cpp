@@ -20,12 +20,12 @@ struct RollbackDSU {
         stk.clear();
     }
 
-    int find(int u) const {
+    int find(int u) {
         while (fa[u] != u) u = fa[u];
         return u;
     }
 
-    int snapshot() const { return int(stk.size()); }
+    int snapshot() { return int(stk.size()); }
 
     bool merge(int u, int v) {
         u = find(u); v = find(v);

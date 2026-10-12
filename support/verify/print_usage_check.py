@@ -35,6 +35,13 @@ def main():
         assert not re.search(r"__u?int128|\b(?:i128|u128|print128)\b",
                              path.read_text(encoding="utf-8")), path
     print("PASS: contest snippets and starter contain no wide integer types", flush=True)
+    for path in list((ROOT / "template").glob("*/*.cpp")) + [ROOT / "support/tools/contest_main.cpp"]:
+        assert not re.search(r"\bconstexpr\b", path.read_text(encoding="utf-8")), path
+    print("PASS: contest snippets and starter contain no constexpr", flush=True)
+    qualifier = OUT / "qualifier_usage"
+    subprocess.run(["g++", "-std=c++17", "-O0", "-Wall", "-Wextra", "-pedantic",
+                    str(ROOT / "support/verify/fixtures/qualifier_usage.cpp"), "-o", str(qualifier)], check=True)
+    subprocess.run([str(qualifier)], check=True)
     run_example("template/others/莫队.cpp", """
     Mo mo; int n = 5, m = 3;
     mo.a = {0, 1, 2, 1, 3, 2};

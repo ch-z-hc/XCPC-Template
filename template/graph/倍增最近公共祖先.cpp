@@ -43,7 +43,7 @@ struct LCA {
         dfs(root, 0);
     }
 
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
         for (int j = 0; j < lg; ++ j)

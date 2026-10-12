@@ -31,13 +31,13 @@ struct ScalingMCMF {
         edges.push_back({u, v, cap, cost});
     }
 
-    pair < ll, ll > flow(int s, int t) const {
+    pair < ll, ll > flow(int s, int t) {
         if (s == t) return {0, 0};
 
         // t -> s 的大费用负边把最大流转化为最小费用环流。
-        constexpr ll large = 1'000'000'000'000LL;
-        constexpr ll inf = 4'000'000'000'000'000'000LL;
-        const int super = n + 1;
+        const ll large = 1'000'000'000'000LL;
+        const ll inf = 4'000'000'000'000'000'000LL;
+        int super = n + 1;
 
         struct Arc {
             int u, v, next;
@@ -56,16 +56,16 @@ struct ScalingMCMF {
             return id;
         };
 
-        for (const auto &edge : edges)
+        for (auto &edge : edges)
             ids.push_back(add_pair(edge.u, edge.v, edge.cap, edge.cost));
 
-        const int special = add_pair(t, s, large, -large);
+        int special = add_pair(t, s, large, -large);
 
         for (int x = 1; x <= n; ++ x) {
             int id = add_pair(super, x, 0, 0);
             e[id].cap = 1;
         }
-        const int m = int(e.size());
+        int m = int(e.size());
 
         V < ll > h(n + 2), dis(n + 2);
         V < int > pre(n + 2);

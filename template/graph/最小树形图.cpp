@@ -26,7 +26,7 @@ struct DMST {
 
     void add_edge(int u, int v, ll w) { edges.push_back({u, v, w}); }
 
-    bool solve(int root, ll &ans) const {
+    bool solve(int root, ll &ans) {
         int k = n;
         ans = 0;
         V < Edge > g = edges;

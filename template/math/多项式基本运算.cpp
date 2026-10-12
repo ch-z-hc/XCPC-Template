@@ -18,7 +18,7 @@ using namespace std;
 // 除数必须非零；被除数、除数长度 <= 2^22，时间 O(n log n)。
 
 struct FPS {
-    static constexpr int mod = 998244353;
+    static const int mod = 998244353;
 
     static int power(int a, int b) {
         int ans = 1;
@@ -204,7 +204,7 @@ struct FPS {
         return {q, r};
     }
 };
-
+const int FPS::mod;
 // 调用示例：
 // V < int > a{1, 2, 3};
 // auto b = FPS::inv(a, 8), c = FPS::ln(a, 8);

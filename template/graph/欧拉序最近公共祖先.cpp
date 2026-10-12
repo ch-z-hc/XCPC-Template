@@ -58,7 +58,7 @@ struct EulerLCA {
             }
     }
 
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         int l = pos[u], r = pos[v];
         if (l > r) swap(l, r);
         int k = lg[r - l + 1];

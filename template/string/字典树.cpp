@@ -33,7 +33,7 @@ struct Trie {
         tr[u].end ++;
     }
 
-    int find(const string &s) const {
+    int find(const string &s) {
         int u = 0;
         for (char c : s) {
             int x = c - 'a';
@@ -43,12 +43,12 @@ struct Trie {
         return u;
     }
 
-    int prefix(const string &s) const {
+    int prefix(const string &s) {
         int u = find(s);
         return u == -1 ? 0 : tr[u].cnt;
     }
 
-    int count(const string &s) const {
+    int count(const string &s) {
         int u = find(s);
         return u == -1 ? 0 : tr[u].end;
     }

@@ -13,7 +13,7 @@ using namespace std;
 // 时间 O((n + m) log(n + m + 1) + k log(k + 1))。
 // 空间 O(m + n log(n + m + 1) + k)，递归仅用于对数深度的堆合并。
 struct KShortestWalk {
-    static constexpr ll inf = 1ll << 62;
+    static const ll inf = 1ll << 62;
     struct Edge { int u, v; ll w; };
     struct Node {
         ll val = 0;
@@ -97,6 +97,6 @@ struct KShortestWalk {
         return ans;
     }
 };
-
+const ll KShortestWalk::inf;
 // 调用：KShortestWalk kw(n); kw.add_edge(u, v, w);
 // V < ll > ans = kw.query(s, t, k); // ans[0] 是最短长度。

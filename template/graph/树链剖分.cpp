@@ -50,7 +50,7 @@ struct HLD {
         dfs1(root, 0); dfs2(root, root);
     }
 
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         while (top[u] != top[v]) {
             if (dep[top[u]] < dep[top[v]]) swap(u, v);
             u = fa[top[u]];
@@ -58,7 +58,7 @@ struct HLD {
         return dep[u] < dep[v] ? u : v;
     }
 
-    template < class F > void path(int u, int v, F f) const {
+    template < class F > void path(int u, int v, F f) {
         while (top[u] != top[v]) {
             if (dep[top[u]] < dep[top[v]]) swap(u, v);
             f(in[top[u]], in[u]);

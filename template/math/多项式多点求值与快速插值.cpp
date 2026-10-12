@@ -11,7 +11,7 @@ using namespace std;
 // 输入系数、横纵坐标先归一化；点数与输入多项式长度均不超过 2^20。
 // 时间 O((n + m) log^2(n + m))，空间 O(n log n + m)，支持空数组与重复 build。
 struct Multipoint {
-    static constexpr int mod = 998244353;
+    static const int mod = 998244353;
     int n = 0;
     V < int > x;
     V < V < int > > prod;
@@ -29,12 +29,12 @@ struct Multipoint {
         if (n) build_node(1, 0, n - 1);
     }
 
-    V < int > remainder(const V < int > &a, const V < int > &b) const {
+    V < int > remainder(const V < int > &a, const V < int > &b) {
         return a.size() < b.size() ? a : FPS::divmod(a, b).second;
     }
 
     void eval_node(int p, int l, int r, const V < int > &a,
-                   V < int > &ans) const {
+                   V < int > &ans) {
         if (l == r) {
             int v = 0;
             for (int i = int(a.size()) - 1; i >= 0; -- i)
@@ -46,14 +46,14 @@ struct Multipoint {
         eval_node(p * 2 + 1, mid + 1, r, remainder(a, prod[p * 2 + 1]), ans);
     }
 
-    V < int > evaluate(const V < int > &a) const {
+    V < int > evaluate(const V < int > &a) {
         V < int > ans(n);
         if (n) eval_node(1, 0, n - 1, remainder(a, prod[1]), ans);
         return ans;
     }
 
     V < int > interpolate_node(int p, int l, int r,
-                               const V < int > &w) const {
+                               const V < int > &w) {
         if (l == r) return {w[l]};
         int mid = (l + r) / 2;
         auto a = FPS::mul(interpolate_node(p * 2, l, mid, w), prod[p * 2 + 1]);
@@ -66,7 +66,7 @@ struct Multipoint {
         return a;
     }
 
-    V < int > interpolate(const V < int > &y) const {
+    V < int > interpolate(const V < int > &y) {
         if (! n) return {};
         V < int > d(n), w(n);
         for (int i = 1; i <= n; ++ i) d[i - 1] = 1ll * i * prod[1][i] % mod;
@@ -79,6 +79,6 @@ struct Multipoint {
         ans.resize(n); return ans;
     }
 };
-
+const int Multipoint::mod;
 // 调用：Multipoint poly; poly.build(x);
 // auto y = poly.evaluate(a); auto f = poly.interpolate(y);

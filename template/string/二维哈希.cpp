@@ -13,7 +13,7 @@ using namespace std;
 // 哈希有碰撞风险，不是严格判等；所有非空查询坐标必须合法。
 struct Hash2D {
     struct Table {
-        static constexpr ll bx = 911382323, by = 972663749;
+        static const ll bx = 911382323, by = 972663749;
         ll mod = 1;
         V < V < ll > > h;
         V < ll > x, y;
@@ -33,7 +33,7 @@ struct Hash2D {
             }
         }
 
-        ll query(int x1, int y1, int x2, int y2) const {
+        ll query(int x1, int y1, int x2, int y2) {
             int n = x2 - x1 + 1, m = y2 - y1 + 1;
             ll v = h[x2 + 1][y2 + 1] - h[x1][y2 + 1] * x[n] % mod;
             v -= h[x2 + 1][y1] * y[m] % mod;
@@ -48,11 +48,11 @@ struct Hash2D {
         a.build(s, 1000000007); b.build(s, 1000000009);
     }
 
-    pair < ll, ll > query(int x1, int y1, int x2, int y2) const {
+    pair < ll, ll > query(int x1, int y1, int x2, int y2) {
         if (x1 > x2 || y1 > y2) return {0, 0};
         return {a.query(x1, y1, x2, y2), b.query(x1, y1, x2, y2)};
     }
 };
-
+const ll Hash2D::Table::bx, Hash2D::Table::by;
 // Hash2D hash; hash.build({"abc", "def"});
 // auto value = hash.query(0, 1, 1, 2);

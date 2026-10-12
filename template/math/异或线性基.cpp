@@ -18,21 +18,21 @@ struct Basis {
         }
         return false;
     }
-    bool contains(unsigned long long x) const {
+    bool contains(unsigned long long x) {
         for (int i = 62; i >= 0; -- i) if (x >> i & 1ULL) {
             if (! p[i]) return false;
             x ^= p[i];
         }
         return true;
     }
-    unsigned long long max_xor(unsigned long long x = 0) const {
+    unsigned long long max_xor(unsigned long long x = 0) {
         for (int i = 62; i >= 0; -- i) x = max(x, x ^ p[i]);
         return x;
     }
 
     // 不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
     // 无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
-    bool kth(unsigned long long k, unsigned long long &ans) const {
+    bool kth(unsigned long long k, unsigned long long &ans) {
         auto a = p;
         int n = 0;
         for (int i = 0; i < 63; ++ i) if (a[i]) {

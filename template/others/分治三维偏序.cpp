@@ -57,7 +57,7 @@ V < ll > dominance(const V < array < ll, 3 > > &a) {
     };
     cdq(cdq, 0, int(b.size()) - 1);
     V < ll > ans(n), cnt(b.size());
-    for (const auto &p : b) cnt[p.id] = p.ans + p.cnt - 1;
+    for (auto &p : b) cnt[p.id] = p.ans + p.cnt - 1;
     for (int i = 0; i < n; ++ i) ans[i] = cnt[bel[i]];
     return ans;
 }

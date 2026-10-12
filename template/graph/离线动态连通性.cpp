@@ -26,7 +26,7 @@ struct DynConn {
         return id;
     }
 
-    int find(int u) const { return fa[u] == u ? u : find(fa[u]); }
+    int find(int u) { return fa[u] == u ? u : find(fa[u]); }
     void merge(int u, int v) {
         u = find(u); v = find(v);
         if (u == v) return;

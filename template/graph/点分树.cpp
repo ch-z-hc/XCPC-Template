@@ -27,7 +27,7 @@ struct CentroidTree {
             for (; x < int(sum.size()); x += x & -x) sum[x] += v;
         }
 
-        ll query(ll d) const {
+        ll query(ll d) {
             int x = upper_bound(dis.begin(), dis.end(), d) - dis.begin();
             ll ans = 0;
             for (; x; x -= x & -x) ans += sum[x];
@@ -103,7 +103,7 @@ struct CentroidTree {
         }
     }
 
-    ll query(int u, ll radius) const {
+    ll query(int u, ll radius) {
         ll ans = 0;
         for (auto [root, branch, d] : path[u]) if (radius >= d) {
             ans += all[root].query(radius - d);

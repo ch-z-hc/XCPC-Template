@@ -43,9 +43,9 @@ struct VTree {
         dfs(root, 0);
     }
 
-    bool ancestor(int u, int v) const { return in[u] <= in[v] && out[v] <= out[u]; }
+    bool ancestor(int u, int v) { return in[u] <= in[v] && out[v] <= out[u]; }
 
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         if (ancestor(u, v)) return u;
         if (ancestor(v, u)) return v;
         for (int j = lg - 1; j >= 0; -- j)

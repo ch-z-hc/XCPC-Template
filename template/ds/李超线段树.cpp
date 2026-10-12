@@ -24,7 +24,7 @@ struct LiChaoTree {
         int id = 0;
         ll a = 0, c = 0, d = 0;
 
-        ld eval(int x) const {
+        ld eval(int x) {
             return d ? ld(a * x + c) / d : k * x + b;
         }
     };
@@ -93,7 +93,7 @@ struct LiChaoTree {
         return id;
     }
 
-    int query_id(int x) const {
+    int query_id(int x) {
         int p = 1, l = L, r = R, ans = 0;
         while (l <= r) {
             if (better(tr[p], ans, x)) ans = tr[p];
@@ -110,13 +110,13 @@ struct LiChaoTree {
         return ans;
     }
 
-    ld query(int x) const {
+    ld query(int x) {
         int id = query_id(x);
         return id ? line[id].eval(x) : -numeric_limits < ld >::infinity();
     }
 
     // 只配合 add_line 使用；空集或命中非整数直线返回 false，ans 不可用。
-    bool query_int(int x, ll &ans) const {
+    bool query_int(int x, ll &ans) {
         int id = query_id(x);
         if (! id || line[id].d != 1) return false;
         ans = line[id].a * x + line[id].c;
@@ -129,11 +129,11 @@ struct LiChaoTree {
         return id;
     }
 
-    bool better(int u, int v, int x) const {
+    bool better(int u, int v, int x) {
         if (u == 0) return false;
         if (v == 0) return true;
         if (line[u].d && line[v].d) {
-            const auto &a = line[u], &b = line[v];
+            auto &a = line[u], &b = line[v];
             ll left = (a.a * x + a.c) * b.d;
             ll right = (b.a * x + b.c) * a.d;
             return left != right ? left > right : u < v;

@@ -14,7 +14,7 @@ struct BruteLine {
     long long d = 0;
 };
 
-void check(const LiChaoTree &tree, const std::vector<BruteLine> &lines,
+void check(LiChaoTree &tree, const std::vector<BruteLine> &lines,
            int left, int right) {
     for (int x = left; x <= right; ++x) {
         int expected_id = 0;

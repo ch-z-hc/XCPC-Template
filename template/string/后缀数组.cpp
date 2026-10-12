@@ -78,7 +78,7 @@ struct SA {
                 st[j][i] = min(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
     }
 
-    int lcp(int u, int v) const {
+    int lcp(int u, int v) {
         if (u == v) return int(s.size()) - u;
         int l = rk[u], r = rk[v];
         if (l > r) swap(l, r);

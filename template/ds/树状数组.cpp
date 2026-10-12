@@ -34,19 +34,19 @@ struct Fenwick {
         for (; x <= n; x += x & -x) tr[x] += v;
     }
 
-    ll query(int x) const {
+    ll query(int x) {
         ll ans = 0;
         for (; x; x -= x & -x) ans += tr[x];
         return ans;
     }
 
-    ll query(int l, int r) const {
+    ll query(int l, int r) {
         return l <= r ? query(r) - query(l - 1) : 0;
     }
 
     // 原数组各项非负，返回前缀和 >= k 的最小位置；不存在返回 n + 1。
     // k <= 0 返回 1；时间 O(log n)，不需要二分套 query。
-    int kth(ll k) const {
+    int kth(ll k) {
         int x = 0, step = 1;
         while (step <= n / 2) step <<= 1;
         for (; step; step >>= 1) {

@@ -61,7 +61,7 @@ struct SAM {
         for (char c : s) extend(c);
     }
 
-    V < ll > count() const {
+    V < ll > count() {
         int n = 0;
         for (auto &p : tr) n = max(n, p.len);
         V < int > cnt(n + 1), ord(tr.size());
@@ -76,7 +76,7 @@ struct SAM {
         return ans;
     }
 
-    ll query() const {
+    ll query() {
         auto cnt = count();
         ll ans = 0;
         for (int i = 0; i < int(tr.size()); ++ i)

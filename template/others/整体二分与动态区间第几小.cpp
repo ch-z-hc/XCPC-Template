@@ -48,7 +48,7 @@ struct KthOffline {
         for (; p <= n; p += p & -p) bit[p] += x;
     }
 
-    int sum(int p) const {
+    int sum(int p) {
         int ans = 0;
         for (; p; p -= p & -p) ans += bit[p];
         return ans;
@@ -75,7 +75,7 @@ struct KthOffline {
         }
         int p = l, q = l + cnt;
         for (int i = l; i <= r; ++ i) {
-            const auto &e = ev[i];
+            auto &e = ev[i];
             if (! e.type && e.left) add(e.l, -e.delta);
             if (e.left) tmp[p ++] = e;
             else tmp[q ++] = e;

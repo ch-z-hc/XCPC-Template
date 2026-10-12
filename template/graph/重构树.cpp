@@ -53,7 +53,7 @@ struct KruskalTree {
         for (int root : roots) dfs(root, 0, root);
     }
 
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         if (bel[u] != bel[v]) return 0;
         if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
@@ -64,7 +64,7 @@ struct KruskalTree {
         return up[0][u];
     }
 
-    bool query(int u, int v, ll &ans) const {
+    bool query(int u, int v, ll &ans) {
         int p = lca(u, v);
         if (! p) return false;
         ans = u == v ? 0 : weight[p];

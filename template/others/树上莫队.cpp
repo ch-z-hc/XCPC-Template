@@ -44,7 +44,7 @@ struct MoTree {
         ord.assign(2 * n + 1, 0); timer = 0; qs.clear();
         if (n) dfs(root, 0);
     }
-    int lca(int u, int v) const {
+    int lca(int u, int v) {
         if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
         for (int j = 0; j < lg; ++ j) if (d >> j & 1) u = up[j][u];

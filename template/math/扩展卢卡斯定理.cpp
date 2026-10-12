@@ -66,7 +66,7 @@ struct ExLucas {
     ll choose(ll n, ll k) {
         if (k < 0 || k > n || mod == 1) return 0;
         ll ans = 0;
-        for (const auto &b : a) {
+        for (auto &b : a) {
             int q = b.mod, phi = q - q / b.p;
             ll e = count(n, b.p) - count(k, b.p) - count(n - k, b.p);
             ll den = fact(k, b) * fact(n - k, b) % q;

@@ -11,7 +11,7 @@ using namespace std;
 // 哈希不是严格判等，仍存在碰撞；不同对象采用同一组参数，可以比较。
 
 struct Hash {
-    static constexpr ll mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
+    static const ll mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
     int n = 0;
     V < ll > h1, h2, p1, p2;
 
@@ -30,14 +30,14 @@ struct Hash {
         }
     }
 
-    pair < ll, ll > query(int l, int r) const {
+    pair < ll, ll > query(int l, int r) {
         if (l > r) return {0, 0};
         ll x = (h1[r + 1] - h1[l] * p1[r - l + 1]) % mod1;
         ll y = (h2[r + 1] - h2[l] * p2[r - l + 1]) % mod2;
         return {(x + mod1) % mod1, (y + mod2) % mod2};
     }
 
-    int lcp(int u, int v) const {
+    int lcp(int u, int v) {
         int l = 0, r = n - max(u, v);
         while (l < r) {
             int mid = (l + r + 1) >> 1;
@@ -47,5 +47,5 @@ struct Hash {
         return l;
     }
 };
-
+const ll Hash::mod1, Hash::mod2, Hash::base;
 // 调用示例：Hash h(s); bool same = h.query(l1, r1) == h.query(l2, r2);

@@ -14,7 +14,7 @@ using namespace std;
 // solve 成功返回 true，将距离矩阵写入 ans；失败时不要使用 ans。
 // solve 不修改图，可重复调用；不使用模数。
 struct Johnson {
-    static constexpr ll inf = 1ll << 62;
+    static const ll inf = 1ll << 62;
     struct Edge { int u, v; ll w; };
     int n;
     V < Edge > e;
@@ -33,7 +33,7 @@ struct Johnson {
         g[u].push_back({v, w});
     }
 
-    bool solve(V < V < ll > > &ans) const {
+    bool solve(V < V < ll > > &ans) {
         V < ll > h(n + 1);
         for (int i = 1; i <= n; ++ i) {
             V < ll > nh = h;
@@ -71,6 +71,6 @@ struct Johnson {
         return true;
     }
 };
-
+const ll Johnson::inf;
 // Johnson g(n); g.add_edge(u, v, w);
 // V < V < ll > > dis; bool ok = g.solve(dis); // 成功时使用 dis[u][v]。

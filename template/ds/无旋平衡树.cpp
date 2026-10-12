@@ -28,7 +28,7 @@ struct Treap {
 
     Treap() { init(); }
     void init() { tr.assign(1, {}); root = 0; }
-    int size() const { return tr[root].siz; }
+    int size() { return tr[root].siz; }
     void pull(int u) { tr[u].siz = tr[tr[u].ls].siz + tr[tr[u].rs].siz + 1; }
 
     void split(int u, ll x, int &a, int &b) {
@@ -76,7 +76,7 @@ struct Treap {
         return ok;
     }
 
-    int rank(ll x) const {
+    int rank(ll x) {
         int ans = 1, u = root;
         while (u) {
             if (tr[u].val < x) ans += tr[tr[u].ls].siz + 1, u = tr[u].rs;
@@ -85,7 +85,7 @@ struct Treap {
         return ans;
     }
 
-    bool kth(int k, ll &ans) const {
+    bool kth(int k, ll &ans) {
         if (k < 1 || k > size()) return false;
         int u = root;
         while (u) {
@@ -97,7 +97,7 @@ struct Treap {
         return false;
     }
 
-    bool pre(ll x, ll &ans) const {
+    bool pre(ll x, ll &ans) {
         bool ok = false;
         for (int u = root; u; ) {
             if (tr[u].val < x) ans = tr[u].val, ok = true, u = tr[u].rs;
@@ -106,7 +106,7 @@ struct Treap {
         return ok;
     }
 
-    bool suf(ll x, ll &ans) const {
+    bool suf(ll x, ll &ans) {
         bool ok = false;
         for (int u = root; u; ) {
             if (tr[u].val > x) ans = tr[u].val, ok = true, u = tr[u].ls;
@@ -129,7 +129,7 @@ struct SeqTreap {
 
     SeqTreap() { init(); }
     void init() { tr.assign(1, {}); root = 0; }
-    int size() const { return tr[root].siz; }
+    int size() { return tr[root].siz; }
     void pull(int u) {
         tr[u].siz = tr[tr[u].ls].siz + tr[tr[u].rs].siz + 1;
         tr[u].sum = tr[tr[u].ls].sum + tr[tr[u].rs].sum + tr[u].val;

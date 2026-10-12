@@ -26,7 +26,7 @@ struct MaxClique {
         if (u != v) g[u][v] = g[v][u] = 1;
     }
 
-    bool adjacent(int u, int v) const { return bool(g[u][v]) != independent; }
+    bool adjacent(int u, int v) { return bool(g[u][v]) != independent; }
 
     void dfs(const V < int > &p) {
         if (p.empty()) {

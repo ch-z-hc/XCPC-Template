@@ -68,7 +68,7 @@ void test_beats(mt19937 &rng) {
     }
 }
 
-void check_version(const PArray &tr, int root, const V < ll > &a) {
+void check_version(PArray &tr, int root, const V < ll > &a) {
     for (int i = 1; i < int(a.size()); ++ i) assert(tr.query(root, i) == a[i]);
 }
 

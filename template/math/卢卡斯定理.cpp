@@ -26,7 +26,7 @@ struct Lucas {
         for (int i = p - 1; i >= 1; -- i) ifac[i - 1] = ifac[i] * i % p;
     }
 
-    ll choose(ll n, ll k) const {
+    ll choose(ll n, ll k) {
         if (n < 0 || k < 0 || k > n) return 0;
         ll ans = 1;
         for (; n || k; n /= p, k /= p) {

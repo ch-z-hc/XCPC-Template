@@ -38,12 +38,12 @@ struct IntervalSet {
         }
     }
 
-    bool contains(ll x) const {
+    bool contains(ll x) {
         auto it = s.upper_bound({x, LLONG_MAX});
         return it != s.begin() && x < prev(it)->second;
     }
 
-    ll mex(ll x = 0) const {
+    ll mex(ll x = 0) {
         auto it = s.upper_bound({x, LLONG_MAX});
         if (it != s.begin() && x < prev(it)->second) return prev(it)->second;
         return x;

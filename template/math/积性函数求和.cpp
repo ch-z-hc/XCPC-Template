@@ -20,8 +20,8 @@ struct Min25 {
     V < ll > w, cnt;
     V < array < ll, 3 > > g;
 
-    int id(ll x) const { return x <= lim ? small[x] : large[n / x]; }
-    ll norm(ll x) const { x %= mod; return x < 0 ? x + mod : x; }
+    int id(ll x) { return x <= lim ? small[x] : large[n / x]; }
+    ll norm(ll x) { x %= mod; return x < 0 ? x + mod : x; }
 
     void init(ll n_, ll mod_) {
         n = n_; mod = mod_;
@@ -70,10 +70,10 @@ struct Min25 {
         }
     }
 
-    ll count_primes() const { return n < 2 ? 0 : cnt[0]; }
+    ll count_primes() { return n < 2 ? 0 : cnt[0]; }
 
     template < class F >
-    ll sum(array < ll, 3 > c, F prime_power) const {
+    ll sum(array < ll, 3 > c, F prime_power) {
         if (! n) return 0;
         for (ll &x : c) x = norm(x);
         V < ll > value(w.size()), pre(prime.size() + 1);

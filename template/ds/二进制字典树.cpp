@@ -42,7 +42,7 @@ struct XorTrie {
         return 1;
     }
 
-    bool max_xor(unsigned long long x, unsigned long long &ans) const {
+    bool max_xor(unsigned long long x, unsigned long long &ans) {
         if (! tr[0].cnt) return false;
         int u = 0;
         ans = 0;

@@ -29,7 +29,7 @@ struct Mo {
             return (ba & 1) ? a.r < b.r : a.r > b.r;
         });
         int l = 1, r = 0;
-        for (const auto &q : qs) {
+        for (auto &q : qs) {
             while (l > q.l) add(-- l);
             while (r < q.r) add(++ r);
             while (l < q.l) del(l ++);

@@ -48,7 +48,7 @@ struct Centroid {
             if (v != fa && ! vis[v] && w <= k - d) collect(v, u, d + w, k, a);
     }
 
-    ll count(V < ll > &a, ll k) const {
+    ll count(V < ll > &a, ll k) {
         sort(a.begin(), a.end());
         ll ans = 0;
         int l = 0, r = int(a.size()) - 1;

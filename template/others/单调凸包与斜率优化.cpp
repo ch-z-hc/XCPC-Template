@@ -14,14 +14,14 @@ using namespace std;
 struct CHT {
     struct Line {
         ll k, b;
-        ll eval(ll x) const { return k * x + b; }
+        ll eval(ll x) { return k * x + b; }
     };
     V < Line > q;
     int head = 0;
 
     void clear() { q.clear(); head = 0; }
 
-    bool redundant(Line a, Line b, Line c) const {
+    bool redundant(Line a, Line b, Line c) {
         return (b.b - a.b) * (b.k - c.k) >= (c.b - b.b) * (a.k - b.k);
     }
 

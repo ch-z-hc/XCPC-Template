@@ -13,7 +13,7 @@ using namespace std;
 // 差值乘计数、区间和、累积加标记等中间运算均须不溢出 ll。
 // init 可重建，a[0] 为占位；init({0}) 可建立空结构。
 struct Beats {
-    static constexpr ll INF = 1LL << 60;
+    static const ll INF = 1LL << 60;
     struct Node {
         ll sum = 0, max1 = -INF, max2 = -INF;
         ll min1 = INF, min2 = INF, add = 0;
@@ -166,7 +166,7 @@ struct Beats {
     ll query_min(int l, int r) { return query_min(1, 1, n, l, r); }
     ll query_max(int l, int r) { return query_max(1, 1, n, l, r); }
 };
-
+const ll Beats::INF;
 // 调用示例：
 // Beats st; st.init({0, 3, 1, 4});
 // st.add(1, 3, 2); st.chmin(1, 2, 4); st.chmax(2, 3, 5);

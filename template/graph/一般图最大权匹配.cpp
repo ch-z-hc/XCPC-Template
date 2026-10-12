@@ -46,7 +46,7 @@ struct WeightedBlossom {
         g[u][v].w = g[v][u].w = max(g[u][v].w, w);
     }
 
-    ll delta(Edge e) const { return lab[e.u] + lab[e.v] - 2 * e.w; }
+    ll delta(Edge e) { return lab[e.u] + lab[e.v] - 2 * e.w; }
 
     void update_slack(int u, int x) {
         if (! slack[x] || delta(g[u][x]) < delta(g[slack[x]][x]))

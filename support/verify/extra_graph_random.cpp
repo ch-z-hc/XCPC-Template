@@ -273,7 +273,7 @@ int brute_bipartite(const HK &g) {
     return dfs(dfs, 1, 0);
 }
 
-void check_cover_plan(const HK &g, int ans) {
+void check_cover_plan(HK &g, int ans) {
     auto [a, b] = g.cover();
     assert(int(a.size() + b.size()) == ans);
     V < int > left(g.n + 1), right(g.m + 1);

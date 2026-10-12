@@ -28,7 +28,7 @@ struct MinCut {
         g[v][u] += w;
     }
 
-    pair < ll, V < int > > solve() const {
+    pair < ll, V < int > > solve() {
         if (n < 2) return {0, {}};
         auto a = g;
         V < int > id(n);

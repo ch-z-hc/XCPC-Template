@@ -30,7 +30,7 @@ struct PAM {
         s = "#"; last = 0;
     }
 
-    int find(int u) const {
+    int find(int u) {
         int p = int(s.size()) - 1;
         while (s[p - tr[u].len - 1] != s[p]) u = tr[u].fail;
         return u;
@@ -56,9 +56,9 @@ struct PAM {
         for (char c : str) insert(c);
     }
 
-    int distinct() const { return int(tr.size()) - 2; }
+    int distinct() { return int(tr.size()) - 2; }
 
-    V < ll > count() const {
+    V < ll > count() {
         V < ll > ans(tr.size());
         for (int i = 2; i < int(tr.size()); ++ i) ans[i] = tr[i].cnt;
         for (int i = int(tr.size()) - 1; i >= 2; -- i)

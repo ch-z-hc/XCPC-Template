@@ -18,7 +18,7 @@ struct LCT {
         tr.assign(a.size(), {});
         for (int i = 1; i < int(a.size()); ++ i) tr[i].val = tr[i].sum = a[i];
     }
-    bool root(int x) const {
+    bool root(int x) {
         int p = tr[x].fa;
         return ! p || (tr[p].ch[0] != x && tr[p].ch[1] != x);
     }

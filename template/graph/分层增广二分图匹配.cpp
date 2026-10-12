@@ -70,7 +70,7 @@ struct HK {
 
     // 先 solve；O(n + m + E) 返回最小点覆盖 {左部顶点, 右部顶点}。
     // 两侧未被覆盖的顶点组成最大独立集。修改图后须重新 solve。
-    pair < V < int >, V < int > > cover() const {
+    pair < V < int >, V < int > > cover() {
         V < int > a(n + 1), b(m + 1), left, right;
         queue < int > q;
         for (int u = 1; u <= n; ++ u) if (! ml[u]) a[u] = 1, q.push(u);

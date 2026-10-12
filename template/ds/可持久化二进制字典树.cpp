@@ -32,7 +32,7 @@ struct PersistentXorTrie {
     }
 
     bool max_xor(int left, int right, unsigned long long x,
-                 unsigned long long &ans) const {
+                 unsigned long long &ans) {
         if (tr[left].cnt == tr[right].cnt) return false;
         ans = 0;
         for (int i = 63; i >= 0; -- i) {

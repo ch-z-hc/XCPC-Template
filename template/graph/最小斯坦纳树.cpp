@@ -13,7 +13,7 @@ using namespace std;
 // 所有有限答案和距离须小于 inf = 2^62；solve 可重复调用且不修改图。
 
 struct Steiner {
-    static constexpr ll inf = 1ll << 62;
+    static const ll inf = 1ll << 62;
     int n = 0;
     V < V < pair < int, ll > > > g;
 
@@ -24,7 +24,7 @@ struct Steiner {
         g[u].push_back({v, w}); g[v].push_back({u, w});
     }
 
-    ll solve(const V < int > &terminals) const {
+    ll solve(const V < int > &terminals) {
         V < int > a = terminals;
         sort(a.begin(), a.end());
         a.erase(unique(a.begin(), a.end()), a.end());
@@ -61,7 +61,7 @@ struct Steiner {
         return ans == inf ? -1 : ans;
     }
 };
-
+const ll Steiner::inf;
 // 调用示例：
 // Steiner graph(n); graph.add_edge(u, v, w);
 // ll ans = graph.solve({1, 3, 5}); // ans != -1 时为最小总边权。

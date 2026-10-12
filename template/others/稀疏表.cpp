@@ -21,7 +21,7 @@ struct ST {
             for (int i = 1; i + (1 << k) - 1 <= n; ++ i)
                 st[k][i] = max(st[k - 1][i], st[k - 1][i + (1 << (k - 1))]);
     }
-    ll query(int l, int r) const {
+    ll query(int l, int r) {
         if (l > r) swap(l, r);
         int k = lg[r - l + 1];
         return max(st[k][l], st[k][r - (1 << k) + 1]);

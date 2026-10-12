@@ -52,7 +52,7 @@ struct KthAncestor {
         }
     }
 
-    int query(int u, int k) const {
+    int query(int u, int k) {
         if (! k) return u;
         if (k >= dep[u]) return 0;
         int j = 31 - __builtin_clz(unsigned(k));

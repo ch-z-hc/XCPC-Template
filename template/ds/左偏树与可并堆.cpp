@@ -26,7 +26,7 @@ struct LeftistHeap {
         return int(tr.size()) - 1;
     }
 
-    ll top(int root) const { return tr[root].val; }
+    ll top(int root) { return tr[root].val; }
 
     int merge(int u, int v) {
         if (! u || ! v) return u | v;

@@ -14,7 +14,7 @@ struct AffineSegTree {
     ll mod = 1;
     V < ll > sum, mul, add;
 
-    ll norm(ll x) const { x %= mod; return x < 0 ? x + mod : x; }
+    ll norm(ll x) { x %= mod; return x < 0 ? x + mod : x; }
     void pull(int p) { sum[p] = (sum[p << 1] + sum[p << 1 | 1]) % mod; }
 
     void apply(int p, int l, int r, ll a, ll b) {

@@ -65,7 +65,7 @@ struct GomoryHu {
         if (n) dfs(1, 0);
     }
 
-    ll query(int u, int v) const {
+    ll query(int u, int v) {
         if (u == v) return 0;
         ll ans = LLONG_MAX;
         if (dep[u] < dep[v]) swap(u, v);

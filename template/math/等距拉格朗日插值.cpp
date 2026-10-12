@@ -19,7 +19,7 @@ struct LagrangeEq {
         comb.init(int(y.size()), mod);
     }
 
-    ll query(ll x) const {
+    ll query(ll x) {
         int n = int(y.size());
         ll mod = comb.mod;
         x %= mod; if (x < 0) x += mod;

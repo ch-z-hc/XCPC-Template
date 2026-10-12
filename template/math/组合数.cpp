@@ -30,7 +30,7 @@ struct Comb {
         ifac[n] = power(fac[n], mod - 2);
         for (int i = n; i >= 1; -- i) ifac[i - 1] = ifac[i] * i % mod;
     }
-    ll choose(int n, int k) const {
+    ll choose(int n, int k) {
         if (n < 0 || k < 0 || k > n || n >= int(fac.size())) return 0;
         return fac[n] * ifac[k] % mod * ifac[n - k] % mod;
     }

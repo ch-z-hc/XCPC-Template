@@ -63,7 +63,7 @@ struct AC {
         }
     }
 
-    V < ll > query(const string &s) const {
+    V < ll > query(const string &s) {
         V < ll > cnt(tr.size()), ans(pos.size());
         int u = 0;
         for (char c : s) {

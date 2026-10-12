@@ -48,19 +48,19 @@ struct FunctionalGraph {
             } while (v != u);
             cycles.push_back(ring);
         }
-        for (const auto &ring : cycles) for (int u : ring) dfs(u);
+        for (auto &ring : cycles) for (int u : ring) dfs(u);
         for (int k = 1; k < 64; ++ k) {
             up[k].assign(n + 1, 0);
             for (int u = 1; u <= n; ++ u) up[k][u] = up[k - 1][up[k - 1][u]];
         }
     }
 
-    int jump(int u, ull k) const {
+    int jump(int u, ull k) {
         for (int i = 0; i < 64; ++ i) if ((k >> i) & 1) u = up[i][u];
         return u;
     }
 
-    ll distance(int u, int v) const {
+    ll distance(int u, int v) {
         if (bel[u] != bel[v]) return -1;
         if (dep[v]) {
             if (dep[u] < dep[v]) return -1;

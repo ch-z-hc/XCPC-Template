@@ -38,18 +38,18 @@ struct PST {
         }
     }
 
-    int kth(int u, int v, int l, int r, int k) const {
+    int kth(int u, int v, int l, int r, int k) {
         if (l == r) return l;
         int mid = (l + r) >> 1, cnt = tr[tr[v].ls].sum - tr[tr[u].ls].sum;
         if (k <= cnt) return kth(tr[u].ls, tr[v].ls, l, mid, k);
         return kth(tr[u].rs, tr[v].rs, mid + 1, r, k - cnt);
     }
 
-    ll kth(int l, int r, int k) const {
+    ll kth(int l, int r, int k) {
         return val[kth(root[l - 1], root[r], 0, int(val.size()) - 1, k)];
     }
 
-    int count(int u, int v, int l, int r, int x) const {
+    int count(int u, int v, int l, int r, int x) {
         if (r <= x) return tr[v].sum - tr[u].sum;
         int mid = (l + r) >> 1;
         int ans = count(tr[u].ls, tr[v].ls, l, mid, x);
@@ -57,7 +57,7 @@ struct PST {
         return ans;
     }
 
-    int count(int l, int r, ll x) const {
+    int count(int l, int r, ll x) {
         int p = int(upper_bound(val.begin(), val.end(), x) - val.begin()) - 1;
         if (p < 0) return 0;
         return count(root[l - 1], root[r], 0, int(val.size()) - 1, p);

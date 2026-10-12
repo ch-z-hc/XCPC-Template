@@ -20,7 +20,7 @@ struct Diff {
     void add(int u, int v, ll w) { edges.push_back({u, v, w}); }
 
     // 返回 false 表示存在负环（无解），否则 dis 是一组可行解。
-    bool solve(V < ll > &dis) const {
+    bool solve(V < ll > &dis) {
         dis.assign(n + 1, 0);
         for (int i = 1; i <= n; ++ i) {
             bool op = false;

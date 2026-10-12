@@ -39,7 +39,7 @@ struct Fenwick2D {
     }
 
     // 前缀矩形：strict_x / strict_y 为真时对应方向使用严格小于。
-    ll prefix(ll x, ll y, bool strict_x = false, bool strict_y = false) const {
+    ll prefix(ll x, ll y, bool strict_x = false, bool strict_y = false) {
         auto it = strict_x ? lower_bound(xs.begin(), xs.end(), x) :
                             upper_bound(xs.begin(), xs.end(), x);
         ll ans = 0;
@@ -51,7 +51,7 @@ struct Fenwick2D {
         return ans;
     }
 
-    ll query(ll x1, ll y1, ll x2, ll y2) const {
+    ll query(ll x1, ll y1, ll x2, ll y2) {
         if (x1 > x2 || y1 > y2) return 0;
         return prefix(x2, y2) - prefix(x1, y2, true) -
                prefix(x2, y1, false, true) + prefix(x1, y1, true, true);

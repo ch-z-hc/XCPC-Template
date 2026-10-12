@@ -51,7 +51,7 @@ struct PArray {
         return q;
     }
 
-    ll query(int p, int l, int r, int pos) const {
+    ll query(int p, int l, int r, int pos) {
         if (l == r) return t[p].val;
         int mid = (l + r) >> 1;
         if (pos <= mid) return query(t[p].l, l, mid, pos);
@@ -62,7 +62,7 @@ struct PArray {
         return modify(p, 1, n, pos, value);
     }
 
-    ll query(int p, int pos) const { return query(p, 1, n, pos); }
+    ll query(int p, int pos) { return query(p, 1, n, pos); }
 };
 
 // 调用示例：

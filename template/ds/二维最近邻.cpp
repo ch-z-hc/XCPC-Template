@@ -57,16 +57,16 @@ struct KDTree {
         root = build(0, (int)ps.size() - 1, 0);
     }
 
-    ll distance(int u, ll x, ll y) const {
+    ll distance(int u, ll x, ll y) {
         ll dx = x - clamp(x, tr[u].lx, tr[u].rx);
         ll dy = y - clamp(y, tr[u].ly, tr[u].ry);
         return dx * dx + dy * dy;
     }
 
     void search(int u, ll x, ll y, int exclude,
-                pair < ll, int > &ans) const {
+                pair < ll, int > &ans) {
         if (u == -1) return;
-        const Node &p = tr[u];
+        auto &p = tr[u];
         ll dx = x - p.x, dy = y - p.y;
         if (p.id != exclude) ans = min(ans, pair{dx * dx + dy * dy, p.id});
         int a = p.l, b = p.r;
@@ -77,15 +77,15 @@ struct KDTree {
         if (b != -1 && d2 <= ans.first) search(b, x, y, exclude, ans);
     }
 
-    bool nearest(ll x, ll y, pair < ll, int > &ans, int exclude = -1) const {
+    bool nearest(ll x, ll y, pair < ll, int > &ans, int exclude = -1) {
         ans = {LLONG_MAX, INT_MAX};
         search(root, x, y, exclude, ans);
         return ans.second != INT_MAX;
     }
 
-    int query(int u, ll lx, ll ly, ll rx, ll ry) const {
+    int query(int u, ll lx, ll ly, ll rx, ll ry) {
         if (u == -1) return 0;
-        const Node &p = tr[u];
+        auto &p = tr[u];
         if (p.rx < lx || rx < p.lx || p.ry < ly || ry < p.ly) return 0;
         if (lx <= p.lx && p.rx <= rx && ly <= p.ly && p.ry <= ry)
             return p.siz;
@@ -93,7 +93,7 @@ struct KDTree {
         return ans + query(p.l, lx, ly, rx, ry) + query(p.r, lx, ly, rx, ry);
     }
 
-    int query(ll lx, ll ly, ll rx, ll ry) const {
+    int query(ll lx, ll ly, ll rx, ll ry) {
         if (lx > rx || ly > ry) return 0;
         return query(root, lx, ly, rx, ry);
     }
