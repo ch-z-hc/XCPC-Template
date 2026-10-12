@@ -134,7 +134,10 @@ bash support/verify/run_linux.sh
 逆元、模平方根和斯坦纳树的合法答案均非负，因此用 `-1` 表示失败。
 模板不使用 `optional`、异常、具名类型转换或类型萃取；李超树整数和浮点插入分别调用。
 比赛模板不使用 `tie` 元组比较、`move`；保留 lambda。比赛入口默认单测，多测时打开 `cin >> t`。
-宽整数输出使用开头 `template` 中的 `print128`，不附加换行，支持负数和最小值。
+比赛模板和入口不使用 `int128`，整数默认使用 `int` / `long long`，直接用 `cout` 输出。
+所有整数中间量也必须满足源码头部的范围，不能只看最终答案；验证程序可用宽整数作独立真值，不印入册。
+快速幂与逆元要求 `mod <= INT_MAX`，杜教筛要求 `n <= 4e9`；李超树、斜率优化和费用流须检查中间乘积。
+CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho 每次模乘为 `O(log n)`，较大半素数需关注时限。
 本轮逐项修改与复验见 [竞赛接口审计](support/verify/AUDIT_CONTEST_INTERFACES_20261012.md)。
 打印前的使用陷阱与处理记录见 [最终易用性审查](support/verify/AUDIT_PRINT_USABILITY_20261013.md)。
 
@@ -179,7 +182,7 @@ bash support/verify/run_linux.sh
 | `template/ds/LeftistHeap.cpp` | `LeftistHeap::init`、`push`、`merge`、`top`、`pop`；合并与删除返回新根 |
 | `template/others/MonotonicStack.cpp` | `monotonic_bounds(a, greater = false)`；左右最近严格更小 / 更大元素 |
 | `template/others/ConvexHullTrick.cpp` | `CHT::add`、`query`、`clear`；斜率不增、横坐标不减、求最小值 |
-| `template/math/ModArithmetic.cpp` | `pow_mod`、`linear_inverse`、`batch_inverse`；逆元接口要求质数模数 |
+| `template/math/ModArithmetic.cpp` | `pow_mod`、`linear_inverse`、`batch_inverse`；`mod <= INT_MAX`，逆元要求质数模数 |
 | `template/math/MatrixInverse.cpp` | `matrix_inv(a, mod, b)`；写入逆矩阵，不可逆返回 `false` |
 | `template/math/PrimitiveRoot.cpp` | `primitive_root`；质数模数，依赖 `PollardRho.cpp` |
 | `template/ds/DSU.cpp` | `DSU::init`、`find`、`merge`、`same`、`size`，`cnt` 为连通块数 |
@@ -276,9 +279,9 @@ bash support/verify/run_linux.sh
 | `template/graph/GlobalMinCut.cpp` | `MinCut::init`、`add_edge`、`solve`，返回割权与一侧顶点 |
 | `template/graph/DirectedMST.cpp` | `DMST::init`、`add_edge`、`solve(root, ans)`；写入最小权，不可达返回 `false` |
 | `template/graph/GeneralMatching.cpp` | `Blossom::init`、`add_edge`、`solve`，`match` 保存匹配 |
-| `template/math/FloorSum.cpp` | `floor_sum`，返回 `i128`，支持有符号参数 |
+| `template/math/FloorSum.cpp` | `floor_sum`，返回 `ll`，支持有符号参数，所有中间量须放入 `ll` |
 | `template/math/ModSqrt.cpp` | `sqrt_mod`；质数模数，不存在平方根返回 `-1` |
-| `template/math/DuJiao.cpp` | `DuJiao::init`、`phi`、`mu`，求欧拉函数 / 莫比乌斯函数前缀和 |
+| `template/math/DuJiao.cpp` | `DuJiao::init`、`phi`、`mu`；前缀和返回 `ll`，`n <= 4e9` |
 | `template/math/ExLucas.cpp` | `ExLucas::init`、`choose`，任意正 `int` 模数，预处理规模受质数幂大小限制 |
 | `template/math/Determinant.cpp` | `det`、`matrix_tree`，质数模数；有向版本为从根向外的树 |
 | `template/others/MoModify.cpp` | `MoModify::init`、`modify`、`query`、`solve()`；补全 `add`、`del`、`answer`，按值增删 |
@@ -297,7 +300,7 @@ bash support/verify/run_linux.sh
 - `template/graph/DSUOnTree.cpp` 的 `add` 与 `del` 必须互为逆操作；`query(u)` 记录子树答案，`build(root)` 结束后统计状态恢复为空。
 - 三种莫队每次 `solve` 前须清空题目统计状态；带修改莫队按值增删，普通莫队按下标增删，树上莫队按顶点增删。
 - `template/others/TreeHash.cpp` 是随机化哈希，不能当作严格同构判定。
-- 李超树的整数参数使用有理数精确比较；浮点参数仍为浮点比较。整数 `k`、`b`、`y` 的绝对值不超过 `10^18`，不要混入浮点直线后仍要求精确判等。
-- 李超树按整个密集区间分配约 `4 * (R - L + 1)` 个 `int`，不是动态开点或坐标压缩；坐标范围必须能存下。`query` 是浮点近似值；整数 DP 只用 `add_line`，并在 `query_int(x, ans)` 返回 `true` 后读取宽整数答案。
+- 李超树的整数参数使用有理数精确比较，交叉乘积等全部中间量须放入 `ll`；所有横坐标在 `[0, 40000]` 且 `|k|`、`|b|`、`|y| <= 10^9` 是充分范围。浮点参数仍为浮点比较，不要混用后仍要求精确判等。
+- 李超树按整个密集区间分配约 `4 * (R - L + 1)` 个 `int`，不是动态开点或坐标压缩；坐标范围必须能存下。`query` 是浮点近似值；整数 DP 只用 `add_line`，并在 `query_int(x, ans)` 返回 `true` 后读取 `ll` 答案。
 - 莫队和树上启发式合并的结构体内给出不同值 / 颜色数的填写示例；先用示例成员替换声明，再按题意修改状态、增删和答案。样例中的值域必须先离散化；带修改莫队还要包含所有将来修改的值。
 - `CHT` 仅用于斜率不增、查询横坐标不减的最小值问题；不满足单调性时使用李超树等结构。

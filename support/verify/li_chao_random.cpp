@@ -5,6 +5,8 @@
 
 #include "../../template/ds/LiChaoTree.cpp"
 
+typedef __int128_t LiChaoInt; // 独立有理数真值，不属于比赛模板。
+
 struct BruteLine {
     long double slope, intercept;
     int left, right;
@@ -157,9 +159,8 @@ int main() {
         tree.add_seg(19995, 19996, 19995, 19995);
         assert(tree.query_id(19995) == 3);
         tree.clear();
-        tree.add_line(1000000000000000000LL, -1000000000000000000LL);
-        tree.add_seg(INT_MIN, -1000000000000000000LL,
-                     INT_MAX, 1000000000000000000LL);
+        tree.add_line(10001LL, -10001LL);
+        tree.add_seg(-100000, -1000000000LL, 100000, 1000000000LL);
         assert(tree.query_id(1) == 2 && tree.query_id(39989) == 1);
     }
     return 0;

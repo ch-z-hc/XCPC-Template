@@ -35,9 +35,9 @@ int main() {
                 hull.add(k, b); lines.push_back({k, b});
             } else {
                 x += rng() % 4;
-                CHTInt expected = CHTInt(1) << 120;
+                __int128_t expected = __int128_t(1) << 120;
                 for (auto [slope, intercept] : lines)
-                    expected = min(expected, CHTInt(slope) * x + intercept);
+                    expected = min(expected, __int128_t(slope) * x + intercept);
                 assert(hull.query(x) == expected);
             }
         }
@@ -45,18 +45,18 @@ int main() {
         hull.clear(); hull.add(0, 0);
         ll length = int(rng() % 20) + 1;
         V < ll > sum(n + 1);
-        V < CHTInt > dp(n + 1);
+        V < ll > dp(n + 1);
         for (int i = 1; i <= n; ++ i) {
             sum[i] = sum[i - 1] + int(rng() % 20) + 2;
             ll x = sum[i] - length - 1;
-            dp[i] = hull.query(x) + CHTInt(x) * x;
-            CHTInt expected = CHTInt(1) << 120;
+            dp[i] = hull.query(x) + x * x;
+            __int128_t expected = __int128_t(1) << 120;
             for (int j = 0; j < i; ++ j) {
-                CHTInt d = sum[i] - sum[j] - length - 1;
+                __int128_t d = sum[i] - sum[j] - length - 1;
                 expected = min(expected, dp[j] + d * d);
             }
             assert(dp[i] == expected);
-            hull.add(-2 * sum[i], dp[i] + CHTInt(sum[i]) * sum[i]);
+            hull.add(-2 * sum[i], dp[i] + sum[i] * sum[i]);
         }
 
         LeftistHeap heap;
@@ -89,21 +89,21 @@ int main() {
         }
         heap.init(); assert(heap.push(3) == 1 && heap.top(1) == 3);
     }
-    for (ll mod : {1LL, 2LL, 101LL, 1000000007LL, LLONG_MAX}) {
+    for (ll mod : {1LL, 2LL, 101LL, 1000000007LL, 2147483647LL}) {
         for (int test = 0; test < 500; ++ test) {
             ll a = static_cast<ll> (rng());
             int b = int(rng() % 81);
-            ModInt x = a % mod, expected = 1 % mod;
+            __int128_t x = a % mod, expected = 1 % mod;
             for (int i = 0; i < b; ++ i) expected = expected * x % mod;
             if (expected < 0) expected += mod;
             assert(pow_mod(a, b, mod) == expected);
         }
     }
-    assert(pow_mod(LLONG_MIN, 1, LLONG_MAX) == LLONG_MAX - 1);
-    for (ll p : {2LL, 3LL, 101LL, 998244353LL, 2305843009213693951LL}) {
+    assert(pow_mod(LLONG_MIN, 1, 2147483647LL) == 2147483645LL);
+    for (ll p : {2LL, 3LL, 101LL, 998244353LL, 2147483647LL}) {
         int n = int(min(p - 1, 250LL));
         auto inv = linear_inverse(n, p);
-        for (int i = 1; i <= n; ++ i) assert(ModInt(i) * inv[i] % p == 1);
+        for (int i = 1; i <= n; ++ i) assert(__int128_t(i) * inv[i] % p == 1);
         for (int test = 0; test < 100; ++ test) {
             V < ll > a(rng() % 51);
             for (ll &x : a) {
@@ -112,7 +112,7 @@ int main() {
             }
             auto invs = batch_inverse(a, p);
             for (int i = 0; i < int(a.size()); ++ i) {
-                ModInt value = ModInt(a[i]) * invs[i] % p;
+                __int128_t value = __int128_t(a[i]) * invs[i] % p;
                 if (value < 0) value += p;
                 assert(value == 1);
             }
@@ -167,21 +167,20 @@ int main() {
     }
     {
         CHT hull;
-        hull.add(1000000000000000000LL, -1000000000000000000LL);
-        hull.add(0, 1000000000000000000LL);
-        hull.add(-1000000000000000000LL, -1000000000000000000LL);
-        for (ll x : {-1000000000000000000LL, 0LL, 1000000000000000000LL}) {
-            CHTInt expected = -CHTInt(1000000000000000000LL) * abs(x) -
-                              1000000000000000000LL;
+        hull.add(1000000000LL, -1000000000LL);
+        hull.add(0, 1000000000LL);
+        hull.add(-1000000000LL, -1000000000LL);
+        for (ll x : {-1000000000LL, 0LL, 1000000000LL}) {
+            __int128_t expected = -__int128_t(1000000000LL) * abs(x) - 1000000000LL;
             assert(hull.query(x) == expected);
         }
     }
     {
         CHT hull; hull.add(0, 0);
         for (ll i = 1; i <= 50000; ++ i) {
-            ll sum = i * 10000001, x = sum - 10000001;
-            assert(hull.query(x) + CHTInt(x) * x == 0);
-            hull.add(-2 * sum, CHTInt(sum) * sum);
+            ll sum = i * 101, x = sum - 101;
+            assert(hull.query(x) + x * x == 0);
+            hull.add(-2 * sum, sum * sum);
         }
     }
     cout << "priority templates: stack / CHT / heap / modular / inverse / root OK\n";

@@ -1,4 +1,4 @@
-"""用 Python 任意精度整数核对李超树；包含 P4097 在线解码和大整数边界。"""
+"""用 Python 任意精度整数核对李超树；覆盖 P4097 在线解码和 ll 中间量边界。"""
 from pathlib import Path
 import random
 import subprocess
@@ -23,8 +23,9 @@ def main():
             for step in range(120):
                 if step % 3 != 2:
                     if exact:
-                        x0, x1 = rng.randint(-2**31, -20), rng.randint(20, 2**31 - 1)
-                        y0, y1 = rng.randint(-10**18, 10**18), rng.randint(-10**18, 10**18)
+                        # |x| <= 1e5、|y| <= 1e8，交叉乘积严格落在 ll 内。
+                        x0, x1 = rng.randint(-100000, -20), rng.randint(20, 100000)
+                        y0, y1 = rng.randint(-10**8, 10**8), rng.randint(-10**8, 10**8)
                         if step % 7 == 0:
                             x0, x1 = rng.randint(-20, 20), rng.randint(-20, 20)
                     else:
@@ -67,7 +68,7 @@ def main():
                                  input=data, capture_output=True, text=True, timeout=20)
             assert run.returncode == 0, (exact, test, run.stderr)
             assert list(map(int, run.stdout.split())) == expected, (exact, test)
-    print("PASS: Li Chao, 200 online-decoded + 200 big-integer cases, Python exact oracle")
+    print("PASS: Li Chao, 200 online-decoded + 200 ll-boundary cases, Python exact oracle")
 
 
 if __name__ == "__main__":

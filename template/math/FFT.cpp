@@ -5,7 +5,6 @@
 
 typedef long long ll;
 typedef long double ld;
-typedef __int128_t i128;
 
 using namespace std;
 
@@ -123,7 +122,7 @@ V < int > conv_mod(const V < ll > &a, const V < ll > &b, int mod) {
     for (int i = 0; i < int(c.size()); ++ i) {
         ll t = (d[i] - c[i] + q) * v % q;
         ll u = (e[i] - (c[i] + 1ll * p * t) % r + r) * w % r;
-        c[i] = (c[i] + i128(p) * t + i128(p) * q * u) % mod;
+        c[i] = (c[i] + 1ll * p * t % mod + (1ll * p * q % mod) * u % mod) % mod;
     }
     return c;
 }

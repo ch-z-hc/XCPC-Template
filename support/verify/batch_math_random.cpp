@@ -58,6 +58,17 @@ void check_min25() {
     ll sum = 0;
     for (int i = 1; i <= 1000000; ++ i) sum = (sum + phi_table[i]) % 1000000007;
     assert(sieve.sum({-1, 1, 0}, phi) == sum);
+    // 原始平方和已超出 ll；验证先约分、再取模对合数同样成立。
+    for (ll mod : {6LL, 2147483647LL}) {
+        const ll n = 10000000;
+        sieve.init(n, mod);
+        auto square = [&](ll p, int e) {
+            ll x = power(p % mod, e, mod);
+            return x * x % mod;
+        };
+        __int128_t expected = __int128_t(n) * (n + 1) * (2 * n + 1) / 6 % mod;
+        assert(sieve.sum({0, 0, 1}, square) == expected);
+    }
 }
 
 optional < ld > vertices(V < V < ld > > A, V < ld > b, const V < ld > &c) {

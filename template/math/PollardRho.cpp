@@ -3,16 +3,24 @@
 #define V vector
 
 typedef unsigned long long ull;
-typedef __uint128_t u128;
 
 using namespace std;
 
-// Miller-Rabin + Pollard-Rho：支持整个 unsigned long long 范围，需 GCC / Clang。
+// Miller-Rabin + Pollard-Rho：支持整个 unsigned long long 范围。
 // is_prime 为确定性判素，O(log n) 次模乘；factor 返回升序质因子，保留重数。
 // 分解为随机算法，找到最小质因子 p 的期望代价约 O(sqrt(p)) 次模运算。
+// 倍增模乘每次 O(log n)，大半素数分解较慢，需按题目时限判断。
 // factor(n) 在 n < 2 时返回空；递归深度 O(log n)，无跨调用状态。
 
-ull rho_mul(ull a, ull b, ull mod) { return u128(a) * b % mod; }
+ull rho_mul(ull a, ull b, ull mod) {
+    a %= mod;
+    ull ans = 0;
+    for (; b; b >>= 1) {
+        if (b & 1) ans = ans >= mod - a ? ans - (mod - a) : ans + a;
+        a = a >= mod - a ? a - (mod - a) : a + a;
+    }
+    return ans;
+}
 
 ull rho_pow(ull a, ull b, ull mod) {
     ull ans = 1;
@@ -46,7 +54,10 @@ ull rho(ull n, mt19937_64 &rng) {
     if (n % 2 == 0) return 2;
     while (true) {
         ull c = rng() % (n - 1) + 1, x = rng() % n, y = x, d = 1;
-        auto f = [&](ull v) -> ull { return (u128(v) * v + c) % n; };
+        auto f = [&](ull v) -> ull {
+            ull x = rho_mul(v, v, n);
+            return x >= n - c ? x - (n - c) : x + c;
+        };
         while (d == 1) {
             ull a = x, b = y, prod = 1;
             for (int i = 0; i < 128; ++ i) {

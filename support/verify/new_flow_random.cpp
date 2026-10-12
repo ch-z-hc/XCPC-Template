@@ -138,10 +138,11 @@ void test_km(mt19937 &rng) {
         }
     }
     KM km(1, 1);
-    km.add_edge(1, 1, LLONG_MIN);
-    assert(km.solve() == make_pair(true, LLONG_MIN));
+    const ll large = LLONG_MAX / 16;
+    km.add_edge(1, 1, -large);
+    assert(km.solve() == make_pair(true, -large));
     km.init(2, 2);
-    km.add_edge(1, 1, LLONG_MAX); km.add_edge(2, 2, LLONG_MIN);
+    km.add_edge(1, 1, large); km.add_edge(2, 2, -large - 1);
     assert(km.solve() == make_pair(true, -1LL));
     km.init(2, 3);
     km.add_edge(1, 1, -5); km.add_edge(2, 1, -7);

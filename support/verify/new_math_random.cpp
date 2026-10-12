@@ -6,6 +6,10 @@
 #include "../../template/math/Lucas.cpp"
 #include "../../template/math/LinearSieve.cpp"
 
+// 独立宽整数真值，仅用于验证，不属于比赛模板。
+typedef __uint128_t u128;
+typedef __int128_t CRTInt;
+
 void check_factor(ull n) {
     auto a = factor(n);
     assert(is_sorted(a.begin(), a.end()));
@@ -16,6 +20,10 @@ void check_factor(ull n) {
 }
 
 void test_factor(mt19937_64 &rng) {
+    for (int t = 0; t < 10000; ++ t) {
+        ull mod = rng() | 1, a = rng(), b = rng();
+        assert(rho_mul(a, b, mod) == u128(a) * b % mod);
+    }
     for (ull n = 0; n < 20000; ++ n) {
         bool op = n >= 2;
         for (ull p = 2; p * p <= n; ++ p)
@@ -97,6 +105,14 @@ void test_gauss(mt19937_64 &rng) {
 }
 
 void test_crt(mt19937_64 &rng) {
+    for (int t = 0; t < 10000; ++ t) {
+        ll a = rng() & LLONG_MAX, b = rng() & LLONG_MAX, x, y;
+        ll g = exgcd(a, b, x, y);
+        assert(CRTInt(a) * x + CRTInt(b) * y == g && g == gcd(a, b));
+        ll m = ll(rng() % LLONG_MAX) + 1;
+        a %= m; b %= m;
+        assert(crt_mul(a, b, m) == CRTInt(a) * b % m);
+    }
     for (ll a : {0LL, 1LL, 2LL, LLONG_MAX - 1, LLONG_MAX})
         for (ll b : {0LL, 1LL, 2LL, LLONG_MAX - 1, LLONG_MAX}) {
             ll x, y, g = exgcd(a, b, x, y);

@@ -31,6 +31,10 @@ def main():
     for path in (ROOT / "template").glob("*/*.cpp"):
         assert not re.search(r"\b(?:tie|move)\s*\(", path.read_text(encoding="utf-8")), path
     print("PASS: contest snippets contain no tie or move calls", flush=True)
+    for path in list((ROOT / "template").glob("*/*.cpp")) + [ROOT / "support/tools/contest_main.cpp"]:
+        assert not re.search(r"__u?int128|\b(?:i128|u128|print128)\b",
+                             path.read_text(encoding="utf-8")), path
+    print("PASS: contest snippets and starter contain no wide integer types", flush=True)
     run_example("template/others/Mo.cpp", """
     Mo mo; int n = 5, m = 3;
     mo.a = {0, 1, 2, 1, 3, 2};
@@ -82,11 +86,12 @@ def main():
     print("PASS: single-case entry preserves the first input value", flush=True)
     # 不支持的巨大密集区间应被前提断言拒绝，而不是先触发有符号溢出。
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
-    rejected = subprocess.run([str(ROOT / "build/linux-verify/print_usability"), "wide-domain"],
-                              capture_output=True, text=True)
-    assert rejected.returncode != 0 and "Assertion" in rejected.stderr, rejected.stderr
-    assert "runtime error:" not in rejected.stderr, rejected.stderr
-    print("PASS: oversized dense Li Chao domain rejected before arithmetic overflow")
+    for mode in ("wide-domain", "supply-overflow", "cap-overflow", "cost-overflow"):
+        rejected = subprocess.run([str(ROOT / "build/linux-verify/print_usability"), mode],
+                                  capture_output=True, text=True)
+        assert rejected.returncode != 0 and "Assertion" in rejected.stderr, (mode, rejected.stderr)
+        assert "runtime error:" not in rejected.stderr, (mode, rejected.stderr)
+        print(f"PASS: {mode} rejected before arithmetic overflow", flush=True)
 
 
 if __name__ == "__main__":

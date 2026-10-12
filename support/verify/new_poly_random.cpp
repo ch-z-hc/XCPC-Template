@@ -2,6 +2,8 @@
 #include "../../template/math/FPS.cpp"
 #include "../../template/math/FFT.cpp"
 
+typedef __int128_t i128; // 独立卷积真值，不属于比赛模板。
+
 constexpr int P = 998244353;
 
 int ref_pow(int a, int b) {

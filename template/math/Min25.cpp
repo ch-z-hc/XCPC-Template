@@ -3,7 +3,6 @@
 #define V vector
 
 typedef long long ll;
-typedef __int128_t i128;
 
 using namespace std;
 
@@ -46,8 +45,13 @@ struct Min25 {
             if (x <= lim) small[x] = k;
             else large[n / x] = k;
             w.push_back(x); cnt.push_back(x - 1);
-            ll s1 = ll(i128(x) * (x + 1) / 2 % mod);
-            ll s2 = ll(i128(x) * (x + 1) * (2 * x + 1) / 6 % mod);
+            ll a = x, b = x + 1, c = 2 * x + 1;
+            if (a % 2 == 0) a /= 2; else b /= 2;
+            ll s1 = a % mod * (b % mod) % mod;
+            if (a % 3 == 0) a /= 3;
+            else if (b % 3 == 0) b /= 3;
+            else c /= 3;
+            ll s2 = a % mod * (b % mod) % mod * (c % mod) % mod;
             g.push_back({(x - 1) % mod, norm(s1 - 1), norm(s2 - 1)});
         }
         array < ll, 3 > pre{};

@@ -10,8 +10,8 @@ using namespace std;
 // 允许负费用边，但残量网络中不能有负环；不处理与源汇无关的负环。
 // 首次 SPFA 最坏 O(nm)，之后 O(A m log n)，A 为增广次数；空间 O(n + m)。
 // flow 修改残量，重复调用返回本次新增流量与费用；init 清空图。
-// 边费不能为 LLONG_MIN；距离、势能和费用使用 __int128_t，最终流量与费用须能用 ll 表示。
-// 内部计算不得溢出 __int128_t。
+// 边费不能为 LLONG_MIN；流量、距离、势能、费用和全部中间量须能用 ll 表示。
+// 特别检查 du + cost + h[u] - h[v]、增广流量乘路径费用及累计费用。
 
 struct MCMF {
     struct Edge {
@@ -35,8 +35,7 @@ struct MCMF {
 
     pair < ll, ll > flow(int s, int t) {
         if (s == t) return {0, 0};
-        typedef __int128_t i128;
-        V < i128 > h(n + 1), dis(n + 1);
+        V < ll > h(n + 1), dis(n + 1);
         V < int > pre(n + 1), pe(n + 1);
         V < char > reach(n + 1);
 
@@ -62,12 +61,12 @@ struct MCMF {
             }
         }
         ll ans_flow = 0;
-        i128 ans_cost = 0;
+        ll ans_cost = 0;
         while (true) {
             fill(reach.begin(), reach.end(), 0);
             fill(pre.begin(), pre.end(), -1);
-            priority_queue < pair < i128, int >, V < pair < i128, int > >,
-                             greater < pair < i128, int > > > pq;
+            priority_queue < pair < ll, int >, V < pair < ll, int > >,
+                             greater < pair < ll, int > > > pq;
             dis[s] = 0;
             reach[s] = 1;
             pq.push({0, s});
@@ -79,7 +78,7 @@ struct MCMF {
                 for (int i = 0; i < int(g[u].size()); ++ i) {
                     auto &e = g[u][i];
                     if (! e.cap) continue;
-                    i128 nd = du + e.cost + h[u] - h[e.to];
+                    ll nd = du + e.cost + h[u] - h[e.to];
                     if (! reach[e.to] || nd < dis[e.to]) {
                         dis[e.to] = nd;
                         reach[e.to] = 1;
@@ -105,7 +104,7 @@ struct MCMF {
             ans_flow += add;
             ans_cost += add * (h[t] - h[s]);
         }
-        return {ans_flow, ll(ans_cost)};
+        return {ans_flow, ans_cost};
     }
 };
 

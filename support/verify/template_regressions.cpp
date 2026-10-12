@@ -109,10 +109,11 @@ int main() {
         mcf.add_edge(1, 2, 1, lim);
         assert(mcf.flow(1, 2) == std::make_pair(1LL, lim));
         mcf.init(4);
-        mcf.add_edge(1, 2, 1, -(lim - 10));
-        mcf.add_edge(2, 4, 1, -(lim - 10));
-        mcf.add_edge(1, 3, 1, lim - 10);
-        mcf.add_edge(3, 4, 1, lim - 10);
+        // 两条路径费用抵消，但中间路径费用也必须能放入 ll。
+        mcf.add_edge(1, 2, 1, -lim / 8);
+        mcf.add_edge(2, 4, 1, -lim / 8);
+        mcf.add_edge(1, 3, 1, lim / 8);
+        mcf.add_edge(3, 4, 1, lim / 8);
         assert(mcf.flow(1, 4) == std::make_pair(2LL, 0LL));
     }
     {

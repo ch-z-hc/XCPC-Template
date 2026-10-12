@@ -1,5 +1,4 @@
 #include <cassert>
-#include <sstream>
 
 #define main contest_entry_main
 #include "../tools/contest_main.cpp"
@@ -8,12 +7,23 @@
 #include "../../template/ds/LiChaoTree.cpp"
 #include "../../template/ds/SegTree.cpp"
 #include "../../template/graph/HLD.cpp"
+#include "../../template/graph/MinCostFlow.cpp"
+#include "../../template/graph/LowerBoundMinCostFlow.cpp"
 #include "../../template/math/Gauss.cpp"
 #include "../../template/math/Min25.cpp"
 
-int main(int argc, char **) {
+int main(int argc, char **argv) {
     if (argc > 1) {
-        LiChaoTree unsupported(INT_MIN, INT_MAX);
+        string mode = argv[1];
+        if (mode == "wide-domain") { LiChaoTree unsupported(INT_MIN, INT_MAX); }
+        LRCostFlow flow(1);
+        if (mode == "supply-overflow") {
+            flow.add_supply(1, LLONG_MAX); flow.add_supply(1, 1);
+        } else if (mode == "cap-overflow") {
+            flow.add_edge(1, 1, 0, LLONG_MAX, 0); flow.solve();
+        } else if (mode == "cost-overflow") {
+            flow.add_edge(1, 1, 0, 2, LLONG_MAX); flow.solve();
+        }
         return 0;
     }
     {
@@ -27,19 +37,19 @@ int main(int argc, char **) {
     }
     {
         LiChaoTree tree(1001, 1001);
-        LiChaoInt ans = 0;
+        ll ans = 0;
         assert(! tree.query_int(1001, ans));
-        tree.add_line(1000000000000000000LL, 1);
+        tree.add_line(1000000000000000LL, 1);
         assert(tree.query_int(1001, ans));
-        assert(ans == LiChaoInt(1000000000000000000LL) * 1001 + 1);
-        tree.add_line(1000000000000000000LL, 2);
+        assert(ans == 1000000000000000LL * 1001 + 1);
+        tree.add_line(1000000000000000LL, 2);
         assert(tree.query_int(1001, ans));
-        assert(ans == LiChaoInt(1000000000000000000LL) * 1001 + 2);
+        assert(ans == 1000000000000000LL * 1001 + 2);
         tree.clear();
         assert(! tree.query_int(1001, ans));
-        tree.add_line(-1000000000000000000LL, -1);
+        tree.add_line(-1000000000000000LL, -1);
         assert(tree.query_int(1001, ans));
-        assert(ans == -LiChaoInt(1000000000000000000LL) * 1001 - 1);
+        assert(ans == -1000000000000000LL * 1001 - 1);
         LiChaoTree real(1, 2);
         real.add_line_real(0.5L, 0.0L);
         assert(real.query(2) == 1 && ! real.query_int(2, ans));
@@ -51,22 +61,9 @@ int main(int argc, char **) {
             endpoint.add_line(2, 3);
             for (int offset = 0; offset < 3; ++ offset) {
                 int x = l + offset;
-                assert(endpoint.query_int(x, ans) && ans == LiChaoInt(2) * x + 3);
+                assert(endpoint.query_int(x, ans) && ans == 2ll * x + 3);
             }
         }
-    }
-    {
-        __int128_t hi = ((__int128_t(1) << 126) - 1) * 2 + 1;
-        __int128_t lo = -hi - 1;
-        ostringstream output;
-        streambuf *saved = cout.rdbuf(output.rdbuf());
-        for (__int128_t x : {__int128_t(0), __int128_t(123), __int128_t(-456), hi, lo}) {
-            print128(x); cout << '\n';
-        }
-        cout.rdbuf(saved);
-        assert(output.str() == "0\n123\n-456\n"
-            "170141183460469231731687303715884105727\n"
-            "-170141183460469231731687303715884105728\n");
     }
     {
         const int N = 1005; int n = 2, m = 2;
@@ -89,5 +86,5 @@ int main(int argc, char **) {
             }
         }
     }
-    cout << "PASS: print usage, HLD order, exact Li Chao and int128 output\n";
+    cout << "PASS: print usage, HLD order and exact long long Li Chao\n";
 }

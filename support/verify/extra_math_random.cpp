@@ -10,6 +10,8 @@
 
 using namespace std;
 
+typedef __int128_t i128; // 独立整数真值，不属于比赛模板。
+
 mt19937_64 rng(2026101037);
 
 ll power_ref(ll a, ll k, ll mod) {
@@ -27,22 +29,36 @@ i128 floor_ref(i128 a, i128 b) {
 
 void check_floor_sum() {
     for (int t = 0; t < 3000; ++ t) {
+        ll n = 1 + rng() % 70, m = 1 + rng() % (LLONG_MAX / (4 * n));
+        ll a = ll(rng() % (LLONG_MAX / (4 * n * n))), b = ll(rng() % (LLONG_MAX / (4 * n)));
+        if (rng() % 2) a = -a;
+        if (rng() % 2) b = -b;
+        i128 ans = 0;
+        for (ll i = 0; i < n; ++ i) ans += floor_ref(i128(a) * i + b, m);
+        assert(floor_sum(n, m, a, b) == ans);
+    }
+    for (int t = 0; t < 3000; ++ t) {
         ll n = rng() % 70, m = 1 + rng() % 100;
         ll a = ll(rng() % 2001) - 1000, b = ll(rng() % 2001) - 1000;
         i128 ans = 0;
         for (ll i = 0; i < n; ++ i) ans += floor_ref(i128(a) * i + b, m);
         assert(floor_sum(n, m, a, b) == ans);
     }
-    for (ll a : {LLONG_MIN, LLONG_MAX, 0LL})
-        for (ll b : {LLONG_MIN, LLONG_MAX, 0LL})
-            for (ll m : {1LL, 2LL, LLONG_MAX}) {
+    // 中间量也须能放入 ll；不能仅按最终答案是否超界筛选。
+    for (ll a : {-1000000000LL, 1000000000LL, 0LL})
+        for (ll b : {-1000000000LL, 1000000000LL, 0LL})
+            for (ll m : {1LL, 2LL, 1000000001LL}) {
                 i128 ans = 0;
                 for (ll i = 0; i < 5; ++ i)
                     ans += floor_ref(i128(a) * i + b, m);
                 assert(floor_sum(5, m, a, b) == ans);
             }
     ll n = LLONG_MAX;
-    assert(floor_sum(n, n, n, 0) == i128(n) * (n - 1) / 2);
+    assert(floor_sum(n, 1, 0, 0) == 0);
+    assert(floor_sum(n, n, 0, 1) == 0);
+    assert(floor_sum(1, 1, LLONG_MIN, LLONG_MIN) == LLONG_MIN);
+    assert(floor_sum(1, 1, LLONG_MAX, LLONG_MAX) == LLONG_MAX);
+    assert(floor_sum(4000000000LL, 1, 1, 0) == 7999999998000000000LL);
     assert(floor_sum(0, 1, LLONG_MIN, LLONG_MIN) == 0);
 }
 
@@ -95,6 +111,10 @@ void check_dujiao() {
     d.init(1);
     assert(d.phi(0) == 0 && d.mu(0) == 0);
     assert(d.phi(n) == phi[n] && d.mu(n) == mu[n]);
+    d.init(2000000);
+    ll large_phi = d.phi(4000000000LL), large_mu = d.mu(4000000000LL);
+    assert(0 < large_phi && large_phi < 8000000002000000000LL);
+    assert(abs(large_mu) <= 4000000000LL);
 }
 
 void check_exlucas() {

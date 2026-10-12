@@ -71,7 +71,7 @@
 | `template/graph/Kruskal.cpp` | [Minimum Spanning Tree](https://judge.yosupo.jp/problem/minimum_spanning_tree)、[P3366 最小生成树](https://www.luogu.com.cn/problem/P3366) | 直接；不连通时 `ok` 为 false，不能把森林权值当生成树答案。 |
 | `template/graph/LCA.cpp` | [Lowest Common Ancestor](https://judge.yosupo.jp/problem/lca) | 直接；倍增，树必须连通。 |
 | `template/graph/LowerBoundFlow.cpp` | [P5192 Shoot the Bullet](https://www.luogu.com.cn/problem/P5192)、[LOJ 115 无源汇上下界可行流](https://loj.ac/p/115)、[LOJ 116 有源汇上下界最大流](https://loj.ac/p/116) | 前者为建模应用，已核对题面；后两题直接对应循环流与有源汇流，原站抓取受限，不列入已跑公开数据题。 |
-| `template/graph/MinCostFlow.cpp` | [P3381 最小费用最大流](https://www.luogu.com.cn/problem/P3381) | 直接；要求无负环，距离、势能与费用中间量不溢出 `__int128`，最终流量和费用可用 `ll` 表示。不能验证 UOJ 487 的负环能力。 |
+| `template/graph/MinCostFlow.cpp` | [P3381 最小费用最大流](https://www.luogu.com.cn/problem/P3381) | 直接；要求无负环，流量、距离、势能、费用及全部中间量须能用 `ll` 表示。不能验证 UOJ 487 的负环能力。 |
 | `template/graph/Reroot.cpp` | [CSES Tree Distances II](https://cses.fi/problemset/task/1133) | 直接；本模板具体求每个点到所有点的距离和，不是任意状态的通用换根框架。 |
 | `template/graph/ScalingMinCostFlow.cpp` | [UOJ 487 最小费用最大流](https://uoj.ac/problem/487) | 直接；包含不与源汇连通的负环费用。 |
 | `template/graph/SCC.cpp` | [Strongly Connected Components](https://judge.yosupo.jp/problem/scc) | 直接；Tarjan 出栈编号是逆拓扑顺序，题目要求的拓扑顺序需反转。 |
@@ -100,10 +100,10 @@
 | `template/math/Combination.cpp` | [P1313 NOIP2011 计算系数](https://www.luogu.com.cn/problem/P1313)、[Binomial Coefficient (Prime Mod)](https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod) | 前者用组合数配合两次快速幂；后者仅部分范围。模板要求 `n < mod` 且能存下 `O(n)` 阶乘表，不能直接过大 n 数据。 |
 | `template/math/CRT.cpp` | [P4777 扩展中国剩余定理](https://www.luogu.com.cn/problem/P4777) | 直接；支持非互质模数，合并后的 lcm 须能放入 `ll`。 |
 | `template/math/Determinant.cpp` | [Matrix Determinant](https://judge.yosupo.jp/problem/matrix_det)、[Counting Spanning Tree (Directed)](https://judge.yosupo.jp/problem/counting_spanning_tree_directed)、[Counting Spanning Tree (Undirected)](https://judge.yosupo.jp/problem/counting_spanning_tree_undirected) | 直接；有向矩阵树接口统计从根向外的树，模数要求为质数。 |
-| `template/math/DuJiao.cpp` | [P4213 杜教筛](https://www.luogu.com.cn/problem/P4213) | 直接；`phi` 返回 `__int128`，输出时不能无条件截为 `ll`。 |
+| `template/math/DuJiao.cpp` | [P4213 杜教筛](https://www.luogu.com.cn/problem/P4213) | 直接；`phi`、`mu` 返回 `ll`，要求 `0 <= n <= 4e9`。 |
 | `template/math/ExLucas.cpp` | [P4720 扩展卢卡斯定理](https://www.luogu.com.cn/problem/P4720) | 对应公式；要完整预处理各质数幂的阶乘表，不能承诺通过大质数模数的全规模数据。 |
 | `template/math/FFT.cpp` | [Convolution (Mod 1000000007)](https://judge.yosupo.jp/problem/convolution_mod_1000000007)、[P3803 多项式乘法（FFT）](https://www.luogu.com.cn/problem/P3803) | 分别验证精确任意模数卷积 `conv_mod` 与浮点卷积 `fft_mul`；浮点版本存在精度、舍入和整数范围限制。 |
-| `template/math/FloorSum.cpp` | [Sum of Floor of Linear](https://judge.yosupo.jp/problem/sum_of_floor_of_linear) | 直接；返回 `__int128`，还支持源码规定的有符号 a、b。 |
+| `template/math/FloorSum.cpp` | [Sum of Floor of Linear](https://judge.yosupo.jp/problem/sum_of_floor_of_linear) | 直接；返回 `ll`，支持有符号 a、b，答案与全部中间量须在 `ll` 范围。 |
 | `template/math/FPS.cpp` | [Inv](https://judge.yosupo.jp/problem/inv_of_formal_power_series)、[Log](https://judge.yosupo.jp/problem/log_of_formal_power_series)、[Exp](https://judge.yosupo.jp/problem/exp_of_formal_power_series)、[Pow](https://judge.yosupo.jp/problem/pow_of_formal_power_series)、[Sqrt](https://judge.yosupo.jp/problem/sqrt_of_formal_power_series)、[Division](https://judge.yosupo.jp/problem/division_of_polynomials) | 分别对应六种接口；固定模数 `998244353`，常数项和长度限制见源码。 |
 | `template/math/Multipoint.cpp` | [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation)、[Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) | 直接；复用 FPS，模数固定为 998244353；插值的横坐标必须模意义下互异，求值允许重复点。 |
 | `template/math/SubsetConvolution.cpp` | [Subset Convolution](https://judge.yosupo.jp/problem/subset_convolution)、[P6097 子集卷积](https://www.luogu.com.cn/problem/P6097) | 直接；两题模数不同，应显式传入；不是 FWT 的 OR 卷积。n = 20 时主要数组约 180 MiB。 |
@@ -150,7 +150,7 @@
 | `template/others/SG.cpp` | [Nyaan Grundy Number](https://nyaannyaan.github.io/library/math/grundy-number.hpp) | 算法参考；只适用有限无环正常规则公平游戏，组合状态另用直接胜负 DP 验证。 |
 | `template/others/CartesianTree.cpp` | [Cartesian Tree](https://judge.yosupo.jp/problem/cartesian_tree) | 直接；相等元素的决策、根父亲的输出形式按题目转换。 |
 | `template/others/DLX.cpp` | [P4929 Dancing Links](https://www.luogu.com.cn/problem/P4929) | 直接；精确覆盖第一解，输入行的列编号须合法且不重复；不是重复覆盖或带权最小覆盖。 |
-| `template/others/ConvexHullTrick.cpp` | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) | 应用；先展开 DP 转移成直线最小值。模板要求斜率不增、查询横坐标不减，不能直接用于任意顺序直线。 |
+| `template/others/ConvexHullTrick.cpp` | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) | 应用；先展开 DP 转移成直线最小值。要求斜率不增、横坐标不减；截距、交叉乘积等中间量须放入 `ll`，不能只检查 DP 答案，也不能直接用于任意顺序直线。 |
 | `template/others/CDQ.cpp` | [P3810 三维偏序 / 陌上花开](https://www.luogu.com.cn/problem/P3810) | 直接能力；返回每个点被其他点支配的数量，题目最终需要统计数量分布。 |
 | `template/others/Common.cpp` | 无独立原题；`chkmin`、`chkmax`、模加减和类型别名 | 辅助定义；烟测中的断言验证边界，不拿 A+B 题冒充验证题。 |
 | `template/others/Discretize.cpp` | [P1955 程序自动分析](https://www.luogu.com.cn/problem/P1955) | 应用；离散化编号后配合 DSU，离散化本身不是整题算法。 |

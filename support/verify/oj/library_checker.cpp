@@ -105,9 +105,7 @@ int main(int argc, char **argv) {
         int t; cin >> t;
         while (t --) {
             ll n, m, a, b; cin >> n >> m >> a >> b;
-            i128 x = floor_sum(n, m, a, b); string s;
-            do { s += char('0' + x % 10); x /= 10; } while (x);
-            reverse(s.begin(), s.end()); cout << s << '\n';
+            cout << floor_sum(n, m, a, b) << '\n';
         }
     } else if (mode == "primitive_root") {
         int q; cin >> q;

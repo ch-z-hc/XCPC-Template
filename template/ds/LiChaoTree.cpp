@@ -3,7 +3,7 @@
 #define V vector
 
 typedef long double ld;
-typedef __int128_t LiChaoInt;
+typedef long long ll;
 
 using namespace std;
 
@@ -12,7 +12,9 @@ using namespace std;
 // X = R - L + 1，按整段坐标开约 4X 个 int，非动态开点、非坐标压缩。
 // 空间 O(X + q)，q 为插入次数；X <= (INT_MAX - 4) / 4 且须能存下数组。
 // add_line / add_seg 接收整数，使用有理数精确比较，同值取较早加入的编号。
-// 整数 k、b、y 的绝对值不超过 10^18，横坐标为 int；需 GCC / Clang。
+// 整数运算用 ll：端点差、a * x + c、再乘另一条线的 d 均不能溢出。
+// 仅有最终答案放入 ll 不够；线段端点在树外时也须检查中间量。
+// 充分范围：所有横坐标在 [0, 40000]，|k|、|b|、|y| <= 10^9。
 // 浮点参数用 add_line_real / add_seg_real；混用后不保证整数精确判等。
 // query 返回浮点近似值；整数 DP 仅插入 add_line，并用 query_int 精确取值。
 
@@ -20,8 +22,7 @@ struct LiChaoTree {
     struct Line {
         ld k = 0, b = 0;
         int id = 0;
-        LiChaoInt a = 0, c = 0;
-        long long d = 0;
+        ll a = 0, c = 0, d = 0;
 
         ld eval(int x) const {
             return d ? ld(a * x + c) / d : k * x + b;
@@ -68,8 +69,8 @@ struct LiChaoTree {
         int id = new_line(k, b);
         auto &s = line[id];
         s.d = x0 == x1 ? 1 : 1ll * x1 - x0;
-        s.a = x0 == x1 ? 0 : LiChaoInt(y1) - y0;
-        s.c = x0 == x1 ? max(y0, y1) : LiChaoInt(y0) * s.d - s.a * x0;
+        s.a = x0 == x1 ? 0 : y1 - y0;
+        s.c = x0 == x1 ? max(y0, y1) : y0 * s.d - s.a * x0;
         int ql = max(L, x0), qr = min(R, x1);
         if (ql <= qr)
             modify(1, L, R, ql, qr, id);
@@ -115,7 +116,7 @@ struct LiChaoTree {
     }
 
     // 只配合 add_line 使用；空集或命中非整数直线返回 false，ans 不可用。
-    bool query_int(int x, LiChaoInt &ans) const {
+    bool query_int(int x, ll &ans) const {
         int id = query_id(x);
         if (! id || line[id].d != 1) return false;
         ans = line[id].a * x + line[id].c;
@@ -133,8 +134,8 @@ struct LiChaoTree {
         if (v == 0) return true;
         if (line[u].d && line[v].d) {
             const auto &a = line[u], &b = line[v];
-            LiChaoInt left = (a.a * x + a.c) * b.d;
-            LiChaoInt right = (b.a * x + b.c) * a.d;
+            ll left = (a.a * x + a.c) * b.d;
+            ll right = (b.a * x + b.c) * a.d;
             return left != right ? left > right : u < v;
         }
         ld a = line[u].eval(x);
@@ -172,8 +173,8 @@ struct LiChaoTree {
 
 // 调用示例：
 // 整数直线：LiChaoTree tr(1, 10000); long long k = 3, b = -2;
-// tr.add_line(k, b); LiChaoInt ans;
-// if (tr.query_int(2, ans)) print128(ans); // 先复制开头 template 的 print128。
+// tr.add_line(k, b); ll ans;
+// if (tr.query_int(2, ans)) cout << ans << '\n';
 // 整数端点线段：tr.add_seg(1, 2, 5, 7); int id = tr.query_id(3);
 // 线段插值可能为分数，近似值用 ld y = tr.query(3)，不能套 query_int。
 // 浮点直线另建树：LiChaoTree real(1, 10000);

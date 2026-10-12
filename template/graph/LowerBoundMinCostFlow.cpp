@@ -17,7 +17,6 @@ using namespace std;
 // 时间 O(nm + A m log n)，A 为增广次数；空间 O(n + m)。
 // 先饱和负费用边，初始残量费用非负；故不遗漏与需求无关的负环。
 struct LRCostFlow {
-    typedef __int128_t i128;
     struct Edge { int u, v; ll lo, hi, cost; };
     int n = 0;
     V < Edge > edges;
@@ -36,23 +35,28 @@ struct LRCostFlow {
     }
 
     void add_supply(int u, ll b) {
-        i128 val = i128(supply[u]) + b;
-        assert(LLONG_MIN <= val && val <= LLONG_MAX);
-        supply[u] = ll(val);
+        if (b >= 0) assert(supply[u] <= LLONG_MAX - b);
+        else assert(supply[u] >= LLONG_MIN - b);
+        supply[u] += b;
     }
 
     pair < bool, ll > solve() {
         f.clear();
-        i128 sum = 0, cap = 0, cost = 0;
+        const ll limit = LLONG_MAX / 4;
+        ll sum = 0, cap = 0, cost = 0;
         for (int u = 1; u <= n; ++ u) {
-            sum += supply[u];
-            cap += supply[u] < 0 ? -i128(supply[u]) : supply[u];
+            assert(supply[u] != LLONG_MIN);
+            ll x = abs(supply[u]);
+            assert(x <= limit - cap);
+            cap += x; sum += supply[u];
         }
         for (auto &e : edges) {
+            assert(e.hi <= limit - cap);
             cap += e.hi;
-            cost += i128(e.hi) * (e.cost < 0 ? -i128(e.cost) : e.cost);
+            ll x = abs(e.cost);
+            if (x) assert(e.hi <= (limit - cost) / x);
+            cost += e.hi * x;
         }
-        assert(cap <= LLONG_MAX / 4 && cost <= LLONG_MAX / 4);
         if (sum) return {false, 0};
 
         int ss = n + 1, tt = n + 2;
@@ -74,14 +78,14 @@ struct LRCostFlow {
             } else if (bal[u] < 0) net.add_edge(u, tt, -bal[u], 0);
         }
         if (net.flow(ss, tt).first != need) return {false, 0};
-        i128 ans = 0;
+        ll ans = 0;
         for (int id = 0; id < int(edges.size()); ++ id) {
             auto &e = edges[id]; auto [u, k] = pos[id];
             ll rest = net.g[u][k].cap;
             ll x = e.cost < 0 ? e.lo + rest : e.hi - rest;
-            f.push_back(x); ans += i128(x) * e.cost;
+            f.push_back(x); ans += x * e.cost;
         }
-        return {true, ll(ans)};
+        return {true, ans};
     }
 };
 
