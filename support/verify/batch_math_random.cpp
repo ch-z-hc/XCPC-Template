@@ -1,6 +1,6 @@
-#include "../../template/math/Min25.cpp"
-#include "../../template/math/Simplex.cpp"
-#include "../../template/math/Gauss.cpp"
+#include "../../template/math/积性函数求和.cpp"
+#include "../../template/math/单纯形与线性规划.cpp"
+#include "../../template/math/高斯消元.cpp"
 
 #include <cassert>
 

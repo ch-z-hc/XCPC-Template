@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 
-#include "../../template/ds/FHQTreap.cpp"
-#include "../../template/ds/WeightedDSU.cpp"
-#include "../../template/ds/PersistentSegTree.cpp"
-#include "../../template/ds/XorTrie.cpp"
+#include "../../template/ds/无旋平衡树.cpp"
+#include "../../template/ds/带权与异或并查集.cpp"
+#include "../../template/ds/主席树.cpp"
+#include "../../template/ds/二进制字典树.cpp"
 
 using namespace std;
 

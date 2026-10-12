@@ -1,8 +1,8 @@
 #include <cassert>
-#include "../../template/graph/HLD.cpp"
-#include "../../template/graph/VirtualTree.cpp"
-#include "../../template/graph/Centroid.cpp"
-#include "../../template/graph/TwoSAT.cpp"
+#include "../../template/graph/树链剖分.cpp"
+#include "../../template/graph/虚树.cpp"
+#include "../../template/graph/点分治.cpp"
+#include "../../template/graph/二元可满足性.cpp"
 
 int brute_lca(int u, int v, const V < int > &fa, const V < int > &dep) {
     while (dep[u] > dep[v]) u = fa[u];

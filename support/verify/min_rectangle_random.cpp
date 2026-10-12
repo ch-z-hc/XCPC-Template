@@ -1,8 +1,8 @@
-#include "../../template/geometry/Point.cpp"
-#include "../../template/geometry/Line.cpp"
-#include "../../template/geometry/Polygon.cpp"
-#include "../../template/geometry/ConvexHull.cpp"
-#include "../../template/geometry/MinRectangle.cpp"
+#include "../../template/geometry/点与向量.cpp"
+#include "../../template/geometry/直线与线段.cpp"
+#include "../../template/geometry/多边形.cpp"
+#include "../../template/geometry/凸包与直径与闵可夫斯基和.cpp"
+#include "../../template/geometry/最小面积包围矩形.cpp"
 
 db brute(V < P > h) {
     if (h.size() <= 2) return 0;

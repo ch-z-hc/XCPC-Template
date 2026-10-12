@@ -1,16 +1,16 @@
 #include <bits/stdc++.h>
 #include <cassert>
 
-#include "../../template/others/MoModify.cpp"
-#include "../../template/others/MoTree.cpp"
-#include "../../template/others/DPOpt.cpp"
-#include "../../template/string/BitsetLCS.cpp"
-#include "../../template/geometry/Point.cpp"
-#include "../../template/geometry/Line.cpp"
-#include "../../template/geometry/Polygon.cpp"
-#include "../../template/geometry/ConvexHull.cpp"
-#include "../../template/geometry/ClosestPair.cpp"
-#include "../../template/geometry/ConvexQuery.cpp"
+#include "../../template/others/带修改莫队.cpp"
+#include "../../template/others/树上莫队.cpp"
+#include "../../template/others/分治动态规划与单调队列多重背包.cpp"
+#include "../../template/string/位集优化最长公共子序列.cpp"
+#include "../../template/geometry/点与向量.cpp"
+#include "../../template/geometry/直线与线段.cpp"
+#include "../../template/geometry/多边形.cpp"
+#include "../../template/geometry/凸包与直径与闵可夫斯基和.cpp"
+#include "../../template/geometry/平面最近点对.cpp"
+#include "../../template/geometry/凸多边形包含查询.cpp"
 
 using namespace std;
 

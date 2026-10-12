@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../../template/ds/PersistentXorTrie.cpp"
+#include "../../template/ds/可持久化二进制字典树.cpp"
 
 int main() {
     mt19937_64 rng(20261014);

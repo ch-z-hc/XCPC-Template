@@ -8,29 +8,29 @@ printf 'Stack limit: %s KiB\n' "$(ulimit -s)"
 
 for source in template/*/*.cpp support/tools/contest_main.cpp support/tools/stress/*.cpp support/tools/stress/cases/*/*.cpp support/verify/*.cpp support/verify/oj/*.cpp support/verify/fixtures/*.cpp; do
     includes=()
-    if [[ "$source" == template/math/Multipoint.cpp || "$source" == template/math/BostanMori.cpp ]]; then
-        includes=(-include template/math/FPS.cpp)
-    elif [[ "$source" == template/math/EquidistantLagrange.cpp ]]; then
-        includes=(-include template/math/Combination.cpp)
-    elif [[ "$source" == template/math/Stirling.cpp ]]; then
-        includes=(-include template/math/NTT.cpp)
-    elif [[ "$source" == template/graph/GomoryHu.cpp ]]; then
-        includes=(-include template/graph/Dinic.cpp)
-    elif [[ "$source" == template/graph/LowerBoundMinCostFlow.cpp ]]; then
-        includes=(-include template/graph/MinCostFlow.cpp)
-    elif [[ "$source" == template/string/Runs.cpp ]]; then
-        includes=(-include template/string/SuffixArray.cpp)
+    if [[ "$source" == template/math/多项式多点求值与快速插值.cpp || "$source" == template/math/线性递推快速求项.cpp ]]; then
+        includes=(-include template/math/多项式基本运算.cpp)
+    elif [[ "$source" == template/math/等距拉格朗日插值.cpp ]]; then
+        includes=(-include template/math/组合数.cpp)
+    elif [[ "$source" == template/math/两类斯特林数.cpp ]]; then
+        includes=(-include template/math/快速数论变换与多项式乘法.cpp)
+    elif [[ "$source" == template/graph/最小割树.cpp ]]; then
+        includes=(-include template/graph/最大流.cpp)
+    elif [[ "$source" == template/graph/上下界最小费用流.cpp ]]; then
+        includes=(-include template/graph/势能最短路费用流.cpp)
+    elif [[ "$source" == template/string/极大周期子串.cpp ]]; then
+        includes=(-include template/string/后缀数组.cpp)
     fi
-    if [[ "$source" == template/geometry/* && "$source" != template/geometry/Point.cpp && "$source" != template/geometry/ConvexHull3D.cpp ]]; then
-        includes=(-include template/geometry/Point.cpp -include template/geometry/Line.cpp)
-        if [[ "$source" == template/geometry/Line.cpp ]]; then
-            includes=(-include template/geometry/Point.cpp)
-        elif [[ "$source" == template/geometry/MinCircle.cpp || "$source" == template/geometry/CircleUnion.cpp ]]; then
-            includes+=(-include template/geometry/Circle.cpp)
-        elif [[ "$source" == template/geometry/ConvexHull.cpp ]]; then
-            includes+=(-include template/geometry/Polygon.cpp)
-        elif [[ "$source" == template/geometry/ConvexQuery.cpp ]]; then
-            includes+=(-include template/geometry/Polygon.cpp -include template/geometry/ConvexHull.cpp)
+    if [[ "$source" == template/geometry/* && "$source" != template/geometry/点与向量.cpp && "$source" != template/geometry/三维凸包.cpp ]]; then
+        includes=(-include template/geometry/点与向量.cpp -include template/geometry/直线与线段.cpp)
+        if [[ "$source" == template/geometry/直线与线段.cpp ]]; then
+            includes=(-include template/geometry/点与向量.cpp)
+        elif [[ "$source" == template/geometry/最小圆覆盖.cpp || "$source" == template/geometry/圆面积并与周长并.cpp ]]; then
+            includes+=(-include template/geometry/圆.cpp)
+        elif [[ "$source" == template/geometry/凸包与直径与闵可夫斯基和.cpp ]]; then
+            includes+=(-include template/geometry/多边形.cpp)
+        elif [[ "$source" == template/geometry/凸多边形包含查询.cpp ]]; then
+            includes+=(-include template/geometry/多边形.cpp -include template/geometry/凸包与直径与闵可夫斯基和.cpp)
         fi
     fi
     g++ -std=c++17 -Wall -Wextra -pedantic "${includes[@]}" -fsyntax-only "$source"

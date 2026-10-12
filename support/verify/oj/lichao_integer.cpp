@@ -1,4 +1,4 @@
-#include "../../../template/ds/LiChaoTree.cpp"
+#include "../../../template/ds/李超线段树.cpp"
 
 // P4097 输入适配；另支持 exact 模式验证大整数端点，不含在线解码。
 int main(int argc, char **argv) {

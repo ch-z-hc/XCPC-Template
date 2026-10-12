@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 
-#include "../../template/string/Z.cpp"
-#include "../../template/string/Hash.cpp"
-#include "../../template/string/PAM.cpp"
-#include "../../template/string/MinRotation.cpp"
+#include "../../template/string/扩展字符串匹配.cpp"
+#include "../../template/string/字符串哈希.cpp"
+#include "../../template/string/回文自动机.cpp"
+#include "../../template/string/最小表示法.cpp"
 
 using namespace std;
 

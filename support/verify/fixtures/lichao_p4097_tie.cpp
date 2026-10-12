@@ -1,4 +1,4 @@
-#include "../../../template/ds/LiChaoTree.cpp"
+#include "../../../template/ds/李超线段树.cpp"
 
 // P4097 题意回归：数学同值时必须返回最早的编号。
 // 修复前返回 2；整数有理数比较应返回 1，失败时以非零状态退出。

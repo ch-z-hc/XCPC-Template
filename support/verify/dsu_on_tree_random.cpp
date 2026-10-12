@@ -3,7 +3,7 @@
 #include <set>
 #include <vector>
 
-#include "../../template/graph/DSUOnTree.cpp"
+#include "../../template/graph/树上启发式合并.cpp"
 
 std::vector<int> color, frequency, answer;
 int distinct = 0;

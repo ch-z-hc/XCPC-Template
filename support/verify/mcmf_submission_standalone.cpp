@@ -1,4 +1,4 @@
-#include "../../template/graph/ScalingMinCostFlow.cpp"
+#include "../../template/graph/容量缩放费用流.cpp"
 
 int main() {
     ios::sync_with_stdio(0);

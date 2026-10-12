@@ -1,11 +1,11 @@
 #include <cassert>
-#include "../../template/ds/Fenwick.cpp"
-#include "../../template/ds/AffineSegTree.cpp"
-#include "../../template/ds/Fenwick2D.cpp"
-#include "../../template/ds/MergeSegTree.cpp"
-#include "../../template/graph/DynamicConnectivity.cpp"
-#include "../../template/ds/LCT.cpp"
-#include "../../template/geometry/RectangleUnion.cpp"
+#include "../../template/ds/树状数组.cpp"
+#include "../../template/ds/仿射线段树.cpp"
+#include "../../template/ds/二维树状数组.cpp"
+#include "../../template/ds/动态开点线段树合并与分裂.cpp"
+#include "../../template/graph/离线动态连通性.cpp"
+#include "../../template/ds/动态树.cpp"
+#include "../../template/geometry/矩形面积并与周长并.cpp"
 
 mt19937_64 rng(2026101007);
 

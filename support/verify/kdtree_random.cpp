@@ -1,4 +1,4 @@
-#include "../../template/ds/KDTree.cpp"
+#include "../../template/ds/二维最近邻.cpp"
 #include <cassert>
 
 using Point = pair < ll, ll >;

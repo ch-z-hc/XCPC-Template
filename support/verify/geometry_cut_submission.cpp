@@ -1,6 +1,6 @@
-#include "../../template/geometry/Point.cpp"
-#include "../../template/geometry/Line.cpp"
-#include "../../template/geometry/Polygon.cpp"
+#include "../../template/geometry/点与向量.cpp"
+#include "../../template/geometry/直线与线段.cpp"
+#include "../../template/geometry/多边形.cpp"
 
 void solve() {
     int n; cin >> n;

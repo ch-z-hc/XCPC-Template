@@ -1,7 +1,7 @@
 #include <cassert>
-#include "../../template/math/FPS.cpp"
-#include "../../template/math/Multipoint.cpp"
-#include "../../template/math/SubsetConvolution.cpp"
+#include "../../template/math/多项式基本运算.cpp"
+#include "../../template/math/多项式多点求值与快速插值.cpp"
+#include "../../template/math/子集卷积.cpp"
 
 int main() {
     mt19937 rng(20261011);

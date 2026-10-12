@@ -1,7 +1,7 @@
 #include <cassert>
-#include "../../template/graph/Dinic.cpp"
-#include "../../template/graph/MinCostFlow.cpp"
-#include "../../template/graph/ScalingMinCostFlow.cpp"
+#include "../../template/graph/最大流.cpp"
+#include "../../template/graph/势能最短路费用流.cpp"
+#include "../../template/graph/容量缩放费用流.cpp"
 
 struct TestEdge { int u, v, cap, cost; };
 

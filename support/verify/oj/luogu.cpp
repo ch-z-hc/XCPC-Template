@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 #include <cassert>
 
-#include "../../../template/math/DuJiao.cpp"
-#include "../../../template/math/ExLucas.cpp"
-#include "../../../template/geometry/RectangleUnion.cpp"
+#include "../../../template/math/杜教筛.cpp"
+#include "../../../template/math/扩展卢卡斯定理.cpp"
+#include "../../../template/geometry/矩形面积并与周长并.cpp"
 
 using namespace std;
 

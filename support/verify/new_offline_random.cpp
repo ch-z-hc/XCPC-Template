@@ -1,6 +1,6 @@
 #include <cassert>
-#include "../../template/others/CDQ.cpp"
-#include "../../template/others/OverallBinary.cpp"
+#include "../../template/others/分治三维偏序.cpp"
+#include "../../template/others/整体二分与动态区间第几小.cpp"
 
 ll random_val(mt19937 &rng) {
     unsigned x = rng() % 12;

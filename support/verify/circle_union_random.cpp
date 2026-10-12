@@ -1,7 +1,7 @@
-#include "../../template/geometry/Point.cpp"
-#include "../../template/geometry/Line.cpp"
-#include "../../template/geometry/Circle.cpp"
-#include "../../template/geometry/CircleUnion.cpp"
+#include "../../template/geometry/点与向量.cpp"
+#include "../../template/geometry/直线与线段.cpp"
+#include "../../template/geometry/圆.cpp"
+#include "../../template/geometry/圆面积并与周长并.cpp"
 #include <cassert>
 
 const db pi = acosl(-1);

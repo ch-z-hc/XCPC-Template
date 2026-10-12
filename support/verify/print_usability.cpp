@@ -4,13 +4,13 @@
 #include "../tools/contest_main.cpp"
 #undef main
 
-#include "../../template/ds/LiChaoTree.cpp"
-#include "../../template/ds/SegTree.cpp"
-#include "../../template/graph/HLD.cpp"
-#include "../../template/graph/MinCostFlow.cpp"
-#include "../../template/graph/LowerBoundMinCostFlow.cpp"
-#include "../../template/math/Gauss.cpp"
-#include "../../template/math/Min25.cpp"
+#include "../../template/ds/李超线段树.cpp"
+#include "../../template/ds/线段树与树上二分.cpp"
+#include "../../template/graph/树链剖分.cpp"
+#include "../../template/graph/势能最短路费用流.cpp"
+#include "../../template/graph/上下界最小费用流.cpp"
+#include "../../template/math/高斯消元.cpp"
+#include "../../template/math/积性函数求和.cpp"
 
 int main(int argc, char **argv) {
     if (argc > 1) {

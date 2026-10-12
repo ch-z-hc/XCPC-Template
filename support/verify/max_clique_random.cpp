@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../../template/graph/MaxClique.cpp"
+#include "../../template/graph/最大团与最大独立集.cpp"
 
 int brute(const MaxClique &mc, bool independent) {
     int n = mc.n, ans = 0;

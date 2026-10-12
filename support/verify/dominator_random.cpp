@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../../template/graph/Dominator.cpp"
+#include "../../template/graph/支配树.cpp"
 
 V < int > reachable(const V < V < int > > &g, int root, int ban) {
     V < int > vis(g.size());

@@ -2,7 +2,7 @@
 
 日期：2026-10-13。对象：当前未提交工作区的全部 145 个算法模板、接口索引、打印生成与验证工具，以及根目录的两份打印 PDF。
 
-后续处理：用户已确认去掉 `tie`、`move`，保留 lambda 和中文目录，并追加要求比赛模板默认不用 `int128`。下文第一至五节保留修改前的审查快照；第六节记录第一批修订，第七节是最新数值类型与打印结果，旧宽整数接口和范围不再适用。
+后续处理：用户已确认去掉 `tie`、`move`，保留 lambda 和中文目录，并追加要求比赛模板默认不用 `int128`、模板文件名改成中文。下文第一至五节保留修改前的审查快照；第六节记录第一批修订，第七节记录当前数值类型与范围，第八节是中文文件名及最新打印结果，旧宽整数接口和范围不再适用。
 
 本轮以“使用者只熟悉基本 C++ 语法和 lambda”为标准。以下区分算法错误、使用陷阱和可选整理，不把较新的语法一律视为错误。只新增本报告，未修改模板、接口、README 或 PDF；已有未提交改动全部保留。
 
@@ -12,7 +12,7 @@
 
 ### 1. HLD 示例缺少按 DFS 序重排点权
 
-位置：[HLD.cpp](D:/OI/template/template/graph/HLD.cpp:71)。
+位置：[树链剖分.cpp](D:/OI/template/template/graph/树链剖分.cpp:71)。
 
 示例直接使用 `seg.query(l, r)`，没有演示线段树如何初始化。这里的区间是 DFS 序，不是原顶点编号；直接把原数组交给线段树，程序能运行，却可能算错。
 
@@ -22,7 +22,7 @@
 
 ### 2. 莫队和树上启发式合并只给函数声明，没有展示怎么填写
 
-位置：[Mo.cpp](D:/OI/template/template/others/Mo.cpp:15)、[MoModify.cpp](D:/OI/template/template/others/MoModify.cpp:21)、[MoTree.cpp](D:/OI/template/template/others/MoTree.cpp:19)、[DSUOnTree.cpp](D:/OI/template/template/graph/DSUOnTree.cpp:18)。
+位置：[莫队.cpp](D:/OI/template/template/others/莫队.cpp:15)、[带修改莫队.cpp](D:/OI/template/template/others/带修改莫队.cpp:21)、[树上莫队.cpp](D:/OI/template/template/others/树上莫队.cpp:19)、[树上启发式合并.cpp](D:/OI/template/template/graph/树上启发式合并.cpp:18)。
 
 改为普通成员函数符合此前确认的方向，不建议恢复多个泛型回调。不过，现在 `void add(...);` 等只是声明，原样复制并调用会在链接时缺少定义。虽然注释写了“补全”，基本语法使用者仍可能不知道应把状态放在哪里、函数体写在哪里。
 
@@ -30,7 +30,7 @@
 
 ### 3. `__int128` 结果缺少可直接使用的输出办法
 
-位置：[FloorSum.cpp](D:/OI/template/template/math/FloorSum.cpp:37)、[DuJiao.cpp](D:/OI/template/template/math/DuJiao.cpp:76)、[ConvexHullTrick.cpp](D:/OI/template/template/others/ConvexHullTrick.cpp:49)。
+位置：[类欧几里得.cpp](D:/OI/template/template/math/类欧几里得.cpp:37)、[杜教筛.cpp](D:/OI/template/template/math/杜教筛.cpp:76)、[单调凸包与斜率优化.cpp](D:/OI/template/template/others/单调凸包与斜率优化.cpp:49)。
 
 返回宽整数是必要的，不能为了语法简单改成 `ll`。但 `cout << ans` 不能直接输出这些类型；“自行转换”把最后一步留给了场上使用者，强转为 `ll` 又可能丢失答案。
 
@@ -38,15 +38,15 @@
 
 ### 4. 依赖写的是文件名，纸面标题却不显示文件名
 
-位置：[GomoryHu.cpp](D:/OI/template/template/graph/GomoryHu.cpp:9)、[LowerBoundMinCostFlow.cpp](D:/OI/template/template/graph/LowerBoundMinCostFlow.cpp:10)、[Stirling.cpp](D:/OI/template/template/math/Stirling.cpp:9)、[BostanMori.cpp](D:/OI/template/template/math/BostanMori.cpp:9)、[Runs.cpp](D:/OI/template/template/string/Runs.cpp:7)，以及几何片段的依赖说明。
+位置：[最小割树.cpp](D:/OI/template/template/graph/最小割树.cpp:9)、[上下界最小费用流.cpp](D:/OI/template/template/graph/上下界最小费用流.cpp:10)、[两类斯特林数.cpp](D:/OI/template/template/math/两类斯特林数.cpp:9)、[线性递推快速求项.cpp](D:/OI/template/template/math/线性递推快速求项.cpp:9)、[极大周期子串.cpp](D:/OI/template/template/string/极大周期子串.cpp:7)，以及几何片段的依赖说明。
 
-电脑上能搜索 `FPS.cpp`，纸面上却需要先把文件名对应到中文目录标题。部分依赖还排在使用者后面，例如 Bostan–Mori 在形式幂级数前、Runs 在后缀数组前。
+电脑上能搜索 `多项式基本运算.cpp`，纸面上却需要先把文件名对应到中文目录标题。部分依赖还排在使用者后面，例如 Bostan–Mori 在形式幂级数前、Runs 在后缀数组前。
 
 建议：依赖说明使用与打印目录完全一致的算法标题，必要时加章节定位。保留此前“不印文件名”的排版决定，也不把公共依赖复制进每个模板。是否调整目录顺序，由用户决定。
 
 ### 5. 李超树是整段坐标开数组，不是压缩坐标或动态开点
 
-位置：[LiChaoTree.cpp](D:/OI/template/template/ds/LiChaoTree.cpp:10)、[分配处](D:/OI/template/template/ds/LiChaoTree.cpp:41)。
+位置：[李超线段树.cpp](D:/OI/template/template/ds/李超线段树.cpp:10)、[分配处](D:/OI/template/template/ds/李超线段树.cpp:41)。
 
 “离散整数横坐标”容易被理解为任意大的离散坐标。实际按 `X = R - L + 1` 分配约 `4X` 个节点；坐标范围很大时，即使只插入几条直线，也会耗尽内存。范围计算和节点数量还必须能放进 `int`。
 
@@ -56,7 +56,7 @@
 
 ### 6. 李超树的整数比较精确，不等于返回值精确
 
-位置：[LiChaoTree.cpp](D:/OI/template/template/ds/LiChaoTree.cpp:51)、[查询处](D:/OI/template/template/ds/LiChaoTree.cpp:109)、[示例](D:/OI/template/template/ds/LiChaoTree.cpp:162)。
+位置：[李超线段树.cpp](D:/OI/template/template/ds/李超线段树.cpp:51)、[查询处](D:/OI/template/template/ds/李超线段树.cpp:109)、[示例](D:/OI/template/template/ds/李超线段树.cpp:162)。
 
 两处容易混淆：
 
@@ -67,7 +67,7 @@
 
 ### 7. 离散化的恢复值说明要求调用者拿到一个拿不到的局部变量
 
-位置：[Discretize.cpp](D:/OI/template/template/others/Discretize.cpp:11)、[末尾说明](D:/OI/template/template/others/Discretize.cpp:24)。
+位置：[离散化.cpp](D:/OI/template/template/others/离散化.cpp:11)、[末尾说明](D:/OI/template/template/others/离散化.cpp:24)。
 
 函数只返回编号，排序去重后的 `key` 留在函数内部。末尾说“保留 key”却没有说明怎样获取；要恢复原值、查离散后共有几个值，调用者还得在外部再做一次排序去重。
 
@@ -75,7 +75,7 @@
 
 ### 8. 两个高级模板的示例还没有落到可照抄的调用
 
-位置：[Gauss.cpp](D:/OI/template/template/math/Gauss.cpp:99)、[Min25.cpp](D:/OI/template/template/math/Min25.cpp:101)。
+位置：[高斯消元.cpp](D:/OI/template/template/math/高斯消元.cpp:99)、[积性函数求和.cpp](D:/OI/template/template/math/积性函数求和.cpp:101)。
 
 - 异或高斯只说 `c` 是 `V < bitset < N > >`，没有演示固定的 `N`、矩阵分配、系数位和第 `m` 位常数项。运行时变量不能直接当 `bitset` 长度。
 - Min_25 的尾部只有初始化和欧拉函数公式，没有实际的 `sum(c, lambda)` 调用。头部还要求回调为 `O(1)`；临时用循环算幂会改变这个前提。
@@ -94,7 +94,7 @@
 
 ### 10. 少量常用但超出基本语法的写法，需确认你是否能读懂
 
-位置示例：[KDTree.cpp](D:/OI/template/template/ds/KDTree.cpp:31)、[LeftistHeap.cpp](D:/OI/template/template/ds/LeftistHeap.cpp:33)、[VBCC.cpp](D:/OI/template/template/graph/VBCC.cpp:60)、[ExLucas.cpp](D:/OI/template/template/math/ExLucas.cpp:39)、[FloorSum.cpp](D:/OI/template/template/math/FloorSum.cpp:4)。
+位置示例：[二维最近邻.cpp](D:/OI/template/template/ds/二维最近邻.cpp:31)、[左偏树与可并堆.cpp](D:/OI/template/template/ds/左偏树与可并堆.cpp:33)、[点双连通分量.cpp](D:/OI/template/template/graph/点双连通分量.cpp:60)、[扩展卢卡斯定理.cpp](D:/OI/template/template/math/扩展卢卡斯定理.cpp:39)、[类欧几里得.cpp](D:/OI/template/template/math/类欧几里得.cpp:4)。
 
 | 写法 | 场上理解所需的含义 | 建议 |
 | --- | --- | --- |
@@ -106,7 +106,7 @@
 
 ## 三、不是错误，但场上要注意
 
-- `FHQTreap.cpp` 包含按值和按位置两套结构，`Gauss.cpp` 包含三种消元。只抄需要的那一套，不必整份抄；不因此自动拆文件、增加目录维护成本。
+- `无旋平衡树.cpp` 包含按值和按位置两套结构，`高斯消元.cpp` 包含三种消元。只抄需要的那一套，不必整份抄；不因此自动拆文件、增加目录维护成本。
 - 字符串多为 0-based，图和树默认 1-based；区间集合使用半开区间。这些区别已有说明，不应为了表面统一而改算法。
 - 莫队、启发式合并、点分治和换根等模板仍需要理解题目状态；补示例能降低接入成本，但不能变成“不懂维护含义也能直接套”的通用答案。
 - 递归和深链的栈需求按项目约定保留；Linux 全量验证把栈设为 256 MiB，这不保证任意评测机的默认栈同样充足。
@@ -183,3 +183,15 @@ OEIS 缩小后的字号能否舒服阅读，数字渲染不能替你决定。建
 最终模板册为 147 个条目、233 页，逐行逐字符及版心、字体检查通过。已检查全册低分辨率总览，放大检查 27 页，覆盖全部改动片段、目录与册首；未发现裁切或明显乱码。CRT 的简单语句按个人码风适度压行，避免末尾几行单占一页，没有改字号或删说明。渲染与源码快照位于 `build/no128-final-20261013/`；根目录与 `output/pdf/` 打印件 SHA-256 相同：`75667A30F592655CF99F3989F581D68BD4E6106FEEDC8CE8DC4DB5CB05F615AD`。
 
 打印使用 A4 竖版、100% 原尺寸、一页一面、双面长边翻转，233 页需 117 张纸。OEIS 未修改；PDF、构建产物与 `.Codex/` 不纳入本次 Git 提交。
+
+## 八、模板文件名改为中文
+
+`template/` 下全部 145 个 `.cpp` 文件已改成中文算法名，分类目录、结构体和函数接口不变。README、题源索引、历史审查中的路径、打印目录、验证程序与对拍示例的引用已同步，不保留旧文件名副本或兼容别名。`check_sources.py` 新增中文文件名检查，防止后续漏改。
+
+144 个模板的内容逐字不变；三维凸包仅将注释中的基础文件名改为 `点与向量.cpp`。逐文件核对旧版源码及改名映射，确认算法未修改，全部旧文件名引用已移除；新文件均位于原分类目录，操作前已排除 reparse point 和目标冲突。
+
+改名前的索引与集成烟测通过。改名后 145 个模板的索引和语法检查、46 个标准程序的 ASan / UBSan / 标准库断言、20 题共 409 组本地官方数据、400 组李超树 Python 精确真值、四个注释示例及入口边界均通过。完整 Linux 流程退出状态为 0，末尾对拍工具的 6 组各 200 轮、C++ runner 各 20 轮及错误路径检查通过。日志为 `build/chinese-rename-linux.log` 和 `build/chinese-rename-public.log`。
+
+模板册重新生成，仍为 147 个条目、233 页；逐行逐字符、字体、页码及版心检查通过。与改名前逐页比较，232 页的文字完全相同，仅第 210 页的文件名注释变化；放大检查该页、两页目录、册首和末页，无裁切或乱码。诊断与渲染在 `build/chinese-rename-map.json`、`build/chinese-rename-visual/`。根目录与 `output/pdf/` 打印件 SHA-256 相同：`51C0BF118FC3B11F9C3F91317B0F4A0148DBA783C9B1A429FD742C3C6EC54213`。
+
+第七节的数值前提和 A4 竖版、100% 原尺寸、双面长边翻转设置保持不变，仍需 117 张纸。OEIS 未修改，PDF、构建产物和 `.Codex/` 不提交。

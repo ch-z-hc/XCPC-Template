@@ -1,6 +1,6 @@
-#include "../../template/string/SuffixArray.cpp"
-#include "../../template/string/Lyndon.cpp"
-#include "../../template/string/Runs.cpp"
+#include "../../template/string/后缀数组.cpp"
+#include "../../template/string/林登分解.cpp"
+#include "../../template/string/极大周期子串.cpp"
 
 #include <cassert>
 

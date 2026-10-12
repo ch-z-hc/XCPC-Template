@@ -3,7 +3,7 @@
 #include <random>
 #include <vector>
 
-#include "../../template/ds/LiChaoTree.cpp"
+#include "../../template/ds/李超线段树.cpp"
 
 typedef __int128_t LiChaoInt; // 独立有理数真值，不属于比赛模板。
 

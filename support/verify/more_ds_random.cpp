@@ -1,6 +1,6 @@
 #include <cassert>
-#include "../../template/ds/SegmentTreeBeats.cpp"
-#include "../../template/ds/PersistentArray.cpp"
+#include "../../template/ds/吉司机线段树.cpp"
+#include "../../template/ds/可持久化数组.cpp"
 
 void check_beats(Beats &tr, const V < ll > &a, int l, int r) {
     ll sum = 0, mn = a[l], mx = a[l];

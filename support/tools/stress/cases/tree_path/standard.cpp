@@ -1,4 +1,4 @@
-#include "../../../../../template/graph/LCA.cpp"
+#include "../../../../../template/graph/倍增最近公共祖先.cpp"
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);

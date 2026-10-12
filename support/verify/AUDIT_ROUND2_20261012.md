@@ -18,7 +18,7 @@
 
 ### 1. 闵可夫斯基和的空集合语义错误：已修复
 
-`ConvexHull.cpp` 中，`MincowskySum({}, {{2,3}})` 和反向调用原来都返回单点 `{(2,3)}`。按点对和的定义，空集合与任何集合的和集都是空集合；这不是原点单点集合的单位元语义。
+`凸包与直径与闵可夫斯基和.cpp` 中，`MincowskySum({}, {{2,3}})` 和反向调用原来都返回单点 `{(2,3)}`。按点对和的定义，空集合与任何集合的和集都是空集合；这不是原点单点集合的单位元语义。
 
 修改为任一集合为空就返回空。保留非空凸包的边归并算法、原接口及方向归一化。`geometry_random.cpp` 新增 1000 组规模含 0 的点集：先枚举原始点集的所有点对和，再用独立 Jarvis 包裹法得到真值，与模板结果比较；覆盖空 / 空、单侧空、单点、线段、重复点、多边形和两种方向。不是只对比两个共享空集合错误的闵和实现。
 
@@ -36,7 +36,7 @@
 
 ### 3. 三分与欧拉路的调用前提：已补明
 
-- `TernarySearch.cpp`：极值区间外需要严格单调。非最优平台会使相等比较误删含最优点的一侧，例如 `min(1, 100*(x-1)^2)` 在 `[0,1]` 上有非最优平台。此类弱单峰函数不纳入三分模板保证域；未擅自把三分替换为别的算法。
+- `三分搜索.cpp`：极值区间外需要严格单调。非最优平台会使相等比较误删含最优点的一侧，例如 `min(1, 100*(x-1)^2)` 在 `[0,1]` 上有非最优平台。此类弱单峰函数不纳入三分模板保证域；未擅自把三分替换为别的算法。
 - 两个欧拉路模板：声明 `n >= 1`，无边时返回 `{1}`。空边集与空顶点集不同；不把 `n = 0` 时的非法起点调用当作一般图算法必须支持的情形。
 - `XorBasis` 只支持位 0..62、树构建需要合法非空树及根、静态值域结构需要可分配的值域等既有约束不变，不以声明域外输入制造错误报告。
 
@@ -77,176 +77,176 @@
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/ds/AffineSegTree.cpp` | 仿射标记复合顺序、取模与负数归一化 | 逐项数组更新；空树、赋值、模数 1、整数极值参数 | XDS | 通过 |
-| `template/ds/DSU.cpp` | 根大小、路径压缩、重复 init | 显式集合标签；自合并、失败合并、单点与空初始化 | C | 通过 |
-| `template/ds/Fenwick.cpp` | 前缀边界及 kth 的非负权前提 | 数组前缀扫描；零权、负增量、空树、非法 k | C、XDS | 通过 |
-| `template/ds/Fenwick2D.cpp` | 离散坐标、严格前缀与矩形开闭边界 | map 枚举；重复坐标、倒置矩形、ll 极值、空集 | XDS | 通过 |
-| `template/ds/FHQTreap.cpp` | split / merge 引用、重复键、翻转标记 | multiset / vector；空集、重复、删除缺失键、ll 极值 | ND | 通过 |
-| `template/ds/IntervalSet.cpp` | 相邻合并、截断、最大端点的半开区间 | 布尔覆盖和 mex；相邻、切开、全部删除、ll 极值 | CS | 通过 |
-| `template/ds/KDTree.cpp` | 包围盒剪枝、同距编号、距离整数范围 | 枚举点对；重复、空集、排除自身、10 万共线点 | KD | 通过 |
-| `template/ds/LCT.cpp` | access / 翻转 / link / cut 的父子关系 | 显式森林找路径；非法连删、换根、同点、深链 | XDS、DEEP | 通过 |
-| `template/ds/LeftistHeap.cpp` | 合并消耗根、距离维护与相等键排序 | 多个 multiset；空堆、同键、连续 pop、重新 init | P | 通过 |
-| `template/ds/LiChaoTree.cpp` | 整数交叉比较、线段覆盖及值域大小前提 | Python 大整数和逐线枚举；同值、竖线、int 坐标极值 | LC、REG、PYLC | 通过 |
-| `template/ds/MergeSegTree.cpp` | 破坏性合并 / 分裂、节点共享限制 | 频次数组；空根、根清空、非法 kth、INT_MAX 值域 | XDS、REG | 通过 |
-| `template/ds/PersistentArray.cpp` | 路径复制、旧版本不变与 init 失效 | 完整快照；历史分叉、单点、空初始化、ll 极值 | MD | 通过 |
-| `template/ds/PersistentSegTree.cpp` | 前缀根差及压缩值的秩 | 区间排序；重复值、空 build、单元素、ll 极值 | ND | 通过 |
-| `template/ds/PersistentXorTrie.cpp` | 版本包含关系、计数相减与最高位 | 多重集快照；空差、全 1、重复、版本分叉 | PX | 通过 |
-| `template/ds/RollbackDSU.cpp` | 失败合并栈长、恢复 siz、有效快照 | 每步全点对连通性；回滚中间状态、回滚到 0、init | B、GR | 通过 |
-| `template/ds/SegmentTreeBeats.cpp` | 严格次值、双侧截断及加法标记 | 逐项数组；全等、双值、交替截断、合法大值、重建 | MD | 通过 |
-| `template/ds/SegTree.cpp` | lazy 下推、位置搜索与 kth 前提 | 逐项数组与扫描；空区间、负权、零权、越界 k | C、CS | 通过 |
-| `template/ds/WeightedDSU.cpp` | 差值方向、异或关系和矛盾判定 | 独立 BFS；自关系、未连通、重复约束、最高位 | ND | 通过 |
-| `template/ds/XorTrie.cpp` | 位 63、删除计数与缺失值处理 | 多重集枚举；0、ULLONG_MAX、空集、重复 | ND | 通过 |
+| `template/ds/仿射线段树.cpp` | 仿射标记复合顺序、取模与负数归一化 | 逐项数组更新；空树、赋值、模数 1、整数极值参数 | XDS | 通过 |
+| `template/ds/并查集.cpp` | 根大小、路径压缩、重复 init | 显式集合标签；自合并、失败合并、单点与空初始化 | C | 通过 |
+| `template/ds/树状数组.cpp` | 前缀边界及 kth 的非负权前提 | 数组前缀扫描；零权、负增量、空树、非法 k | C、XDS | 通过 |
+| `template/ds/二维树状数组.cpp` | 离散坐标、严格前缀与矩形开闭边界 | map 枚举；重复坐标、倒置矩形、ll 极值、空集 | XDS | 通过 |
+| `template/ds/无旋平衡树.cpp` | split / merge 引用、重复键、翻转标记 | multiset / vector；空集、重复、删除缺失键、ll 极值 | ND | 通过 |
+| `template/ds/区间集合与最小未出现数.cpp` | 相邻合并、截断、最大端点的半开区间 | 布尔覆盖和 mex；相邻、切开、全部删除、ll 极值 | CS | 通过 |
+| `template/ds/二维最近邻.cpp` | 包围盒剪枝、同距编号、距离整数范围 | 枚举点对；重复、空集、排除自身、10 万共线点 | KD | 通过 |
+| `template/ds/动态树.cpp` | access / 翻转 / link / cut 的父子关系 | 显式森林找路径；非法连删、换根、同点、深链 | XDS、DEEP | 通过 |
+| `template/ds/左偏树与可并堆.cpp` | 合并消耗根、距离维护与相等键排序 | 多个 multiset；空堆、同键、连续 pop、重新 init | P | 通过 |
+| `template/ds/李超线段树.cpp` | 整数交叉比较、线段覆盖及值域大小前提 | Python 大整数和逐线枚举；同值、竖线、int 坐标极值 | LC、REG、PYLC | 通过 |
+| `template/ds/动态开点线段树合并与分裂.cpp` | 破坏性合并 / 分裂、节点共享限制 | 频次数组；空根、根清空、非法 kth、INT_MAX 值域 | XDS、REG | 通过 |
+| `template/ds/可持久化数组.cpp` | 路径复制、旧版本不变与 init 失效 | 完整快照；历史分叉、单点、空初始化、ll 极值 | MD | 通过 |
+| `template/ds/主席树.cpp` | 前缀根差及压缩值的秩 | 区间排序；重复值、空 build、单元素、ll 极值 | ND | 通过 |
+| `template/ds/可持久化二进制字典树.cpp` | 版本包含关系、计数相减与最高位 | 多重集快照；空差、全 1、重复、版本分叉 | PX | 通过 |
+| `template/ds/可撤销并查集.cpp` | 失败合并栈长、恢复 siz、有效快照 | 每步全点对连通性；回滚中间状态、回滚到 0、init | B、GR | 通过 |
+| `template/ds/吉司机线段树.cpp` | 严格次值、双侧截断及加法标记 | 逐项数组；全等、双值、交替截断、合法大值、重建 | MD | 通过 |
+| `template/ds/线段树与树上二分.cpp` | lazy 下推、位置搜索与 kth 前提 | 逐项数组与扫描；空区间、负权、零权、越界 k | C、CS | 通过 |
+| `template/ds/带权与异或并查集.cpp` | 差值方向、异或关系和矛盾判定 | 独立 BFS；自关系、未连通、重复约束、最高位 | ND | 通过 |
+| `template/ds/二进制字典树.cpp` | 位 63、删除计数与缺失值处理 | 多重集枚举；0、ULLONG_MAX、空集、重复 | ND | 通过 |
 
 ### 图论与树：47 个
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/graph/BipartiteMatch.cpp` | 增广重置、空部及重复 solve | 枚举匹配；缺边、不完全匹配、空部、重复调用 | GR、REG | 通过 |
-| `template/graph/BlockCutTree.cpp` | 圆方节点归属及分量森林 | 删点后连通性；孤点、重边、不连通、深链 | AT、DEEP | 通过 |
-| `template/graph/Bridge.cpp` | 父边编号与重边 low 更新 | 逐边删除；平行边、重复 find、不连通、深链 | GR、DEEP、REG | 通过 |
-| `template/graph/BridgeTree.cpp` | 桥连接分量与编号约定 | 连通性和森林性；孤立分量、重边、深链 | AT、DEEP | 通过 |
-| `template/graph/Centroid.cpp` | 去重计数、非负距离与阈值减法 | 无序点对枚举；星形、零权、负阈值、LLONG_MAX 单边 | NT | 通过 |
-| `template/graph/CentroidTree.cpp` | 点分层距离及子分支容斥 | 独立树距离；负点权、阈值等号、重建清空、深链 | MG | 通过 |
-| `template/graph/CutVertex.cpp` | 根孩子数及平行父边对割点判据的影响 | 逐点删除；重边、不连通、重复 find、深链 | GR、DEEP、REG | 通过 |
-| `template/graph/DiffConstraints.cpp` | 不等式方向、负环与整体平移 | 独立 i128 Floyd；极大负权、不可表示解、重复 solve | GR、REG | 通过 |
-| `template/graph/Dijkstra.cpp` | 非负边及 inf 哨兵的可加范围 | 独立 Floyd；不可达、自环、重边、零权、大权 | C | 通过 |
-| `template/graph/Dinic.cpp` | 自环反向编号、增流语义与残量维护 | 穷举流量 / 割；零容量、反向边、二次 flow、init | F、AT、REG | 通过 |
-| `template/graph/DirectedEulerTrail.cpp` | 入出度差、起点与全部边使用数 | 按边编号枚举；无边、自环、重边、不连通、深链 | GR、DEEP | 澄清 n >= 1 后通过 |
-| `template/graph/DirectedMST.cpp` | 环收缩、权差与根可达性 | 枚举入边；负环权、自环、重边、单点、极大单边 | XGR | 通过 |
-| `template/graph/Dominator.cpp` | DFS 编号、半支配及不可达点 | 删点支配集合；所有根、自环、重边、长链 | DOM | 通过 |
-| `template/graph/DSUOnTree.cpp` | 重儿子保留与外部回调恢复 | 枚举子树颜色；换根、重复 build、状态清理、深链 | DT、DEEP | 通过 |
-| `template/graph/DynamicConnectivity.cpp` | 重边计数、时间区间和回滚 | 当前图遍历；自环、重复边、反向 erase、多次 solve | XDS | 通过 |
-| `template/graph/EBCC.cpp` | 桥排除、分量归属及边号下标 | 独立删桥重连通；重边、孤点、不连通、深环 | GR、AT、DEEP | 通过 |
-| `template/graph/EulerLCA.cpp` | 欧拉序首次出现、换根重建 | 父亲逐步跳；全根全点对、单点、深链 | GR、DEEP | 通过 |
-| `template/graph/Floyd.cpp` | 对角初始化、不可达与负环标记 | i128 松弛；负自环、孤立负环、重边、空图 | XGR | 通过 |
-| `template/graph/FunctionalGraph.cpp` | 入环树、环距离与大步跳转 | 逐步走图；空图、自环、长尾、ULLONG_MAX 步数 | CS、DEEP | 通过 |
-| `template/graph/GeneralMatching.cpp` | 花缩环与增广路径恢复 | 子集匹配 DP；奇环、重边、自环忽略、重复 solve | XGR | 通过 |
-| `template/graph/GlobalMinCut.cpp` | 收缩权值、返回一侧与总权上界 | 割子集枚举；空 / 单点、不连通、近 ll 上界单边 | XGR | 通过 |
-| `template/graph/GomoryHu.cpp` | 父关系调整、割值与容量复制 | 全点对割枚举；不连通、自环、重边、重复 build | AT | 通过 |
-| `template/graph/HLD.cpp` | 重链编号、子树连续与路径方向限制 | 父亲扫描和路径集合；换根、单点、深链 | NT | 通过 |
-| `template/graph/HopcroftKarp.cpp` | 分层增广与最小点覆盖 | 子集 DP / 点覆盖；空部、重边、增边后重算、长结构 | NF、XGR | 通过 |
-| `template/graph/Johnson.cpp` | 全局负环、重赋权与 inf 范围 | i128 Floyd；势能负边、孤立负环、空图、重复 solve | XGR | 通过 |
-| `template/graph/KM.cpp` | 全左覆盖语义、松弛标签与失败清理 | 全匹配枚举；n > m、负权、缺边、ll 极值 | NF | 通过 |
-| `template/graph/Kruskal.cpp` | 森林返回值、连通判定和累加 | 独立 Prim；负权、同权、不连通、单点 | C | 通过 |
-| `template/graph/KruskalTree.cpp` | 升 / 降序重构与不连通查询 | Floyd minimax / maximin；同点、负权、重复建树 | AT、DEEP | 通过 |
-| `template/graph/KShortestWalk.cpp` | 左偏堆偏移、零环与游走语义 | 独立多次出堆枚举；重边、空游走、不可达、近 inf | KSW | 通过 |
-| `template/graph/KthAncestor.cpp` | 长链索引、深度外哨兵与换根 | 父亲逐步跳；k = 0、深度外、单点、50 万点链 | AT、DEEP | 通过 |
-| `template/graph/LCA.cpp` | 根父哨兵与倍增边界 | 全根全点对父亲跳跃；单点、重复 build、深链 | GR、DEEP | 通过 |
-| `template/graph/LowerBoundFlow.cpp` | 需求平衡和允许负源汇净流语义 | 穷举流量及方案；强制下界、无解、自环、大容量 | NF | 通过 |
-| `template/graph/LowerBoundMinCostFlow.cpp` | 供需方向、负环消除与重算 | 全边流量枚举；孤立负环、自环、无解、重复 solve | LBC | 通过 |
-| `template/graph/MaxClique.cpp` | 候选剪枝、补图与着色上界 | 子集枚举 / 5 点全图；空图、完全图、重复调用 | CLIQUE | 通过 |
-| `template/graph/MinCostFlow.cpp` | 势能初始化、自环反向边与负环限制 | 枚举流量；负边 DAG、重建、重复增流 | F、LBC、REG | 通过 |
-| `template/graph/Reroot.cpp` | 子树贡献、换根差及 ll 中间量 | 全点对距离后求和；零权、重复调用、深链封闭式 | GR、DEEP | 通过 |
-| `template/graph/ScalingMinCostFlow.cpp` | 全局费用优化与残量重算语义 | 任意小图流量枚举；孤立负环、负自环、无通路 | F、REG | 通过 |
-| `template/graph/SCC.cpp` | 活跃栈、low 与重复 build 重置 | 传递闭包；自环、重边、不连通、深链 | GR、DEEP | 通过 |
-| `template/graph/SteinerTree.cpp` | 子集合并、最短路传播及终端去重 | 边子集枚举；空 / 重复终端、零权、不连通、近 inf | MG | 通过 |
-| `template/graph/TopologicalSort.cpp` | 重边入度、空图与有环可选返回值 | 独立闭包判环；空图、自环、菱形 DAG、一般有环图 | A、C | 通过 |
-| `template/graph/TreeDiameter.cpp` | 双扫的非负权前提与端点返回 | 全点对距离；单点、零权、深链 | GR、DEEP | 通过 |
-| `template/graph/TwoSAT.cpp` | 文字映射、强制约束及方案方向 | 所有布尔赋值；空变量、矛盾、同变量、深链 | NT | 通过 |
-| `template/graph/UndirectedEulerTrail.cpp` | 按边去重、自环度数及非孤点连通 | 边编号枚举；无边、重边、自环、不连通、深链 | GR、DEEP | 澄清 n >= 1 后通过 |
-| `template/graph/VBCC.cpp` | 分量栈、单边 / 孤点与极大性 | 枚举点集及删点；重边、重复 build、不连通、深链 | A、GR、AT、DEEP | 通过 |
-| `template/graph/VirtualTree.cpp` | LCA 闭包、最近祖先连接及清理 | 关键点对闭包；空 / 重复点、换根、重复 query | NT | 通过 |
-| `template/graph/WeightedMatching.cpp` | 花状态、松弛标签、非正边及权上界 | 子集 DP / 5 点三态全图；奇花反例、ll 边界、500 点结构 | WM | 通过 |
-| `template/graph/ZeroOneBFS.cpp` | 距离松弛与严格 0 / 1 边权前提 | 独立 Bellman-Ford 式松弛；零环、重边、不可达 | XGR | 通过 |
+| `template/graph/二分图匹配.cpp` | 增广重置、空部及重复 solve | 枚举匹配；缺边、不完全匹配、空部、重复调用 | GR、REG | 通过 |
+| `template/graph/圆方树.cpp` | 圆方节点归属及分量森林 | 删点后连通性；孤点、重边、不连通、深链 | AT、DEEP | 通过 |
+| `template/graph/桥.cpp` | 父边编号与重边 low 更新 | 逐边删除；平行边、重复 find、不连通、深链 | GR、DEEP、REG | 通过 |
+| `template/graph/边双缩点树.cpp` | 桥连接分量与编号约定 | 连通性和森林性；孤立分量、重边、深链 | AT、DEEP | 通过 |
+| `template/graph/点分治.cpp` | 去重计数、非负距离与阈值减法 | 无序点对枚举；星形、零权、负阈值、LLONG_MAX 单边 | NT | 通过 |
+| `template/graph/点分树.cpp` | 点分层距离及子分支容斥 | 独立树距离；负点权、阈值等号、重建清空、深链 | MG | 通过 |
+| `template/graph/割点.cpp` | 根孩子数及平行父边对割点判据的影响 | 逐点删除；重边、不连通、重复 find、深链 | GR、DEEP、REG | 通过 |
+| `template/graph/差分约束.cpp` | 不等式方向、负环与整体平移 | 独立 i128 Floyd；极大负权、不可表示解、重复 solve | GR、REG | 通过 |
+| `template/graph/堆优化最短路.cpp` | 非负边及 inf 哨兵的可加范围 | 独立 Floyd；不可达、自环、重边、零权、大权 | C | 通过 |
+| `template/graph/最大流.cpp` | 自环反向编号、增流语义与残量维护 | 穷举流量 / 割；零容量、反向边、二次 flow、init | F、AT、REG | 通过 |
+| `template/graph/有向图欧拉路.cpp` | 入出度差、起点与全部边使用数 | 按边编号枚举；无边、自环、重边、不连通、深链 | GR、DEEP | 澄清 n >= 1 后通过 |
+| `template/graph/最小树形图.cpp` | 环收缩、权差与根可达性 | 枚举入边；负环权、自环、重边、单点、极大单边 | XGR | 通过 |
+| `template/graph/支配树.cpp` | DFS 编号、半支配及不可达点 | 删点支配集合；所有根、自环、重边、长链 | DOM | 通过 |
+| `template/graph/树上启发式合并.cpp` | 重儿子保留与外部回调恢复 | 枚举子树颜色；换根、重复 build、状态清理、深链 | DT、DEEP | 通过 |
+| `template/graph/离线动态连通性.cpp` | 重边计数、时间区间和回滚 | 当前图遍历；自环、重复边、反向 erase、多次 solve | XDS | 通过 |
+| `template/graph/边双连通分量.cpp` | 桥排除、分量归属及边号下标 | 独立删桥重连通；重边、孤点、不连通、深环 | GR、AT、DEEP | 通过 |
+| `template/graph/欧拉序最近公共祖先.cpp` | 欧拉序首次出现、换根重建 | 父亲逐步跳；全根全点对、单点、深链 | GR、DEEP | 通过 |
+| `template/graph/全源最短路.cpp` | 对角初始化、不可达与负环标记 | i128 松弛；负自环、孤立负环、重边、空图 | XGR | 通过 |
+| `template/graph/函数图分解与跳跃.cpp` | 入环树、环距离与大步跳转 | 逐步走图；空图、自环、长尾、ULLONG_MAX 步数 | CS、DEEP | 通过 |
+| `template/graph/一般图匹配.cpp` | 花缩环与增广路径恢复 | 子集匹配 DP；奇环、重边、自环忽略、重复 solve | XGR | 通过 |
+| `template/graph/全局最小割.cpp` | 收缩权值、返回一侧与总权上界 | 割子集枚举；空 / 单点、不连通、近 ll 上界单边 | XGR | 通过 |
+| `template/graph/最小割树.cpp` | 父关系调整、割值与容量复制 | 全点对割枚举；不连通、自环、重边、重复 build | AT | 通过 |
+| `template/graph/树链剖分.cpp` | 重链编号、子树连续与路径方向限制 | 父亲扫描和路径集合；换根、单点、深链 | NT | 通过 |
+| `template/graph/分层增广二分图匹配.cpp` | 分层增广与最小点覆盖 | 子集 DP / 点覆盖；空部、重边、增边后重算、长结构 | NF、XGR | 通过 |
+| `template/graph/重赋权全源最短路.cpp` | 全局负环、重赋权与 inf 范围 | i128 Floyd；势能负边、孤立负环、空图、重复 solve | XGR | 通过 |
+| `template/graph/二分图最大权匹配.cpp` | 全左覆盖语义、松弛标签与失败清理 | 全匹配枚举；n > m、负权、缺边、ll 极值 | NF | 通过 |
+| `template/graph/最小生成树.cpp` | 森林返回值、连通判定和累加 | 独立 Prim；负权、同权、不连通、单点 | C | 通过 |
+| `template/graph/重构树.cpp` | 升 / 降序重构与不连通查询 | Floyd minimax / maximin；同点、负权、重复建树 | AT、DEEP | 通过 |
+| `template/graph/第几短游走.cpp` | 左偏堆偏移、零环与游走语义 | 独立多次出堆枚举；重边、空游走、不可达、近 inf | KSW | 通过 |
+| `template/graph/长链剖分与祖先查询.cpp` | 长链索引、深度外哨兵与换根 | 父亲逐步跳；k = 0、深度外、单点、50 万点链 | AT、DEEP | 通过 |
+| `template/graph/倍增最近公共祖先.cpp` | 根父哨兵与倍增边界 | 全根全点对父亲跳跃；单点、重复 build、深链 | GR、DEEP | 通过 |
+| `template/graph/上下界网络流.cpp` | 需求平衡和允许负源汇净流语义 | 穷举流量及方案；强制下界、无解、自环、大容量 | NF | 通过 |
+| `template/graph/上下界最小费用流.cpp` | 供需方向、负环消除与重算 | 全边流量枚举；孤立负环、自环、无解、重复 solve | LBC | 通过 |
+| `template/graph/最大团与最大独立集.cpp` | 候选剪枝、补图与着色上界 | 子集枚举 / 5 点全图；空图、完全图、重复调用 | CLIQUE | 通过 |
+| `template/graph/势能最短路费用流.cpp` | 势能初始化、自环反向边与负环限制 | 枚举流量；负边 DAG、重建、重复增流 | F、LBC、REG | 通过 |
+| `template/graph/换根动态规划与距离和.cpp` | 子树贡献、换根差及 ll 中间量 | 全点对距离后求和；零权、重复调用、深链封闭式 | GR、DEEP | 通过 |
+| `template/graph/容量缩放费用流.cpp` | 全局费用优化与残量重算语义 | 任意小图流量枚举；孤立负环、负自环、无通路 | F、REG | 通过 |
+| `template/graph/强连通分量.cpp` | 活跃栈、low 与重复 build 重置 | 传递闭包；自环、重边、不连通、深链 | GR、DEEP | 通过 |
+| `template/graph/最小斯坦纳树.cpp` | 子集合并、最短路传播及终端去重 | 边子集枚举；空 / 重复终端、零权、不连通、近 inf | MG | 通过 |
+| `template/graph/拓扑排序.cpp` | 重边入度、空图与有环可选返回值 | 独立闭包判环；空图、自环、菱形 DAG、一般有环图 | A、C | 通过 |
+| `template/graph/树的直径.cpp` | 双扫的非负权前提与端点返回 | 全点对距离；单点、零权、深链 | GR、DEEP | 通过 |
+| `template/graph/二元可满足性.cpp` | 文字映射、强制约束及方案方向 | 所有布尔赋值；空变量、矛盾、同变量、深链 | NT | 通过 |
+| `template/graph/无向图欧拉路.cpp` | 按边去重、自环度数及非孤点连通 | 边编号枚举；无边、重边、自环、不连通、深链 | GR、DEEP | 澄清 n >= 1 后通过 |
+| `template/graph/点双连通分量.cpp` | 分量栈、单边 / 孤点与极大性 | 枚举点集及删点；重边、重复 build、不连通、深链 | A、GR、AT、DEEP | 通过 |
+| `template/graph/虚树.cpp` | LCA 闭包、最近祖先连接及清理 | 关键点对闭包；空 / 重复点、换根、重复 query | NT | 通过 |
+| `template/graph/一般图最大权匹配.cpp` | 花状态、松弛标签、非正边及权上界 | 子集 DP / 5 点三态全图；奇花反例、ll 边界、500 点结构 | WM | 通过 |
+| `template/graph/零一最短路.cpp` | 距离松弛与严格 0 / 1 边权前提 | 独立 Bellman-Ford 式松弛；零环、重边、不可达 | XGR | 通过 |
 
 ### 数学：34 个
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/math/AdaptiveSimpson.cpp` | 误差抵消、有限极端尺度的中间量 | 解析多项式 / log；原反例、1000 组尺度区间、反向、深度 0 | A、R、FIX | 修复后通过 |
-| `template/math/BerlekampMassey.cpp` | 零递推、特征式取模与初始项 | 逐项递推；零序列、空递推、初始 / 后续项 | R、REG | 通过 |
-| `template/math/BostanMori.cpp` | 分母奇偶消去、大 k 和零阶递推 | 逐项展开 / Fibonacci 倍增；空分子、ULLONG_MAX、2048 阶 | CM | 通过 |
-| `template/math/BSGS.cpp` | 最小指数、非互质约分与模数 1 | 逐幂首达；0 底数、无解、负数、ll 极值 | B、NM | 通过 |
-| `template/math/Combination.cpp` | 阶乘可逆条件、越界 k 和重复 init | 独立 Pascal；n = 0、小素数、表外参数 | A、R | 通过 |
-| `template/math/CRT.cpp` | 非互质合并、最小解与 lcm 溢出 | 枚举周期；空方程、冲突、模数 1、溢出异常 | NM | 通过 |
-| `template/math/Determinant.cpp` | 消元符号、模数前提及有向矩阵树方向 | 排列展开 / 边子集；空、奇异、重边、自环、负元素 | XM | 通过 |
-| `template/math/DivisorTransform.cpp` | 变换遍历方向、逆变换及上界截断 | 整除 / 数对枚举；n = 0、合数、模数 1 | CM | 通过 |
-| `template/math/DuJiao.cpp` | 分块末端、缓存键、phi 的 i128 累加 | gcd / 试除前缀；表内外、n = 0、init 清缓存 | XM | 通过 |
-| `template/math/EquidistantLagrange.cpp` | 采样点命中、前后缀乘积及归一化 | 独立 Horner；空样本、ll 横坐标极值、10 万采样点 | CM | 通过 |
-| `template/math/ExLucas.cpp` | 质因子阶数、质数幂阶乘和预处理成本 | i128 Pascal；合数、模数 1、非法 k、极大 n 的边缘 k | XM | 通过 |
-| `template/math/FFT.cpp` | 长度与 CRT 重建范围、浮点接口区别 | 双循环卷积 / DFT；空、负系数、极值系数、合数模数 | NP | 通过 |
-| `template/math/FloorSum.cpp` | 负数数学下取整与 i128 中间量 | 逐项枚举 / 封闭式；n = 0、ll 极值、负 a / b | XM | 通过 |
-| `template/math/FPS.cpp` | 常数项、截断、零前缀与幂移位 | 系数递推 / 朴素多项式；空、无平方根、ULLONG_MAX 幂 | NP、XM | 通过 |
-| `template/math/FWT.cpp` | 三种蝶形及逆变换可逆条件 | 双循环卷积；长度 1、零掩码、正逆互验 | R | 通过 |
-| `template/math/Gauss.cpp` | 主元、自由变量、模域与实数容差 | 模赋值枚举 / 小整数秩；无解、多解、零行列、近零主元 | NM | 通过 |
-| `template/math/Lagrange.cpp` | 模意义互异横坐标与采样点直返 | 独立 Horner；单点、零系数、命中采样点 | R | 通过 |
-| `template/math/LinearSieve.cpp` | 最小质因子递推、0 / 1 与重建 | 试除 / gcd 计数；质数幂、反复缩小和放大 | A、NM | 通过 |
-| `template/math/Lucas.cpp` | 按 p 进位分解和 O(p) 内存条件 | Pascal；p = 2、跨 p、非法 k、极大边缘组合数 | A、NM | 通过 |
-| `template/math/Matrix.cpp` | 维度、乘法中间量和指数 0 | i128 点积 / 逐次乘方；全 mod-1、单位阵大幂、mod = 2^31 | A、R | 通过 |
-| `template/math/MatrixInverse.cpp` | 可逆判定、行交换及左右逆 | 排列行列式和左右乘积；空、奇异、负值、INT_MAX 模数 | P | 通过 |
-| `template/math/Min25.cpp` | 商表索引、二次素数值和三次中间量 | 逐数试除 / phi 筛前缀；n = 0、负系数、合数模数 | BM | 通过 |
-| `template/math/ModArithmetic.cpp` | 大模乘法、负底数和逆元前提 | 逐次乘法 / 验逆；模数 1、LLONG_MIN / MAX、空批量 | P | 通过 |
-| `template/math/ModSqrt.cpp` | p = 2、非剩余与最小根 | 枚举根 / 大素数回平方；0、负数、INT_MAX 素数 | XM | 通过 |
-| `template/math/Multipoint.cpp` | 余式树、零多项式与插值点互异 | Horner / 朴素插值；重复求值点、空、重建、4096 点 | AP | 通过 |
-| `template/math/NTT.cpp` | 蝶形下标、逆归一化与 2^23 上限 | 双循环卷积；空、长度 1、各 2 的幂、4096 项应用 | R、CM | 通过 |
-| `template/math/PollardRho.cpp` | ull 模乘、判素基底与随机重试 | 小数试除 / 分解乘积；伪素数、0 / 1、大半素数、ULLONG_MAX | B、NM | 通过 |
-| `template/math/PrimeSieve.cpp` | 0 / 1、小规模边界与重复调用 | 逐数试除；小质数、稠密合数段、随机上界 | A、R | 通过 |
-| `template/math/PrimitiveRoot.cpp` | p-1 因子检验与最小性 | 剩余类枚举；p = 2、大素数、ull 上界附近素数 | B、P | 通过 |
-| `template/math/QuotientBlocks.cpp` | 最大右端点、终段与规模成本 | 逐元素核对商；0 / 1 / 2、10^12 回归、连续性 | A、R、REG | 通过 |
-| `template/math/Simplex.cpp` | 双阶段可行性、退化循环及容差 | 顶点枚举；无解、无界、零维、负 RHS、Beale 例 | BM | 通过 |
-| `template/math/Stirling.cpp` | 无符号第一类、递推 / 卷积模数区别 | 计数恒等式 / 小规模全枚举；n = 0、合数、4096 项 | CM | 通过 |
-| `template/math/SubsetConvolution.cpp` | 秩分层、逆变换与内存上界 | 所有子掩码枚举；n = 0、负系数、极值、模数 1 / 合数 | AP | 通过 |
-| `template/math/XorBasis.cpp` | 有序化、kth 与位 0..62 前提 | 可表示异或集合枚举；相关向量、空基、满 63 维、非法 k | R、XM | 通过 |
+| `template/math/自适应辛普森积分.cpp` | 误差抵消、有限极端尺度的中间量 | 解析多项式 / log；原反例、1000 组尺度区间、反向、深度 0 | A、R、FIX | 修复后通过 |
+| `template/math/最短线性递推.cpp` | 零递推、特征式取模与初始项 | 逐项递推；零序列、空递推、初始 / 后续项 | R、REG | 通过 |
+| `template/math/线性递推快速求项.cpp` | 分母奇偶消去、大 k 和零阶递推 | 逐项展开 / Fibonacci 倍增；空分子、ULLONG_MAX、2048 阶 | CM | 通过 |
+| `template/math/离散对数.cpp` | 最小指数、非互质约分与模数 1 | 逐幂首达；0 底数、无解、负数、ll 极值 | B、NM | 通过 |
+| `template/math/组合数.cpp` | 阶乘可逆条件、越界 k 和重复 init | 独立 Pascal；n = 0、小素数、表外参数 | A、R | 通过 |
+| `template/math/扩展欧几里得与中国剩余定理.cpp` | 非互质合并、最小解与 lcm 溢出 | 枚举周期；空方程、冲突、模数 1、溢出异常 | NM | 通过 |
+| `template/math/行列式与矩阵树定理.cpp` | 消元符号、模数前提及有向矩阵树方向 | 排列展开 / 边子集；空、奇异、重边、自环、负元素 | XM | 通过 |
+| `template/math/约数与倍数变换与卷积.cpp` | 变换遍历方向、逆变换及上界截断 | 整除 / 数对枚举；n = 0、合数、模数 1 | CM | 通过 |
+| `template/math/杜教筛.cpp` | 分块末端、缓存键、phi 的 i128 累加 | gcd / 试除前缀；表内外、n = 0、init 清缓存 | XM | 通过 |
+| `template/math/等距拉格朗日插值.cpp` | 采样点命中、前后缀乘积及归一化 | 独立 Horner；空样本、ll 横坐标极值、10 万采样点 | CM | 通过 |
+| `template/math/扩展卢卡斯定理.cpp` | 质因子阶数、质数幂阶乘和预处理成本 | i128 Pascal；合数、模数 1、非法 k、极大 n 的边缘 k | XM | 通过 |
+| `template/math/快速傅里叶变换与任意模数卷积.cpp` | 长度与 CRT 重建范围、浮点接口区别 | 双循环卷积 / DFT；空、负系数、极值系数、合数模数 | NP | 通过 |
+| `template/math/类欧几里得.cpp` | 负数数学下取整与 i128 中间量 | 逐项枚举 / 封闭式；n = 0、ll 极值、负 a / b | XM | 通过 |
+| `template/math/多项式基本运算.cpp` | 常数项、截断、零前缀与幂移位 | 系数递推 / 朴素多项式；空、无平方根、ULLONG_MAX 幂 | NP、XM | 通过 |
+| `template/math/快速沃尔什变换.cpp` | 三种蝶形及逆变换可逆条件 | 双循环卷积；长度 1、零掩码、正逆互验 | R | 通过 |
+| `template/math/高斯消元.cpp` | 主元、自由变量、模域与实数容差 | 模赋值枚举 / 小整数秩；无解、多解、零行列、近零主元 | NM | 通过 |
+| `template/math/拉格朗日插值.cpp` | 模意义互异横坐标与采样点直返 | 独立 Horner；单点、零系数、命中采样点 | R | 通过 |
+| `template/math/线性筛积性函数.cpp` | 最小质因子递推、0 / 1 与重建 | 试除 / gcd 计数；质数幂、反复缩小和放大 | A、NM | 通过 |
+| `template/math/卢卡斯定理.cpp` | 按 p 进位分解和 O(p) 内存条件 | Pascal；p = 2、跨 p、非法 k、极大边缘组合数 | A、NM | 通过 |
+| `template/math/矩阵快速幂.cpp` | 维度、乘法中间量和指数 0 | i128 点积 / 逐次乘方；全 mod-1、单位阵大幂、mod = 2^31 | A、R | 通过 |
+| `template/math/矩阵求逆.cpp` | 可逆判定、行交换及左右逆 | 排列行列式和左右乘积；空、奇异、负值、INT_MAX 模数 | P | 通过 |
+| `template/math/积性函数求和.cpp` | 商表索引、二次素数值和三次中间量 | 逐数试除 / phi 筛前缀；n = 0、负系数、合数模数 | BM | 通过 |
+| `template/math/快速幂与逆元.cpp` | 大模乘法、负底数和逆元前提 | 逐次乘法 / 验逆；模数 1、LLONG_MIN / MAX、空批量 | P | 通过 |
+| `template/math/二次剩余.cpp` | p = 2、非剩余与最小根 | 枚举根 / 大素数回平方；0、负数、INT_MAX 素数 | XM | 通过 |
+| `template/math/多项式多点求值与快速插值.cpp` | 余式树、零多项式与插值点互异 | Horner / 朴素插值；重复求值点、空、重建、4096 点 | AP | 通过 |
+| `template/math/快速数论变换与多项式乘法.cpp` | 蝶形下标、逆归一化与 2^23 上限 | 双循环卷积；空、长度 1、各 2 的幂、4096 项应用 | R、CM | 通过 |
+| `template/math/素性测试与整数分解.cpp` | ull 模乘、判素基底与随机重试 | 小数试除 / 分解乘积；伪素数、0 / 1、大半素数、ULLONG_MAX | B、NM | 通过 |
+| `template/math/线性筛素数.cpp` | 0 / 1、小规模边界与重复调用 | 逐数试除；小质数、稠密合数段、随机上界 | A、R | 通过 |
+| `template/math/原根.cpp` | p-1 因子检验与最小性 | 剩余类枚举；p = 2、大素数、ull 上界附近素数 | B、P | 通过 |
+| `template/math/整除分块.cpp` | 最大右端点、终段与规模成本 | 逐元素核对商；0 / 1 / 2、10^12 回归、连续性 | A、R、REG | 通过 |
+| `template/math/单纯形与线性规划.cpp` | 双阶段可行性、退化循环及容差 | 顶点枚举；无解、无界、零维、负 RHS、Beale 例 | BM | 通过 |
+| `template/math/两类斯特林数.cpp` | 无符号第一类、递推 / 卷积模数区别 | 计数恒等式 / 小规模全枚举；n = 0、合数、4096 项 | CM | 通过 |
+| `template/math/子集卷积.cpp` | 秩分层、逆变换与内存上界 | 所有子掩码枚举；n = 0、负系数、极值、模数 1 / 合数 | AP | 通过 |
+| `template/math/异或线性基.cpp` | 有序化、kth 与位 0..62 前提 | 可表示异或集合枚举；相关向量、空基、满 63 维、非法 k | R、XM | 通过 |
 
 ### 字符串：14 个
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/string/ACAutomaton.cpp` | fail 累加、重复模式与新增后 build | 子串枚举；重叠、空文本、无模式、clear、多批 build | R、B、REG | 通过 |
-| `template/string/BitsetLCS.cpp` | 多块借位及字节索引 | 普通 LCS DP；空串、256 字节、63 / 64 / 65 等块边界 | XO | 通过 |
-| `template/string/Hash.cpp` | 子串开闭边界、空串和跨对象 | 直接多项式 / LCP；NUL、高字节、全等、重复 build | NS、A | 通过，有碰撞风险 |
-| `template/string/Hash2D.cpp` | 二维容斥、形状和空矩形 | 直接逐行列多项式；空 / 零宽矩阵、任意字节、跨对象 | CS | 通过，有碰撞风险 |
-| `template/string/KMP.cpp` | 失配跳转及空模式的 n+1 位置约定 | 逐起点 compare；空、重叠、周期、NUL / 高字节 | C、B | 通过 |
-| `template/string/Lyndon.cpp` | Duval 分界与 unsigned char 顺序 | 三元串穷举 / 直接分解核验；空、全等、周期、长串 | BS | 通过 |
-| `template/string/Manacher.cpp` | 奇偶半径和闭区间查询 | 逐子串回文枚举；空、全等、周期、NUL / 高字节 | C、B | 通过 |
-| `template/string/MinRotation.cpp` | 相等旋转的最早起点和字节顺序 | 枚举旋转 / 二元串穷举；空、全等、周期、高字节 | NS | 通过 |
-| `template/string/PAM.cpp` | 虚根、fail 计数与重复 count | 前缀回文频次枚举；空、全等、重复 build、继续插入 | NS | 通过 |
-| `template/string/Runs.cpp` | LCE / LCS 边界、最小周期和极大性 | 三元串穷举 / 子串枚举；空、周期、任意字节、长全等 | BS | 通过 |
-| `template/string/SAM.cpp` | clone、拓扑累计与重复 count | 所有子串频次；空、全等、全异、clone、重复 build | R、B | 通过 |
-| `template/string/SuffixArray.cpp` | 倍增排序、LCP RMQ 与空后缀限制 | 后缀排序 / 直接 LCP；空、周期、NUL / 高字节、重建 | SA、B、BS | 通过 |
-| `template/string/Trie.cpp` | 根计数、空串和 clear | 完整模式列表；重复插入、缺失、空前缀、空模式 | R、B | 通过 |
-| `template/string/Z.cpp` | z[0] 约定和扩展匹配边界 | 直接 LCP / 二元串穷举；空模式、空文本、全等、高字节 | NS | 通过 |
+| `template/string/多模式匹配自动机.cpp` | fail 累加、重复模式与新增后 build | 子串枚举；重叠、空文本、无模式、clear、多批 build | R、B、REG | 通过 |
+| `template/string/位集优化最长公共子序列.cpp` | 多块借位及字节索引 | 普通 LCS DP；空串、256 字节、63 / 64 / 65 等块边界 | XO | 通过 |
+| `template/string/字符串哈希.cpp` | 子串开闭边界、空串和跨对象 | 直接多项式 / LCP；NUL、高字节、全等、重复 build | NS、A | 通过，有碰撞风险 |
+| `template/string/二维哈希.cpp` | 二维容斥、形状和空矩形 | 直接逐行列多项式；空 / 零宽矩阵、任意字节、跨对象 | CS | 通过，有碰撞风险 |
+| `template/string/字符串匹配.cpp` | 失配跳转及空模式的 n+1 位置约定 | 逐起点 compare；空、重叠、周期、NUL / 高字节 | C、B | 通过 |
+| `template/string/林登分解.cpp` | Duval 分界与 unsigned char 顺序 | 三元串穷举 / 直接分解核验；空、全等、周期、长串 | BS | 通过 |
+| `template/string/最长回文子串.cpp` | 奇偶半径和闭区间查询 | 逐子串回文枚举；空、全等、周期、NUL / 高字节 | C、B | 通过 |
+| `template/string/最小表示法.cpp` | 相等旋转的最早起点和字节顺序 | 枚举旋转 / 二元串穷举；空、全等、周期、高字节 | NS | 通过 |
+| `template/string/回文自动机.cpp` | 虚根、fail 计数与重复 count | 前缀回文频次枚举；空、全等、重复 build、继续插入 | NS | 通过 |
+| `template/string/极大周期子串.cpp` | LCE / LCS 边界、最小周期和极大性 | 三元串穷举 / 子串枚举；空、周期、任意字节、长全等 | BS | 通过 |
+| `template/string/后缀自动机.cpp` | clone、拓扑累计与重复 count | 所有子串频次；空、全等、全异、clone、重复 build | R、B | 通过 |
+| `template/string/后缀数组.cpp` | 倍增排序、LCP RMQ 与空后缀限制 | 后缀排序 / 直接 LCP；空、周期、NUL / 高字节、重建 | SA、B、BS | 通过 |
+| `template/string/字典树.cpp` | 根计数、空串和 clear | 完整模式列表；重复插入、缺失、空前缀、空模式 | R、B | 通过 |
+| `template/string/扩展字符串匹配.cpp` | z[0] 约定和扩展匹配边界 | 直接 LCP / 二元串穷举；空模式、空文本、全等、高字节 | NS | 通过 |
 
 ### 其他算法：18 个
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/others/CartesianTree.cpp` | 相等优先级及中序顺序 | 堆性质 / 中序 / 父子关系；空、全等、单调、ll 极值 | R、B | 通过 |
-| `template/others/CDQ.cpp` | 重复点合并、回滚和非严格偏序 | 所有点对枚举；空、100 个全等、ll 极值坐标 | NO | 通过 |
-| `template/others/Common.cpp` | 比较返回值、模加减归一化及类型上界 | 直接运算；相等、进位、借位、模数 1 | A、R | 通过 |
-| `template/others/ConvexHullTrick.cpp` | 斜率 / 查询单调、同斜率及交叉积 | 逐线枚举 / 二次 DP；相等、负截距、大数、长 DP | P | 通过 |
-| `template/others/Discretize.cpp` | 排名起点与不修改原数组 | 有序集合排名；空、重复、负数、ll 极值 | R | 通过 |
-| `template/others/DLX.cpp` | 覆盖 / 恢复对称性与成功路径清理 | 行子集枚举及字段快照；零列、无解、重复 solve、追加行 | DLX | 通过 |
-| `template/others/DPOpt.cpp` | 最左 argmin 单调前提、背包队列窗口 | 普通转移枚举；不可达、负价值、数量 0、精确 / 至多体积 | XO | 通过 |
-| `template/others/LIS.cpp` | 严格 / 非严格二分与方案回溯 | 二次 DP；空、重复、负数、ll 极值、下标方案 | CS | 通过 |
-| `template/others/Mo.cpp` | 初始空区间与回调下标语义 | 区间直接扫描；无查询、同点、重复区间、空操作 | R、B | 通过 |
-| `template/others/MoModify.cpp` | 时间移动、旧值记录与外部状态重置 | 每次修改后 set 统计；同值修改、无查询、重复 solve | XO | 通过 |
-| `template/others/MonotonicStack.cpp` | 严格不等关系与缺失哨兵 | 双向逐点扫描；空、重复、负值、ll 极值 | P | 通过 |
-| `template/others/MoTree.cpp` | 欧拉奇偶、额外 LCA 与换根重建 | 独立 DFS 路径 / set；同点、祖先 / 非祖先、深链 | XO、DEEP | 通过 |
-| `template/others/OverallBinary.cpp` | 时间顺序、修改贡献回滚与非法 k 前提 | 当前区间排序；空查询、重复修改、ll 极值、重复 solve | NO | 通过 |
-| `template/others/SG.cpp` | mex 大小上界及环拒绝 | 双子游戏胜负 DP / 逐点 mex；终点、重边、自环、深链 | CS、DEEP | 通过 |
-| `template/others/SlidingWindow.cpp` | 过期下标、相等元素与合法窗口 | 逐窗口扫描；全等、单调、单点、ll 极值、全部合法 k | R、B | 通过 |
-| `template/others/SparseTable.cpp` | 对数边界与幂等重叠查询 | 枚举区间 max；单点、全等、单调、负数、重新 build | R、B | 通过 |
-| `template/others/TernarySearch.cpp` | 相等比较及极值区间外严格单调前提 | 已知顶点二次函数；端点、零宽、常数、最小 / 最大版 | A、R | 澄清前提后通过 |
-| `template/others/TreeHash.cpp` | 有根语义、子树顺序不变及随机盐 | 排序括号编码；单点、换编号、打乱邻接、深链 | R、DEEP | 通过，有碰撞风险 |
+| `template/others/笛卡尔树.cpp` | 相等优先级及中序顺序 | 堆性质 / 中序 / 父子关系；空、全等、单调、ll 极值 | R、B | 通过 |
+| `template/others/分治三维偏序.cpp` | 重复点合并、回滚和非严格偏序 | 所有点对枚举；空、100 个全等、ll 极值坐标 | NO | 通过 |
+| `template/others/常用定义.cpp` | 比较返回值、模加减归一化及类型上界 | 直接运算；相等、进位、借位、模数 1 | A、R | 通过 |
+| `template/others/单调凸包与斜率优化.cpp` | 斜率 / 查询单调、同斜率及交叉积 | 逐线枚举 / 二次 DP；相等、负截距、大数、长 DP | P | 通过 |
+| `template/others/离散化.cpp` | 排名起点与不修改原数组 | 有序集合排名；空、重复、负数、ll 极值 | R | 通过 |
+| `template/others/舞蹈链精确覆盖.cpp` | 覆盖 / 恢复对称性与成功路径清理 | 行子集枚举及字段快照；零列、无解、重复 solve、追加行 | DLX | 通过 |
+| `template/others/分治动态规划与单调队列多重背包.cpp` | 最左 argmin 单调前提、背包队列窗口 | 普通转移枚举；不可达、负价值、数量 0、精确 / 至多体积 | XO | 通过 |
+| `template/others/最长上升子序列与方案.cpp` | 严格 / 非严格二分与方案回溯 | 二次 DP；空、重复、负数、ll 极值、下标方案 | CS | 通过 |
+| `template/others/莫队.cpp` | 初始空区间与回调下标语义 | 区间直接扫描；无查询、同点、重复区间、空操作 | R、B | 通过 |
+| `template/others/带修改莫队.cpp` | 时间移动、旧值记录与外部状态重置 | 每次修改后 set 统计；同值修改、无查询、重复 solve | XO | 通过 |
+| `template/others/单调栈与左右最近更小与更大.cpp` | 严格不等关系与缺失哨兵 | 双向逐点扫描；空、重复、负值、ll 极值 | P | 通过 |
+| `template/others/树上莫队.cpp` | 欧拉奇偶、额外 LCA 与换根重建 | 独立 DFS 路径 / set；同点、祖先 / 非祖先、深链 | XO、DEEP | 通过 |
+| `template/others/整体二分与动态区间第几小.cpp` | 时间顺序、修改贡献回滚与非法 k 前提 | 当前区间排序；空查询、重复修改、ll 极值、重复 solve | NO | 通过 |
+| `template/others/博弈状态函数.cpp` | mex 大小上界及环拒绝 | 双子游戏胜负 DP / 逐点 mex；终点、重边、自环、深链 | CS、DEEP | 通过 |
+| `template/others/滑动窗口最值.cpp` | 过期下标、相等元素与合法窗口 | 逐窗口扫描；全等、单调、单点、ll 极值、全部合法 k | R、B | 通过 |
+| `template/others/稀疏表.cpp` | 对数边界与幂等重叠查询 | 枚举区间 max；单点、全等、单调、负数、重新 build | R、B | 通过 |
+| `template/others/三分搜索.cpp` | 相等比较及极值区间外严格单调前提 | 已知顶点二次函数；端点、零宽、常数、最小 / 最大版 | A、R | 澄清前提后通过 |
+| `template/others/树哈希.cpp` | 有根语义、子树顺序不变及随机盐 | 排序括号编码；单点、换编号、打乱邻接、深链 | R、DEEP | 通过，有碰撞风险 |
 
 ### 计算几何：13 个
 
 | 模板 | 本轮实现复核重点 | 随机真值与特殊数据 | 入口 | 结论 |
 | --- | --- | --- | --- | --- |
-| `template/geometry/Circle.cpp` | 相切 / 包含分类、交点与切线条件 | 交点方程 / 距离；重合、零半径、共线三点、解析面积 | NG | 通过，受浮点限制 |
-| `template/geometry/CircleUnion.cpp` | 角区间覆盖、重复圆及包含剔除 | 独立竖切片积分 / 圆周采样；洞、内外相切、近重合 | CU | 通过，数值证据 |
-| `template/geometry/ClosestPair.cpp` | 分治条带、重复点和少于两点 | 所有点对枚举；空、单点、共线、竖线、乱序、重建 | XO | 通过 |
-| `template/geometry/ConvexHull.cpp` | 排序严格性、直径方向与闵和空集合 | Jarvis / 点对枚举；新增 1000 组含空输入、退化、重复和方向变换 | GEO、FIX | 修复后通过 |
-| `template/geometry/ConvexHull3D.cpp` | 初始维度、可见面、朝向和体积 | 整数支撑面枚举；重复、共面、共线、立方体、三种顺序 | H3 | 通过，受浮点限制 |
-| `template/geometry/ConvexQuery.cpp` | 任意点集建包、扇区二分及边界 | 线性 contain / 边界验证；空、点、线段、共线、重复 build | XO | 通过 |
-| `template/geometry/HalfPlane.cpp` | 平行方向排序、队列裁剪与空结果语义 | 独立逐面裁剪；冲突、平行、线 / 点退化、signed zero | NG | 通过，空结果含多种情况 |
-| `template/geometry/Line.cpp` | 退化线段、平行前提及交点参数 | 独立整数谓词 / 最近点方程；相触、交叉、共线、点线段 | A、GEO | 通过 |
-| `template/geometry/MinCircle.cpp` | 随机增量边界及共线候选 | 枚举 1 / 2 / 3 点候选圆；空、重复、共线、零半径 | NG | 通过，受浮点限制 |
-| `template/geometry/MinRectangle.cpp` | 严格逆时针前提及多卡壳指针 | 逐边方向枚举；空、点、线、变换、循环起点、10 万点凸包 | MR | 通过 |
-| `template/geometry/Point.cpp` | 精确排序与 EPS 判等分工、零向量 | 独立叉积 / 点积 / hypot；近 EPS、轴向、负数、旋转 | A、GEO | 通过 |
-| `template/geometry/Polygon.cpp` | 平移后的面积、边界包含与凸裁切 | 矩形解析面积 / 点包含；空、首尾重复、凹多边形、大平移 | A、GEO | 通过 |
-| `template/geometry/RectangleUnion.cpp` | 同横坐标事件、覆盖长度与边界条数 | 整数网格面积 / 边界；共边、重复、退化、乱序、极值平移 | XDS | 通过 |
+| `template/geometry/圆.cpp` | 相切 / 包含分类、交点与切线条件 | 交点方程 / 距离；重合、零半径、共线三点、解析面积 | NG | 通过，受浮点限制 |
+| `template/geometry/圆面积并与周长并.cpp` | 角区间覆盖、重复圆及包含剔除 | 独立竖切片积分 / 圆周采样；洞、内外相切、近重合 | CU | 通过，数值证据 |
+| `template/geometry/平面最近点对.cpp` | 分治条带、重复点和少于两点 | 所有点对枚举；空、单点、共线、竖线、乱序、重建 | XO | 通过 |
+| `template/geometry/凸包与直径与闵可夫斯基和.cpp` | 排序严格性、直径方向与闵和空集合 | Jarvis / 点对枚举；新增 1000 组含空输入、退化、重复和方向变换 | GEO、FIX | 修复后通过 |
+| `template/geometry/三维凸包.cpp` | 初始维度、可见面、朝向和体积 | 整数支撑面枚举；重复、共面、共线、立方体、三种顺序 | H3 | 通过，受浮点限制 |
+| `template/geometry/凸多边形包含查询.cpp` | 任意点集建包、扇区二分及边界 | 线性 contain / 边界验证；空、点、线段、共线、重复 build | XO | 通过 |
+| `template/geometry/半平面交.cpp` | 平行方向排序、队列裁剪与空结果语义 | 独立逐面裁剪；冲突、平行、线 / 点退化、signed zero | NG | 通过，空结果含多种情况 |
+| `template/geometry/直线与线段.cpp` | 退化线段、平行前提及交点参数 | 独立整数谓词 / 最近点方程；相触、交叉、共线、点线段 | A、GEO | 通过 |
+| `template/geometry/最小圆覆盖.cpp` | 随机增量边界及共线候选 | 枚举 1 / 2 / 3 点候选圆；空、重复、共线、零半径 | NG | 通过，受浮点限制 |
+| `template/geometry/最小面积包围矩形.cpp` | 严格逆时针前提及多卡壳指针 | 逐边方向枚举；空、点、线、变换、循环起点、10 万点凸包 | MR | 通过 |
+| `template/geometry/点与向量.cpp` | 精确排序与 EPS 判等分工、零向量 | 独立叉积 / 点积 / hypot；近 EPS、轴向、负数、旋转 | A、GEO | 通过 |
+| `template/geometry/多边形.cpp` | 平移后的面积、边界包含与凸裁切 | 矩形解析面积 / 点包含；空、首尾重复、凹多边形、大平移 | A、GEO | 通过 |
+| `template/geometry/矩形面积并与周长并.cpp` | 同横坐标事件、覆盖长度与边界条数 | 整数网格面积 / 边界；共边、重复、退化、乱序、极值平移 | XDS | 通过 |
 
 ## 验证入口索引
 

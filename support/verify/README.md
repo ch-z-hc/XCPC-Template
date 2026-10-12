@@ -47,7 +47,7 @@ bash support/verify/run_linux.sh
 
 边界覆盖：空输入 / 重构、重复值与负值、合数及 1 模数、`LLONG_MIN` / `MAX` 坐标、`ULLONG_MAX` 跳跃与递推。插值另测 10 万采样点，斯特林数另测 4096 项 NTT，递推另测 2048 阶。
 
-复制依赖：等距插值先复制 `Combination.cpp`，斯特林数先复制 `NTT.cpp`，Bostan–Mori 先复制 `FPS.cpp`，包围矩形先复制 `Point.cpp`。包围矩形输入必须先取得严格逆时针凸包；二维哈希不保证无碰撞；线段树 `kth` 要求所有权值非负。
+复制依赖：等距插值先复制 `组合数.cpp`，斯特林数先复制 `快速数论变换与多项式乘法.cpp`，Bostan–Mori 先复制 `多项式基本运算.cpp`，包围矩形先复制 `点与向量.cpp`。包围矩形输入必须先取得严格逆时针凸包；二维哈希不保证无碰撞；线段树 `kth` 要求所有权值非负。
 
 本批只记录本地随机与回归验证，不新增在线 AC 或官方全量数据通过记录。
 
@@ -160,7 +160,7 @@ python3 support/verify/run_luogu_samples.py
 
 ## 几何拆分
 
-原 `geo.cpp` 拆为 `Point.cpp`、`Line.cpp`、`Polygon.cpp`、`ConvexHull.cpp`；原圆及补充算法拆为 `Circle.cpp`、`HalfPlane.cpp`、`MinCircle.cpp`。基础定义共用原版 `P` / `db` / `EPS`，函数接口不变，原示例入口移到 `geometry_cut_submission.cpp`。
+原 `geo.cpp` 拆为 `点与向量.cpp`、`直线与线段.cpp`、`多边形.cpp`、`凸包与直径与闵可夫斯基和.cpp`；原圆及补充算法拆为 `圆.cpp`、`半平面交.cpp`、`最小圆覆盖.cpp`。基础定义共用原版 `P` / `db` / `EPS`，函数接口不变，原示例入口移到 `geometry_cut_submission.cpp`。
 
 拆分前备份在 `build/geometry-before-split-20261010/`。已核对原版 30 个顶层函数（含示例入口）和补充版 9 个顶层函数的实现没有改动；原版 `P` 保留，补充版重复的基础定义不再保留。两组原几何随机测试继续运行。
 

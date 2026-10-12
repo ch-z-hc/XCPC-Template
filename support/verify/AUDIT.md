@@ -6,7 +6,7 @@
 
 ## 结论
 
-已为每个算法文件整理原题或公开验证题，见 [逐文件题源索引](SOURCES.md)。`Common.cpp` 是辅助定义，没有独立题目，不虚构题源。
+已为每个算法文件整理原题或公开验证题，见 [逐文件题源索引](SOURCES.md)。`常用定义.cpp` 是辅助定义，没有独立题目，不虚构题源。
 
 **已修复本轮发现的李超树 P4097 数学同值判定错误。** 整数参数改用有理数与 `__int128` 精确比较，浮点参数保留浮点比较。以下测试已通过，但没有逐题在线 AC，也不能代替正确性证明。题源索引中的“应用”“部分”不代表完整题解。
 
@@ -113,7 +113,7 @@ python3 support/verify/check_sources.py --network
 
 ## 已修复的问题：李超树数学同值返回错误编号
 
-对应文件：`template/ds/LiChaoTree.cpp`。对应题目：[P4097 / HEOI2013 Segment](https://www.luogu.com.cn/problem/P4097)。
+对应文件：`template/ds/李超线段树.cpp`。对应题目：[P4097 / HEOI2013 Segment](https://www.luogu.com.cn/problem/P4097)。
 
 先插入线段 `(1, 1) → (24, 1)`，再插入 `(1, 1000000000) → (24, 1)`，查询 `x = 24`。两条线段数学上都取值 `1`，题意要求返回较早的编号 `1`，修复前模板返回 `2`。
 
@@ -168,23 +168,23 @@ expected=1 actual=2
 
 | 新增算法 | 对应文件 / 范围 | 公开题 |
 | --- | --- | --- |
-| 单调栈：左右最近更大 / 更小元素 | `others/MonotonicStack.cpp`，严格比较，1-based。 | [P5788 单调栈](https://www.luogu.com.cn/problem/P5788) |
-| 独立快速幂、线性逆元 / 批量逆元 | `math/ModArithmetic.cpp`，逆元要求质数模数。 | [P3811 乘法逆元](https://www.luogu.com.cn/problem/P3811)、[P5431 乘法逆元 2](https://www.luogu.com.cn/problem/P5431) |
-| 矩阵求逆 | `math/MatrixInverse.cpp`，质数模数的 Gauss-Jordan。 | [P4783 矩阵求逆](https://www.luogu.com.cn/problem/P4783) |
-| 单调凸包优化 / 斜率优化 | `others/ConvexHullTrick.cpp`，斜率不增、横坐标不减，截距为 `__int128`。 | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) |
-| 可并堆：左偏树 | `ds/LeftistHeap.cpp`，合并和删除均返回新根。 | [P3377 左偏树 / 可并堆](https://www.luogu.com.cn/problem/P3377) |
-| 原根 | `math/PrimitiveRoot.cpp`，复用 Pollard Rho，质数模数。 | [Primitive Root](https://judge.yosupo.jp/problem/primitive_root) |
+| 单调栈：左右最近更大 / 更小元素 | `others/单调栈与左右最近更小与更大.cpp`，严格比较，1-based。 | [P5788 单调栈](https://www.luogu.com.cn/problem/P5788) |
+| 独立快速幂、线性逆元 / 批量逆元 | `math/快速幂与逆元.cpp`，逆元要求质数模数。 | [P3811 乘法逆元](https://www.luogu.com.cn/problem/P3811)、[P5431 乘法逆元 2](https://www.luogu.com.cn/problem/P5431) |
+| 矩阵求逆 | `math/矩阵求逆.cpp`，质数模数的 Gauss-Jordan。 | [P4783 矩阵求逆](https://www.luogu.com.cn/problem/P4783) |
+| 单调凸包优化 / 斜率优化 | `others/单调凸包与斜率优化.cpp`，斜率不增、横坐标不减，截距为 `__int128`。 | [P3195 HNOI2008 玩具装箱](https://www.luogu.com.cn/problem/P3195) |
+| 可并堆：左偏树 | `ds/左偏树与可并堆.cpp`，合并和删除均返回新根。 | [P3377 左偏树 / 可并堆](https://www.luogu.com.cn/problem/P3377) |
+| 原根 | `math/原根.cpp`，复用 Pollard Rho，质数模数。 | [Primitive Root](https://judge.yosupo.jp/problem/primitive_root) |
 
 ### 本轮已补
 
 | 新增算法 | 当前情况 | 公开题 / 参考 |
 | --- | --- | --- |
-| 子集卷积 | `math/SubsetConvolution.cpp`，显式传入模数，可为合数。 | [P6097 子集卷积](https://www.luogu.com.cn/problem/P6097) |
-| 多项式多点求值、快速插值 | `math/Multipoint.cpp`，复用 FPS；求值允许重复点，插值要求互异。 | [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation)、[Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) |
-| Kruskal 重构树 | `graph/KruskalTree.cpp`，支持递增 / 递减建树、不连通图与重复 build。 | [P2245 星际导航](https://www.luogu.com.cn/problem/P2245) |
-| 圆方树、边双缩点树 | `graph/BlockCutTree.cpp`、`graph/BridgeTree.cpp`，只补树构造，复用 VBCC / EBCC。 | [P4320 道路相遇](https://www.luogu.com.cn/problem/P4320)、[P2860 Redundant Paths](https://www.luogu.com.cn/problem/P2860)，还需应用题统计逻辑。 |
-| 长链剖分的第 k 级祖先 | `graph/KthAncestor.cpp`，预处理 O(n log n)，查询 O(1)。 | [P5903 树上 k 级祖先](https://www.luogu.com.cn/problem/P5903) |
-| Gomory-Hu 最小割树 | `graph/GomoryHu.cpp`，复用 Dinic；最小割树路径最小边权查询。 | [P3329 ZJOI2011 最小割](https://www.luogu.com.cn/problem/P3329)，还需点对计数。 |
+| 子集卷积 | `math/子集卷积.cpp`，显式传入模数，可为合数。 | [P6097 子集卷积](https://www.luogu.com.cn/problem/P6097) |
+| 多项式多点求值、快速插值 | `math/多项式多点求值与快速插值.cpp`，复用 FPS；求值允许重复点，插值要求互异。 | [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation)、[Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) |
+| Kruskal 重构树 | `graph/重构树.cpp`，支持递增 / 递减建树、不连通图与重复 build。 | [P2245 星际导航](https://www.luogu.com.cn/problem/P2245) |
+| 圆方树、边双缩点树 | `graph/圆方树.cpp`、`graph/边双缩点树.cpp`，只补树构造，复用 VBCC / EBCC。 | [P4320 道路相遇](https://www.luogu.com.cn/problem/P4320)、[P2860 Redundant Paths](https://www.luogu.com.cn/problem/P2860)，还需应用题统计逻辑。 |
+| 长链剖分的第 k 级祖先 | `graph/长链剖分与祖先查询.cpp`，预处理 O(n log n)，查询 O(1)。 | [P5903 树上 k 级祖先](https://www.luogu.com.cn/problem/P5903) |
+| Gomory-Hu 最小割树 | `graph/最小割树.cpp`，复用 Dinic；最小割树路径最小边权查询。 | [P3329 ZJOI2011 最小割](https://www.luogu.com.cn/problem/P3329)，还需点对计数。 |
 
 ### 前次列出的专项缺项
 
@@ -194,9 +194,9 @@ expected=1 actual=2
 
 | 新增算法 | 当前情况 | 公开题 / 参考 |
 | --- | --- | --- |
-| 吉司机线段树 | `ds/SegmentTreeBeats.cpp`；区间加、取 min / max、求和与最值。 | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum)，33 组完整官方生成数据及官方 checker 已通过。 |
-| 可持久化数组 | `ds/PersistentArray.cpp`；从任意历史根单点赋值，查询旧根，调用者保存版本根。 | [P3919 可持久化数组](https://www.luogu.com.cn/problem/P3919)；查询产生的版本复用原根。 |
-| 点分树 | `graph/CentroidTree.cpp`；静态非负权树，单点增量修改、距离范围点权和，build 清空点权。 | [P6329 点分树 / 震波](https://www.luogu.com.cn/problem/P6329)；另需初始点权、赋值转增量与在线异或解码。 |
-| 斯坦纳树 | `graph/SteinerTree.cpp`；状压 DP + 多源 Dijkstra，不可连通返回 nullopt，不恢复边集。 | [P6192 最小斯坦纳树](https://www.luogu.com.cn/problem/P6192)；终端数和内存须遵守源码限制。 |
+| 吉司机线段树 | `ds/吉司机线段树.cpp`；区间加、取 min / max、求和与最值。 | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum)，33 组完整官方生成数据及官方 checker 已通过。 |
+| 可持久化数组 | `ds/可持久化数组.cpp`；从任意历史根单点赋值，查询旧根，调用者保存版本根。 | [P3919 可持久化数组](https://www.luogu.com.cn/problem/P3919)；查询产生的版本复用原根。 |
+| 点分树 | `graph/点分树.cpp`；静态非负权树，单点增量修改、距离范围点权和，build 清空点权。 | [P6329 点分树 / 震波](https://www.luogu.com.cn/problem/P6329)；另需初始点权、赋值转增量与在线异或解码。 |
+| 斯坦纳树 | `graph/最小斯坦纳树.cpp`；状压 DP + 多源 Dijkstra，不可连通返回 nullopt，不恢复边集。 | [P6192 最小斯坦纳树](https://www.luogu.com.cn/problem/P6192)；终端数和内存须遵守源码限制。 |
 
 上述三道洛谷题已读取官方题面，当前只记录本地随机与边界对拍，不声称在线 AC 或官方全量数据通过。本次新增验证入口为 `more_ds_random.cpp`、`more_graph_random.cpp`，全量脚本会自动收录。

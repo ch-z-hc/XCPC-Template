@@ -1,4 +1,4 @@
-#include "../../../../../template/string/KMP.cpp"
+#include "../../../../../template/string/字符串匹配.cpp"
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);

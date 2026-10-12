@@ -1,6 +1,6 @@
 #include <cassert>
-#include "../../template/graph/CentroidTree.cpp"
-#include "../../template/graph/SteinerTree.cpp"
+#include "../../template/graph/点分树.cpp"
+#include "../../template/graph/最小斯坦纳树.cpp"
 
 void check_centroid(CentroidTree &tree, const V < V < ll > > &dis,
                     const V < ll > &a, int u, ll radius) {

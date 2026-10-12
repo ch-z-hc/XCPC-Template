@@ -25,6 +25,7 @@ def main():
     document = (ROOT / "support/verify/SOURCES.md").read_text(encoding="utf-8")
     rows = re.findall(r"^\| `(template/[^`]+\.cpp)` \| (.*?) \| (.*?) \|$", document, re.M)
     files = {p.relative_to(ROOT).as_posix() for p in (ROOT / "template").glob("*/*.cpp")}
+    assert all(re.fullmatch(r"[\u4e00-\u9fff]+", Path(path).stem) for path in files), "模板文件名须为中文"
     assert len(rows) == len({row[0] for row in rows}), "索引中出现重复文件"
     indexed = {row[0] for row in rows}
     assert indexed == files, {"missing": sorted(files - indexed), "extra": sorted(indexed - files)}
@@ -43,7 +44,7 @@ def main():
     }
     for source, links, note in rows:
         urls = re.findall(r"\]\((https://[^)]+)\)", links)
-        assert urls or source == "template/others/Common.cpp", source
+        assert urls or source == "template/others/常用定义.cpp", source
         assert tests.get(source), f"缺少本地测试入口：{source}"
         report["templates"].append({
             "file": source, "sha256": sha((ROOT / source).read_bytes()),

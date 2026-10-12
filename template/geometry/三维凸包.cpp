@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// 独立三维片段，不修改 Point.cpp 的 P / EPS；无模数。
+// 独立三维片段，不修改 点与向量.cpp 的 P / EPS；无模数。
 // 增量凸包最坏 O(n² log n) 时间、O(n) 空间；面积 / 体积 O(n)。
 // build(ps, eps) 保留输入顺序；p 和三角面 faces 均为 0-based。
 // dim 为 -1 / 0 / 1 / 2 / 3：空 / 点 / 线 / 面 / 体。

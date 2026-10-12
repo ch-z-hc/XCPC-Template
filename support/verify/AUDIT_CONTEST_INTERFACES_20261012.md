@@ -14,26 +14,26 @@
 
 | 模板 | 当前接口与失败语义 | 随机真值与特殊数据 |
 | --- | --- | --- |
-| `math/CRT.cpp` | `inv(a, mod)` 无逆元返回 `-1`；`crt(r, m, ans, mod)` 返回是否成功 | 枚举最小解、扩欧恒等式；空方程组、模数 1、负余数、非互质冲突、lcm 溢出、`LLONG_MIN/MAX`。入口 `new_math_random`。 |
-| `math/FPS.cpp` | `FPS::sqrt(a, n, ans)` 返回是否有根 | 朴素卷积复平方、二次剩余判定；`n = 0`、零多项式、奇数零前缀、非剩余、截断平方。入口 `extra_math_random`。 |
-| `math/MatrixInverse.cpp` | `matrix_inv(a, mod, b)` 返回是否可逆 | 排列枚举行列式、左右矩阵乘积；空矩阵、零矩阵、换主元、负元素、模数 2 和 `INT_MAX`。入口 `priority_templates_random`。 |
-| `math/ModSqrt.cpp` | `sqrt_mod(a, p)` 无根返回 `-1` | 小质数枚举、随机平方；合法根 0、模数 2、负输入、`LLONG_MIN`。入口 `extra_math_random`。 |
-| `math/XorBasis.cpp` | `Basis::kth(k, ans)` 越界返回 `false` | 枚举不同子集异或值排序；空基第 0 项、满秩 63 位、`LLONG_MAX` 合法结果、`ULLONG_MAX` 下标越界。入口 `extra_math_random`。 |
-| `ds/FHQTreap.cpp` | `kth(k, ans)`、`pre(x, ans)`、`suf(x, ans)` 返回是否存在 | `multiset` 真值；空集、重复键、严格前驱后继、非法次序、负数与 `LLONG_MIN/MAX`。入口 `new_ds_random`。 |
-| `ds/KDTree.cpp` | `nearest(x, y, ans, exclude = -1)` 返回是否找到点 | 扫描全部点；空集、排除唯一点、等距取较小下标、重复点、距离 `8e18`、大规模建树。入口 `kdtree_random`。 |
-| `ds/PersistentXorTrie.cpp` | `max_xor(left, right, x, ans)` 空差集返回 `false` | 扫描版本祖先链及前缀区间；分叉历史、空版本差、0、最高位、完整 `ULLONG_MAX` 答案。入口 `persistent_xor_trie_random`。 |
-| `ds/WeightedDSU.cpp` | `WDSU/XDSU::query(u, v, ans)` 不连通返回 `false` | BFS 求差值 / 异或关系；断开、自点、矛盾约束、负差值、最高位与重复初始化。入口 `new_ds_random`。 |
-| `ds/XorTrie.cpp` | `max_xor(x, ans)` 空集返回 `false` | 多重集扫描最大异或；空集、重数删除、0、最高位及 `ULLONG_MAX`。入口 `new_ds_random`。 |
-| `graph/DirectedMST.cpp` | `DMST::solve(root, ans)` 无树形图返回 `false` | 穷举每点入边并检查从根可达；单点、自环、负权环缩点、不可达、合法 `LLONG_MAX` 权值、重复求解。入口 `extra_graph_random`。 |
-| `graph/KruskalTree.cpp` | `query(u, v, ans)` 不连通返回 `false` | Floyd 极小极大 / 极大极小路径；负权、自点 0、非连通图、切换建树方向、递归深链。入口 `advanced_tree_random`、`deep_stack`。 |
-| `graph/Johnson.cpp` | `solve(dis)` 全图负环返回 `false` | 独立宽整数 Floyd；空图、负边无负环、不可达负环、重边、自环和重复调用。入口 `extra_graph_random`。 |
-| `graph/SteinerTree.cpp` | `solve(terminals)` 不连通返回 `-1` | 穷举边集判断终端连通；空终端、单点、重复终端、零权、大权、孤立点。入口 `more_graph_random`。 |
-| `graph/TopologicalSort.cpp` | `topo(g, order)` 有环返回 `false` | 传递闭包判环、逐边检查拓扑序；空图、自环、重边、断开图。入口 `audit_gaps_random`、`common_templates_random`。 |
-| `others/DLX.cpp` | `solve(rows)` 无精确覆盖返回 `false` | 穷举行集、检查每列恰好覆盖一次；0 列空解、无解、重复求解和求解前后链结构完全恢复。入口 `dlx_random`。 |
-| `others/SG.cpp` | `grundy(g, sg)` 有向环返回 `false` | 独立双子游戏胜负 DP、mex 集合；空图、终点 SG 为 0、重边、自环、深链闭环。入口 `completion_structures_random`、`deep_stack`。 |
-| `geometry/Circle.cpp` | `circumcircle(a, b, c, ans)` 共线返回 `false` | 固定外接圆几何关系及随机最小圆覆盖；共线、重复点、退化点集。入口 `new_geometry_random`。 |
-| `geometry/MinCircle.cpp` | `min_circle` 不变，内部直接接收外接圆输出 | 随机点集对照点、点对、三点候选圆；空集、共线和重复点。入口 `new_geometry_random`。 |
-| `ds/LiChaoTree.cpp` | 整数 `add_line/add_seg`；浮点 `add_line_real/add_seg_real` | 逐横坐标扫描直线 / 线段；整数用有理数交叉乘真值、浮点微小差、端点同值优先较早编号、竖直线段、反向端点、`INT_MIN/MAX` 横坐标。入口 `li_chao_random` 及独立 Python 精确有理数测试。 |
+| `math/扩展欧几里得与中国剩余定理.cpp` | `inv(a, mod)` 无逆元返回 `-1`；`crt(r, m, ans, mod)` 返回是否成功 | 枚举最小解、扩欧恒等式；空方程组、模数 1、负余数、非互质冲突、lcm 溢出、`LLONG_MIN/MAX`。入口 `new_math_random`。 |
+| `math/多项式基本运算.cpp` | `FPS::sqrt(a, n, ans)` 返回是否有根 | 朴素卷积复平方、二次剩余判定；`n = 0`、零多项式、奇数零前缀、非剩余、截断平方。入口 `extra_math_random`。 |
+| `math/矩阵求逆.cpp` | `matrix_inv(a, mod, b)` 返回是否可逆 | 排列枚举行列式、左右矩阵乘积；空矩阵、零矩阵、换主元、负元素、模数 2 和 `INT_MAX`。入口 `priority_templates_random`。 |
+| `math/二次剩余.cpp` | `sqrt_mod(a, p)` 无根返回 `-1` | 小质数枚举、随机平方；合法根 0、模数 2、负输入、`LLONG_MIN`。入口 `extra_math_random`。 |
+| `math/异或线性基.cpp` | `Basis::kth(k, ans)` 越界返回 `false` | 枚举不同子集异或值排序；空基第 0 项、满秩 63 位、`LLONG_MAX` 合法结果、`ULLONG_MAX` 下标越界。入口 `extra_math_random`。 |
+| `ds/无旋平衡树.cpp` | `kth(k, ans)`、`pre(x, ans)`、`suf(x, ans)` 返回是否存在 | `multiset` 真值；空集、重复键、严格前驱后继、非法次序、负数与 `LLONG_MIN/MAX`。入口 `new_ds_random`。 |
+| `ds/二维最近邻.cpp` | `nearest(x, y, ans, exclude = -1)` 返回是否找到点 | 扫描全部点；空集、排除唯一点、等距取较小下标、重复点、距离 `8e18`、大规模建树。入口 `kdtree_random`。 |
+| `ds/可持久化二进制字典树.cpp` | `max_xor(left, right, x, ans)` 空差集返回 `false` | 扫描版本祖先链及前缀区间；分叉历史、空版本差、0、最高位、完整 `ULLONG_MAX` 答案。入口 `persistent_xor_trie_random`。 |
+| `ds/带权与异或并查集.cpp` | `WDSU/XDSU::query(u, v, ans)` 不连通返回 `false` | BFS 求差值 / 异或关系；断开、自点、矛盾约束、负差值、最高位与重复初始化。入口 `new_ds_random`。 |
+| `ds/二进制字典树.cpp` | `max_xor(x, ans)` 空集返回 `false` | 多重集扫描最大异或；空集、重数删除、0、最高位及 `ULLONG_MAX`。入口 `new_ds_random`。 |
+| `graph/最小树形图.cpp` | `DMST::solve(root, ans)` 无树形图返回 `false` | 穷举每点入边并检查从根可达；单点、自环、负权环缩点、不可达、合法 `LLONG_MAX` 权值、重复求解。入口 `extra_graph_random`。 |
+| `graph/重构树.cpp` | `query(u, v, ans)` 不连通返回 `false` | Floyd 极小极大 / 极大极小路径；负权、自点 0、非连通图、切换建树方向、递归深链。入口 `advanced_tree_random`、`deep_stack`。 |
+| `graph/重赋权全源最短路.cpp` | `solve(dis)` 全图负环返回 `false` | 独立宽整数 Floyd；空图、负边无负环、不可达负环、重边、自环和重复调用。入口 `extra_graph_random`。 |
+| `graph/最小斯坦纳树.cpp` | `solve(terminals)` 不连通返回 `-1` | 穷举边集判断终端连通；空终端、单点、重复终端、零权、大权、孤立点。入口 `more_graph_random`。 |
+| `graph/拓扑排序.cpp` | `topo(g, order)` 有环返回 `false` | 传递闭包判环、逐边检查拓扑序；空图、自环、重边、断开图。入口 `audit_gaps_random`、`common_templates_random`。 |
+| `others/舞蹈链精确覆盖.cpp` | `solve(rows)` 无精确覆盖返回 `false` | 穷举行集、检查每列恰好覆盖一次；0 列空解、无解、重复求解和求解前后链结构完全恢复。入口 `dlx_random`。 |
+| `others/博弈状态函数.cpp` | `grundy(g, sg)` 有向环返回 `false` | 独立双子游戏胜负 DP、mex 集合；空图、终点 SG 为 0、重边、自环、深链闭环。入口 `completion_structures_random`、`deep_stack`。 |
+| `geometry/圆.cpp` | `circumcircle(a, b, c, ans)` 共线返回 `false` | 固定外接圆几何关系及随机最小圆覆盖；共线、重复点、退化点集。入口 `new_geometry_random`。 |
+| `geometry/最小圆覆盖.cpp` | `min_circle` 不变，内部直接接收外接圆输出 | 随机点集对照点、点对、三点候选圆；空集、共线和重复点。入口 `new_geometry_random`。 |
+| `ds/李超线段树.cpp` | 整数 `add_line/add_seg`；浮点 `add_line_real/add_seg_real` | 逐横坐标扫描直线 / 线段；整数用有理数交叉乘真值、浮点微小差、端点同值优先较早编号、竖直线段、反向端点、`INT_MIN/MAX` 横坐标。入口 `li_chao_random` 及独立 Python 精确有理数测试。 |
 
 ## 复验记录
 

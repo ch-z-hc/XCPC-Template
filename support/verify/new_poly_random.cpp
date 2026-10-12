@@ -1,6 +1,6 @@
 #include <cassert>
-#include "../../template/math/FPS.cpp"
-#include "../../template/math/FFT.cpp"
+#include "../../template/math/多项式基本运算.cpp"
+#include "../../template/math/快速傅里叶变换与任意模数卷积.cpp"
 
 typedef __int128_t i128; // 独立卷积真值，不属于比赛模板。
 

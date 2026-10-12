@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../template/string/SuffixArray.cpp"
+#include "../../template/string/后缀数组.cpp"
 
 int main() {
     std::mt19937 rng(19260817);

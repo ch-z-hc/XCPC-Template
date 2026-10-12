@@ -1,9 +1,9 @@
 #include <cassert>
-#include "../../template/geometry/Point.cpp"
-#include "../../template/geometry/Line.cpp"
-#include "../../template/geometry/Circle.cpp"
-#include "../../template/geometry/HalfPlane.cpp"
-#include "../../template/geometry/MinCircle.cpp"
+#include "../../template/geometry/点与向量.cpp"
+#include "../../template/geometry/直线与线段.cpp"
+#include "../../template/geometry/圆.cpp"
+#include "../../template/geometry/半平面交.cpp"
+#include "../../template/geometry/最小圆覆盖.cpp"
 
 bool near(db a, db b, db eps = 1e-7L) {
     return fabsl(a - b) <= eps * max(1.L, max(fabsl(a), fabsl(b)));

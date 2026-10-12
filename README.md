@@ -10,6 +10,7 @@
 ## 约定
 
 - 算法片段放在分类目录中，默认不包含 `int main()`。
+- `template/` 下的 `.cpp` 使用中文算法名；结构体和函数名仍保留便于抄写的原接口。
 - `int main()` 只保留在比赛入口、验证程序或明确的工具程序中。
 - 每个片段应在开头注明适用条件、复杂度、下标约定和调用方式。
 - DFS 使用递归，不使用显式栈模拟或遍历序倒推；算法本身需要的 BFS 和栈不受影响。
@@ -32,11 +33,11 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 `support/tools/contest_main.cpp` 保存你的比赛起手式，`support/verify/` 和对拍工具也可以有 `main()`。
 
-计算几何按点与向量、直线与线段、多边形、凸包、圆等拆开，原函数接口不变。先复制 `Point.cpp`，再按文件头注明的依赖复制所需部分；基础定义只需一份。原凸多边形切割示例移至 `support/verify/geometry_cut_submission.cpp`；拆分前的两份完整文件备份在 `build/geometry-before-split-20261010/`。
+计算几何按点与向量、直线与线段、多边形、凸包、圆等拆开，原函数接口不变。先复制 `点与向量.cpp`，再按文件头注明的依赖复制所需部分；基础定义只需一份。原凸多边形切割示例移至 `support/verify/geometry_cut_submission.cpp`；拆分前的两份完整文件备份在 `build/geometry-before-split-20261010/`。
 
-新增的三维凸包独立使用 `P3`，无需复制二维基础定义。`Runs.cpp` 先复制后缀数组，`LowerBoundMinCostFlow.cpp` 先复制常规费用流；依赖均写在各文件头。
+新增的三维凸包独立使用 `P3`，无需复制二维基础定义。`极大周期子串.cpp` 先复制后缀数组，`上下界最小费用流.cpp` 先复制常规费用流；依赖均写在各文件头。
 
-`EquidistantLagrange.cpp` 先复制组合数，`Stirling.cpp` 先复制 NTT，`BostanMori.cpp` 先复制 FPS；`MinRectangle.cpp` 只依赖点向量定义，输入需先取得严格逆时针凸包。
+`等距拉格朗日插值.cpp` 先复制组合数，`两类斯特林数.cpp` 先复制 NTT，`线性递推快速求项.cpp` 先复制 FPS；`最小面积包围矩形.cpp` 只依赖点向量定义，输入需先取得严格逆时针凸包。
 
 ## 打印模板册
 
@@ -143,163 +144,163 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 
 | 文件 | 对外接口 |
 | --- | --- |
-| `template/math/EquidistantLagrange.cpp` | `LagrangeEq::build`、`query`；连续整数采样的线性时间求值，依赖 `Combination.cpp` |
-| `template/others/LIS.cpp` | `lis(a, strict)`；1-based 数组，返回严格递增 / 非递减子序列的下标方案 |
-| `template/math/DivisorTransform.cpp` | `divisor_zeta`、`multiple_zeta`、`gcd_convolution`、`lcm_convolution`；支持合数模数 |
-| `template/graph/FunctionalGraph.cpp` | `FunctionalGraph::build`、`jump`、`distance`；每点恰有一条出边，保存环与入环信息 |
-| `template/math/Stirling.cpp` | `stirling_first`、`stirling_second`、`stirling_second_row`；无符号第一类、第二类与 NTT 求固定一行 |
-| `template/string/Hash2D.cpp` | `Hash2D::build`、`query`；字节矩阵双模哈希，0-based 闭矩形 |
-| `template/geometry/MinRectangle.cpp` | `min_rectangle(hull)`；严格逆时针凸包，返回面积与四角，依赖 `Point.cpp` |
-| `template/ds/IntervalSet.cpp` | `IntervalSet::insert`、`erase`、`contains`、`mex`、`clear`；维护整数半开区间的并 |
-| `template/others/SG.cpp` | `grundy(g, sg)`；写入 SG 值，有向环返回 `false` |
-| `template/math/BostanMori.cpp` | `bostan_mori`、`linear_kth`；有理生成函数系数与大阶递推，依赖 `FPS.cpp` |
-| `template/ds/PersistentXorTrie.cpp` | `PersistentXorTrie::init`、`insert`、`max_xor(left, right, x, ans)`；空差集返回 `false` |
-| `template/ds/KDTree.cpp` | `KDTree::build`、`nearest(x, y, ans, exclude)`、`query`；最近邻为空返回 `false` |
-| `template/graph/KShortestWalk.cpp` | `KShortestWalk::init`、`add_edge`、`query(s, t, k)`；非负边权，按边序列区分游走 |
-| `template/graph/LowerBoundMinCostFlow.cpp` | `LRCostFlow::init`、`add_edge`、`add_supply`、`solve`；上下界与点的净供给，支持负费用与负环 |
-| `template/graph/Dominator.cpp` | `Dominator::init`、`add_edge`、`build(root)`；`idom[root] = root`，不可达为 0 |
-| `template/graph/WeightedMatching.cpp` | `WeightedBlossom::init`、`add_edge`、`solve`；一般图最大总权匹配，`match` 保存方案 |
-| `template/graph/MaxClique.cpp` | `MaxClique::init`、`add_edge`、`max_clique`、`max_independent_set`；返回精确最优顶点集合 |
-| `template/math/Min25.cpp` | `Min25::init`、`sum`、`count_primes`；素数处至多二次多项式，传入素数幂回调 |
-| `template/math/Simplex.cpp` | `Simplex::solve(A, b, c)`；最大化 `c*x`，约束 `A*x <= b`、`x >= 0` |
-| `template/string/Lyndon.cpp` | `lyndon_factorization(s)`；返回含 0 和 n 的分界点，0-based 半开区间 |
-| `template/string/Runs.cpp` | `enumerate_runs(s)`；返回 `{最小周期, l, r}`，依赖 `SuffixArray.cpp` |
-| `template/geometry/CircleUnion.cpp` | `circle_union(cs)`；返回圆并的面积与周长，依赖 `Point.cpp`、`Line.cpp`、`Circle.cpp` |
-| `template/geometry/ConvexHull3D.cpp` | `P3`、`Hull3D::build`、`area`、`volume`；`dim` 为维度，`faces` 为外向三角面 |
-| `template/others/DLX.cpp` | `DLX::init`、`add_row`、`solve(rows)`；写入精确覆盖行编号，无解返回 `false` |
-| `template/ds/SegmentTreeBeats.cpp` | `Beats::init`、`add`、`chmin`、`chmax`、`query`、`query_min`、`query_max`；区间加、截断、和与最值 |
-| `template/ds/PersistentArray.cpp` | `PArray::init`、`modify(root, pos, value)`、`query(root, pos)`；`root` 为初始根，修改返回新根 |
-| `template/graph/CentroidTree.cpp` | `CentroidTree::init`、`add_edge`、`build`、`modify(u, delta)`、`query(u, radius)`；动态点权的距离范围和 |
-| `template/graph/SteinerTree.cpp` | `Steiner::init`、`add_edge`、`solve(terminals)`；最小连接代价，不可连通返回 `-1` |
-| `template/math/SubsetConvolution.cpp` | `subset_convolution(a, b, mod)`；0-based 位掩码，支持合数模数 |
-| `template/math/Multipoint.cpp` | `Multipoint::build`、`evaluate`、`interpolate`；依赖 `FPS.cpp`，固定模数 `998244353` |
-| `template/graph/KruskalTree.cpp` | `KruskalTree::add_edge`、`build(descending)`、`lca`、`query(u, v, ans)`；不连通返回 `false` |
-| `template/graph/BlockCutTree.cpp` | `block_cut_tree(n, blocks)`；输入点双顶点列表，返回广义圆方森林 |
-| `template/graph/BridgeTree.cpp` | `bridge_tree(cnt, bel, edges)`；返回保留原桥编号的缩点森林 |
-| `template/graph/KthAncestor.cpp` | `KthAncestor::add_edge`、`build(root)`、`query(u, k)`；长链剖分，查询 `O(1)` |
-| `template/graph/GomoryHu.cpp` | `GomoryHu::add_edge`、`build`、`query`；依赖 `Dinic.cpp`，无向非负容量 |
-| `template/ds/LiChaoTree.cpp` | `LiChaoTree::add_line`、`add_seg`；浮点用 `add_line_real`、`add_seg_real`；`query_id`、浮点 `query`；仅整数直线用 `query_int(x, ans)` |
-| `template/ds/LeftistHeap.cpp` | `LeftistHeap::init`、`push`、`merge`、`top`、`pop`；合并与删除返回新根 |
-| `template/others/MonotonicStack.cpp` | `monotonic_bounds(a, greater = false)`；左右最近严格更小 / 更大元素 |
-| `template/others/ConvexHullTrick.cpp` | `CHT::add`、`query`、`clear`；斜率不增、横坐标不减、求最小值 |
-| `template/math/ModArithmetic.cpp` | `pow_mod`、`linear_inverse`、`batch_inverse`；`mod <= INT_MAX`，逆元要求质数模数 |
-| `template/math/MatrixInverse.cpp` | `matrix_inv(a, mod, b)`；写入逆矩阵，不可逆返回 `false` |
-| `template/math/PrimitiveRoot.cpp` | `primitive_root`；质数模数，依赖 `PollardRho.cpp` |
-| `template/ds/DSU.cpp` | `DSU::init`、`find`、`merge`、`same`、`size`，`cnt` 为连通块数 |
-| `template/ds/Fenwick.cpp` | `Fenwick::init`、`add`、`query`、`kth`；`kth` 要求原数组非负 |
-| `template/ds/RollbackDSU.cpp` | `RollbackDSU::merge`、`snapshot`、`rollback` |
-| `template/ds/SegTree.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
-| `template/geometry/Point.cpp` | 原版 `P`、`db`、`EPS`、`sign`、`cmp`、`rad`、`polar_cmpX`、`polar_cmpY` |
-| `template/geometry/Line.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
-| `template/geometry/Polygon.cpp` | `area`、`contain`、`convexCut` |
-| `template/geometry/ConvexHull.cpp` | `convexHull`、`convexHullNonStrict`、`checkConvexHull`（简单多边形的逆时针凸性）、`convexDiameter`（顺逆时针均可）、`MincowskySum` |
-| `template/graph/BipartiteMatch.cpp` | `Kuhn::add_edge`、`solve` |
-| `template/graph/Bridge.cpp` | `Bridge::add_edge`、`find` |
-| `template/graph/CutVertex.cpp` | `CutVertex::add_edge`、`find` |
-| `template/graph/DiffConstraints.cpp` | `Diff::add`、`solve`；全 0 初始化，负环返回 false；使用 ll，松弛中间量不得溢出 |
-| `template/graph/Dijkstra.cpp` | `dijkstra` |
-| `template/graph/DSUOnTree.cpp` | `DSUOnTree::add_edge`、`build(root)`；按题意补全 `add`、`del`、`query` |
-| `template/graph/DirectedEulerTrail.cpp` | `euler_d` |
-| `template/graph/UndirectedEulerTrail.cpp` | `euler_u` |
-| `template/graph/Kruskal.cpp` | `Edge`、`MST`、`kruskal`；结果为 `sum`、`ids`、`ok` |
-| `template/graph/LCA.cpp` | `LCA::add_edge`、`build`、`lca` |
-| `template/graph/Dinic.cpp` | `Dinic::add_edge`、`flow` |
-| `template/graph/MinCostFlow.cpp` | `MCMF::add_edge`、`flow`；无负环常规题 |
-| `template/graph/ScalingMinCostFlow.cpp` | `ScalingMCMF::add_edge`、`flow`；UOJ 487 / Capacity Scaling |
-| `template/graph/SCC.cpp` | `SCC::add_edge`、`build`，`bel` 保存分量编号 |
-| `template/graph/VBCC.cpp` | `VBCC::add_edge`、`build`、`bcc`（每项的 `v` 为顶点，`e` 为边编号） |
-| `template/graph/EBCC.cpp` | `EBCC::add_edge`、`build`、`bcc`（每项含 `v`、`e`）、`bel`、`is_bridge` |
-| `template/math/AdaptiveSimpson.cpp` | `simpson` |
-| `template/math/Combination.cpp` | `Comb::init`、`choose` |
-| `template/math/FWT.cpp` | `fwt_or`、`fwt_and`、`fwt_xor` 及逆变换 |
-| `template/math/NTT.cpp` | `ntt`、`multiply` |
-| `template/math/PrimeSieve.cpp` | `primes` |
-| `template/math/LinearSieve.cpp` | `Sieve::build`，`prime`、`lp`、`phi`、`mu` |
-| `template/math/QuotientBlocks.cpp` | `div_blocks` |
-| `template/math/XorBasis.cpp` | `Basis::insert`、`contains`、`max_xor`、`kth(k, ans)`；0-based，包含 0，越界返回 `false` |
-| `template/others/CartesianTree.cpp` | `Cartesian::build` |
-| `template/others/Mo.cpp` | `Mo::Query`、`Mo::solve(n, qs)`；按题意补全 `add`、`del`、`answer` |
-| `template/others/SlidingWindow.cpp` | `window_min`、`window_max` |
-| `template/others/SparseTable.cpp` | `ST::build`、`query` |
-| `template/others/Common.cpp` | `chkmin`、`chkmax`、`add`、`sub` 及常用宏、类型别名 |
-| `template/others/TernarySearch.cpp` | `ternary_min`、`ternary_max` |
-| `template/string/ACAutomaton.cpp` | `AC::insert`、`build`、`query` |
-| `template/string/KMP.cpp` | `get_pi`、`kmp` |
-| `template/string/Manacher.cpp` | `Manacher::build`、`query`、`longest` |
-| `template/string/SAM.cpp` | `SAM::build`、`count`、`query` |
-| `template/string/Trie.cpp` | `Trie::insert`、`prefix`、`count` |
-| `template/others/Discretize.cpp` | `discretize(a, key)`；返回 1-based 编号，`key` 输出排序去重后的值，恢复为 `key[id[i] - 1]` |
-| `template/string/SuffixArray.cpp` | `SA::build`、`lcp` |
-| `template/graph/EulerLCA.cpp` | `EulerLCA::add_edge`、`build`、`lca` |
-| `template/graph/Reroot.cpp` | `reroot` |
-| `template/graph/TreeDiameter.cpp` | `tree_diameter` |
-| `template/graph/TopologicalSort.cpp` | `topo(g, order)`；写入拓扑序，有环返回 `false` |
-| `template/others/TreeHash.cpp` | `tree_hash(g, root = 1)` |
-| `template/math/Matrix.cpp` | `matrix_mul`、`matrix_pow` |
-| `template/math/Lagrange.cpp` | `lagrange` |
-| `template/math/BerlekampMassey.cpp` | `bm`、`kth` |
-| `template/ds/WeightedDSU.cpp` | `WDSU`、`XDSU`：`init`、`find`、`merge`、`query(u, v, ans)`；不连通返回 `false` |
-| `template/ds/PersistentSegTree.cpp` | `PST::build`、`kth`、`count` |
-| `template/ds/FHQTreap.cpp` | `Treap::insert`、`erase`、`rank`、`kth(k, ans)`、`pre(x, ans)`、`suf(x, ans)`；`SeqTreap::insert`、`erase`、`reverse`、`query`、`at` |
-| `template/ds/XorTrie.cpp` | `XorTrie::init`、`insert`、`erase`、`max_xor(x, ans)`；空集返回 `false` |
-| `template/graph/HLD.cpp` | `HLD::add_edge`、`build`、`lca`、`path`；子树区间为 `[in[u], out[u]]` |
-| `template/graph/TwoSAT.cpp` | `SAT::add`、`force`、`solve`，`ans` 保存布尔解 |
-| `template/graph/VirtualTree.cpp` | `VTree::add_edge`、`build`、`query`；`nodes` 为虚树节点，`t` 为带距离的虚树边 |
-| `template/graph/Centroid.cpp` | `Centroid::add_edge`、`query(k)`，统计距离不超过 `k` 的无序点对 |
-| `template/graph/LowerBoundFlow.cpp` | `LRFlow::add_edge`、`solve`；无参为可行循环流，`solve(s, t, mode)` 求可行 / 最大 / 最小流，`f` 保存各边流量 |
-| `template/graph/KM.cpp` | `KM::add_edge`、`solve`；最大权左侧完全匹配，`ml` / `mr` 为匹配 |
-| `template/graph/HopcroftKarp.cpp` | `HK::add_edge`、`solve`、`cover`；`cover` 在最大匹配后返回最小点覆盖 |
-| `template/math/CRT.cpp` | `exgcd`、`inv`（无逆元返回 `-1`）、`crt(r, m, ans, mod)`（无解或 lcm 超出 ll 返回 `false`） |
-| `template/math/BSGS.cpp` | `bsgs`、`exbsgs`，返回最小非负指数或 `-1` |
-| `template/math/Lucas.cpp` | `Lucas::init`、`choose` |
-| `template/math/PollardRho.cpp` | `is_prime`、`factor`，支持 64 位无符号整数 |
-| `template/math/Gauss.cpp` | `gauss`、`gauss_mod`、`gauss_xor`；返回 `0` 无解 / `1` 唯一解 / `2` 多解 |
-| `template/math/FPS.cpp` | `FPS::mul`、`inv`、`ln`、`exp`、`pow`、`divmod`；`sqrt(a, n, ans)` 无解返回 `false`，模数 `998244353` |
-| `template/math/FFT.cpp` | `fft`、`fft_mul`、`conv_mod`，后者为任意正 `int` 模数的精确卷积 |
-| `template/string/Z.cpp` | `get_z`、`exkmp`，字符串位置为 0-based |
-| `template/string/Hash.cpp` | `Hash::build`、`query`、`lcp`，双模哈希 |
-| `template/string/PAM.cpp` | `PAM::init`、`insert`、`build`、`distinct`、`count` |
-| `template/string/MinRotation.cpp` | `min_rotation`，返回最小循环表示的起始位置 |
-| `template/others/CDQ.cpp` | `dominance`，统计每点被其他点三维支配的数量 |
-| `template/others/OverallBinary.cpp` | `KthOffline::init`、`modify`、`query`、`solve`，离线求带修改区间第 k 小 |
-| `template/geometry/Circle.cpp` | `Circle`、`isCL`、`isCC`、`tangent_points`、`common_tangents`、`circle_area`、`circumcircle(a, b, c, ans)`、`diameter_circle` |
-| `template/geometry/HalfPlane.cpp` | `half_plane` |
-| `template/geometry/MinCircle.cpp` | `min_circle` |
-| `template/geometry/ClosestPair.cpp` | `ClosestPair::build`，返回原下标，`d2` 为最短距离平方 |
-| `template/geometry/ConvexQuery.cpp` | `ConvexQuery::build`、`query`，返回 0 外部 / 1 边界 / 2 内部 |
-| `template/geometry/RectangleUnion.cpp` | `RectUnion::solve`，返回矩形并的面积与周长 |
-| `template/ds/AffineSegTree.cpp` | `AffineSegTree::init`、`modify`、`query`；修改为乘后加 |
-| `template/ds/Fenwick2D.cpp` | `Fenwick2D::build`、`add`、`query`，离线收集更新坐标，查询闭矩形 |
-| `template/ds/MergeSegTree.cpp` | `MergeSegTree::init`、`add`、`query`、`kth`、`merge`、`split`；合并消耗源根 |
-| `template/ds/LCT.cpp` | `LCT::init`、`same`、`link`、`cut`、`modify`、`query`；维护点权路径和 |
-| `template/graph/DynamicConnectivity.cpp` | `DynConn::init`、`add`、`erase`、`query`、`solve` |
-| `template/graph/ZeroOneBFS.cpp` | `bfs01`，边权只能为 0 或 1 |
-| `template/graph/Floyd.cpp` | `floyd`，原地更新距离矩阵，返回是否无负环 |
-| `template/graph/Johnson.cpp` | `Johnson::init`、`add_edge`、`solve(dis)`；写入距离矩阵，存在负环返回 `false` |
-| `template/graph/GlobalMinCut.cpp` | `MinCut::init`、`add_edge`、`solve`，返回割权与一侧顶点 |
-| `template/graph/DirectedMST.cpp` | `DMST::init`、`add_edge`、`solve(root, ans)`；写入最小权，不可达返回 `false` |
-| `template/graph/GeneralMatching.cpp` | `Blossom::init`、`add_edge`、`solve`，`match` 保存匹配 |
-| `template/math/FloorSum.cpp` | `floor_sum`，返回 `ll`，支持有符号参数，所有中间量须放入 `ll` |
-| `template/math/ModSqrt.cpp` | `sqrt_mod`；质数模数，不存在平方根返回 `-1` |
-| `template/math/DuJiao.cpp` | `DuJiao::init`、`phi`、`mu`；前缀和返回 `ll`，`n <= 4e9` |
-| `template/math/ExLucas.cpp` | `ExLucas::init`、`choose`，任意正 `int` 模数，预处理规模受质数幂大小限制 |
-| `template/math/Determinant.cpp` | `det`、`matrix_tree`，质数模数；有向版本为从根向外的树 |
-| `template/others/MoModify.cpp` | `MoModify::init`、`modify`、`query`、`solve()`；补全 `add`、`del`、`answer`，按值增删 |
-| `template/others/MoTree.cpp` | `MoTree::init`、`add_edge`、`build`、`query`、`solve()`；补全 `add`、`del`、`answer`，按点增删 |
-| `template/others/DPOpt.cpp` | `dc_dp`、`bounded_knapsack`，分别为单层分治转移与一种物品的多重背包转移 |
-| `template/string/BitsetLCS.cpp` | `bitset_lcs`，只求 LCS 长度，支持任意字节 |
+| `template/math/等距拉格朗日插值.cpp` | `LagrangeEq::build`、`query`；连续整数采样的线性时间求值，依赖 `组合数.cpp` |
+| `template/others/最长上升子序列与方案.cpp` | `lis(a, strict)`；1-based 数组，返回严格递增 / 非递减子序列的下标方案 |
+| `template/math/约数与倍数变换与卷积.cpp` | `divisor_zeta`、`multiple_zeta`、`gcd_convolution`、`lcm_convolution`；支持合数模数 |
+| `template/graph/函数图分解与跳跃.cpp` | `FunctionalGraph::build`、`jump`、`distance`；每点恰有一条出边，保存环与入环信息 |
+| `template/math/两类斯特林数.cpp` | `stirling_first`、`stirling_second`、`stirling_second_row`；无符号第一类、第二类与 NTT 求固定一行 |
+| `template/string/二维哈希.cpp` | `Hash2D::build`、`query`；字节矩阵双模哈希，0-based 闭矩形 |
+| `template/geometry/最小面积包围矩形.cpp` | `min_rectangle(hull)`；严格逆时针凸包，返回面积与四角，依赖 `点与向量.cpp` |
+| `template/ds/区间集合与最小未出现数.cpp` | `IntervalSet::insert`、`erase`、`contains`、`mex`、`clear`；维护整数半开区间的并 |
+| `template/others/博弈状态函数.cpp` | `grundy(g, sg)`；写入 SG 值，有向环返回 `false` |
+| `template/math/线性递推快速求项.cpp` | `bostan_mori`、`linear_kth`；有理生成函数系数与大阶递推，依赖 `多项式基本运算.cpp` |
+| `template/ds/可持久化二进制字典树.cpp` | `PersistentXorTrie::init`、`insert`、`max_xor(left, right, x, ans)`；空差集返回 `false` |
+| `template/ds/二维最近邻.cpp` | `KDTree::build`、`nearest(x, y, ans, exclude)`、`query`；最近邻为空返回 `false` |
+| `template/graph/第几短游走.cpp` | `KShortestWalk::init`、`add_edge`、`query(s, t, k)`；非负边权，按边序列区分游走 |
+| `template/graph/上下界最小费用流.cpp` | `LRCostFlow::init`、`add_edge`、`add_supply`、`solve`；上下界与点的净供给，支持负费用与负环 |
+| `template/graph/支配树.cpp` | `Dominator::init`、`add_edge`、`build(root)`；`idom[root] = root`，不可达为 0 |
+| `template/graph/一般图最大权匹配.cpp` | `WeightedBlossom::init`、`add_edge`、`solve`；一般图最大总权匹配，`match` 保存方案 |
+| `template/graph/最大团与最大独立集.cpp` | `MaxClique::init`、`add_edge`、`max_clique`、`max_independent_set`；返回精确最优顶点集合 |
+| `template/math/积性函数求和.cpp` | `Min25::init`、`sum`、`count_primes`；素数处至多二次多项式，传入素数幂回调 |
+| `template/math/单纯形与线性规划.cpp` | `Simplex::solve(A, b, c)`；最大化 `c*x`，约束 `A*x <= b`、`x >= 0` |
+| `template/string/林登分解.cpp` | `lyndon_factorization(s)`；返回含 0 和 n 的分界点，0-based 半开区间 |
+| `template/string/极大周期子串.cpp` | `enumerate_runs(s)`；返回 `{最小周期, l, r}`，依赖 `后缀数组.cpp` |
+| `template/geometry/圆面积并与周长并.cpp` | `circle_union(cs)`；返回圆并的面积与周长，依赖 `点与向量.cpp`、`直线与线段.cpp`、`圆.cpp` |
+| `template/geometry/三维凸包.cpp` | `P3`、`Hull3D::build`、`area`、`volume`；`dim` 为维度，`faces` 为外向三角面 |
+| `template/others/舞蹈链精确覆盖.cpp` | `DLX::init`、`add_row`、`solve(rows)`；写入精确覆盖行编号，无解返回 `false` |
+| `template/ds/吉司机线段树.cpp` | `Beats::init`、`add`、`chmin`、`chmax`、`query`、`query_min`、`query_max`；区间加、截断、和与最值 |
+| `template/ds/可持久化数组.cpp` | `PArray::init`、`modify(root, pos, value)`、`query(root, pos)`；`root` 为初始根，修改返回新根 |
+| `template/graph/点分树.cpp` | `CentroidTree::init`、`add_edge`、`build`、`modify(u, delta)`、`query(u, radius)`；动态点权的距离范围和 |
+| `template/graph/最小斯坦纳树.cpp` | `Steiner::init`、`add_edge`、`solve(terminals)`；最小连接代价，不可连通返回 `-1` |
+| `template/math/子集卷积.cpp` | `subset_convolution(a, b, mod)`；0-based 位掩码，支持合数模数 |
+| `template/math/多项式多点求值与快速插值.cpp` | `Multipoint::build`、`evaluate`、`interpolate`；依赖 `多项式基本运算.cpp`，固定模数 `998244353` |
+| `template/graph/重构树.cpp` | `KruskalTree::add_edge`、`build(descending)`、`lca`、`query(u, v, ans)`；不连通返回 `false` |
+| `template/graph/圆方树.cpp` | `block_cut_tree(n, blocks)`；输入点双顶点列表，返回广义圆方森林 |
+| `template/graph/边双缩点树.cpp` | `bridge_tree(cnt, bel, edges)`；返回保留原桥编号的缩点森林 |
+| `template/graph/长链剖分与祖先查询.cpp` | `KthAncestor::add_edge`、`build(root)`、`query(u, k)`；长链剖分，查询 `O(1)` |
+| `template/graph/最小割树.cpp` | `GomoryHu::add_edge`、`build`、`query`；依赖 `最大流.cpp`，无向非负容量 |
+| `template/ds/李超线段树.cpp` | `LiChaoTree::add_line`、`add_seg`；浮点用 `add_line_real`、`add_seg_real`；`query_id`、浮点 `query`；仅整数直线用 `query_int(x, ans)` |
+| `template/ds/左偏树与可并堆.cpp` | `LeftistHeap::init`、`push`、`merge`、`top`、`pop`；合并与删除返回新根 |
+| `template/others/单调栈与左右最近更小与更大.cpp` | `monotonic_bounds(a, greater = false)`；左右最近严格更小 / 更大元素 |
+| `template/others/单调凸包与斜率优化.cpp` | `CHT::add`、`query`、`clear`；斜率不增、横坐标不减、求最小值 |
+| `template/math/快速幂与逆元.cpp` | `pow_mod`、`linear_inverse`、`batch_inverse`；`mod <= INT_MAX`，逆元要求质数模数 |
+| `template/math/矩阵求逆.cpp` | `matrix_inv(a, mod, b)`；写入逆矩阵，不可逆返回 `false` |
+| `template/math/原根.cpp` | `primitive_root`；质数模数，依赖 `素性测试与整数分解.cpp` |
+| `template/ds/并查集.cpp` | `DSU::init`、`find`、`merge`、`same`、`size`，`cnt` 为连通块数 |
+| `template/ds/树状数组.cpp` | `Fenwick::init`、`add`、`query`、`kth`；`kth` 要求原数组非负 |
+| `template/ds/可撤销并查集.cpp` | `RollbackDSU::merge`、`snapshot`、`rollback` |
+| `template/ds/线段树与树上二分.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
+| `template/geometry/点与向量.cpp` | 原版 `P`、`db`、`EPS`、`sign`、`cmp`、`rad`、`polar_cmpX`、`polar_cmpY` |
+| `template/geometry/直线与线段.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
+| `template/geometry/多边形.cpp` | `area`、`contain`、`convexCut` |
+| `template/geometry/凸包与直径与闵可夫斯基和.cpp` | `convexHull`、`convexHullNonStrict`、`checkConvexHull`（简单多边形的逆时针凸性）、`convexDiameter`（顺逆时针均可）、`MincowskySum` |
+| `template/graph/二分图匹配.cpp` | `Kuhn::add_edge`、`solve` |
+| `template/graph/桥.cpp` | `Bridge::add_edge`、`find` |
+| `template/graph/割点.cpp` | `CutVertex::add_edge`、`find` |
+| `template/graph/差分约束.cpp` | `Diff::add`、`solve`；全 0 初始化，负环返回 false；使用 ll，松弛中间量不得溢出 |
+| `template/graph/堆优化最短路.cpp` | `dijkstra` |
+| `template/graph/树上启发式合并.cpp` | `DSUOnTree::add_edge`、`build(root)`；按题意补全 `add`、`del`、`query` |
+| `template/graph/有向图欧拉路.cpp` | `euler_d` |
+| `template/graph/无向图欧拉路.cpp` | `euler_u` |
+| `template/graph/最小生成树.cpp` | `Edge`、`MST`、`kruskal`；结果为 `sum`、`ids`、`ok` |
+| `template/graph/倍增最近公共祖先.cpp` | `LCA::add_edge`、`build`、`lca` |
+| `template/graph/最大流.cpp` | `Dinic::add_edge`、`flow` |
+| `template/graph/势能最短路费用流.cpp` | `MCMF::add_edge`、`flow`；无负环常规题 |
+| `template/graph/容量缩放费用流.cpp` | `ScalingMCMF::add_edge`、`flow`；UOJ 487 / Capacity Scaling |
+| `template/graph/强连通分量.cpp` | `SCC::add_edge`、`build`，`bel` 保存分量编号 |
+| `template/graph/点双连通分量.cpp` | `VBCC::add_edge`、`build`、`bcc`（每项的 `v` 为顶点，`e` 为边编号） |
+| `template/graph/边双连通分量.cpp` | `EBCC::add_edge`、`build`、`bcc`（每项含 `v`、`e`）、`bel`、`is_bridge` |
+| `template/math/自适应辛普森积分.cpp` | `simpson` |
+| `template/math/组合数.cpp` | `Comb::init`、`choose` |
+| `template/math/快速沃尔什变换.cpp` | `fwt_or`、`fwt_and`、`fwt_xor` 及逆变换 |
+| `template/math/快速数论变换与多项式乘法.cpp` | `ntt`、`multiply` |
+| `template/math/线性筛素数.cpp` | `primes` |
+| `template/math/线性筛积性函数.cpp` | `Sieve::build`，`prime`、`lp`、`phi`、`mu` |
+| `template/math/整除分块.cpp` | `div_blocks` |
+| `template/math/异或线性基.cpp` | `Basis::insert`、`contains`、`max_xor`、`kth(k, ans)`；0-based，包含 0，越界返回 `false` |
+| `template/others/笛卡尔树.cpp` | `Cartesian::build` |
+| `template/others/莫队.cpp` | `Mo::Query`、`Mo::solve(n, qs)`；按题意补全 `add`、`del`、`answer` |
+| `template/others/滑动窗口最值.cpp` | `window_min`、`window_max` |
+| `template/others/稀疏表.cpp` | `ST::build`、`query` |
+| `template/others/常用定义.cpp` | `chkmin`、`chkmax`、`add`、`sub` 及常用宏、类型别名 |
+| `template/others/三分搜索.cpp` | `ternary_min`、`ternary_max` |
+| `template/string/多模式匹配自动机.cpp` | `AC::insert`、`build`、`query` |
+| `template/string/字符串匹配.cpp` | `get_pi`、`kmp` |
+| `template/string/最长回文子串.cpp` | `Manacher::build`、`query`、`longest` |
+| `template/string/后缀自动机.cpp` | `SAM::build`、`count`、`query` |
+| `template/string/字典树.cpp` | `Trie::insert`、`prefix`、`count` |
+| `template/others/离散化.cpp` | `discretize(a, key)`；返回 1-based 编号，`key` 输出排序去重后的值，恢复为 `key[id[i] - 1]` |
+| `template/string/后缀数组.cpp` | `SA::build`、`lcp` |
+| `template/graph/欧拉序最近公共祖先.cpp` | `EulerLCA::add_edge`、`build`、`lca` |
+| `template/graph/换根动态规划与距离和.cpp` | `reroot` |
+| `template/graph/树的直径.cpp` | `tree_diameter` |
+| `template/graph/拓扑排序.cpp` | `topo(g, order)`；写入拓扑序，有环返回 `false` |
+| `template/others/树哈希.cpp` | `tree_hash(g, root = 1)` |
+| `template/math/矩阵快速幂.cpp` | `matrix_mul`、`matrix_pow` |
+| `template/math/拉格朗日插值.cpp` | `lagrange` |
+| `template/math/最短线性递推.cpp` | `bm`、`kth` |
+| `template/ds/带权与异或并查集.cpp` | `WDSU`、`XDSU`：`init`、`find`、`merge`、`query(u, v, ans)`；不连通返回 `false` |
+| `template/ds/主席树.cpp` | `PST::build`、`kth`、`count` |
+| `template/ds/无旋平衡树.cpp` | `Treap::insert`、`erase`、`rank`、`kth(k, ans)`、`pre(x, ans)`、`suf(x, ans)`；`SeqTreap::insert`、`erase`、`reverse`、`query`、`at` |
+| `template/ds/二进制字典树.cpp` | `XorTrie::init`、`insert`、`erase`、`max_xor(x, ans)`；空集返回 `false` |
+| `template/graph/树链剖分.cpp` | `HLD::add_edge`、`build`、`lca`、`path`；子树区间为 `[in[u], out[u]]` |
+| `template/graph/二元可满足性.cpp` | `SAT::add`、`force`、`solve`，`ans` 保存布尔解 |
+| `template/graph/虚树.cpp` | `VTree::add_edge`、`build`、`query`；`nodes` 为虚树节点，`t` 为带距离的虚树边 |
+| `template/graph/点分治.cpp` | `Centroid::add_edge`、`query(k)`，统计距离不超过 `k` 的无序点对 |
+| `template/graph/上下界网络流.cpp` | `LRFlow::add_edge`、`solve`；无参为可行循环流，`solve(s, t, mode)` 求可行 / 最大 / 最小流，`f` 保存各边流量 |
+| `template/graph/二分图最大权匹配.cpp` | `KM::add_edge`、`solve`；最大权左侧完全匹配，`ml` / `mr` 为匹配 |
+| `template/graph/分层增广二分图匹配.cpp` | `HK::add_edge`、`solve`、`cover`；`cover` 在最大匹配后返回最小点覆盖 |
+| `template/math/扩展欧几里得与中国剩余定理.cpp` | `exgcd`、`inv`（无逆元返回 `-1`）、`crt(r, m, ans, mod)`（无解或 lcm 超出 ll 返回 `false`） |
+| `template/math/离散对数.cpp` | `bsgs`、`exbsgs`，返回最小非负指数或 `-1` |
+| `template/math/卢卡斯定理.cpp` | `Lucas::init`、`choose` |
+| `template/math/素性测试与整数分解.cpp` | `is_prime`、`factor`，支持 64 位无符号整数 |
+| `template/math/高斯消元.cpp` | `gauss`、`gauss_mod`、`gauss_xor`；返回 `0` 无解 / `1` 唯一解 / `2` 多解 |
+| `template/math/多项式基本运算.cpp` | `FPS::mul`、`inv`、`ln`、`exp`、`pow`、`divmod`；`sqrt(a, n, ans)` 无解返回 `false`，模数 `998244353` |
+| `template/math/快速傅里叶变换与任意模数卷积.cpp` | `fft`、`fft_mul`、`conv_mod`，后者为任意正 `int` 模数的精确卷积 |
+| `template/string/扩展字符串匹配.cpp` | `get_z`、`exkmp`，字符串位置为 0-based |
+| `template/string/字符串哈希.cpp` | `Hash::build`、`query`、`lcp`，双模哈希 |
+| `template/string/回文自动机.cpp` | `PAM::init`、`insert`、`build`、`distinct`、`count` |
+| `template/string/最小表示法.cpp` | `min_rotation`，返回最小循环表示的起始位置 |
+| `template/others/分治三维偏序.cpp` | `dominance`，统计每点被其他点三维支配的数量 |
+| `template/others/整体二分与动态区间第几小.cpp` | `KthOffline::init`、`modify`、`query`、`solve`，离线求带修改区间第 k 小 |
+| `template/geometry/圆.cpp` | `Circle`、`isCL`、`isCC`、`tangent_points`、`common_tangents`、`circle_area`、`circumcircle(a, b, c, ans)`、`diameter_circle` |
+| `template/geometry/半平面交.cpp` | `half_plane` |
+| `template/geometry/最小圆覆盖.cpp` | `min_circle` |
+| `template/geometry/平面最近点对.cpp` | `ClosestPair::build`，返回原下标，`d2` 为最短距离平方 |
+| `template/geometry/凸多边形包含查询.cpp` | `ConvexQuery::build`、`query`，返回 0 外部 / 1 边界 / 2 内部 |
+| `template/geometry/矩形面积并与周长并.cpp` | `RectUnion::solve`，返回矩形并的面积与周长 |
+| `template/ds/仿射线段树.cpp` | `AffineSegTree::init`、`modify`、`query`；修改为乘后加 |
+| `template/ds/二维树状数组.cpp` | `Fenwick2D::build`、`add`、`query`，离线收集更新坐标，查询闭矩形 |
+| `template/ds/动态开点线段树合并与分裂.cpp` | `MergeSegTree::init`、`add`、`query`、`kth`、`merge`、`split`；合并消耗源根 |
+| `template/ds/动态树.cpp` | `LCT::init`、`same`、`link`、`cut`、`modify`、`query`；维护点权路径和 |
+| `template/graph/离线动态连通性.cpp` | `DynConn::init`、`add`、`erase`、`query`、`solve` |
+| `template/graph/零一最短路.cpp` | `bfs01`，边权只能为 0 或 1 |
+| `template/graph/全源最短路.cpp` | `floyd`，原地更新距离矩阵，返回是否无负环 |
+| `template/graph/重赋权全源最短路.cpp` | `Johnson::init`、`add_edge`、`solve(dis)`；写入距离矩阵，存在负环返回 `false` |
+| `template/graph/全局最小割.cpp` | `MinCut::init`、`add_edge`、`solve`，返回割权与一侧顶点 |
+| `template/graph/最小树形图.cpp` | `DMST::init`、`add_edge`、`solve(root, ans)`；写入最小权，不可达返回 `false` |
+| `template/graph/一般图匹配.cpp` | `Blossom::init`、`add_edge`、`solve`，`match` 保存匹配 |
+| `template/math/类欧几里得.cpp` | `floor_sum`，返回 `ll`，支持有符号参数，所有中间量须放入 `ll` |
+| `template/math/二次剩余.cpp` | `sqrt_mod`；质数模数，不存在平方根返回 `-1` |
+| `template/math/杜教筛.cpp` | `DuJiao::init`、`phi`、`mu`；前缀和返回 `ll`，`n <= 4e9` |
+| `template/math/扩展卢卡斯定理.cpp` | `ExLucas::init`、`choose`，任意正 `int` 模数，预处理规模受质数幂大小限制 |
+| `template/math/行列式与矩阵树定理.cpp` | `det`、`matrix_tree`，质数模数；有向版本为从根向外的树 |
+| `template/others/带修改莫队.cpp` | `MoModify::init`、`modify`、`query`、`solve()`；补全 `add`、`del`、`answer`，按值增删 |
+| `template/others/树上莫队.cpp` | `MoTree::init`、`add_edge`、`build`、`query`、`solve()`；补全 `add`、`del`、`answer`，按点增删 |
+| `template/others/分治动态规划与单调队列多重背包.cpp` | `dc_dp`、`bounded_knapsack`，分别为单层分治转移与一种物品的多重背包转移 |
+| `template/string/位集优化最长公共子序列.cpp` | `bitset_lcs`，只求 LCS 长度，支持任意字节 |
 
 ## 约定
 
 - 图和树模板通常使用 1-based 顶点编号；具体例外写在文件注释中。
-- `template/math/NTT.cpp` 使用模数 `998244353`。
-- `template/math/Lagrange.cpp` 要求横坐标在模数意义下互异且模数为质数。
-- `template/graph/TreeDiameter.cpp` 的边权默认为非负数。
-- `template/graph/Reroot.cpp` 是“所有点到所有点距离和”的换根 DP 实例；其他换根转移需按题目修改。
+- `template/math/快速数论变换与多项式乘法.cpp` 使用模数 `998244353`。
+- `template/math/拉格朗日插值.cpp` 要求横坐标在模数意义下互异且模数为质数。
+- `template/graph/树的直径.cpp` 的边权默认为非负数。
+- `template/graph/换根动态规划与距离和.cpp` 是“所有点到所有点距离和”的换根 DP 实例；其他换根转移需按题目修改。
 - 莫队与 DSU on Tree 不使用多回调接口；使用前在结构体中加入题目状态，并补全声明的 `add`、`del`、`answer/query` 函数定义。这些函数没有默认空实现，未补全时不能链接运行。
-- `template/graph/DSUOnTree.cpp` 的 `add` 与 `del` 必须互为逆操作；`query(u)` 记录子树答案，`build(root)` 结束后统计状态恢复为空。
+- `template/graph/树上启发式合并.cpp` 的 `add` 与 `del` 必须互为逆操作；`query(u)` 记录子树答案，`build(root)` 结束后统计状态恢复为空。
 - 三种莫队每次 `solve` 前须清空题目统计状态；带修改莫队按值增删，普通莫队按下标增删，树上莫队按顶点增删。
-- `template/others/TreeHash.cpp` 是随机化哈希，不能当作严格同构判定。
+- `template/others/树哈希.cpp` 是随机化哈希，不能当作严格同构判定。
 - 李超树的整数参数使用有理数精确比较，交叉乘积等全部中间量须放入 `ll`；所有横坐标在 `[0, 40000]` 且 `|k|`、`|b|`、`|y| <= 10^9` 是充分范围。浮点参数仍为浮点比较，不要混用后仍要求精确判等。
 - 李超树按整个密集区间分配约 `4 * (R - L + 1)` 个 `int`，不是动态开点或坐标压缩；坐标范围必须能存下。`query` 是浮点近似值；整数 DP 只用 `add_line`，并在 `query_int(x, ans)` 返回 `true` 后读取 `ll` 答案。
 - 莫队和树上启发式合并的结构体内给出不同值 / 颜色数的填写示例；先用示例成员替换声明，再按题意修改状态、增删和答案。样例中的值域必须先离散化；带修改莫队还要包含所有将来修改的值。

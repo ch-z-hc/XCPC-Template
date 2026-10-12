@@ -1,9 +1,9 @@
-#include "../../template/ds/SegTree.cpp"
-#include "../../template/ds/IntervalSet.cpp"
-#include "../../template/graph/FunctionalGraph.cpp"
-#include "../../template/others/LIS.cpp"
-#include "../../template/others/SG.cpp"
-#include "../../template/string/Hash2D.cpp"
+#include "../../template/ds/线段树与树上二分.cpp"
+#include "../../template/ds/区间集合与最小未出现数.cpp"
+#include "../../template/graph/函数图分解与跳跃.cpp"
+#include "../../template/others/最长上升子序列与方案.cpp"
+#include "../../template/others/博弈状态函数.cpp"
+#include "../../template/string/二维哈希.cpp"
 
 void check_segtree(mt19937 &rng) {
     SegTree tree;

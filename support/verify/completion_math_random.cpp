@@ -1,10 +1,10 @@
-#include "../../template/math/Combination.cpp"
-#include "../../template/math/EquidistantLagrange.cpp"
-#include "../../template/math/DivisorTransform.cpp"
-#include "../../template/math/NTT.cpp"
-#include "../../template/math/Stirling.cpp"
-#include "../../template/math/FPS.cpp"
-#include "../../template/math/BostanMori.cpp"
+#include "../../template/math/组合数.cpp"
+#include "../../template/math/等距拉格朗日插值.cpp"
+#include "../../template/math/约数与倍数变换与卷积.cpp"
+#include "../../template/math/快速数论变换与多项式乘法.cpp"
+#include "../../template/math/两类斯特林数.cpp"
+#include "../../template/math/多项式基本运算.cpp"
+#include "../../template/math/线性递推快速求项.cpp"
 
 ll norm(ll x, ll mod) { x %= mod; return x < 0 ? x + mod : x; }
 

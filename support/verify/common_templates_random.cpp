@@ -5,14 +5,14 @@
 #include <string>
 #include <vector>
 
-#include "../../template/ds/DSU.cpp"
-#include "../../template/ds/Fenwick.cpp"
-#include "../../template/ds/SegTree.cpp"
-#include "../../template/graph/Dijkstra.cpp"
-#include "../../template/graph/Kruskal.cpp"
-#include "../../template/graph/TopologicalSort.cpp"
-#include "../../template/string/KMP.cpp"
-#include "../../template/string/Manacher.cpp"
+#include "../../template/ds/并查集.cpp"
+#include "../../template/ds/树状数组.cpp"
+#include "../../template/ds/线段树与树上二分.cpp"
+#include "../../template/graph/堆优化最短路.cpp"
+#include "../../template/graph/最小生成树.cpp"
+#include "../../template/graph/拓扑排序.cpp"
+#include "../../template/string/字符串匹配.cpp"
+#include "../../template/string/最长回文子串.cpp"
 
 int main() {
     std::mt19937 rng(114514);

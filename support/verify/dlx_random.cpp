@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../../template/others/DLX.cpp"
+#include "../../template/others/舞蹈链精确覆盖.cpp"
 
 bool brute(int cols, const V < V < int > > &rows) {
     V < unsigned > mask(rows.size());

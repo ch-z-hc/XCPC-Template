@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 #include <cassert>
-#include "../../template/math/FloorSum.cpp"
-#include "../../template/math/ModSqrt.cpp"
-#include "../../template/math/DuJiao.cpp"
-#include "../../template/math/ExLucas.cpp"
-#include "../../template/math/Determinant.cpp"
-#include "../../template/math/FPS.cpp"
-#include "../../template/math/XorBasis.cpp"
+#include "../../template/math/类欧几里得.cpp"
+#include "../../template/math/二次剩余.cpp"
+#include "../../template/math/杜教筛.cpp"
+#include "../../template/math/扩展卢卡斯定理.cpp"
+#include "../../template/math/行列式与矩阵树定理.cpp"
+#include "../../template/math/多项式基本运算.cpp"
+#include "../../template/math/异或线性基.cpp"
 
 using namespace std;
 

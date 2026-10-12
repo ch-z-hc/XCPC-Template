@@ -1,4 +1,4 @@
-#include "../../../template/math/AdaptiveSimpson.cpp"
+#include "../../../template/math/自适应辛普森积分.cpp"
 
 // 连续六次多项式；粗、细两级 Simpson 恰好相同，误差估计为 0 但真实误差非零。
 // 修复前退出 1，修复后应退出 0；原判据的精确推导见 simpson_alias_exact.py。

@@ -1,12 +1,12 @@
 #include <cassert>
-#include "../../template/graph/VBCC.cpp"
-#include "../../template/graph/EBCC.cpp"
-#include "../../template/graph/BlockCutTree.cpp"
-#include "../../template/graph/BridgeTree.cpp"
-#include "../../template/graph/KruskalTree.cpp"
-#include "../../template/graph/KthAncestor.cpp"
-#include "../../template/graph/Dinic.cpp"
-#include "../../template/graph/GomoryHu.cpp"
+#include "../../template/graph/点双连通分量.cpp"
+#include "../../template/graph/边双连通分量.cpp"
+#include "../../template/graph/圆方树.cpp"
+#include "../../template/graph/边双缩点树.cpp"
+#include "../../template/graph/重构树.cpp"
+#include "../../template/graph/长链剖分与祖先查询.cpp"
+#include "../../template/graph/最大流.cpp"
+#include "../../template/graph/最小割树.cpp"
 
 int main() {
     mt19937 rng(20261012);

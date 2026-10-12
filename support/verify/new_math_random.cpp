@@ -1,10 +1,10 @@
 #include <cassert>
-#include "../../template/math/PollardRho.cpp"
-#include "../../template/math/Gauss.cpp"
-#include "../../template/math/CRT.cpp"
-#include "../../template/math/BSGS.cpp"
-#include "../../template/math/Lucas.cpp"
-#include "../../template/math/LinearSieve.cpp"
+#include "../../template/math/素性测试与整数分解.cpp"
+#include "../../template/math/高斯消元.cpp"
+#include "../../template/math/扩展欧几里得与中国剩余定理.cpp"
+#include "../../template/math/离散对数.cpp"
+#include "../../template/math/卢卡斯定理.cpp"
+#include "../../template/math/线性筛积性函数.cpp"
 
 // 独立宽整数真值，仅用于验证，不属于比赛模板。
 typedef __uint128_t u128;

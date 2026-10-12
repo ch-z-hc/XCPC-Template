@@ -35,7 +35,7 @@ def main():
         assert not re.search(r"__u?int128|\b(?:i128|u128|print128)\b",
                              path.read_text(encoding="utf-8")), path
     print("PASS: contest snippets and starter contain no wide integer types", flush=True)
-    run_example("template/others/Mo.cpp", """
+    run_example("template/others/莫队.cpp", """
     Mo mo; int n = 5, m = 3;
     mo.a = {0, 1, 2, 1, 3, 2};
     V < Mo::Query > qs{{1, 3, 0}, {2, 5, 1}, {4, 4, 2}};
@@ -44,7 +44,7 @@ def main():
         mo.solve(n, qs); assert(mo.ans == V < int > ({2, 3, 1}));
     }
     """)
-    run_example("template/others/MoModify.cpp", """
+    run_example("template/others/带修改莫队.cpp", """
     MoModify mo; mo.init({0, 1, 2, 1, 3, 2});
     mo.query(1, 5); mo.modify(3, 4); mo.query(1, 3);
     mo.modify(2, 1); mo.query(1, 3);
@@ -53,7 +53,7 @@ def main():
         mo.solve(); assert(mo.ans == V < int > ({3, 3, 2}));
     }
     """)
-    run_example("template/others/MoTree.cpp", """
+    run_example("template/others/树上莫队.cpp", """
     MoTree mo(5); mo.add_edge(1, 2); mo.add_edge(1, 3);
     mo.add_edge(3, 4); mo.add_edge(3, 5); mo.build();
     mo.query(2, 4); mo.query(4, 5); mo.query(3, 3); mo.query(2, 5);
@@ -63,7 +63,7 @@ def main():
         mo.solve(); assert(mo.ans == V < int > ({3, 3, 1, 2}));
     }
     """)
-    run_example("template/graph/DSUOnTree.cpp", """
+    run_example("template/graph/树上启发式合并.cpp", """
     DSUOnTree dsu(5); dsu.add_edge(1, 2); dsu.add_edge(1, 3);
     dsu.add_edge(3, 4); dsu.add_edge(3, 5);
     dsu.color = {0, 1, 2, 1, 3, 2};

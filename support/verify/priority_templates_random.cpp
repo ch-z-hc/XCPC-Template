@@ -1,11 +1,11 @@
 #include <cassert>
-#include "../../template/others/MonotonicStack.cpp"
-#include "../../template/others/ConvexHullTrick.cpp"
-#include "../../template/ds/LeftistHeap.cpp"
-#include "../../template/math/ModArithmetic.cpp"
-#include "../../template/math/MatrixInverse.cpp"
-#include "../../template/math/PollardRho.cpp"
-#include "../../template/math/PrimitiveRoot.cpp"
+#include "../../template/others/单调栈与左右最近更小与更大.cpp"
+#include "../../template/others/单调凸包与斜率优化.cpp"
+#include "../../template/ds/左偏树与可并堆.cpp"
+#include "../../template/math/快速幂与逆元.cpp"
+#include "../../template/math/矩阵求逆.cpp"
+#include "../../template/math/素性测试与整数分解.cpp"
+#include "../../template/math/原根.cpp"
 
 int main() {
     mt19937_64 rng(20261010);
