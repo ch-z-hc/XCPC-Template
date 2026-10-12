@@ -35,8 +35,8 @@ struct ScalingMCMF {
         if (s == t) return {0, 0};
 
         // t -> s 的大费用负边把最大流转化为最小费用环流。
-        const ll large = 1'000'000'000'000LL;
-        const ll inf = 4'000'000'000'000'000'000LL;
+        const ll large = 1000000000000LL;
+        const ll inf = 4000000000000000000LL;
         int super = n + 1;
 
         struct Arc {
