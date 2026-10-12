@@ -8,7 +8,7 @@ using namespace std;
 
 // 先复制数学章的“Miller-Rabin 与 Pollard-Rho”中的 factor、rho_pow 及其依赖。
 // p 必须是质数，支持整个 ull 范围；返回最小原根，p = 2 时返回 1。
-// 分解 p - 1 后枚举候选 g，代价为分解加 O(g * omega(p - 1) * log p)。
+// 倍增模乘下，枚举代价为分解加 O(g * omega(p - 1) * log^2 p)。
 // omega 为不同质因子数；额外空间 O(log p)，无跨调用状态。
 V < ull > factor(ull n);
 ull rho_pow(ull a, ull b, ull mod);

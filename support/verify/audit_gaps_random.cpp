@@ -191,6 +191,35 @@ bool check_numeric(mt19937_64 &rng) {
     return ok;
 }
 
+void check_numeric_overflow() {
+    ld limit = numeric_limits < ld >::max();
+    auto identity = [](ld x) { return x; };
+    for (ld x : {limit, -limit, limit * 0.75L, -limit * 0.75L,
+                 numeric_limits < ld >::min(), numeric_limits < ld >::denorm_min()}) {
+        assert(ternary_min(identity, x, x) == x);
+        assert(ternary_max(identity, x, x) == x);
+    }
+    for (auto [l, r] : V < pair < ld, ld > > {
+             {-limit, limit}, {limit * 0.75L, limit}, {-limit, -limit * 0.75L},
+             {nextafterl(limit, 0), limit}, {-limit, nextafterl(-limit, 0)}}) {
+        ld low = ternary_min(identity, l, r), high = ternary_max(identity, l, r);
+        assert(isfinite(low) && l <= low && low <= r);
+        assert(isfinite(high) && l <= high && high <= r);
+        assert(abs(low / limit - l / limit) < 1e-16L);
+        assert(abs(high / limit - r / limit) < 1e-16L);
+    }
+    auto quartic = [](double x) {
+        ld t = (ld(x) - 1.5L) / 1.5L, s = t * t;
+        return double(1e308L * (-6.4L * s * s + 7.2L * s - 0.8L));
+    };
+    for (int depth : {0, 1, 4, 20}) for (int direction : {-1, 1}) {
+        double l = direction > 0 ? 0 : 3, r = 3 - l;
+        double actual = simpson(quartic, l, r, 1e296, depth);
+        assert(isfinite(actual) && abs(actual / 9.6e307 - direction) < 1e-12);
+    }
+    cout << "PASS: finite extreme ternary endpoints and Simpson correction overflow\n";
+}
+
 void check_graph(mt19937_64 &rng) {
     for (int rep = 0; rep < 1500; ++ rep) {
         int n = rng() % 8;
@@ -326,6 +355,7 @@ void check_geometry_hash(mt19937_64 &rng) {
 
 int main() {
     mt19937_64 rng(2026101201);
+    check_numeric_overflow();
     check_math(rng);
     bool numeric_ok = check_numeric(rng);
     check_graph(rng); check_geometry_hash(rng);

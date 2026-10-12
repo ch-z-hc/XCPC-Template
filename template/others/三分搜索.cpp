@@ -11,19 +11,19 @@ using namespace std;
 template < class F >
 ld ternary_min(F f, ld l, ld r, int times = 200) {
     for (int i = 0; i < times; ++ i) {
-        ld a = (2 * l + r) / 3, b = (l + 2 * r) / 3;
+        ld d = r / 3 - l / 3, a = l + d, b = r - d;
         if (f(a) <= f(b)) r = b; else l = a;
     }
-    return (l + r) / 2;
+    return l + (r / 2 - l / 2);
 }
 
 template < class F >
 ld ternary_max(F f, ld l, ld r, int times = 200) {
     for (int i = 0; i < times; ++ i) {
-        ld a = (2 * l + r) / 3, b = (l + 2 * r) / 3;
+        ld d = r / 3 - l / 3, a = l + d, b = r - d;
         if (f(a) >= f(b)) r = b; else l = a;
     }
-    return (l + r) / 2;
+    return l + (r / 2 - l / 2);
 }
 
 // 调用示例：
