@@ -3,7 +3,7 @@
 #define V vector
 
 typedef unsigned long long ull;
-__extension__ typedef unsigned __int128 u128;
+typedef __uint128_t u128;
 
 using namespace std;
 

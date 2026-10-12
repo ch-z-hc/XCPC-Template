@@ -3,7 +3,7 @@
 #define V vector
 
 typedef long long ll;
-__extension__ typedef __int128 CHTInt;
+typedef __int128_t CHTInt;
 
 using namespace std;
 
@@ -47,3 +47,4 @@ struct CHT {
 };
 
 // 调用：CHT hull; hull.add(k, b); CHTInt ans = hull.query(x);
+// 输出先复制开头 template 的 print128：print128(ans); cout << '\n';

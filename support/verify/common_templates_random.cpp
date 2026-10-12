@@ -175,14 +175,14 @@ int main() {
     {
         std::vector<std::vector<int>> graph(5);
         graph[1] = {2, 3}; graph[2] = {4}; graph[3] = {4};
-        auto order = topo(graph);
-        assert(order.has_value());
+        V < int > order;
+        assert(topo(graph, order));
         std::vector<int> position(5);
-        for (int i = 0; i < int(order->size()); ++i) position[(*order)[i]] = i;
+        for (int i = 0; i < int(order.size()); ++i) position[order[i]] = i;
         for (int u = 1; u <= 4; ++u)
             for (int v : graph[u]) assert(position[u] < position[v]);
         graph[4].push_back(1);
-        assert(!topo(graph).has_value());
+        assert(!topo(graph, order));
     }
     {
         for (int test = 0; test < 1000; ++test) {

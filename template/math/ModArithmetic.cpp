@@ -3,7 +3,7 @@
 #define V vector
 
 typedef long long ll;
-__extension__ typedef __int128 ModInt;
+typedef __int128_t ModInt;
 
 using namespace std;
 

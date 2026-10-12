@@ -8,7 +8,8 @@ using namespace std;
 
 // Kruskal 重构森林：原顶点 1..n，合并节点从 n + 1 开始，权值可为负。
 // build 默认按边权递增，query 求路径最大边权的最小值；递减时反之。
-// 不连通返回 nullopt，同点约定返回 0；lca 不连通返回 0。
+// query(u, v, ans) 连通返回 true 并写入 ans，不连通返回 false。
+// 同点约定 ans = 0；lca 不连通返回 0。
 // build 时间 O(m log m + n log n)，空间 O(m + n log n)，query 为 O(log n)。
 // 可重复 build / 更换排序方向；t 为有根森林子节点，递归深度最坏 O(n)。
 struct KruskalTree {
@@ -63,12 +64,14 @@ struct KruskalTree {
         return up[0][u];
     }
 
-    optional < ll > query(int u, int v) const {
+    bool query(int u, int v, ll &ans) const {
         int p = lca(u, v);
-        if (! p) return nullopt;
-        return u == v ? 0 : weight[p];
+        if (! p) return false;
+        ans = u == v ? 0 : weight[p];
+        return true;
     }
 };
 
 // 调用：KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
-// auto ans = tree.query(u, v); tree.t、tree.weight 可用于额外的树上统计。
+// ll ans; bool ok = tree.query(u, v, ans);
+// tree.t、tree.weight 可用于额外的树上统计。

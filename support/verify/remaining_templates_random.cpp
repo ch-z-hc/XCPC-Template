@@ -22,6 +22,12 @@
 #include "../../template/string/SAM.cpp"
 #include "../../template/string/Trie.cpp"
 
+V < ll > mo_array, mo_answer;
+ll mo_sum = 0;
+void Mo::add(int p) { mo_sum += mo_array[p]; }
+void Mo::del(int p) { mo_sum -= mo_array[p]; }
+void Mo::answer(int id) { mo_answer[id] = mo_sum; }
+
 int main() {
     mt19937 rng(19260817);
     const ll mod = 998244353;
@@ -108,18 +114,20 @@ int main() {
             assert(low[i] == *min_element(data.begin() + i, data.begin() + i + k));
             assert(high[i] == *max_element(data.begin() + i, data.begin() + i + k));
         }
-        V < Query > qs;
-        V < ll > expected, ans;
+        V < Mo::Query > qs;
+        V < ll > expected;
         for (int i = 0; i < 50; ++ i) {
             int l = int(rng() % n) + 1, r = int(rng() % n) + 1;
             if (l > r) swap(l, r);
             qs.push_back({l, r, i});
             expected.push_back(accumulate(arr.begin() + l, arr.begin() + r + 1, 0LL));
         }
-        ll sum = 0; ans.resize(qs.size());
-        mo(n, qs, [&](int i) { sum += arr[i]; }, [&](int i) { sum -= arr[i]; },
-               [&](int id) { ans[id] = sum; });
-        assert(ans == expected);
+        Mo mo;
+        for (int repeat = 0; repeat < 2; ++ repeat) {
+            mo_array = arr; mo_sum = 0; mo_answer.assign(qs.size(), 0);
+            mo.solve(n, qs);
+            assert(mo_answer == expected);
+        }
 
         string s(rng() % 20, 'a');
         for (char &ch : s) ch = char('a' + rng() % 3);
@@ -209,11 +217,15 @@ int main() {
             data.push_back(LLONG_MIN); data.push_back(LLONG_MAX);
         }
         auto old = data;
-        auto id = discretize(data);
+        V < ll > values;
+        auto id = discretize(data, values);
         set < ll > key(data.begin(), data.end());
-        assert(data == old && id == discretize(data));
-        for (int i = 0; i < int(data.size()); ++ i)
+        assert(values == V < ll > (key.begin(), key.end()));
+        assert(data == old && id == discretize(data, values));
+        for (int i = 0; i < int(data.size()); ++ i) {
             assert(id[i] == int(distance(key.begin(), key.find(data[i]))) + 1);
+            assert(values[id[i] - 1] == data[i]);
+        }
 
         int n = int(rng() % 30) + 1, root = int(rng() % n) + 1;
         V < V < int > > g(n + 1), h(n + 1);
@@ -241,6 +253,7 @@ int main() {
         if (hash_shape.count(value)) assert(hash_shape[value] == shape);
         shape_hash[shape] = value; hash_shape[value] = shape;
     }
-    assert(discretize(V < ll > {}).empty());
+    V < ll > values{1, 2};
+    assert(discretize(V < ll > {}, values).empty() && values.empty());
     return 0;
 }

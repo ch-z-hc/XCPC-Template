@@ -24,18 +24,19 @@ int main() {
                 for (int v = r; v != l; v = par[v]) {
                     want = max(want, val[v] ^ q); found = 1;
                 }
-                auto ans = trie.max_xor(root[l], root[r], q);
-                assert(bool(ans) == found);
-                if (found) assert(*ans == want);
+                unsigned long long ans;
+                assert(trie.max_xor(root[l], root[r], q, ans) == found);
+                if (found) assert(ans == want);
             }
         }
         assert(trie.tr.size() == 1 + 65 * 180);
         trie.init(); assert(trie.tr.size() == 1);
-        assert(! trie.max_xor(0, 0, 0));
+        unsigned long long ans;
+        assert(! trie.max_xor(0, 0, 0, ans));
         int one = trie.insert(0, ~0ull);
-        assert(trie.max_xor(0, one, 0) == ~0ull);
-        assert(trie.max_xor(0, one, ~0ull) == 0ull);
-        assert(! trie.max_xor(one, one, 0));
+        assert(trie.max_xor(0, one, 0, ans) && ans == ~0ull);
+        assert(trie.max_xor(0, one, ~0ull, ans) && ans == 0ull);
+        assert(! trie.max_xor(one, one, 0, ans));
     }
     PersistentXorTrie trie;
     V < int > root(1);
@@ -46,7 +47,8 @@ int main() {
     for (int l = 1; l < int(a.size()); ++ l) for (int r = l; r < int(a.size()); ++ r) {
         unsigned long long x = rng(), want = 0;
         for (int i = l; i <= r; ++ i) want = max(want, a[i] ^ x);
-        assert(trie.max_xor(root[l - 1], root[r], x) == want);
+        unsigned long long ans;
+        assert(trie.max_xor(root[l - 1], root[r], x, ans) && ans == want);
     }
     cout << "persistent xor trie random tests passed\n";
 }

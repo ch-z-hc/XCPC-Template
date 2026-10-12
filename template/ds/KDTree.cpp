@@ -8,9 +8,9 @@ typedef long long ll;
 // 静态二维 KD-tree，无模数；点和查询坐标绝对值均不超过 1e9。
 // 平方距离最多 8e18，使用 ll；不支持插入、删除或点权。
 // build(ps) 接收 {x, y}，原下标 0-based，重复点分别保留，可重复 build。
-// nearest(x, y, exclude = -1) 返回 {平方距离, 原下标}；
+// nearest(x, y, ans, exclude = -1) 成功时将 {平方距离, 原下标} 写入 ans；
 // 距离相等取较小下标，默认可返回自身，exclude 只排除指定原下标。
-// 空集或排除后为空返回 nullopt。
+// 成功返回 true，空集或排除后为空返回 false。
 // query(lx, ly, rx, ry) 统计闭矩形内点数，非法矩形返回 0。
 // 建树平均 O(n log n)，空间 O(n)，递归深度 O(log n)。
 // 两种查询最坏均 O(n)，最近邻不保证 O(log n)。
@@ -28,8 +28,14 @@ struct KDTree {
         int mid = (l + r) / 2;
         nth_element(tr.begin() + l, tr.begin() + mid, tr.begin() + r + 1,
                     [&](const Node &a, const Node &b) {
-            if (dep & 1) return tie(a.y, a.x, a.id) < tie(b.y, b.x, b.id);
-            return tie(a.x, a.y, a.id) < tie(b.x, b.y, b.id);
+            if (dep & 1) {
+                if (a.y != b.y) return a.y < b.y;
+                if (a.x != b.x) return a.x < b.x;
+            } else {
+                if (a.x != b.x) return a.x < b.x;
+                if (a.y != b.y) return a.y < b.y;
+            }
+            return a.id < b.id;
         });
         tr[mid].l = build(l, mid - 1, dep + 1);
         tr[mid].r = build(mid + 1, r, dep + 1);
@@ -71,11 +77,10 @@ struct KDTree {
         if (b != -1 && d2 <= ans.first) search(b, x, y, exclude, ans);
     }
 
-    optional < pair < ll, int > > nearest(ll x, ll y, int exclude = -1) const {
-        pair < ll, int > ans{LLONG_MAX, INT_MAX};
+    bool nearest(ll x, ll y, pair < ll, int > &ans, int exclude = -1) const {
+        ans = {LLONG_MAX, INT_MAX};
         search(root, x, y, exclude, ans);
-        if (ans.second == INT_MAX) return nullopt;
-        return ans;
+        return ans.second != INT_MAX;
     }
 
     int query(int u, ll lx, ll ly, ll rx, ll ry) const {
@@ -94,5 +99,6 @@ struct KDTree {
     }
 };
 
-// KDTree kd; kd.build(ps); auto ans = kd.nearest(x, y);
+// KDTree kd; kd.build(ps); pair < ll, int > ans;
+// bool ok = kd.nearest(x, y, ans); // 成功时使用 ans。
 // int cnt = kd.query(lx, ly, rx, ry);

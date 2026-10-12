@@ -8,7 +8,8 @@ using namespace std;
 
 // 带权并查集，顶点 1-based；差值版 WDSU、异或版 XDSU。
 // merge(u, v, w) 添加 value[v] - value[u] = w 或 value[u] xor value[v] = w。
-// 返回约束是否相容；query(u, v) 返回上述关系，不连通时返回 nullopt。
+// 返回约束是否相容；query(u, v, ans) 成功时将上述关系写入 ans。
+// query 连通时返回 true，不连通返回 false，此时不要使用 ans。
 // 路径压缩 + 按大小合并，均摊 O(alpha(n))，空间 O(n)；差值运算须不溢出 ll。
 
 struct WDSU {
@@ -40,9 +41,10 @@ struct WDSU {
         return 1;
     }
 
-    optional < ll > query(int u, int v) {
-        if (find(u) != find(v)) return nullopt;
-        return dis[v] - dis[u];
+    bool query(int u, int v, ll &ans) {
+        if (find(u) != find(v)) return false;
+        ans = dis[v] - dis[u];
+        return true;
     }
 };
 
@@ -72,10 +74,12 @@ struct XDSU {
         return 1;
     }
 
-    optional < unsigned long long > query(int u, int v) {
-        if (find(u) != find(v)) return nullopt;
-        return dis[u] ^ dis[v];
+    bool query(int u, int v, unsigned long long &ans) {
+        if (find(u) != find(v)) return false;
+        ans = dis[u] ^ dis[v];
+        return true;
     }
 };
 
-// 调用示例：WDSU dsu(n); bool ok = dsu.merge(u, v, w); auto d = dsu.query(u, v);
+// 调用示例：WDSU dsu(n); bool ok = dsu.merge(u, v, w);
+// ll d; bool connected = dsu.query(u, v, d);

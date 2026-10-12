@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "../../template/ds/LiChaoTree.cpp"
+#include "../../template/ds/MergeSegTree.cpp"
 #include "../../template/graph/Bridge.cpp"
 #include "../../template/graph/CutVertex.cpp"
 #include "../../template/graph/Dinic.cpp"
@@ -10,17 +11,56 @@
 #include "../../template/graph/ScalingMinCostFlow.cpp"
 #include "../../template/graph/DiffConstraints.cpp"
 #include "../../template/math/BerlekampMassey.cpp"
+#include "../../template/math/QuotientBlocks.cpp"
 #include "../../template/string/ACAutomaton.cpp"
 
 int main() {
     {
+        MergeSegTree st(INT_MAX);
+        int a = 0, b = 0;
+        st.add(a, 1, 2); st.add(a, INT_MAX - 1, 3); st.add(a, INT_MAX, 4);
+        st.add(b, INT_MAX - 1, 5); st.add(b, INT_MAX, 6);
+        assert(st.query(a, 1, INT_MAX) == 9);
+        assert(st.query(a, INT_MAX - 1, INT_MAX) == 7);
+        assert(st.kth(a, 1) == 1 && st.kth(a, 3) == INT_MAX - 1);
+        assert(st.kth(a, 9) == INT_MAX && st.kth(a, 10) == -1);
+        st.merge(a, b);
+        assert(b == 0 && st.query(a, 1, INT_MAX) == 20);
+        assert(st.query(a, INT_MAX - 1, INT_MAX - 1) == 8);
+        b = st.split(a, INT_MAX - 1, INT_MAX - 1);
+        assert(st.query(a, 1, INT_MAX) == 12 && st.query(b, 1, INT_MAX) == 8);
+        assert(st.kth(a, 3) == INT_MAX && st.kth(b, 8) == INT_MAX - 1);
+        st.add(b, INT_MAX - 1, -3);
+        st.merge(a, b);
+        assert(b == 0 && st.query(a, INT_MAX - 1, INT_MAX) == 15);
+        b = st.split(a, 1, INT_MAX);
+        assert(a == 0 && st.query(b, 1, INT_MAX) == 17);
+        st.init(1);
+        a = 0; st.add(a, 1, 7);
+        assert(st.query(a, 1, 1) == 7 && st.kth(a, 7) == 1);
+    }
+    {
+        assert(div_blocks(0).empty());
+        for (ll n : {1LL, 2LL, 1000000000000LL}) {
+            auto blocks = div_blocks(n);
+            ll next = 1;
+            for (auto [l, r] : blocks) {
+                assert(l == next && l <= r && r <= n);
+                assert(n / l == n / r && r == n / (n / l));
+                if (r != n) assert(n / (r + 1) != n / l);
+                next = r == n ? 0 : r + 1;
+            }
+            assert(next == 0 && blocks.back().second == n);
+        }
+    }
+    {
         Diff dc(2);
         V < ll > dis;
-        dc.add(1, 1, -5000000000000000000LL);
+        dc.add(1, 1, -4000000000000000000LL);
         assert(! dc.solve(dis));
         dc.init(2);
-        dc.add(2, 1, LLONG_MIN);
-        dc.add(1, 2, LLONG_MAX);
+        dc.add(2, 1, LLONG_MIN / 4);
+        dc.add(1, 2, LLONG_MAX / 4);
         assert(! dc.solve(dis));
         dc.init(2);
         dc.add(2, 1, LLONG_MIN);
@@ -31,24 +71,23 @@ int main() {
         dc.add(1, 2, 5000000000000000000LL);
         assert(dc.solve(dis));
         for (auto [u, v, w] : dc.edges)
-            assert(__int128_t(dis[u]) - dis[v] <= w);
+            assert(dis[u] <= dis[v] + w);
         dc.init(3);
-        dc.add(2, 1, -5000000000000000000LL);
-        dc.add(3, 2, -5000000000000000000LL);
-        assert(dc.solve(dis) && dis[3] == LLONG_MIN);
+        dc.add(2, 1, -3000000000000000000LL);
+        dc.add(3, 2, -3000000000000000000LL);
+        assert(dc.solve(dis) && dis[3] == -6000000000000000000LL);
         for (auto [u, v, w] : dc.edges)
-            assert(__int128_t(dis[u]) - dis[v] <= w);
+            assert(dis[u] <= dis[v] + w);
         dc.init(3);
-        dc.add(2, 1, LLONG_MIN);
-        dc.add(3, 2, -LLONG_MAX);
+        dc.add(2, 1, -LLONG_MAX / 3);
+        dc.add(3, 2, -LLONG_MAX / 3);
         assert(dc.solve(dis));
-        assert(dis[1] == LLONG_MAX && dis[2] == -1 && dis[3] == LLONG_MIN);
+        assert(dis[1] == 0 && dis[2] == -LLONG_MAX / 3);
+        assert(dis[3] == 2 * (-LLONG_MAX / 3));
         dc.init(3);
-        dc.add(2, 1, LLONG_MIN);
-        dc.add(3, 2, LLONG_MIN);
-        bool overflow = false;
-        try { dc.solve(dis); } catch (const overflow_error &) { overflow = true; }
-        assert(overflow);
+        dc.add(2, 3, -1);
+        dc.add(3, 2, 0);
+        assert(! dc.solve(dis));
         dc.init(0);
         assert(dc.solve(dis) && dis == V < ll >{0});
     }
@@ -87,7 +126,7 @@ int main() {
     }
     {
         LiChaoTree tree(4);
-        int id = tree.add_line(0, -1e20L);
+        int id = tree.add_line_real(0, -1e20L);
         assert(tree.query_id(2) == id);
         assert(tree.query(2) == -1e20L);
     }

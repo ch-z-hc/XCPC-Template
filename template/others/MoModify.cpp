@@ -5,8 +5,9 @@
 using namespace std;
 
 // 带修改莫队；数组 1-based，查询闭区间；按时间记录 modify / query。
+// 使用前补全 add / del / answer 的定义及题目状态。
 // add(value)、del(value) 维护当前区间，answer(id) 保存答案。
-// solve 前回调状态必须为空；solve 不消耗操作，可重跑但要重置回调状态。
+// solve 前清空统计状态；solve 不消耗操作，可重跑但要重置统计状态。
 // 块长 B ≈ n^(2/3)，q 次查询、u 次修改：排序 O(q log q)。
 // 移动 O(q B + n^2 / B + u n^2 / B^2)，空间 O(n + q + u)。
 struct MoModify {
@@ -16,6 +17,15 @@ struct MoModify {
     V < int > initial, current;
     V < Change > changes;
     V < Query > qs;
+
+    // 示例维护：将下面 3 个声明替换为此段成员，再按题意改。
+    // V < int > cnt, ans; int kinds = 0;
+    // void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
+    // void del(int x) { if (-- cnt[x] == 0) -- kinds; }
+    // void answer(int id) { ans[id] = kinds; }
+    void add(int x);
+    void del(int x);
+    void answer(int id);
 
     void init(const V < int > &a) {
         initial = current = a; n = max(0, int(a.size()) - 1);
@@ -28,8 +38,7 @@ struct MoModify {
         int id = int(qs.size()); qs.push_back({l, r, int(changes.size()), id});
         return id;
     }
-    template < class Add, class Remove, class Answer >
-    void solve(Add add, Remove del, Answer answer) const {
+    void solve() {
         int B = max(1, int(pow(max(1, n), 2.0 / 3)));
         auto queries = qs;
         sort(queries.begin(), queries.end(), [&](Query a, Query b) {
@@ -60,4 +69,7 @@ struct MoModify {
 };
 
 // MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
-// mo.solve(add, del, answer);
+// 以上示例求不同值个数；初始值和所有修改后的值一起离散到 [1, m]。
+// mo.cnt.assign(m + 1, 0); mo.kinds = 0; mo.ans.resize(mo.qs.size());
+// mo.solve(); // 第 id 个查询的答案为 mo.ans[id]。
+// 重跑前清零 cnt 和 kinds；这里只统计值，add / del 不接收数组下标。

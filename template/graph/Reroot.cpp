@@ -7,7 +7,8 @@ typedef long long ll;
 using namespace std;
 
 // 换根 DP 示例：求树上每个点到所有点的距离和。
-// 输入必须是连通树，顶点编号 1-based，边权可为任意整数；复杂度 O(n)。
+// 输入必须是连通树，顶点编号 1-based，边权为 ll，可为负；复杂度 O(n)。
+// 所有中间乘积、距离和及其加减均须能用 ll 表示，不使用模数。
 // 两次递归 DFS，递归深度最坏 O(n)。
 
 typedef V < V < pair < int, ll > > > Graph;
@@ -25,7 +26,7 @@ V < ll > reroot(const Graph &g) {
     };
     auto dfs2 = [&](auto &&self, int u, int fa) -> void {
         for (auto [v, w] : g[u]) if (v != fa) {
-            ans[v] = ans[u] + (static_cast<ll> (n) - 2 * siz[v]) * w;
+            ans[v] = ans[u] + (ll(n) - 2 * siz[v]) * w;
             self(self, v, u);
         }
     };

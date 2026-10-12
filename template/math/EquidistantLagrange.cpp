@@ -6,7 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制 Combination.cpp；已知次数 < n 的多项式在 0..n-1 的值。
+// 先复制数学章的“组合数”；已知次数 < n 的多项式在 0..n-1 的值。
 // y 为 0-based，系数先归一化；mod 为质数，n < mod <= 2^31。
 // build 为 O(n + log mod)，query 为 O(n)，空间 O(n)，支持重复 build。
 // query 接受有符号 ll 横坐标；空采样视作零多项式。

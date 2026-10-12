@@ -30,7 +30,8 @@ struct LeftistHeap {
 
     int merge(int u, int v) {
         if (! u || ! v) return u | v;
-        if (tie(tr[u].val, u) > tie(tr[v].val, v)) swap(u, v);
+        if (tr[u].val > tr[v].val ||
+            (tr[u].val == tr[v].val && u > v)) swap(u, v);
         tr[u].r = merge(tr[u].r, v);
         if (tr[tr[u].l].dis < tr[tr[u].r].dis) swap(tr[u].l, tr[u].r);
         tr[u].dis = tr[tr[u].r].dis + 1;

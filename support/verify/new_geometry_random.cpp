@@ -48,9 +48,10 @@ void test_circles(mt19937 &rng) {
         db value = circle_area(a, {{i / 10.L, 0}, 1});
         assert(value <= last + 1e-9L); last = value;
     }
-    assert(! circumcircle({0, 0}, {1, 0}, {2, 0}));
-    auto c = circumcircle({0, 0}, {2, 0}, {0, 2});
-    assert(c && near(c->o.x, 1) && near(c->o.y, 1) && near(c->r, sqrtl(2)));
+    Circle c;
+    assert(! circumcircle({0, 0}, {1, 0}, {2, 0}, c));
+    assert(circumcircle({0, 0}, {2, 0}, {0, 2}, c));
+    assert(near(c.o.x, 1) && near(c.o.y, 1) && near(c.r, sqrtl(2)));
     auto d = diameter_circle({-2, 1}, {4, 1});
     assert(near(d.o.x, 1) && near(d.o.y, 1) && near(d.r, 3));
 

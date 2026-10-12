@@ -10,7 +10,8 @@ using namespace std;
 // Bellman-Ford 检测全图负环，再以势能重标边权运行 n 次 Dijkstra。
 // 时间 O(nm + n(n + m) log n)，含结果矩阵的空间 O(n^2 + m)。
 // 要求 n * max|w| < inf / 4，保证负环检测、势能和重标距离安全。
-// 有限距离的绝对值小于 inf；不可达为 inf，全图有负环返回 nullopt。
+// 有限距离的绝对值小于 inf；不可达为 inf，全图有负环返回 false。
+// solve 成功返回 true，将距离矩阵写入 ans；失败时不要使用 ans。
 // solve 不修改图，可重复调用；不使用模数。
 struct Johnson {
     static constexpr ll inf = 1ll << 62;
@@ -32,7 +33,7 @@ struct Johnson {
         g[u].push_back({v, w});
     }
 
-    optional < V < V < ll > > > solve() const {
+    bool solve(V < V < ll > > &ans) const {
         V < ll > h(n + 1);
         for (int i = 1; i <= n; ++ i) {
             V < ll > nh = h;
@@ -43,10 +44,10 @@ struct Johnson {
             }
             h.swap(nh);
             if (! op) break;
-            if (i == n) return nullopt;
+            if (i == n) return false;
         }
 
-        V < V < ll > > ans(n + 1, V < ll > (n + 1, inf));
+        ans.assign(n + 1, V < ll > (n + 1, inf));
         for (int s = 1; s <= n; ++ s) {
             V < ll > dis(n + 1, inf);
             priority_queue < pair < ll, int >,
@@ -67,9 +68,9 @@ struct Johnson {
             for (int v = 1; v <= n; ++ v)
                 if (dis[v] != inf) ans[s][v] = dis[v] - h[s] + h[v];
         }
-        return ans;
+        return true;
     }
 };
 
 // Johnson g(n); g.add_edge(u, v, w);
-// auto dis = g.solve(); // ! dis 表示存在负环，否则使用 (*dis)[u][v]。
+// V < V < ll > > dis; bool ok = g.solve(dis); // 成功时使用 dis[u][v]。

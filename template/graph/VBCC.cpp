@@ -57,7 +57,8 @@ struct VBCC {
             }
             if (id == stop) break;
         }
-        bcc.push_back({move(v), move(e)});
+        bcc.push_back({});
+        bcc.back().v.swap(v); bcc.back().e.swap(e);
     }
 
     void dfs(int u, int pe) {

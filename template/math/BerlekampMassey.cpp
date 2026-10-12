@@ -46,7 +46,7 @@ V < ll > bm(const V < ll > &s, ll mod) {
 
         if (2 * len <= n) {
             len = n + 1 - len;
-            b = move(old);
+            b.swap(old);
             last = d;
             m = 1;
         } else {

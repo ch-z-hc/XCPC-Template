@@ -5,7 +5,8 @@
 
 using namespace std;
 
-// 先复制 Point.cpp、Line.cpp；简单多边形按边界顺序给点，0-based。
+// 先复制本章的“点与向量”“直线与线段”。
+// 简单多边形按边界顺序给点，0-based。
 // area、contain、convexCut 时间 O(n)；convexCut 要求输入为凸多边形。
 // 浮点采用 EPS；area 是有向面积，逆时针为正，切割保留直线左侧。
 // area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。

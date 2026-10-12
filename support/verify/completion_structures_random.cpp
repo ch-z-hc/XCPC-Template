@@ -149,26 +149,27 @@ void check_sg(mt19937 &rng) {
         V < V < int > > g(n + 1);
         for (int i = 0; i < n; ++ i) for (int j = i + 1; j < n; ++ j)
             if (rng() % 3 == 0) g[order[i]].push_back(order[j]);
-        auto sg = grundy(g); assert(sg);
+        V < int > sg; assert(grundy(g, sg));
         V < V < bool > > win(n + 1, V < bool > (n + 1));
         for (int i = n - 1; i >= 0; -- i) for (int j = n - 1; j >= 0; -- j) {
             int u = order[i], v = order[j]; bool value = false;
             for (int x : g[u]) value = value || ! win[x][v];
             for (int y : g[v]) value = value || ! win[u][y];
             win[u][v] = value;
-            assert(bool((*sg)[u] ^ (*sg)[v]) == value);
+            assert(bool(sg[u] ^ sg[v]) == value);
         }
         for (int u = 1; u <= n; ++ u) {
             set < int > values;
-            for (int v : g[u]) values.insert((*sg)[v]);
+            for (int v : g[u]) values.insert(sg[v]);
             int mex = 0; while (values.count(mex)) ++ mex;
-            assert((*sg)[u] == mex);
+            assert(sg[u] == mex);
         }
-        g[order.back()].push_back(order.back()); assert(! grundy(g));
+        g[order.back()].push_back(order.back()); assert(! grundy(g, sg));
     }
-    assert(grundy({{}})->size() == 1);
-    assert(! grundy({{}, {2}, {1}, {}}));
-    assert((grundy({{}, {2, 2}, {}}).value() == V < int > {0, 1, 0}));
+    V < int > sg;
+    assert(grundy({{}}, sg) && sg.size() == 1);
+    assert(! grundy({{}, {2}, {1}, {}}, sg));
+    assert((grundy({{}, {2, 2}, {}}, sg) && sg == V < int > {0, 1, 0}));
 }
 
 ll direct_hash(const V < string > &a, int x1, int y1, int x2, int y2, ll mod) {

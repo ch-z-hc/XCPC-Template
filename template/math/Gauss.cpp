@@ -99,4 +99,9 @@ int gauss_xor(V < bitset < N > > a, int m, V < int > &x) {
 // 调用示例：
 // V < ld > x; int op = gauss(a, m, x);
 // V < ll > y; int op = gauss_mod(b, m, p, y);
-// V < int > z; int op = gauss_xor(c, m, z);  // c 为 V < bitset < N > >。
+// 异或示例：x0 ^ x1 = 1，x1 = 0；N 必须为编译期常量，且 N > m。
+// const int N = 1005; int n = 2, m = 2;
+// V < bitset < N > > c(n);
+// c[0][0] = c[0][1] = 1; c[0][m] = 1;
+// c[1][1] = 1; c[1][m] = 0;
+// V < int > z; int op = gauss_xor(c, m, z); // op = 1，z = {1, 0}。

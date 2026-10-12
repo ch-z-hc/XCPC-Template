@@ -26,12 +26,12 @@ void check(DLX &dlx, const V < V < int > > &rows) {
     auto before = snapshot(dlx); auto siz = dlx.siz;
     bool exists = brute(dlx.cols, rows);
     for (int repeat = 0; repeat < 3; ++ repeat) {
-        auto ans = dlx.solve(); assert(bool(ans) == exists);
+        V < int > ans; assert(dlx.solve(ans) == exists);
         assert(snapshot(dlx) == before && dlx.siz == siz && dlx.cur.empty());
-        if (! ans) continue;
+        if (! exists) continue;
         V < int > cnt(dlx.cols + 1);
         set < int > seen;
-        for (int id : *ans) {
+        for (int id : ans) {
             int i = id - 100;
             assert(0 <= i && i < int(rows.size()) && seen.insert(id).second);
             assert(! rows[i].empty());
@@ -57,7 +57,7 @@ int main() {
             dlx.add_row(int(rows.size()) + 100, {c}); rows.push_back({c});
         }
         // 加入单列行后必有解，不再对最多 19 行重复穷举。
-        auto ans = dlx.solve(); assert(ans);
+        V < int > ans; assert(dlx.solve(ans));
         dlx.init(1); check(dlx, {});
         dlx.add_row(100, {1}); check(dlx, {{1}});
     }
@@ -65,6 +65,8 @@ int main() {
     V < V < int > > rows{{1, 4, 7}, {1, 4}, {4, 5, 7}, {3, 5, 6}, {2, 3, 6, 7}, {2, 7}};
     for (int i = 0; i < int(rows.size()); ++ i) dlx.add_row(i + 100, rows[i]);
     check(dlx, rows);
-    DLX empty; assert(empty.solve() && empty.solve()->empty());
+    DLX empty; V < int > ans{1};
+    assert(empty.solve(ans) && ans.empty());
+    ans.push_back(2); assert(empty.solve(ans) && ans.empty());
     cout << "dlx random tests passed\n";
 }

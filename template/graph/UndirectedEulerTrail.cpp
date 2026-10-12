@@ -5,7 +5,8 @@
 using namespace std;
 
 // 无向图欧拉路。edges 按输入顺序编号，返回顶点序列；不存在时返回空。
-// 顶点编号 1-based；复杂度 O(n + m)，空间 O(n + m)。
+// n >= 1，顶点编号 1-based；无边时返回 {1}。
+// 复杂度 O(n + m)，空间 O(n + m)。
 // 递归 Hierholzer，递归深度最坏 O(m)。
 
 V < int > euler_u(int n, const V < pair < int, int > > &edges) {

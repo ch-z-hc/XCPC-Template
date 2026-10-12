@@ -8,6 +8,7 @@ using namespace std;
 // build 为 O(n)，lca 为 O(log n)，path 分成 O(log n) 段，空间 O(n)。
 // path 回调的段不保证路径方向，适合区间和、最值等与方向无关的操作。
 // 子树区间为 [in[u], out[u]]；递归深度最坏 O(n)。区间维护另接线段树。
+// path 包含两端和 LCA，下面示例维护点权；边权须额外排除 LCA 对应位置。
 
 struct HLD {
     int n = 0, tim = 0;
@@ -69,4 +70,8 @@ struct HLD {
 };
 
 // 调用示例：HLD hld(n); hld.add_edge(u, v); hld.build(root);
+// a 为 1-based 点权；先复制数据结构章的“线段树与树上二分”。
+// V < ll > b(n + 1);
+// for (int u = 1; u <= n; ++ u) b[hld.in[u]] = a[u];
+// SegTree seg; seg.init(b); ll ans = 0;
 // hld.path(u, v, [&](int l, int r) { ans += seg.query(l, r); });

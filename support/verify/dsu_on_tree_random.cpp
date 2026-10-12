@@ -5,6 +5,18 @@
 
 #include "../../template/graph/DSUOnTree.cpp"
 
+std::vector<int> color, frequency, answer;
+int distinct = 0;
+
+void DSUOnTree::add(int u) {
+    if (frequency[color[u]]++ == 0) ++distinct;
+}
+void DSUOnTree::del(int u) {
+    assert(frequency[color[u]] > 0);
+    if (--frequency[color[u]] == 0) --distinct;
+}
+void DSUOnTree::query(int u) { answer[u] = distinct; }
+
 int main() {
     std::mt19937 rng(712367);
     for (int test = 0; test < 500; ++test) {
@@ -16,7 +28,7 @@ int main() {
         }
 
         int root = int(rng() % n) + 1;
-        std::vector<int> color(n + 1);
+        color.assign(n + 1, 0);
         for (int u = 1; u <= n; ++u) color[u] = int(rng() % 10);
 
         std::vector<int> parent(n + 1), order{root};
@@ -39,23 +51,16 @@ int main() {
             expected[u] = int(colors.size());
         }
 
-        std::vector<int> frequency(10), answer(n + 1);
-        int distinct = 0;
-        auto add_vertex = [&](int u) {
-            if (frequency[color[u]]++ == 0) ++distinct;
-        };
-        auto remove_vertex = [&](int u) {
-            if (--frequency[color[u]] == 0) --distinct;
-        };
-        auto answer_subtree = [&](int u) { answer[u] = distinct; };
-        dsu.build(root, add_vertex, remove_vertex, answer_subtree);
+        frequency.assign(10, 0); answer.assign(n + 1, 0);
+        distinct = 0;
+        dsu.build(root);
 
         assert(answer == expected);
         assert(distinct == 0);
         for (int count : frequency) assert(count == 0);
 
         std::fill(answer.begin(), answer.end(), 0);
-        dsu.build(root, add_vertex, remove_vertex, answer_subtree);
+        dsu.build(root);
         assert(answer == expected);
         assert(distinct == 0);
     }

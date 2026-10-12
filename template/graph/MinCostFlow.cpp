@@ -105,7 +105,7 @@ struct MCMF {
             ans_flow += add;
             ans_cost += add * (h[t] - h[s]);
         }
-        return {ans_flow, static_cast<ll> (ans_cost)};
+        return {ans_flow, ll(ans_cost)};
     }
 };
 

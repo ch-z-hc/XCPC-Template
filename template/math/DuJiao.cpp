@@ -4,7 +4,7 @@
 #define V vector
 
 typedef long long ll;
-__extension__ typedef __int128 i128;
+typedef __int128_t i128;
 
 using namespace std;
 
@@ -74,4 +74,5 @@ struct DuJiao {
 };
 
 // 调用示例：DuJiao d; d.init(5000000);
-// i128 a = d.phi(n); ll b = d.mu(n); // i128 输出时需自行转换。
+// i128 a = d.phi(n); ll b = d.mu(n);
+// 输出先复制开头 template 的 print128：print128(a); cout << '\n';

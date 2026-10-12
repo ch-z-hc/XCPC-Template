@@ -51,17 +51,18 @@ optional < ll > brute_dmst(const DMST &g, int root) {
 
 void check_dmst() {
     DMST g(1);
-    assert(g.solve(1) == optional < ll > (0));
+    ll value;
+    assert(g.solve(1, value) && value == 0);
     g.add_edge(1, 1, -10);
-    assert(g.solve(1) == optional < ll > (0));
+    assert(g.solve(1, value) && value == 0);
     g.init(2);
-    assert(! g.solve(1));
+    assert(! g.solve(1, value));
     g.add_edge(1, 2, LLONG_MAX);
-    assert(g.solve(1) == optional < ll > (LLONG_MAX));
+    assert(g.solve(1, value) && value == LLONG_MAX);
     g.init(3);
     g.add_edge(1, 2, 10); g.add_edge(1, 3, 12);
     g.add_edge(2, 3, -5); g.add_edge(3, 2, -4);
-    assert(g.solve(1) == optional < ll > (5));
+    assert(g.solve(1, value) && value == 5);
     for (int t = 0; t < 2000; ++ t) {
         int n = rnd(1, 5), root = rnd(1, n);
         g.init(n);
@@ -70,10 +71,15 @@ void check_dmst() {
             while (cnt --) g.add_edge(rnd(1, n), v, rnd(-20, 20));
         }
         auto ans = brute_dmst(g, root);
-        assert(g.solve(root) == ans);
-        assert(g.solve(root) == ans);
-        for (int r = 1; r <= n; ++ r)
-            assert(g.solve(r) == brute_dmst(g, r));
+        assert(g.solve(root, value) == bool(ans));
+        if (ans) assert(value == *ans);
+        assert(g.solve(root, value) == bool(ans));
+        if (ans) assert(value == *ans);
+        for (int r = 1; r <= n; ++ r) {
+            auto want = brute_dmst(g, r);
+            assert(g.solve(r, value) == bool(want));
+            if (want) assert(value == *want);
+        }
     }
 }
 
@@ -135,11 +141,12 @@ void check_shortest_paths() {
     typedef __int128_t i128;
     const i128 inf = i128(1) << 100;
     Johnson g;
-    assert(g.solve().has_value());
+    V < V < ll > > result;
+    assert(g.solve(result));
     g.init(1); g.add_edge(1, 1, -1);
-    assert(! g.solve());
+    assert(! g.solve(result));
     g.init(4); g.add_edge(3, 4, -2); g.add_edge(4, 3, 1);
-    assert(! g.solve()); // 从顶点 1 不可达的负环也必须检出。
+    assert(! g.solve(result)); // 从顶点 1 不可达的负环也必须检出。
     V < V < ll > > cycle(5, V < ll > (5, Johnson::inf));
     for (int i = 1; i <= 4; ++ i) cycle[i][i] = 0;
     cycle[3][4] = -2; cycle[4][3] = 1;
@@ -169,15 +176,16 @@ void check_shortest_paths() {
                     truth[i][j] = min(truth[i][j], truth[i][k] + truth[k][j]);
         bool ok = true;
         for (int i = 1; i <= n; ++ i) if (truth[i][i] < 0) ok = false;
-        auto ans = g.solve();
-        assert(ans.has_value() == ok);
-        assert(g.solve() == ans);
+        V < V < ll > > ans, repeat;
+        assert(g.solve(ans) == ok);
+        assert(g.solve(repeat) == ok);
+        if (ok) assert(repeat == ans);
         assert(floyd(dis) == ok);
         if (! ok) continue;
         for (int i = 1; i <= n; ++ i)
             for (int j = 1; j <= n; ++ j) {
                 ll want = truth[i][j] == inf ? Johnson::inf : ll(truth[i][j]);
-                assert((*ans)[i][j] == want && dis[i][j] == want);
+                assert(ans[i][j] == want && dis[i][j] == want);
             }
         auto old = dis;
         assert(floyd(dis) && dis == old);

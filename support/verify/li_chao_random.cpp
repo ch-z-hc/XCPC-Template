@@ -58,12 +58,12 @@ int main() {
         std::vector<BruteLine> lines(1);
         for (auto [slope, intercept] : std::vector<std::pair<long double, long double>>{
                  {-1.4e-9L, -1.2e-9L}, {-0.6e-9L, -1.6e-9L}, {-1.6e-9L, 0.2e-9L}}) {
-            tree.add_line(slope, intercept);
+            tree.add_line_real(slope, intercept);
             lines.push_back({slope, intercept, -3, 3});
         }
         check(tree, lines, -3, 3);
         assert(tree.query_id(1) == 3);
-        int duplicate = tree.add_line(-1.6e-9L, 0.2e-9L);
+        int duplicate = tree.add_line_real(-1.6e-9L, 0.2e-9L);
         assert(duplicate == 4 && tree.query_id(1) == 3);
     }
 
@@ -116,7 +116,7 @@ int main() {
         for (int operation = 0; operation < 100; ++operation) {
             long double slope = (int(rng() % 81) - 40) * 1e-10L;
             long double intercept = (int(rng() % 81) - 40) * 1e-10L;
-            tree.add_line(slope, intercept);
+            tree.add_line_real(slope, intercept);
             lines.push_back({slope, intercept, domain_left, domain_right});
             check(tree, lines, domain_left, domain_right);
         }
@@ -134,7 +134,7 @@ int main() {
                 std::swap(x0, x1);
                 std::swap(y0, y1);
             }
-            tree.add_seg(x0, y0, x1, y1);
+            tree.add_seg_real(x0, y0, x1, y1);
             if (x0 > x1) {
                 std::swap(x0, x1);
                 std::swap(y0, y1);

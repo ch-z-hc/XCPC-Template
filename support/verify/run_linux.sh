@@ -52,4 +52,5 @@ for source in support/verify/*.cpp; do
 done
 printf 'PASS: %s verification programs\n' "$count"
 python3 support/verify/check_lichao_integer.py
+python3 support/verify/print_usage_check.py
 python3 support/verify/stress_tools_check.py

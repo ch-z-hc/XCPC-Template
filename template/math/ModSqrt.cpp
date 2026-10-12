@@ -6,10 +6,10 @@ using namespace std;
 
 // Cipolla：求 x * x = a (mod p)，p 必须是质数。
 // 2 <= p <= 2147483647，a 可为负数；返回较小的非负根。
-// 无解返回 nullopt，不检测 p 是否为质数，不支持合数模数。
+// 无解返回 -1，不检测 p 是否为质数，不支持合数模数。
 // 随机选取二次非剩余，期望时间 O(log p)，额外空间 O(1)。
 
-optional < ll > sqrt_mod(ll a, ll p) {
+ll sqrt_mod(ll a, ll p) {
     a %= p;
     if (a < 0) a += p;
     if (! a || p == 2) return a;
@@ -19,7 +19,7 @@ optional < ll > sqrt_mod(ll a, ll p) {
             if (k & 1) ans = ans * x % p;
         return ans;
     };
-    if (qpow(a, (p - 1) / 2) != 1) return nullopt;
+    if (qpow(a, (p - 1) / 2) != 1) return -1;
 
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     uniform_int_distribution < ll > pick(0, p - 1);
@@ -42,4 +42,4 @@ optional < ll > sqrt_mod(ll a, ll p) {
 }
 
 // 调用示例：auto x = sqrt_mod(10, 13); // x = 6。
-// sqrt_mod(3, 7) 返回 nullopt；使用前先判断 x.has_value()。
+// sqrt_mod(3, 7) 返回 -1；使用前先判断 x != -1。

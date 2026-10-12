@@ -5,7 +5,8 @@
 
 using namespace std;
 
-// 先复制 Point.cpp、Line.cpp；坐标有限、半径非负，圆相关操作均 O(1)。
+// 先复制本章的“点与向量”“直线与线段”；坐标有限、半径非负。
+// 圆相关操作均 O(1)。
 // 浮点误差为 EPS；公切线要求正半径，重合圆交点 / 切线约定返回空。
 
 struct Circle {
@@ -14,17 +15,19 @@ struct Circle {
     bool contains(P p) const { return p.distTo(o) <= r + EPS; }
 };
 
-// 下列圆相关操作均 O(1)。circumcircle 三点共线时返回 nullopt。
+// 下列圆相关操作均 O(1)。circumcircle 三点共线时返回 false。
+// 成功时返回 true，将外接圆写入 ans；失败时不要使用 ans。
 Circle diameter_circle(P a, P b) {
     return {(a + b) / 2, a.distTo(b) / 2};
 }
 
-optional < Circle > circumcircle(P a, P b, P c) {
+bool circumcircle(P a, P b, P c, Circle &ans) {
     P u = b - a, v = c - a;
     db d = 2 * u.det(v);
-    if (d == 0) return nullopt;
+    if (d == 0) return false;
     P o = a + (u.rot90() * v.abs2() - v.rot90() * u.abs2()) / d;
-    return Circle{o, o.distTo(a)};
+    ans = {o, o.distTo(a)};
+    return true;
 }
 
 // 圆与无限直线的交点，返回 0 / 1 / 2 个点。

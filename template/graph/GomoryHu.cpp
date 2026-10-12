@@ -6,7 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-// 依赖 Dinic.cpp，先复制 Dinic；无向非负容量图，顶点 1-based。
+// 先复制图论章的“最大流”中的 Dinic；无向非负容量图，顶点 1-based。
 // 总容量须放入 ll；支持重边、自环和不连通图，可重复 build。
 // t 为最小割树，路径最小边权等于两点最小割；query 同点约定返回 0。
 // build 调用 n - 1 次最大流，另有 O(n^2 + n log n) 工作；query 为 O(log n)。

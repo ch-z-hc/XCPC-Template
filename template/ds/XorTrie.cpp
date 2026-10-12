@@ -6,7 +6,8 @@ using namespace std;
 
 // 64 位无符号整数的 01 Trie，支持重数和删除；节点编号从 0 开始。
 // 单次操作 O(64)，空间 O(64 * 插入次数)，删除不回收节点。
-// max_xor(x) 返回集合元素与 x 的最大异或值，空集合返回 nullopt。
+// max_xor(x, ans) 成功时将集合元素与 x 的最大异或值写入 ans。
+// 空集合返回 false，成功返回 true，此时才能使用 ans。
 
 struct XorTrie {
     struct Node { array < int, 2 > ch{}; int cnt = 0; };
@@ -41,17 +42,18 @@ struct XorTrie {
         return 1;
     }
 
-    optional < unsigned long long > max_xor(unsigned long long x) const {
-        if (! tr[0].cnt) return nullopt;
+    bool max_xor(unsigned long long x, unsigned long long &ans) const {
+        if (! tr[0].cnt) return false;
         int u = 0;
-        unsigned long long ans = 0;
+        ans = 0;
         for (int i = 63; i >= 0; -- i) {
             int b = int(x >> i & 1), v = tr[u].ch[b ^ 1];
             if (v && tr[v].cnt) ans |= 1ull << i, u = v;
             else u = tr[u].ch[b];
         }
-        return ans;
+        return true;
     }
 };
 
-// 调用示例：XorTrie trie; trie.insert(x); auto ans = trie.max_xor(y);
+// 调用示例：XorTrie trie; trie.insert(x); unsigned long long ans;
+// bool ok = trie.max_xor(y, ans);

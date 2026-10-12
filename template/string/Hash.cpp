@@ -22,7 +22,7 @@ struct Hash {
         h1.assign(n + 1, 0); h2.assign(n + 1, 0);
         p1.assign(n + 1, 1); p2.assign(n + 1, 1);
         for (int i = 0; i < n; ++ i) {
-            int x = static_cast<unsigned char> (s[i]) + 1;
+            int x = (unsigned char)s[i] + 1;
             h1[i + 1] = (h1[i] * base + x) % mod1;
             h2[i + 1] = (h2[i] * base + x) % mod2;
             p1[i + 1] = p1[i] * base % mod1;

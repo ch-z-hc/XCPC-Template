@@ -23,7 +23,7 @@ ll bsgs_inv(ll a, ll mod) {
 ll bsgs(ll a, ll b, ll mod) {
     if (mod == 1) return 0;
     a = (a % mod + mod) % mod; b = (b % mod + mod) % mod;
-    ll m = static_cast<ll> (sqrtl(mod)) + 1, cur = 1;
+    ll m = ll(sqrtl(mod)) + 1, cur = 1;
     unordered_map < ll, ll > pos;
     pos.reserve(size_t(m * 2));
     for (ll j = 0; j < m; ++ j) {

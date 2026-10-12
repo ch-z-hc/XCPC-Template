@@ -7,6 +7,7 @@ typedef long long ll;
 using namespace std;
 
 // 连通树的边权必须非负，顶点编号 1-based；两次遍历复杂度 O(n)。
+// 所有路径的距离累加须能用 ll 表示，不使用模数。
 // 使用递归 DFS，递归深度最坏 O(n)。
 
 typedef V < V < pair < int, ll > > > Graph;

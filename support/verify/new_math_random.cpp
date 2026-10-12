@@ -107,10 +107,10 @@ void test_crt(mt19937_64 &rng) {
         for (ll a : {LLONG_MIN, -2LL, -1LL, 0LL, 1LL, 2LL, LLONG_MAX}) {
             auto v = inv(a, mod);
             ll norm = a % mod; if (norm < 0) norm += mod;
-            assert(bool(v) == (gcd(norm, mod) == 1));
-            if (v) {
-                assert(0 <= *v && *v < mod);
-                assert(CRTInt(norm) * *v % mod == 1 % mod);
+            assert((v != -1) == (gcd(norm, mod) == 1));
+            if (v != -1) {
+                assert(0 <= v && v < mod);
+                assert(CRTInt(norm) * v % mod == 1 % mod);
             }
         }
     for (int t = 0; t < 2000; ++ t) {
@@ -127,19 +127,18 @@ void test_crt(mt19937_64 &rng) {
                 if ((x - r[i]) % m[i]) ok = 0;
             if (ok) { expected = x; break; }
         }
-        auto ans = crt(r, m);
-        assert(bool(ans) == (expected != -1));
-        if (ans) assert(ans->first == expected && ans->second == mod);
+        ll ans, actual_mod;
+        bool ok = crt(r, m, ans, actual_mod);
+        assert(ok == (expected != -1));
+        if (ok) assert(ans == expected && actual_mod == mod);
     }
-    auto a = crt({LLONG_MIN}, {LLONG_MAX});
-    assert(a && a->first == LLONG_MAX - 1 && a->second == LLONG_MAX);
-    auto b = crt({LLONG_MAX, LLONG_MIN}, {LLONG_MAX, 1});
-    assert(b && b->first == 0 && b->second == LLONG_MAX);
-    assert(! crt({0, 1}, {LLONG_MAX - 1, 2}));
-    bool overflow = 0;
-    try { crt({0, 0}, {LLONG_MAX, 2}); }
-    catch (const overflow_error &) { overflow = 1; }
-    assert(overflow);
+    ll ans, mod;
+    assert(crt({LLONG_MIN}, {LLONG_MAX}, ans, mod));
+    assert(ans == LLONG_MAX - 1 && mod == LLONG_MAX);
+    assert(crt({LLONG_MAX, LLONG_MIN}, {LLONG_MAX, 1}, ans, mod));
+    assert(ans == 0 && mod == LLONG_MAX);
+    assert(! crt({0, 1}, {LLONG_MAX - 1, 2}, ans, mod));
+    assert(! crt({0, 0}, {LLONG_MAX, 2}, ans, mod));
 }
 
 void test_bsgs(mt19937_64 &rng) {

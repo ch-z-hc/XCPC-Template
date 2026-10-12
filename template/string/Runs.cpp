@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// 极大周期子串 runs；先复制 SuffixArray.cpp，输入任意字节字符串。
+// 极大周期子串 runs；先复制字符串章的“后缀数组”，输入任意字节字符串。
 // 返回 {period, l, r}，0-based 半开区间 [l, r)，period 是最小周期。
 // 每个区间长度 >= 2*period，且不能向任一侧扩展后仍保持该周期。
 // 两种字典序的 Lyndon 根 + LCP / LCS；时间、空间 O(n log n)，结果排序去重。

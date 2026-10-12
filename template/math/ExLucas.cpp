@@ -29,14 +29,13 @@ struct ExLucas {
     }
 
     void add(int p, int q) {
-        Factor b;
-        b.p = p; b.mod = q;
+        a.push_back({p, q, {}});
+        Factor &b = a.back();
         b.fac.assign(size_t(q) + 1, 1);
         for (ll i = 1; i <= q; ++ i) {
             b.fac[i] = b.fac[i - 1];
             if (i % p) b.fac[i] = b.fac[i] * i % q;
         }
-        a.push_back(move(b));
     }
 
     void init(int m) {

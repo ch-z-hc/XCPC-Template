@@ -1,4 +1,4 @@
-"""准备固定版本的万条级 OEIS 检索附册，保留上游 PDF 原文和排版。"""
+"""准备固定版本的 OEIS 原版附册和保留原文的 A4 横向 2 合 1 打印版。"""
 from __future__ import annotations
 
 import hashlib
@@ -7,12 +7,15 @@ import tempfile
 from pathlib import Path
 from urllib.request import urlopen
 
-from pypdf import PdfReader
+from pypdf import PdfReader, PdfWriter, Transformation
+from pypdf.generic import DecodedStreamObject
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
 
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "output/pdf/oeis.pdf"
+TWO_UP = ROOT / "output/pdf/oeis-2up.pdf"
 SOURCE = (
     "https://github.com/Dusker233/OEIS-PrintMirror/releases/download/"
     "Daily_Update_2025-07-11/oeis.pdf"
@@ -35,6 +38,62 @@ def verify(path: Path) -> None:
             raise ValueError(f"第 {number} 页不是 A4 竖版")
 
 
+def add_dashed_frames(page, count: int) -> None:
+    width, height = map(float, (page.mediabox.width, page.mediabox.height))
+    inset = 2 * mm
+    commands = "q\n0.55 G\n0.4 w\n[3 3] 0 d\n"
+    for slot in range(count):
+        commands += (
+            f"{slot * width / 2 + inset:.5f} {inset:.5f} "
+            f"{width / 2 - 2 * inset:.5f} {height - 2 * inset:.5f} re S\n"
+        )
+    commands += "Q\n"
+    stream = DecodedStreamObject()
+    stream.set_data(b"q\n" + page.get_contents().get_data() + b"\nQ\n" + commands.encode("ascii"))
+    page.replace_contents(stream.flate_encode())
+
+
+def generate_two_up() -> None:
+    reader = PdfReader(OUTPUT)
+    writer = PdfWriter()
+    width, height = map(float, (reader.pages[0].mediabox.width,
+                                reader.pages[0].mediabox.height))
+    scale = min(height / 2 / width, width / height)
+    for first in range(0, len(reader.pages), 2):
+        sheet = writer.add_blank_page(height, width)
+        for slot, number in enumerate(range(first, min(first + 2, len(reader.pages)))):
+            x = slot * height / 2 + (height / 2 - width * scale) / 2
+            y = (width - height * scale) / 2
+            sheet.merge_transformed_page(
+                reader.pages[number],
+                Transformation().scale(scale).translate(x, y),
+            )
+        add_dashed_frames(sheet, min(2, len(reader.pages) - first))
+        if len(writer.pages) % 50 == 0:
+            print(f"BUILD: {len(writer.pages)}/{(PAGES + 1) // 2} pages", flush=True)
+    writer.add_metadata({"/Title": "OEIS - A4 landscape 2-up"})
+    writer.compress_identical_objects()
+    with tempfile.TemporaryDirectory(dir=TWO_UP.parent) as directory:
+        generated = Path(directory) / TWO_UP.name
+        writer.write(generated)
+        check = PdfReader(generated)
+        assert len(check.pages) == (PAGES + 1) // 2
+        for index, page in enumerate(check.pages):
+            assert abs(float(page.mediabox.width) - height) < .1
+            assert abs(float(page.mediabox.height) - width) < .1
+            expected = "".join(
+                "".join(reader.pages[number].extract_text().split())
+                for number in range(index * 2, min(index * 2 + 2, PAGES))
+            )
+            assert "".join(page.extract_text().split()) == expected, index + 1
+            if (index + 1) % 50 == 0:
+                print(f"VERIFY: {index + 1}/{len(check.pages)} pages", flush=True)
+        generated.replace(TWO_UP)
+    shutil.copyfile(TWO_UP, ROOT / "oeis-2up.pdf")
+    print(f"PASS: {PAGES} source pages preserved in {len(check.pages)} A4 landscape pages")
+    print(TWO_UP)
+
+
 def main() -> None:
     if OUTPUT.exists():
         verify(OUTPUT)
@@ -49,6 +108,7 @@ def main() -> None:
             downloaded.replace(OUTPUT)
     print(f"PASS: {SEQUENCES} sequences, {PAGES} pages, SHA-256 and A4 verified")
     print(OUTPUT)
+    generate_two_up()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 typedef long long ll;
-__extension__ typedef __int128 i128;
+typedef __int128_t i128;
 
 using namespace std;
 
@@ -35,4 +35,5 @@ i128 floor_sum(ll n_, ll m_, ll a_, ll b_) {
 }
 
 // 调用示例：i128 ans = floor_sum(4, 10, 6, 3); // ans = 3。
-// floor_sum(4, 10, -6, 3) = -4；输出 i128 时自行转换为十进制。
+// floor_sum(4, 10, -6, 3) = -4。
+// 输出先复制开头 template 的 print128：print128(ans); cout << '\n';

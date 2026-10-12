@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// 先复制 Point.cpp；平面最近点对，坐标有限，不使用 EPS 排序。
+// 先复制本章的“点与向量”；平面最近点对，坐标有限，不使用 EPS 排序。
 // build(points) 返回原数组的两个 0-based 下标，少于两个点返回 {-1, -1}。
 // d2 为距离平方；时间 O(n log n)，空间 O(n)，允许重复点。
 struct ClosestPair {

@@ -37,11 +37,11 @@ int main() {
             kr.build(descending);
             assert(kr.tot == 2 * n - int(kr.roots.size()));
             for (int u = 1; u <= n; ++ u) for (int v = 1; v <= n; ++ v) {
-                auto got = kr.query(u, v);
+                ll got;
                 ll want = descending ? widest[u][v] : dist[u][v];
                 bool connected = descending ? want != LLONG_MIN : want != LLONG_MAX;
-                assert(bool(got) == connected);
-                if (got) assert(*got == (u == v ? 0 : want));
+                assert(kr.query(u, v, got) == connected);
+                if (connected) assert(got == (u == v ? 0 : want));
             }
         }
         vb.build(); eb.build();

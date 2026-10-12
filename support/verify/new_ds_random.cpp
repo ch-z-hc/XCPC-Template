@@ -19,10 +19,11 @@ ll key() {
 
 void test_treap() {
     Treap t;
+    ll value;
     for (int z = 0; z < 60; ++ z) {
         t.init();
         multiset < ll > s;
-        assert(! t.kth(1) && ! t.pre(0) && ! t.suf(0));
+        assert(! t.kth(1, value) && ! t.pre(0, value) && ! t.suf(0, value));
         assert(! t.erase(0));
         for (int q = 0; q < 1000; ++ q) {
             ll x = key();
@@ -41,7 +42,12 @@ void test_treap() {
             if (it != s.end()) b = *it;
             int k = int(rng() % (s.size() + 3));
             if (k >= 1 && k <= int(s.size())) c = *next(s.begin(), k - 1);
-            assert(t.pre(x) == a && t.suf(x) == b && t.kth(k) == c);
+            assert(t.pre(x, value) == bool(a));
+            if (a) assert(value == *a);
+            assert(t.suf(x, value) == bool(b));
+            if (b) assert(value == *b);
+            assert(t.kth(k, value) == bool(c));
+            if (c) assert(value == *c);
         }
     }
 }
@@ -126,7 +132,12 @@ void test_dsu() {
             int u = rng() % n + 1, v = rng() % n + 1;
             auto x = relation(g, u, v);
             auto y = xor_relation(h, u, v);
-            assert(a.query(u, v) == x && b.query(u, v) == y);
+            ll actual;
+            unsigned long long xor_actual;
+            assert(a.query(u, v, actual) == bool(x));
+            if (x) assert(actual == *x);
+            assert(b.query(u, v, xor_actual) == bool(y));
+            if (y) assert(xor_actual == *y);
             ll w = ll(rng() % 101) - 50;
             unsigned long long t = rng();
             if (x && rng() % 2) w = *x;
@@ -139,7 +150,8 @@ void test_dsu() {
     }
     b.init(2);
     assert(b.merge(1, 2, 1ull << 63));
-    assert(b.query(1, 2) == (1ull << 63));
+    unsigned long long value;
+    assert(b.query(1, 2, value) && value == (1ull << 63));
 }
 
 void test_pst() {
@@ -165,10 +177,11 @@ void test_pst() {
 
 void test_xor_trie() {
     XorTrie t;
+    unsigned long long value;
     for (int z = 0; z < 60; ++ z) {
         t.init();
         multiset < unsigned long long > s;
-        assert(! t.max_xor(0) && ! t.erase(0));
+        assert(! t.max_xor(0, value) && ! t.erase(0));
         for (int q = 0; q < 1000; ++ q) {
             unsigned long long x = rng() % 16;
             if (rng() % 2) x |= 1ull << 63;
@@ -181,12 +194,13 @@ void test_xor_trie() {
             x = rng();
             optional < unsigned long long > ans;
             for (auto y : s) if (! ans || (x ^ y) > *ans) ans = x ^ y;
-            assert(t.max_xor(x) == ans);
+            assert(t.max_xor(x, value) == bool(ans));
+            if (ans) assert(value == *ans);
         }
     }
     t.init(); t.insert(0); t.insert(ULLONG_MAX);
-    assert(t.max_xor(0) == ULLONG_MAX);
-    assert(t.erase(ULLONG_MAX) && t.max_xor(0) == 0);
+    assert(t.max_xor(0, value) && value == ULLONG_MAX);
+    assert(t.erase(ULLONG_MAX) && t.max_xor(0, value) && value == 0);
 }
 
 int main() {

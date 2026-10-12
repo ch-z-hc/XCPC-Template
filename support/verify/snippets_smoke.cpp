@@ -148,6 +148,16 @@
 #include "../../template/string/Hash2D.cpp"
 #include "../../template/geometry/MinRectangle.cpp"
 
+V < int > dsu_value, dsu_count, dsu_answer;
+int dsu_distinct = 0;
+void DSUOnTree::add(int u) {
+    if (dsu_count[dsu_value[u]]++ == 0) ++dsu_distinct;
+}
+void DSUOnTree::del(int u) {
+    if (--dsu_count[dsu_value[u]] == 0) --dsu_distinct;
+}
+void DSUOnTree::query(int u) { dsu_answer[u] = dsu_distinct; }
+
 int main() {
     {
         Beats seg; seg.init({0, 1, 5, -2});
@@ -170,7 +180,7 @@ int main() {
         Fenwick bit(3); bit.add(2, 1); assert(bit.kth(1) == 2);
         AffineSegTree seg; seg.init({0, 1, 2}, 7);
         seg.modify(1, 2, 2, 1); assert(seg.query(1, 2) == 1);
-        auto q = FPS::sqrt({1, 2, 1}, 3); assert(q && (*q)[1] == 1);
+        V < int > q; assert(FPS::sqrt({1, 2, 1}, 3, q) && q[1] == 1);
         assert(bitset_lcs("abc", "ac") == 2);
         ClosestPair cp; cp.build({P(0, 0), P(3, 4)}); assert(cp.d2 == 25);
         ConvexQuery hull; hull.build({P(0, 0), P(2, 0), P(0, 2)});
@@ -192,8 +202,10 @@ int main() {
     }
     {
         std::vector<int> a{10, 5, 10};
-        auto id = discretize(a);
+        std::vector<int> key;
+        auto id = discretize(a, key);
         assert((id == std::vector<int>{2, 1, 2}));
+        assert((key == std::vector<int>{5, 10}));
     }
     {
         SegTree st;
@@ -232,14 +244,11 @@ int main() {
     {
         DSUOnTree dsu(4);
         dsu.add_edge(1, 2); dsu.add_edge(1, 3); dsu.add_edge(3, 4);
-        std::vector<int> value{0, 1, 2, 2, 3}, count(4), answer(5);
-        int distinct = 0;
-        auto add = [&](int u) { if (count[value[u]]++ == 0) ++distinct; };
-        auto remove = [&](int u) { if (--count[value[u]] == 0) --distinct; };
-        auto query = [&](int u) { answer[u] = distinct; };
-        dsu.build(1, add, remove, query);
-        assert((answer == std::vector<int>{0, 3, 1, 2, 1}));
-        assert(distinct == 0);
+        dsu_value = {0, 1, 2, 2, 3}; dsu_count.assign(4, 0); dsu_answer.assign(5, 0);
+        dsu_distinct = 0;
+        dsu.build(1);
+        assert((dsu_answer == std::vector<int>{0, 3, 1, 2, 1}));
+        assert(dsu_distinct == 0);
     }
     {
         EulerLCA lca(3);
@@ -250,7 +259,7 @@ int main() {
         auto mst = kruskal(3, {{1, 2, 1, 3}, {2, 3, 2, 4}, {1, 3, 3, 10}});
         assert(mst.ok && mst.sum == 7);
         std::vector<std::vector<int>> graph{{}, {2}, {3}, {}};
-        assert(topo(graph).has_value());
+        V < int > order; assert(topo(graph, order));
         assert((kmp("ababa", "aba") == std::vector<int>{0, 2}));
         Manacher manacher("abacaba");
         assert(manacher.query(0, 6));
@@ -321,7 +330,7 @@ int main() {
     {
         assert(pow_mod(-2, 3, 7) == 6 && linear_inverse(3, 7)[3] == 5);
         assert((batch_inverse({2, 3}, 7) == V < ll > {4, 5}));
-        assert(matrix_inv({{0, 1}, {1, 0}}, 7).has_value());
+        V < V < ll > > inverse; assert(matrix_inv({{0, 1}, {1, 0}}, 7, inverse));
         assert(primitive_root(17) == 3);
         auto [left, right] = monotonic_bounds({0, 3, 1, 1, 4});
         assert(left[4] == 3 && right[1] == 2);
@@ -336,7 +345,7 @@ int main() {
         assert((poly.evaluate({1, 2, 3}) == V < int > {1, 6, 17}));
         assert((poly.interpolate({1, 6, 17}) == V < int > {1, 2, 3}));
         KruskalTree tree(3); tree.add_edge(1, 2, 4); tree.add_edge(2, 3, 7);
-        tree.build(); assert(tree.query(1, 3) == 7);
+        ll value; tree.build(); assert(tree.query(1, 3, value) && value == 7);
         KthAncestor ancestor(3); ancestor.add_edge(1, 2); ancestor.add_edge(2, 3);
         ancestor.build(); assert(ancestor.query(3, 2) == 1);
         auto block = block_cut_tree(3, {{1, 2}, {2, 3}});
@@ -349,9 +358,10 @@ int main() {
     {
         PersistentXorTrie trie;
         int a = trie.insert(0, 3), b = trie.insert(a, 5);
-        assert(trie.max_xor(a, b, 2) == 7);
+        unsigned long long value; assert(trie.max_xor(a, b, 2, value) && value == 7);
         KDTree kd; kd.build({{0, 0}, {2, 1}});
-        assert(kd.nearest(1, 1)->second == 1 && kd.query(0, 0, 2, 1) == 2);
+        pair < ll, int > nearest;
+        assert(kd.nearest(1, 1, nearest) && nearest.second == 1 && kd.query(0, 0, 2, 1) == 2);
         KShortestWalk walk(2); walk.add_edge(1, 2, 3); walk.add_edge(2, 2, 1);
         assert((walk.query(1, 2, 3) == V < ll > {3, 4, 5}));
         LRCostFlow flow(2); flow.add_edge(1, 2, 1, 3, -2);
@@ -373,7 +383,7 @@ int main() {
         assert((lyndon_factorization("abab") == V < int > {0, 2, 4}));
         assert((enumerate_runs("abab") == V < array < int, 3 > > {{2, 0, 4}}));
         DLX dlx(2); dlx.add_row(7, {1, 2});
-        assert((dlx.solve() == optional < V < int > > {{7}}));
+        V < int > rows; assert((dlx.solve(rows) && rows == V < int > {7}));
         auto circle = circle_union({{{0, 0}, 1}, {{0, 0}, 1}});
         assert(abs(circle.first - acosl(-1)) < 1e-9L);
         Hull3D hull; hull.build({{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}});
@@ -399,7 +409,8 @@ int main() {
         assert(abs(rect.area - 6) < 1e-9L && rect.corners.size() == 4);
         IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
         assert(seg.contains(1) && ! seg.contains(2) && seg.mex(1) == 2);
-        assert((grundy({{}, {2, 3}, {3}, {}}).value() == V < int > {0, 2, 1, 0}));
+        V < int > sg;
+        assert((grundy({{}, {2, 3}, {3}, {}}, sg) && sg == V < int > {0, 2, 1, 0}));
         assert(linear_kth({0, 1}, {1, 1}, 10) == 55);
     }
     return 0;

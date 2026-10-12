@@ -6,7 +6,8 @@ using namespace std;
 
 // 树上莫队：静态树、路径上的点统计；顶点 1-based，边必须组成一棵树。
 // build(root) 递归构造双倍欧拉序及 LCA，之后 query(u, v) 返回答案编号。
-// solve(add_vertex, del_vertex, answer)；回调状态初始为空，新增边后重建。
+// 使用前补全 add(u) / del(u) / answer(id) 的定义及题目状态。
+// solve() 前清空统计状态；add / del 接收顶点，新增边后重建。
 // 预处理 O(n log n)，q 次查询 O(q log q + n sqrt(q) + q)，空间 O(n log n + q)。
 struct MoTree {
     struct Query { int l, r, extra, id; };
@@ -14,6 +15,15 @@ struct MoTree {
     V < V < int > > g, up;
     V < int > in, out, ord, dep;
     V < Query > qs;
+
+    // 示例维护：将下面 3 个声明替换为此段成员，再按题意改。
+    // V < int > color, cnt, ans; int kinds = 0;
+    // void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
+    // void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
+    // void answer(int id) { ans[id] = kinds; }
+    void add(int u);
+    void del(int u);
+    void answer(int id);
 
     MoTree(int n = 0) { init(n); }
     void init(int n_) {
@@ -50,8 +60,7 @@ struct MoTree {
         else qs.push_back({out[u], in[v], z, id});
         return id;
     }
-    template < class Add, class Remove, class Answer >
-    void solve(Add add, Remove del, Answer answer) const {
+    void solve() {
         auto queries = qs;
         int B = max(1, int(2 * n / max(1.0, sqrt(double(qs.size())))));
         sort(queries.begin(), queries.end(), [&](Query a, Query b) {
@@ -74,4 +83,7 @@ struct MoTree {
 };
 
 // MoTree mo(n); mo.add_edge(u, v); mo.build(); int id = mo.query(u, v);
-// mo.solve(add_vertex, del_vertex, answer);
+// 以上示例求路径上不同颜色数；color 按顶点 1-based，颜色压到 [1, m]。
+// mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
+// mo.ans.resize(mo.qs.size()); mo.solve(); // 答案为 mo.ans[id]。
+// 重跑 solve 前清零 cnt 和 kinds；build 会清空已记录的查询。

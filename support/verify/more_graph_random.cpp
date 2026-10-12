@@ -127,30 +127,30 @@ void test_steiner(mt19937 &rng) {
         V < int > terminals;
         for (int i = 0, k = rng() % (n + 3); i < k; ++ i)
             terminals.push_back(int(rng() % n) + 1);
-        auto expected = brute_steiner(n, edges, terminals);
+        ll expected = brute_steiner(n, edges, terminals).value_or(-1);
         assert(steiner.solve(terminals) == expected);
         reverse(terminals.begin(), terminals.end());
         assert(steiner.solve(terminals) == expected);
-        assert(steiner.solve({}) == optional < ll > (0));
-        assert(steiner.solve({1, 1}) == optional < ll > (0));
+        assert(steiner.solve({}) == 0);
+        assert(steiner.solve({1, 1}) == 0);
         assert(steiner.solve(terminals) == expected);
         steiner.init(2);
-        assert(! steiner.solve({1, 2}));
+        assert(steiner.solve({1, 2}) == -1);
         steiner.add_edge(1, 2, 0);
-        assert(steiner.solve({1, 2, 1}) == optional < ll > (0));
+        assert(steiner.solve({1, 2, 1}) == 0);
     }
     const ll big = 1ll << 60;
     steiner.init(4);
     steiner.add_edge(1, 2, big); steiner.add_edge(2, 3, big);
     steiner.add_edge(1, 3, big * 3); steiner.add_edge(2, 2, 0);
     steiner.add_edge(1, 2, big + 1);
-    assert(steiner.solve({1, 3, 1}) == optional < ll > (big * 2));
-    assert(steiner.solve({1, 2, 3}) == optional < ll > (big * 2));
-    assert(! steiner.solve({1, 4}));
+    assert(steiner.solve({1, 3, 1}) == big * 2);
+    assert(steiner.solve({1, 2, 3}) == big * 2);
+    assert(steiner.solve({1, 4}) == -1);
     steiner.init(2); steiner.add_edge(1, 2, (1ll << 62) - 1);
-    assert(steiner.solve({1, 2}) == optional < ll > ((1ll << 62) - 1));
+    assert(steiner.solve({1, 2}) == (1ll << 62) - 1);
     steiner.init(0);
-    assert(steiner.solve({}) == optional < ll > (0));
+    assert(steiner.solve({}) == 0);
 }
 
 int main() {

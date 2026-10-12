@@ -27,7 +27,7 @@ struct SA {
 
         V < int > old(n), y(n), x(n), cnt(max(n, m));
         for (int i = 0; i < n; ++ i)
-            ++ cnt[rk[i] = static_cast<unsigned char> (s[i])];
+            ++ cnt[rk[i] = (unsigned char)s[i]];
         for (int i = 1; i < m; ++ i) cnt[i] += cnt[i - 1];
         for (int i = n - 1; i >= 0; -- i) sa[-- cnt[rk[i]]] = i;
 

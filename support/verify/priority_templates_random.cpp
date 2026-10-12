@@ -133,14 +133,14 @@ int main() {
             }
             det = (det + (parity ? -prod : prod) + p) % p;
         } while (next_permutation(perm.begin(), perm.end()));
-        auto b = matrix_inv(a, p);
-        assert(bool(b) == (det != 0));
-        if (! b) continue;
+        V < V < ll > > b;
+        assert(matrix_inv(a, p, b) == (det != 0));
+        if (! det) continue;
         for (int i = 0; i < n; ++ i) for (int j = 0; j < n; ++ j) {
             ll ab = 0, ba = 0;
             for (int k = 0; k < n; ++ k) {
-                ab = (ab + a[i][k] * (*b)[k][j]) % p;
-                ba = (ba + (*b)[i][k] * a[k][j]) % p;
+                ab = (ab + a[i][k] * b[k][j]) % p;
+                ba = (ba + b[i][k] * a[k][j]) % p;
             }
             if (ab < 0) ab += p;
             if (ba < 0) ba += p;

@@ -7,6 +7,8 @@ build/
 dist/
 /output/pdf/
 /tmp/pdfs/
+/template.pdf
+/oeis-2up.pdf
 
 # Editor and temporary files
 .vscode/

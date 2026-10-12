@@ -249,7 +249,8 @@ int main() {
         for (int u = 1; u <= n; ++ u) d[u][u] = 0;
         for (int i = 0, m = large_rng() % 25; i < m; ++ i) {
             int u = 1 + large_rng() % n, v = 1 + large_rng() % n;
-            ll w = (ll(large_rng() % 19) - 9) * 100000000000000000LL;
+            // n * m * max(abs(w)) 可装入 ll，保证负环判定前的松弛也不溢出。
+            ll w = (ll(large_rng() % 19) - 9) * 100000000000000LL;
             dc.add(u, v, w); d[v][u] = min(d[v][u], __int128_t(w));
         }
         for (int k = 1; k <= n; ++ k) for (int u = 1; u <= n; ++ u)

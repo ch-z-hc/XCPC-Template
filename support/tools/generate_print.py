@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import io
 import json
+import shutil
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -68,7 +69,6 @@ CHAPTERS = [
         ("template/graph/SteinerTree.cpp", "最小斯坦纳树"),
         ("template/graph/DirectedMST.cpp", "最小树形图"),
         ("template/graph/GlobalMinCut.cpp", "全局最小割"),
-        ("template/graph/GomoryHu.cpp", "Gomory-Hu 最小割树"),
         ("template/graph/DynamicConnectivity.cpp", "离线动态连通性"),
         ("template/graph/LCA.cpp", "倍增 LCA"),
         ("template/graph/EulerLCA.cpp", "欧拉序 LCA"),
@@ -98,9 +98,10 @@ CHAPTERS = [
         ("template/graph/MaxClique.cpp", "最大团与最大独立集"),
         ("template/graph/KM.cpp", "KM 带权匹配"),
         ("template/graph/Dinic.cpp", "最大流"),
+        ("template/graph/GomoryHu.cpp", "Gomory-Hu 最小割树"),
         ("template/graph/LowerBoundFlow.cpp", "上下界网络流"),
-        ("template/graph/LowerBoundMinCostFlow.cpp", "上下界最小费用流"),
         ("template/graph/MinCostFlow.cpp", "费用流：势能 Dijkstra"),
+        ("template/graph/LowerBoundMinCostFlow.cpp", "上下界最小费用流"),
         ("template/graph/ScalingMinCostFlow.cpp", "费用流：容量缩放"),
     ]),
     ("数学", [
@@ -112,7 +113,6 @@ CHAPTERS = [
         ("template/math/CRT.cpp", "exgcd、逆元与扩展 CRT"),
         ("template/math/BSGS.cpp", "BSGS 与扩展 BSGS"),
         ("template/math/Combination.cpp", "组合数"),
-        ("template/math/Stirling.cpp", "两类斯特林数"),
         ("template/math/Lucas.cpp", "Lucas 定理"),
         ("template/math/ExLucas.cpp", "扩展 Lucas"),
         ("template/math/ModSqrt.cpp", "二次剩余"),
@@ -129,9 +129,10 @@ CHAPTERS = [
         ("template/math/Lagrange.cpp", "拉格朗日插值"),
         ("template/math/EquidistantLagrange.cpp", "等距拉格朗日插值"),
         ("template/math/BerlekampMassey.cpp", "BM 与线性递推"),
-        ("template/math/BostanMori.cpp", "Bostan-Mori 递推求项"),
         ("template/math/NTT.cpp", "NTT 与多项式乘法"),
+        ("template/math/Stirling.cpp", "两类斯特林数"),
         ("template/math/FPS.cpp", "多项式求逆、对数、指数、幂、开根与除法"),
+        ("template/math/BostanMori.cpp", "Bostan-Mori 递推求项"),
         ("template/math/Multipoint.cpp", "多项式多点求值与快速插值"),
         ("template/math/FFT.cpp", "FFT 与任意模数卷积"),
         ("template/math/FWT.cpp", "快速沃尔什变换"),
@@ -147,12 +148,12 @@ CHAPTERS = [
         ("template/string/Z.cpp", "Z 函数与扩展 KMP"),
         ("template/string/MinRotation.cpp", "最小表示法"),
         ("template/string/Lyndon.cpp", "Lyndon 分解"),
-        ("template/string/Runs.cpp", "极大周期子串 runs"),
         ("template/string/Manacher.cpp", "Manacher 回文"),
         ("template/string/PAM.cpp", "回文自动机"),
         ("template/string/ACAutomaton.cpp", "AC 自动机"),
         ("template/string/SAM.cpp", "后缀自动机"),
         ("template/string/SuffixArray.cpp", "后缀数组"),
+        ("template/string/Runs.cpp", "极大周期子串 runs"),
         ("template/string/BitsetLCS.cpp", "位集优化 LCS"),
     ]),
     ("计算几何", [
@@ -199,25 +200,25 @@ def register_fonts(code_font: Path, chinese_font: Path) -> None:
 
 
 @lru_cache(maxsize=None)
-def glyph(char: str, size: float, heading=False) -> tuple[str, float]:
+def glyph(char: str, size: float, heading=False, code=False) -> tuple[str, float]:
     font = ("Times-Bold" if ord(char) < 128 else "ChineseHeading") if heading else (
-        "Code" if ord(char) < 128 else "Chinese")
+        "Code" if ord(char) < 128 else "Chinese" if code else "ChineseHeading")
     if font != "Times-Bold" and ord(char) not in pdfmetrics.getFont(font).face.charToGlyph:
         raise ValueError(f"字体缺少字符 {char!r} (U+{ord(char):04X})")
     return font, pdfmetrics.stringWidth(char, font, size)
 
 
-def width(text: str, size: float, heading=False) -> float:
-    return sum(glyph(char, size, heading)[1] for char in text)
+def width(text: str, size: float, heading=False, code=False) -> float:
+    return sum(glyph(char, size, heading, code)[1] for char in text)
 
 
 def draw_text(pdf: canvas.Canvas, x: float, y: float, text: str,
-              size: float, gray: float = 0, heading=False) -> None:
+              size: float, gray: float = 0, heading=False, code=False) -> None:
     pdf.setFillGray(gray)
     obj = pdf.beginText(x, y)
     previous = None
     for char in text:
-        font, _ = glyph(char, size, heading)
+        font, _ = glyph(char, size, heading, code)
         if font != previous:
             obj.setFont(font, size)
             previous = font
@@ -233,7 +234,7 @@ def wrap(text: str, size: float, max_width: float) -> list[str]:
     while text:
         length, measured = 0, 0.0
         for char in text:
-            advance = glyph(char, size)[1]
+            advance = glyph(char, size, code=True)[1]
             if measured + advance > max_width:
                 break
             measured += advance
@@ -367,7 +368,7 @@ class Book:
             pieces = wrap(line, CODE_SIZE, CODE_W)
             assert "".join(pieces) == line
             for part, text in enumerate(pieces):
-                assert width(text, CODE_SIZE) <= CODE_W + .001
+                assert width(text, CODE_SIZE, code=True) <= CODE_W + .001
                 rows.append((number, part, text))
         title_height = TITLE_HEIGHT
         available = self.y - BOTTOM
@@ -399,11 +400,11 @@ class Book:
             if end <= index:
                 raise ValueError(f"无法分页：{entry.path}")
             for number, part, text in rows[index:end]:
-                draw_text(self.pdf, self.x, self.y, text, CODE_SIZE)
+                draw_text(self.pdf, self.x, self.y, text, CODE_SIZE, code=True)
                 self.audit.append({"path": entry.path, "line": number, "part": part,
                                    "text": text, "page": self.page, "column": self.col,
                                    "x": self.x, "y": self.y,
-                                   "width": width(text, CODE_SIZE)})
+                                   "width": width(text, CODE_SIZE, code=True)})
                 self.y -= LEADING
             index = end
             if index < len(rows):
@@ -461,6 +462,8 @@ def main():
     }
     args.output.with_suffix(".layout.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    if args.output.resolve() == OUTPUT.resolve():
+        shutil.copyfile(args.output, ROOT / "template.pdf")
     print(f"Generated {args.output}: {len(entries)} entries, {pages} pages")
 
 

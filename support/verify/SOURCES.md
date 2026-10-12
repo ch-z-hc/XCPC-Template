@@ -52,12 +52,12 @@
 | `template/graph/Dinic.cpp` | [P3376 网络最大流](https://www.luogu.com.cn/problem/P3376) | 直接；源汇不同，容量与总流量遵守源码数值限制。 |
 | `template/graph/DirectedEulerTrail.cpp` | [Eulerian Trail (Directed)](https://judge.yosupo.jp/problem/eulerian_trail_directed) | 部分；模板返回顶点序列，题面还要边编号，可按相邻顶点从重边桶取边。不是字典序最小欧拉路。 |
 | `template/graph/DirectedMST.cpp` | [P4716 最小树形图](https://www.luogu.com.cn/problem/P4716)、[Directed MST](https://judge.yosupo.jp/problem/directedmst) | 前者直接；后者部分，模板只返回最优权值，不恢复父亲。现有官方数据验证只核对权值。 |
-| `template/graph/DSUOnTree.cpp` | [CF 600E Lomsat gelral](https://codeforces.com/problemset/problem/600/E) | 应用；模板提供子树加点、删点、读取答案回调，需自行维护众数频率及颜色和。 |
+| `template/graph/DSUOnTree.cpp` | [CF 600E Lomsat gelral](https://codeforces.com/problemset/problem/600/E) | 应用；需补全加点、删点、记录答案函数，自行维护众数频率及颜色和。 |
 | `template/graph/DynamicConnectivity.cpp` | [P2147 SDOI2008 洞穴勘测](https://www.luogu.com.cn/problem/P2147)、[LOJ 121 动态图连通性](https://loj.ac/p/121) | 前者可离线适配，森林是一般图的子集；已核对其题面。后者原站返回错误，没有冒充已读取题面。 |
 | `template/graph/EBCC.cpp` | [Two-Edge-Connected Components](https://judge.yosupo.jp/problem/two_edge_connected_components) | 直接；顶点、分量下标与输出格式需转换。 |
 | `template/graph/BlockCutTree.cpp` | [P4320 道路相遇](https://www.luogu.com.cn/problem/P4320) | 应用；先用 VBCC 求点双，再构造广义圆方树；题目还需 LCA 和路径上的圆点计数，包含端点。 |
 | `template/graph/BridgeTree.cpp` | [P2860 USACO06JAN Redundant Paths](https://www.luogu.com.cn/problem/P2860) | 应用；先用 EBCC 缩点，再统计桥树叶子；题目原图连通，需补叶子配对计数。 |
-| `template/graph/KruskalTree.cpp` | [P2245 星际导航](https://www.luogu.com.cn/problem/P2245) | 直接；默认递增建树求路径最大边权的最小值，不连通时将 nullopt 输出为 impossible。模板另支持递减建树。 |
+| `template/graph/KruskalTree.cpp` | [P2245 星际导航](https://www.luogu.com.cn/problem/P2245) | 直接；默认递增建树求路径最大边权的最小值，query 返回 false 时输出 impossible。模板另支持递减建树。 |
 | `template/graph/KthAncestor.cpp` | [P5903 树上 k 级祖先](https://www.luogu.com.cn/problem/P5903) | 直接祖先查询；题目给父亲数组，需转为无向边，另补随机询问生成与校验和。越过根返回 0。 |
 | `template/graph/GomoryHu.cpp` | [P3329 ZJOI2011 最小割](https://www.luogu.com.cn/problem/P3329)、[KACTL GomoryHu](https://github.com/kth-competitive-programming/kactl/blob/main/content/graph/GomoryHu.h) | 应用；复用 Dinic 构造任意两点最小割树，题目还需统计最小割不超过给定值的无序点对数。 |
 | `template/graph/EulerLCA.cpp` | [Lowest Common Ancestor](https://judge.yosupo.jp/problem/lca) | 直接；欧拉序 + ST，注意根及下标。 |
@@ -75,7 +75,7 @@
 | `template/graph/Reroot.cpp` | [CSES Tree Distances II](https://cses.fi/problemset/task/1133) | 直接；本模板具体求每个点到所有点的距离和，不是任意状态的通用换根框架。 |
 | `template/graph/ScalingMinCostFlow.cpp` | [UOJ 487 最小费用最大流](https://uoj.ac/problem/487) | 直接；包含不与源汇连通的负环费用。 |
 | `template/graph/SCC.cpp` | [Strongly Connected Components](https://judge.yosupo.jp/problem/scc) | 直接；Tarjan 出栈编号是逆拓扑顺序，题目要求的拓扑顺序需反转。 |
-| `template/graph/SteinerTree.cpp` | [P6192 最小斯坦纳树](https://www.luogu.com.cn/problem/P6192) | 直接；已读取官方题面。无向非负图、少量关键点，返回最小边权和，不恢复边集；关键点去重，不连通返回 nullopt。 |
+| `template/graph/SteinerTree.cpp` | [P6192 最小斯坦纳树](https://www.luogu.com.cn/problem/P6192) | 直接；已读取官方题面。无向非负图、少量关键点，返回最小边权和，不恢复边集；关键点去重，不连通返回 -1。 |
 | `template/graph/TopologicalSort.cpp` | [AOJ GRL_4_B Topological Sort](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_B) | 直接；返回顺序，空结果的含义按源码区分。 |
 | `template/graph/TreeDiameter.cpp` | [CSES Tree Diameter](https://cses.fi/problemset/task/1131)、[Tree Diameter](https://judge.yosupo.jp/problem/tree_diameter) | 前者直接；后者还需完整路径恢复。模板返回端点与长度，两次 DFS 要求非负边权。 |
 | `template/graph/TwoSAT.cpp` | [Two SAT](https://judge.yosupo.jp/problem/two_sat)、[P4782 2-SAT](https://www.luogu.com.cn/problem/P4782) | 直接；布尔字面量的正负语义、编号需转换。 |
@@ -113,9 +113,9 @@
 | `template/math/LinearSieve.cpp` | [P3383 线性筛素数](https://www.luogu.com.cn/problem/P3383) | 直接；另有最小质因子、phi、mu，通过逐数暴力检查；存储多张表，不等于最省内存的纯筛。 |
 | `template/math/Lucas.cpp` | [P3807 卢卡斯定理](https://www.luogu.com.cn/problem/P3807) | 直接；p 必须为质数且能存下 `O(p)` 表，题目查询的是 `C(n + m, n)`。 |
 | `template/math/Matrix.cpp` | [Matrix Product](https://judge.yosupo.jp/problem/matrix_product)、[Pow of Matrix](https://judge.yosupo.jp/problem/pow_of_matrix) | 直接；非空、维度匹配、非负指数；不是矩阵逆。 |
-| `template/math/MatrixInverse.cpp` | [Inverse Matrix](https://judge.yosupo.jp/problem/inverse_matrix)、[P4783 矩阵求逆](https://www.luogu.com.cn/problem/P4783) | 直接；0-based 方阵，质数模数不超过 INT_MAX，不可逆返回 nullopt。 |
+| `template/math/MatrixInverse.cpp` | [Inverse Matrix](https://judge.yosupo.jp/problem/inverse_matrix)、[P4783 矩阵求逆](https://www.luogu.com.cn/problem/P4783) | 直接；0-based 方阵，质数模数不超过 INT_MAX，不可逆返回 false。 |
 | `template/math/ModArithmetic.cpp` | [P3811 乘法逆元](https://www.luogu.com.cn/problem/P3811)、[P5431 乘法逆元 2](https://www.luogu.com.cn/problem/P5431) | 分别对应线性与批量逆元；P5431 还需按题面求加权和。快速幂另以逐次乘法对拍，逆元只支持质数模数。 |
-| `template/math/ModSqrt.cpp` | [Sqrt Mod](https://judge.yosupo.jp/problem/sqrt_mod) | 直接；模数必须为质数，无解返回 `nullopt`。 |
+| `template/math/ModSqrt.cpp` | [Sqrt Mod](https://judge.yosupo.jp/problem/sqrt_mod) | 直接；模数必须为质数，无解返回 `-1`。 |
 | `template/math/NTT.cpp` | [Convolution](https://judge.yosupo.jp/problem/convolution_mod) | 直接；固定模数与原根，补零后的变换长度须符合源码上限。 |
 | `template/math/PollardRho.cpp` | [Factorize](https://judge.yosupo.jp/problem/factorize)、[Primality Test](https://judge.yosupo.jp/problem/primality_test)、[P4718 Pollard-Rho](https://www.luogu.com.cn/problem/P4718) | 直接；前两题分别覆盖分解和判素，P4718 还需取最大质因子或输出 `Prime`。 |
 | `template/math/PrimitiveRoot.cpp` | [Primitive Root](https://judge.yosupo.jp/problem/primitive_root) | 直接；质数模数，先复制 PollardRho 中的依赖；支持 64 位无符号整数。 |
@@ -155,9 +155,9 @@
 | `template/others/Common.cpp` | 无独立原题；`chkmin`、`chkmax`、模加减和类型别名 | 辅助定义；烟测中的断言验证边界，不拿 A+B 题冒充验证题。 |
 | `template/others/Discretize.cpp` | [P1955 程序自动分析](https://www.luogu.com.cn/problem/P1955) | 应用；离散化编号后配合 DSU，离散化本身不是整题算法。 |
 | `template/others/DPOpt.cpp` | [CF 321E Ciel and Gondolas](https://codeforces.com/problemset/problem/321/E)、[P1776 宝物筛选](https://www.luogu.com.cn/problem/P1776) | 分别对应分治 DP 单层转移与单调队列多重背包；前者必须证明最优决策单调并自行准备代价函数。 |
-| `template/others/Mo.cpp` | [P1494 小 Z 的袜子](https://www.luogu.com.cn/problem/P1494) | 应用；窗口回调需维护颜色计数、同色点对数与分数约分，单点区间单独处理。 |
-| `template/others/MoModify.cpp` | [P1903 带修莫队 / 数颜色](https://www.luogu.com.cn/problem/P1903) | 应用；回调维护不同值个数，颜色建议离散化。 |
-| `template/others/MoTree.cpp` | [SPOJ COT2 Count on a tree II](https://www.spoj.com/problems/COT2/)、[洛谷收录题面](https://www.luogu.com.cn/problem/SP10707) | 应用；静态路径颜色数，另写颜色计数回调。原站返回 403，已核对洛谷题面；不是 P4074 的带修改树上莫队。 |
+| `template/others/Mo.cpp` | [P1494 小 Z 的袜子](https://www.luogu.com.cn/problem/P1494) | 应用；补全窗口增删与记录答案函数，维护颜色计数、同色点对数与分数约分，单点区间单独处理。 |
+| `template/others/MoModify.cpp` | [P1903 带修莫队 / 数颜色](https://www.luogu.com.cn/problem/P1903) | 应用；补全增删与记录答案函数，维护不同值个数，颜色建议离散化。 |
+| `template/others/MoTree.cpp` | [SPOJ COT2 Count on a tree II](https://www.spoj.com/problems/COT2/)、[洛谷收录题面](https://www.luogu.com.cn/problem/SP10707) | 应用；静态路径颜色数，补全按点增删与记录答案函数。原站返回 403，已核对洛谷题面；不是 P4074 的带修改树上莫队。 |
 | `template/others/MonotonicStack.cpp` | [P5788 单调栈](https://www.luogu.com.cn/problem/P5788) | 直接；greater 设为 true，取 right，不存在时把 n + 1 转为题目的 0。 |
 | `template/others/OverallBinary.cpp` | [P2617 Dynamic Rankings](https://www.luogu.com.cn/problem/P2617) | 直接；离线带修改区间第 k 小，按时间记录操作。 |
 | `template/others/SlidingWindow.cpp` | [P1886 单调队列 / 滑动窗口](https://www.luogu.com.cn/problem/P1886) | 直接；数组和结果按源码的 0-based 约定使用。 |

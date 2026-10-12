@@ -10,7 +10,8 @@ using namespace std;
 // FHQ Treap：键值多重集 Treap，以及支持区间翻转、区间和的序列 SeqTreap。
 // 随机优先级，操作期望 O(log n)，最坏 O(n)；空间 O(插入次数)，删除不回收。
 // Treap 的 rank(x) = 小于 x 的数量 + 1，kth 从 1 开始；pre / suf 严格小于 / 大于。
-// kth / pre / suf 不存在时返回 nullopt；erase 只删一份，不存在时返回 false。
+// kth / pre / suf 成功时将值写入 ans，返回 true，不存在时返回 false。
+// erase 只删一份，不存在时返回 false。
 // SeqTreap 下标 1-based，insert(pos, x) 在原 pos 前插入，末尾可用 size() + 1。
 // 序列操作位置、闭区间必须合法，所有区间和及中间加法须不溢出 ll。
 // init() 清空，可多次使用；键值支持 LLONG_MIN / LLONG_MAX。
@@ -84,34 +85,34 @@ struct Treap {
         return ans;
     }
 
-    optional < ll > kth(int k) const {
-        if (k < 1 || k > size()) return nullopt;
+    bool kth(int k, ll &ans) const {
+        if (k < 1 || k > size()) return false;
         int u = root;
         while (u) {
             int s = tr[tr[u].ls].siz;
-            if (k == s + 1) return tr[u].val;
+            if (k == s + 1) { ans = tr[u].val; return true; }
             if (k <= s) u = tr[u].ls;
             else k -= s + 1, u = tr[u].rs;
         }
-        return nullopt;
+        return false;
     }
 
-    optional < ll > pre(ll x) const {
-        optional < ll > ans;
+    bool pre(ll x, ll &ans) const {
+        bool ok = false;
         for (int u = root; u; ) {
-            if (tr[u].val < x) ans = tr[u].val, u = tr[u].rs;
+            if (tr[u].val < x) ans = tr[u].val, ok = true, u = tr[u].rs;
             else u = tr[u].ls;
         }
-        return ans;
+        return ok;
     }
 
-    optional < ll > suf(ll x) const {
-        optional < ll > ans;
+    bool suf(ll x, ll &ans) const {
+        bool ok = false;
         for (int u = root; u; ) {
-            if (tr[u].val > x) ans = tr[u].val, u = tr[u].ls;
+            if (tr[u].val > x) ans = tr[u].val, ok = true, u = tr[u].ls;
             else u = tr[u].rs;
         }
-        return ans;
+        return ok;
     }
 };
 
@@ -199,6 +200,7 @@ struct SeqTreap {
 };
 
 // 调用示例：
-// Treap t; t.insert(3); t.insert(3); t.erase(3); auto x = t.kth(1);
+// Treap t; t.insert(3); t.insert(3); t.erase(3);
+// ll x; bool ok = t.kth(1, x); // 成功时使用 x。
 // SeqTreap s; s.insert(1, 2); s.insert(2, 5); s.reverse(1, 2);
 // ll sum = s.query(1, 2), val = s.at(1);

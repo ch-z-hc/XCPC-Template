@@ -5,7 +5,7 @@
 
 typedef long long ll;
 typedef long double ld;
-__extension__ typedef __int128 i128;
+typedef __int128_t i128;
 
 using namespace std;
 

@@ -11,8 +11,7 @@ using namespace std;
 // 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
 
 static void fwt_check(const V < ll > &a) {
-    if (a.empty() || (a.size() & (a.size() - 1)))
-        throw invalid_argument("FWT size must be a power of two");
+    assert(! a.empty() && ! (a.size() & (a.size() - 1)));
 }
 static ll fwt_pow(ll a, ll b, ll mod) {
     ll res = 1 % mod;

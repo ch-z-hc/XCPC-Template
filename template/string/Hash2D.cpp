@@ -26,7 +26,7 @@ struct Hash2D {
             for (int i = 1; i <= n; ++ i) x[i] = x[i - 1] * bx % mod;
             for (int j = 1; j <= m; ++ j) y[j] = y[j - 1] * by % mod;
             for (int i = 0; i < n; ++ i) for (int j = 0; j < m; ++ j) {
-                ll v = static_cast < unsigned char > (a[i][j]) + 1;
+                ll v = (unsigned char)a[i][j] + 1;
                 v += h[i][j + 1] * bx % mod + h[i + 1][j] * by % mod;
                 v -= h[i][j] * bx % mod * by % mod;
                 h[i + 1][j + 1] = (v % mod + mod) % mod;

@@ -97,10 +97,10 @@ int main(int argc, char **argv) {
     } else if (mode == "directedmst") {
         int n, m, r; cin >> n >> m >> r; DMST g; g.init(n);
         while (m --) { int u, v; ll w; cin >> u >> v >> w; g.add_edge(u + 1, v + 1, w); }
-        auto ans = g.solve(r + 1); assert(ans); cout << *ans << '\n';
+        ll ans; bool ok = g.solve(r + 1, ans); assert(ok); cout << ans << '\n';
     } else if (mode == "sqrt_mod") {
         int t; cin >> t;
-        while (t --) { ll a, p; cin >> a >> p; auto x = sqrt_mod(a, p); cout << (x ? *x : -1) << '\n'; }
+        while (t --) { ll a, p; cin >> a >> p; cout << sqrt_mod(a, p) << '\n'; }
     } else if (mode == "sum_of_floor_of_linear") {
         int t; cin >> t;
         while (t --) {
@@ -115,9 +115,9 @@ int main(int argc, char **argv) {
     } else if (mode == "inverse_matrix") {
         int n; cin >> n; V < V < ll > > a(n, V < ll > (n));
         for (auto &row : a) for (ll &x : row) cin >> x;
-        auto b = matrix_inv(a, 998244353);
-        if (! b) cout << "-1\n";
-        else for (const auto &row : *b) {
+        V < V < ll > > b;
+        if (! matrix_inv(a, 998244353, b)) cout << "-1\n";
+        else for (const auto &row : b) {
             for (ll x : row) cout << x << ' ';
             cout << '\n';
         }
@@ -153,10 +153,12 @@ int main(int argc, char **argv) {
         int n; unsigned long long k = 0; cin >> n;
         if (mode == "pow_of_formal_power_series") cin >> k;
         V < int > a(n); for (int &x : a) cin >> x;
-        optional < V < int > > ans = mode == "pow_of_formal_power_series" ?
-            optional < V < int > > (FPS::pow(a, k, n)) : FPS::sqrt(a, n);
-        if (! ans) cout << "-1\n";
-        else { for (int x : *ans) cout << x << ' '; cout << '\n'; }
+        V < int > ans;
+        bool ok = true;
+        if (mode == "pow_of_formal_power_series") ans = FPS::pow(a, k, n);
+        else ok = FPS::sqrt(a, n, ans);
+        if (! ok) cout << "-1\n";
+        else { for (int x : ans) cout << x << ' '; cout << '\n'; }
     } else if (mode == "subset_convolution") {
         int n; cin >> n; V < int > a(1 << n), b(1 << n);
         for (int &x : a) cin >> x;

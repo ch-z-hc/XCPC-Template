@@ -11,7 +11,7 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
 from generate_print import (  # noqa: E402
-    BOTTOM, CODE_W, COL_W, GAP, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W,
+    BOTTOM, CODE_SIZE, CODE_W, COL_W, GAP, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W,
     TITLE_HEIGHT, TOP, load_entries,
 )
 
@@ -42,6 +42,10 @@ def main():
                           if text.strip() and size == 7.5 else None)
         assert not filenames, (number, filenames)
         def check_font(text, cm, tm, font, size):
+            if any(ord(char) >= 128 and not char.isspace() for char in text):
+                expected = "SimSun" if size == CODE_SIZE else "STXinwei"
+                assert font and expected in str(font.get("/BaseFont", "")), (
+                    number, text, expected, font)
             if not any(ord(char) < 128 and not char.isspace() for char in text):
                 return
             expected = "Times-Bold" if size in (12, 13, 18, 24) else "Consolas"

@@ -3,7 +3,7 @@
 #define V vector
 
 typedef long long ll;
-__extension__ typedef __int128 i128;
+typedef __int128_t i128;
 
 using namespace std;
 
@@ -98,5 +98,9 @@ struct Min25 {
     }
 };
 
+// 示例：求 1..n 的约数个数之和；素数处为 2，素数幂处为 e + 1。
 // Min25 sieve; sieve.init(n, mod);
-// phi(p^e) = p^(e-1) * (p-1)，传入 c = {-1, 1, 0} 及对应回调。
+// ll ans = sieve.sum({2, 0, 0}, [](ll, int e) -> ll {
+//     return e + 1; // 此例只需要 e，其他函数按题意改，须满足 O(1)。
+// });
+// 如求欧拉函数之和，改用 c = {-1, 1, 0} 和对应的素数幂回调。

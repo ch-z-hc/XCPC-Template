@@ -5,6 +5,7 @@ typedef long double ld;
 using namespace std;
 
 // 连续单峰函数三分；接口不涉及数组下标，返回极值位置近似值。
+// l <= r；极值区间外须严格单调，非最优平台会使三分误判。
 // 调用函数次数 O(times)，额外空间 O(1)。
 
 template < class F >

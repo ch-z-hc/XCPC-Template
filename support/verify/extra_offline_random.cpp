@@ -20,11 +20,40 @@ int rnd(int l, int r) {
     return uniform_int_distribution < int > (l, r)(rng);
 }
 
+V < int > mo_values, mo_count, mo_active, mo_answer;
+int mo_distinct = 0;
+
+void MoModify::add(int x) {
+    assert(x >= 0 && x < int(mo_count.size()));
+    if (! mo_count[x] ++) mo_distinct ++;
+}
+void MoModify::del(int x) {
+    assert(x >= 0 && x < int(mo_count.size()) && mo_count[x] > 0);
+    if (! -- mo_count[x]) mo_distinct --;
+}
+void MoModify::answer(int id) {
+    assert(id >= 0 && id < int(mo_answer.size()) && mo_answer[id] == -1);
+    mo_answer[id] = mo_distinct;
+}
+void MoTree::add(int u) {
+    assert(u >= 1 && u <= n && ! mo_active[u]);
+    mo_active[u] = 1;
+    if (! mo_count[mo_values[u]] ++) mo_distinct ++;
+}
+void MoTree::del(int u) {
+    assert(u >= 1 && u <= n && mo_active[u] && mo_count[mo_values[u]] > 0);
+    mo_active[u] = 0;
+    if (! -- mo_count[mo_values[u]]) mo_distinct --;
+}
+void MoTree::answer(int id) {
+    assert(id >= 0 && id < int(mo_answer.size()) && mo_answer[id] == -1);
+    mo_answer[id] = mo_distinct;
+}
+
 void check_mo_modify() {
     MoModify mo;
     mo.init({0});
-    auto unused = [](int) { assert(false); };
-    mo.solve(unused, unused, unused);
+    mo.solve();
     for (int t = 0; t < 2000; ++ t) {
         int n = rnd(1, 30);
         V < int > a(n + 1), truth;
@@ -44,19 +73,10 @@ void check_mo_modify() {
             }
         }
         for (int repeat = 0; repeat < 2; ++ repeat) {
-            V < int > cnt(21), ans(truth.size(), -1);
-            int distinct = 0;
-            auto add = [&](int x) { if (! cnt[x] ++) distinct ++; };
-            auto del = [&](int x) {
-                assert(cnt[x] > 0);
-                if (! -- cnt[x]) distinct --;
-            };
-            auto answer = [&](int id) {
-                assert(id >= 0 && id < int(ans.size()) && ans[id] == -1);
-                ans[id] = distinct;
-            };
-            mo.solve(add, del, answer);
-            assert(ans == truth);
+            mo_count.assign(21, 0); mo_answer.assign(truth.size(), -1);
+            mo_distinct = 0;
+            mo.solve();
+            assert(mo_answer == truth);
         }
     }
 }
@@ -80,8 +100,7 @@ int brute_path(const V < V < int > > &g, const V < int > &a, int u, int v) {
 void check_mo_tree() {
     MoTree mo;
     mo.build();
-    auto unused = [](int) { assert(false); };
-    mo.solve(unused, unused, unused);
+    mo.solve();
     for (int t = 0; t < 2000; ++ t) {
         int n = rnd(1, 30), root = rnd(1, n);
         mo.init(n);
@@ -108,24 +127,10 @@ void check_mo_tree() {
                 assert(mo.qs.empty());
                 for (auto [u, v] : queries) mo.query(u, v);
             }
-            V < int > cnt(21), active(n + 1), ans(truth.size(), -1);
-            int distinct = 0;
-            auto add = [&](int u) {
-                assert(u >= 1 && u <= n && ! active[u]);
-                active[u] = 1;
-                if (! cnt[a[u]] ++) distinct ++;
-            };
-            auto del = [&](int u) {
-                assert(u >= 1 && u <= n && active[u] && cnt[a[u]] > 0);
-                active[u] = 0;
-                if (! -- cnt[a[u]]) distinct --;
-            };
-            auto answer = [&](int id) {
-                assert(id >= 0 && id < int(ans.size()) && ans[id] == -1);
-                ans[id] = distinct;
-            };
-            mo.solve(add, del, answer);
-            assert(ans == truth);
+            mo_values = a; mo_count.assign(21, 0); mo_active.assign(n + 1, 0);
+            mo_answer.assign(truth.size(), -1); mo_distinct = 0;
+            mo.solve();
+            assert(mo_answer == truth);
         }
     }
 }

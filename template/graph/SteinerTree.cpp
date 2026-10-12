@@ -7,7 +7,7 @@ typedef long long ll;
 using namespace std;
 
 // 斯坦纳树：无向非负图，顶点 1-based，允许重边、自环、不连通，不使用模数。
-// solve 返回连接全部终端的最小边权和，不恢复边集；不连通返回 nullopt。
+// solve 返回连接全部终端的最小边权和，不恢复边集；不连通返回 -1。
 // 终端可重复，去重后 k <= 20，须能承受 O(2^k n) 内存；空集或单点返回 0。
 // 时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + n + m)。
 // 所有有限答案和距离须小于 inf = 2^62；solve 可重复调用且不修改图。
@@ -24,7 +24,7 @@ struct Steiner {
         g[u].push_back({v, w}); g[v].push_back({u, w});
     }
 
-    optional < ll > solve(const V < int > &terminals) const {
+    ll solve(const V < int > &terminals) const {
         V < int > a = terminals;
         sort(a.begin(), a.end());
         a.erase(unique(a.begin(), a.end()), a.end());
@@ -58,10 +58,10 @@ struct Steiner {
             }
         }
         ll ans = *min_element(f.back().begin() + 1, f.back().end());
-        return ans == inf ? nullopt : optional < ll >(ans);
+        return ans == inf ? -1 : ans;
     }
 };
 
 // 调用示例：
 // Steiner graph(n); graph.add_edge(u, v, w);
-// auto ans = graph.solve({1, 3, 5}); // ans 有值时，*ans 为最小总边权。
+// ll ans = graph.solve({1, 3, 5}); // ans != -1 时为最小总边权。

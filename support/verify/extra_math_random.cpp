@@ -51,18 +51,18 @@ void check_mod_sqrt() {
     for (int t = 0; t < 3000; ++ t) {
         int p = primes[rng() % primes.size()];
         ll a = ll(rng() % 5001) - 2500, v = (a % p + p) % p;
-        optional < ll > ans;
+        ll ans = -1;
         for (ll x = 0; x < p; ++ x)
             if (x * x % p == v) { ans = x; break; }
         assert(sqrt_mod(a, p) == ans);
     }
     for (ll p : {998244353LL, 1000000007LL, 2147483647LL}) {
-        assert(sqrt_mod(0, p) == optional < ll > (0));
-        assert(sqrt_mod(LLONG_MIN, p).has_value() ==
+        assert(sqrt_mod(0, p) == 0);
+        assert((sqrt_mod(LLONG_MIN, p) != -1) ==
                (power_ref((LLONG_MIN % p + p) % p, (p - 1) / 2, p) == 1));
         for (int t = 0; t < 100; ++ t) {
             ll x = rng() % p;
-            assert(sqrt_mod(x * x % p, p) == optional < ll > (min(x, p - x)));
+            assert(sqrt_mod(x * x % p, p) == min(x, p - x));
         }
     }
 }
@@ -234,12 +234,13 @@ void check_fps() {
         while (p < n && ! s[p]) p ++;
         bool exists = p == n || (!(p & 1) &&
                       power_ref(s[p], (mod - 1) / 2, mod) == 1);
-        auto root = FPS::sqrt(s, n);
-        assert(root.has_value() == exists);
-        if (root) {
-            assert(int(root->size()) == n);
-            assert(mul_ref(*root, *root, n) == s);
-            if (p < n) assert((*root)[p / 2] <= mod - (*root)[p / 2]);
+        V < int > root;
+        bool ok = FPS::sqrt(s, n, root);
+        assert(ok == exists);
+        if (ok) {
+            assert(int(root.size()) == n);
+            assert(mul_ref(root, root, n) == s);
+            if (p < n) assert(root[p / 2] <= mod - root[p / 2]);
         }
         V < int > b(1 + rng() % 25);
         for (int &x : b) x = rng() % mod;
@@ -263,14 +264,17 @@ void check_fps() {
     }
     assert(FPS::pow({0, 1}, ULLONG_MAX, 20) == V < int > (20));
     assert(FPS::pow({}, 0, 3) == V < int > ({1, 0, 0}));
-    assert(FPS::sqrt({}, 3) == optional < V < int > > (V < int > (3)));
-    assert(! FPS::sqrt({0, 1}, 5));
-    assert(! FPS::sqrt({3}, 1));
+    V < int > root;
+    assert(FPS::sqrt({}, 3, root) && root == V < int > (3));
+    assert(FPS::sqrt({}, 0, root) && root.empty());
+    assert(! FPS::sqrt({0, 1}, 5, root));
+    assert(! FPS::sqrt({3}, 1, root));
     assert(FPS::divmod({}, {1}) == div_ref({}, {1}));
 }
 
 void check_basis() {
     Basis b;
+    unsigned long long ans;
     for (int t = 0; t < 2500; ++ t) {
         b.clear();
         V < unsigned long long > a{0};
@@ -286,28 +290,28 @@ void check_basis() {
         }
         for (int i = 0; i < 15; ++ i) {
             unsigned long long k = rng() % (a.size() + 2);
-            auto ans = k < a.size() ? optional < unsigned long long > (a[k]) : nullopt;
-            assert(b.kth(k) == ans);
+            assert(b.kth(k, ans) == (k < a.size()));
+            if (k < a.size()) assert(ans == a[k]);
             auto x = (rng() % 512) << shift;
             assert(b.contains(x) == binary_search(a.begin(), a.end(), x));
             unsigned long long best = 0;
             for (auto v : a) best = max(best, v ^ x);
             assert(b.max_xor(x) == best);
         }
-        assert(b.kth(0) == optional < unsigned long long > (0));
-        assert(! b.kth(a.size()));
+        assert(b.kth(0, ans) && ans == 0);
+        assert(! b.kth(a.size(), ans));
     }
     b.clear();
     for (int i = 0; i < 63; ++ i) assert(b.insert(1ULL << i));
     for (int t = 0; t < 2500; ++ t) {
         auto k = rng() & LLONG_MAX;
-        assert(b.kth(k) == optional < unsigned long long > (k));
+        assert(b.kth(k, ans) && ans == k);
     }
-    assert(b.kth(LLONG_MAX) == optional < unsigned long long > (LLONG_MAX));
-    assert(! b.kth(1ULL << 63) && ! b.kth(ULLONG_MAX));
+    assert(b.kth(LLONG_MAX, ans) && ans == LLONG_MAX);
+    assert(! b.kth(1ULL << 63, ans) && ! b.kth(ULLONG_MAX, ans));
     assert(! b.insert(0) && b.max_xor() == (unsigned long long)LLONG_MAX);
     b.clear();
-    assert(b.max_xor() == 0 && ! b.kth(1));
+    assert(b.max_xor() == 0 && ! b.kth(1, ans));
 }
 
 int main() {

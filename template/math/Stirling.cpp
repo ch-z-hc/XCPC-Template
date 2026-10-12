@@ -6,7 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制 NTT.cpp；第一类为无符号斯特林数，第二类为集合划分数。
+// 先复制数学章的“NTT 与多项式乘法”。
+// 第一类为无符号斯特林数，第二类为集合划分数。
 // stirling_first / second 返回 [0..n][0..n]，要求 n >= 0、1 <= mod <= 2^31。
 // 递推表 O(n^2) 时间、空间，模数可为合数；s(0,0) = S(0,0) = 1 % mod。
 // stirling_second_row 返回 S(n,0..n)，固定模数 998244353。

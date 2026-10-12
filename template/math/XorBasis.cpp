@@ -31,19 +31,19 @@ struct Basis {
     }
 
     // 不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
-    // 无此项返回 nullopt；O(63^2)，不修改原线性基。
-    optional < unsigned long long > kth(unsigned long long k) const {
+    // 无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
+    bool kth(unsigned long long k, unsigned long long &ans) const {
         auto a = p;
         int n = 0;
         for (int i = 0; i < 63; ++ i) if (a[i]) {
             for (int j = 0; j < i; ++ j) if (a[i] >> j & 1ULL) a[i] ^= a[j];
             n ++;
         }
-        if (k >= (1ULL << n)) return nullopt;
-        unsigned long long ans = 0;
+        if (k >= (1ULL << n)) return false;
+        ans = 0;
         for (int i = 0, j = 0; i < 63; ++ i)
             if (a[i]) { if (k >> j & 1ULL) ans ^= a[i]; j ++; }
-        return ans;
+        return true;
     }
 };
 

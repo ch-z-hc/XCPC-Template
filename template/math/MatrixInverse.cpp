@@ -7,11 +7,12 @@ typedef long long ll;
 using namespace std;
 
 // 质数模数 2 <= mod <= INT_MAX；输入为 0-based 方阵，允许负元素。
-// 返回逆矩阵，不可逆时返回 nullopt；空矩阵的逆为 empty vector。
+// 成功返回 true，逆矩阵写入 b；不可逆返回 false，此时不要使用 b。
+// 空矩阵可逆，输出空矩阵。
 // Gauss-Jordan 消元，时间 O(n^3 + n log mod)，额外空间 O(n^2)。
-optional < V < V < ll > > > matrix_inv(V < V < ll > > a, int mod) {
+bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
     int n = int(a.size());
-    V < V < ll > > b(n, V < ll > (n));
+    b.assign(n, V < ll > (n));
     for (int i = 0; i < n; ++ i) {
         b[i][i] = 1;
         for (ll &x : a[i]) { x %= mod; if (x < 0) x += mod; }
@@ -25,7 +26,7 @@ optional < V < V < ll > > > matrix_inv(V < V < ll > > a, int mod) {
     for (int i = 0; i < n; ++ i) {
         int p = i;
         while (p < n && ! a[p][i]) ++ p;
-        if (p == n) return nullopt;
+        if (p == n) return false;
         swap(a[i], a[p]); swap(b[i], b[p]);
         ll inv = power(a[i][i], mod - 2);
         for (int j = 0; j < n; ++ j) {
@@ -40,7 +41,7 @@ optional < V < V < ll > > > matrix_inv(V < V < ll > > a, int mod) {
             }
         }
     }
-    return b;
+    return true;
 }
 
-// 调用：auto b = matrix_inv(a, 1000000007);
+// 调用：V < V < ll > > b; bool ok = matrix_inv(a, 1000000007, b);

@@ -8,12 +8,12 @@ typedef long long ll;
 using namespace std;
 
 // 形式幂级数：固定模数 998244353，系数 0-based，输入先归一化到 [0, mod)。
-// inv / ln / exp / pow / sqrt 返回前 n 项；n = 0 返回空数组。
+// inv / ln / exp / pow 返回前 n 项；sqrt 将前 n 项写入 ans；n = 0 为空数组。
 // inv 要求 a[0] != 0，
 // ln 要求 a[0] = 1，exp 要求 a[0] = 0，空数组在 exp 中视为零多项式。
 // 长度 n <= 2^22，乘法结果长度 <= 2^23；时间 O(n log n)，空间 O(n)。
 // pow 支持任意非负 unsigned long long 指数，0^0 取 1。
-// sqrt 无解返回 nullopt；首项非零时选较小的常数根，零前缀自动处理。
+// sqrt 无解返回 false，成功返回 true；首项非零时选较小的常数根。
 // divmod 返回商与余数，去掉末尾零；零多项式用空数组表示。
 // 除数必须非零；被除数、除数长度 <= 2^22，时间 O(n log n)。
 
@@ -156,15 +156,15 @@ struct FPS {
         return min(r, mod - r);
     }
 
-    static optional < V < int > > sqrt(const V < int > &a, int n) {
-        if (! n) return V < int > {};
+    static bool sqrt(const V < int > &a, int n, V < int > &ans) {
+        if (! n) { ans.clear(); return true; }
         assert(n <= (1 << 22));
         int p = 0, m = min(n, int(a.size()));
         while (p < m && ! a[p]) p ++;
-        if (p == m) return V < int > (n);
-        if (p & 1) return nullopt;
+        if (p == m) { ans.assign(n, 0); return true; }
+        if (p & 1) return false;
         int r = sqrt_mod(a[p]);
-        if (r == -1) return nullopt;
+        if (r == -1) return false;
         int len = n - p;
         V < int > c(len), b{r};
         for (int i = 0; i < len && i + p < m; ++ i) c[i] = a[i + p];
@@ -176,9 +176,9 @@ struct FPS {
             for (int i = 0; i < k; ++ i)
                 b[i] = 1ll * (b[i] + d[i]) * ((mod + 1) / 2) % mod;
         }
-        V < int > ans(n);
+        ans.assign(n, 0);
         for (int i = 0; i < len; ++ i) ans[i + p / 2] = b[i];
-        return ans;
+        return true;
     }
 
     static pair < V < int >, V < int > > divmod(V < int > a,
@@ -210,5 +210,5 @@ struct FPS {
 // auto b = FPS::inv(a, 8), c = FPS::ln(a, 8);
 // auto d = FPS::exp(c, 8), e = FPS::mul(a, b);
 // auto f = FPS::pow(a, 10, 8);
-// auto g = FPS::sqrt(a, 8);
+// V < int > g; bool ok = FPS::sqrt(a, 8, g); // 成功时使用 g。
 // auto [q, r] = FPS::divmod(a, V < int > {1, 1});

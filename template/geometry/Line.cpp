@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// 先复制 Point.cpp；直线端点不能重合，isLL 要求两线不平行。
+// 先复制本章的“点与向量”；直线端点不能重合，isLL 要求两线不平行。
 // 以下交点、相交判断、投影和距离均 O(1)，无模数。
 
 bool checkPll(P p1, P p2, P q1, P q2) {

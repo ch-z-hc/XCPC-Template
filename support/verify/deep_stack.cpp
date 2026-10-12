@@ -21,6 +21,18 @@
 #include "../../template/graph/FunctionalGraph.cpp"
 #include "../../template/others/SG.cpp"
 
+int mo_count = 0, mo_queried = 0, dsu_count = 0, dsu_queried = 0;
+void MoTree::add(int) { mo_count ++; }
+void MoTree::del(int) { mo_count --; }
+void MoTree::answer(int id) {
+    assert(id == 0 && mo_count == n); mo_queried ++;
+}
+void DSUOnTree::add(int) { dsu_count ++; }
+void DSUOnTree::del(int) { dsu_count --; }
+void DSUOnTree::query(int u) {
+    assert(dsu_count == n - u + 1); dsu_queried ++;
+}
+
 // Linux 下先提高栈限制，再验证 200000 点长链。
 int main() {
     const int n = 200000;
@@ -32,8 +44,8 @@ int main() {
         FunctionalGraph graph; graph.build(to);
         assert(graph.dep[1] == n - 1 && graph.jump(1, ULLONG_MAX) == n);
         assert(graph.distance(1, n) == n - 1 && graph.distance(n, 1) == -1);
-        auto sg = grundy(g); assert(sg && (*sg)[1] == (n - 1) % 2);
-        g[n].push_back(1); assert(! grundy(g));
+        V < int > sg; assert(grundy(g, sg) && sg[1] == (n - 1) % 2);
+        g[n].push_back(1); assert(! grundy(g, sg));
     }
     {
         KthAncestor tree(500000);
@@ -48,8 +60,9 @@ int main() {
     {
         KruskalTree tree(n);
         for (int i = 1; i < n; ++ i) tree.add_edge(i, i + 1, i);
-        tree.build(); assert(tree.query(1, n) == n - 1);
-        tree.build(true); assert(tree.query(1, n) == 1);
+        ll ans;
+        tree.build(); assert(tree.query(1, n, ans) && ans == n - 1);
+        tree.build(true); assert(tree.query(1, n, ans) && ans == 1);
     }
     {
         VBCC graph(n);
@@ -78,11 +91,9 @@ int main() {
             mo.build(root);
             assert(mo.lca(1, n) == root);
             mo.query(1, n);
-            int cnt = 0, queried = 0;
-            mo.solve([&](int) { cnt ++; }, [&](int) { cnt --; }, [&](int id) {
-                assert(id == 0 && cnt == n); queried ++;
-            });
-            assert(queried == 1);
+            mo_count = mo_queried = 0;
+            mo.solve();
+            assert(mo_queried == 1);
         }
     }
     {
@@ -172,12 +183,9 @@ int main() {
     {
         DSUOnTree dsu(n);
         for (int i = 1; i < n; ++ i) dsu.add_edge(i, i + 1);
-        int cnt = 0, queried = 0;
-        dsu.build(1, [&](int) { cnt ++; }, [&](int) { cnt --; }, [&](int u) {
-            assert(cnt == n - u + 1);
-            queried ++;
-        });
-        assert(cnt == 0 && queried == n);
+        dsu_count = dsu_queried = 0;
+        dsu.build(1);
+        assert(dsu_count == 0 && dsu_queried == n);
     }
     {
         V < V < int > > g(n + 1);

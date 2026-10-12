@@ -18,6 +18,11 @@ void check_same_points(const std::vector<P> &a, const std::vector<P> &b) {
 std::vector<P> brute_hull(std::vector<P> points) {
     if (points.empty()) return {};
     auto less = [](P a, P b) { return a.x < b.x || (a.x == b.x && a.y < b.y); };
+    // Jarvis 枚举按位置回到起点；先去除坐标完全相同的点，避免全重复时多转一圈。
+    std::sort(points.begin(), points.end(), less);
+    points.erase(std::unique(points.begin(), points.end(), [](P a, P b) {
+        return a.x == b.x && a.y == b.y;
+    }), points.end());
     int first = int(std::min_element(points.begin(), points.end(), less) - points.begin());
     int u = first;
     std::vector<P> hull;
@@ -45,6 +50,7 @@ void check_order(const std::vector<P> &points, Less less) {
 }
 
 int main() {
+    check_same_points(brute_hull({{-2, -1}, {-2, -1}}), {{-2, -1}});
     {
         assert(area({}) == 0);
         assert(area({{1, 2}}) == 0);
@@ -100,7 +106,12 @@ int main() {
         assert(std::abs(std::abs(area(convexCut(square, {1, -1}, {1, 3}))) - 2) < 1e-9L);
         std::reverse(square.begin(), square.end());
         assert(!checkConvexHull(square));
+        assert(std::abs(convexDiameter(square) - std::sqrt(8.L)) < 1e-9L);
         assert(!checkConvexHull({{0, 0}, {2, 0}, {1, 1}, {2, 2}, {0, 2}}));
+        assert(checkConvexHull({{0, 0}, {1, 0}, {2, 0}, {2, 2}, {0, 2}}));
+        assert(convexDiameter({}) == 0);
+        assert(convexDiameter({{3, 4}}) == 0);
+        assert(convexDiameter({{3, 4}, {0, 0}}) == 5);
     }
 
     std::mt19937 rng(998244353);
@@ -154,6 +165,9 @@ int main() {
         for (P first : hull) for (P second : hull)
             brute_diameter = std::max(brute_diameter, first.distTo(second));
         assert(std::abs(convexDiameter(hull) - brute_diameter) < 1e-9L);
+        std::reverse(hull.begin(), hull.end());
+        std::rotate(hull.begin(), hull.begin() + rng() % hull.size(), hull.end());
+        assert(std::abs(convexDiameter(hull) - brute_diameter) < 1e-9L);
     }
 
     for (int test = 0; test < 300; ++test) {
@@ -173,6 +187,20 @@ int main() {
             auto sum = MincowskySum(p, q);
             check_same_points(convexHull(sum), convexHull(pair_sums));
         }
+    }
+    // 空集不是 {0}：对空 / 单点 / 线段 / 多边形枚举所有点对作为真值。
+    for (int test = 0; test < 1000; ++test) {
+        std::vector<P> first, second, pair_sums;
+        int n = test % 9, m = test / 9 % 9;
+        for (int i = 0; i < n; ++i)
+            first.emplace_back(int(rng() % 11) - 5, int(rng() % 11) - 5);
+        for (int i = 0; i < m; ++i)
+            second.emplace_back(int(rng() % 11) - 5, int(rng() % 11) - 5);
+        for (P a : first) for (P b : second) pair_sums.push_back(a + b);
+        first = convexHull(first); second = convexHull(second);
+        if (rng() & 1) std::reverse(first.begin(), first.end());
+        if (rng() & 1) std::reverse(second.begin(), second.end());
+        check_same_points(convexHull(MincowskySum(first, second)), brute_hull(pair_sums));
     }
     return 0;
 }

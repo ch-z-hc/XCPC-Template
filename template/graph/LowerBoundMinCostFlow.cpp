@@ -7,7 +7,7 @@ typedef long long ll;
 
 using namespace std;
 
-// 上下界最小费用 b-flow；先复制 MinCostFlow.cpp 中的 MCMF。
+// 上下界最小费用 b-flow；先复制图论章的“费用流：势能 Dijkstra”中的 MCMF。
 // 顶点 1-based，0 <= lo <= hi，允许自环、重边和有界负费用负环。
 // add_supply(u, b) 累加 u 的净流出需求；负数为需求，默认全 0 为循环流。
 // solve 返回 {是否可行, 最小费用}；成功后 f[id] 为原边流，失败时 f 为空。

@@ -6,7 +6,8 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 先复制 FPS.cpp；固定模数 998244353，系数归一化，数组 0-based。
+// 先复制数学章的“多项式求逆、对数、指数、幂、开根与除法”中的 FPS。
+// 固定模数 998244353，系数归一化，数组 0-based。
 // bostan_mori 求 [x^k] P(x)/Q(x)，要求 Q 非空且 Q[0] != 0；P 可为空。
 // 输入长度至多 2^22；D = max(|P|,|Q|)，O(D log D log(k+2)) 时间、O(D) 空间。
 // linear_kth 求 d 阶递推第 k 项：a[n] = sum(rec[i] * a[n-1-i])。
