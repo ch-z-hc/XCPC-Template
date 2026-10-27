@@ -9,6 +9,8 @@ dist/
 /tmp/pdfs/
 /template.pdf
 /oeis-2up.pdf
+/support/fonts/*
+!/support/fonts/README.md
 
 # Editor and temporary files
 .vscode/

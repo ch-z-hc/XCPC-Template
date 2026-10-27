@@ -43,7 +43,7 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 ## 打印模板册
 
-从 `.cpp` 原文生成 A4 竖版单栏 PDF，保留代码空格和缩进。正文代码为 9.5 pt，代码以外的中文统一用华文新魏，标题英文用 Times Bold，包含目录、PDF 书签和页码，不显示代码行号，不额外插入接口说明或使用提示。
+从 `.cpp` 原文生成 A4 竖版单栏 PDF，保留代码空格和缩进。视觉风格参考 [Calculatelove 的竖版笔记](https://calculatelove.github.io/cp-library-v4-LaTeX/)：左右 20 mm 页边距、单栏目录、苹方标题、浅灰圆角代码卡片、蓝灰／绿色词法高亮、无横线页眉和居中页码。代码为 8 pt、行距 10.5 pt，仍不显示代码行号，不额外插入接口说明或使用提示。
 
 ```text
 python -m pip install -r requirements-print.txt
@@ -55,11 +55,11 @@ python support/verify/print_book_check.py
 
 册首收录 `support/tools/linux_commands.txt` 中的 Linux 竞赛常用命令，包括编译、调试、输入输出重定向、栈大小、测时、限时运行和答案比较。
 
-默认使用 Windows 的 Consolas 和宋体，字体嵌入 PDF。其他系统通过 `--code-font` 和 `--chinese-font` 指定支持相应字符的 TrueType 字体（中文 TTC 默认第 0 个字体）。新增模板时也需更新生成脚本的 `CHAPTERS`，漏收文件会直接报错。
+字体分别为：正文中文宋体、正文西文 Latin Modern Roman、数学 Latin Modern Math、标题苹方、代码与中文注释 Maple Mono NF CN。先按 [字体准备说明](support/fonts/README.md) 放置字体文件；缺少字体时停止生成，不使用替代字体。使用到的字体嵌入 PDF；源码注释中的公式仍为代码原文。新增模板时也需更新生成脚本的 `CHAPTERS`，漏收文件会直接报错。
 
 打印选择 A4、竖向、100% 原尺寸；双面选择长边翻转。
 
-排版参考：[justiceHui 2024 Astana](https://github.com/justiceHui/icpc-teamnote/blob/master/pdf/240919-icpc-world-finals-astana.pdf)、[tatyam 2026](https://github.com/tatyam-prime/ICPC_notebook/blob/main/notebook.pdf)、[brant 2026](https://github.com/brantwcw/codebook_generator/blob/main/codebook.pdf)、[KACTL](https://github.com/kth-competitive-programming/kactl)。参考标题层次、紧凑页眉和连续分页，不照搬为页数限制设计的小字号多栏。
+排版主要参考 [Calculatelove/cp-library-v4-LaTeX](https://github.com/Calculatelove/cp-library-v4-LaTeX) 的竖版字体、目录和代码卡片；保持本库的算法内容、章节编号和无行号规则，不引入另一份代码或 LaTeX 构建链。
 
 ## OEIS 检索附册
 

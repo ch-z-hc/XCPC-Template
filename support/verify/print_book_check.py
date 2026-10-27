@@ -1,24 +1,30 @@
 """验证打印册没有漏文件、漏行、漏字符或越界，并核对目录与 PDF 页数。"""
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import sys
 from pathlib import Path
 
 from pypdf import PdfReader
+from pypdf.generic import ContentStream
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
 from generate_print import (  # noqa: E402
-    BOTTOM, CODE_SIZE, CODE_W, COL_W, GAP, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W,
-    TITLE_HEIGHT, TOP, load_entries,
+    BOTTOM, CARD_BOTTOM, CARD_PAD, CARD_TOP, CODE_BLUE, CODE_COMMENT, CODE_GREEN,
+    CODE_SIZE, CODE_TEXT, CODE_W, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W, RIGHT,
+    TITLE_HEIGHT, TOP, code_lines, load_entries,
 )
 
 
 def main():
-    path = OUTPUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--pdf", type=Path, default=OUTPUT)
+    path = parser.parse_args().pdf
     layout = json.loads(path.with_suffix(".layout.json").read_text(encoding="utf-8"))
+    assert layout["font_size"] == CODE_SIZE and layout["line_height"] == LEADING
     entries = load_entries()
     index = (ROOT / "README.md").read_text(encoding="utf-8")
     for entry in entries:
@@ -31,24 +37,41 @@ def main():
     for number, page in enumerate(reader.pages, 1):
         assert abs(float(page.mediabox.width) - PAGE_W) < .01
         assert abs(float(page.mediabox.height) - PAGE_H) < .01
-        header = []
+        header, footer = [], []
         page.extract_text(visitor_text=lambda text, cm, tm, font, size:
                           header.append(text.strip())
                           if text.strip() and tm[5] > TOP + 5 else None)
-        assert header == [str(number)], (number, header)
+        if header:
+            label = "".join("".join(header).split())
+            assert label == "目录" or label in {
+                f"{entry.number.split('.')[0]}{entry.chapter}" for entry in entries
+            }, (number, header)
+        page.extract_text(visitor_text=lambda text, cm, tm, font, size:
+                          footer.append((text.strip(), tm[4], tm[5], size))
+                          if text.strip() and tm[5] < BOTTOM else None)
+        assert len(footer) == 1 and footer[0][0] == str(number), (number, footer)
+        assert footer[0][3] == 8 and abs(footer[0][2] - 15 * 72 / 25.4) < .01
+        assert abs(footer[0][1] - PAGE_W / 2) < 10
         filenames = []
         page.extract_text(visitor_text=lambda text, cm, tm, font, size:
                           filenames.append(text.strip())
                           if text.strip() and size == 7.5 else None)
         assert not filenames, (number, filenames)
         def check_font(text, cm, tm, font, size):
-            if any(ord(char) >= 128 and not char.isspace() for char in text):
-                expected = "SimSun" if size == CODE_SIZE else "STXinwei"
-                assert font and expected in str(font.get("/BaseFont", "")), (
-                    number, text, expected, font)
-            if not any(ord(char) < 128 and not char.isspace() for char in text):
+            if not text.strip():
                 return
-            expected = "Times-Bold" if size in (12, 13, 18, 24) else "Consolas"
+            if size == CODE_SIZE and BOTTOM <= tm[5] <= TOP or any(
+                    char in "\ue61d\uebca" for char in text):
+                role = "Code"
+            elif size in (12, 14, 22):
+                role = "HeadingBold"
+            elif size in (8, 9):
+                role = "Heading"
+            elif any(ord(char) >= 0x2E80 and not char.isspace() for char in text):
+                role = "Chinese"
+            else:
+                role = "Latin"
+            expected = layout["fonts"][role]
             assert font and expected in str(font.get("/BaseFont", "")), (
                 number, text, expected, font)
         page.extract_text(visitor_text=check_font)
@@ -64,13 +87,12 @@ def main():
         spans = []
         text = page.extract_text(visitor_text=lambda text, cm, tm, font, size:
                                  spans.append((text.strip(), tm[4], tm[5]))
-                                 if text.strip() and size == 9 else None)
+                                 if text.strip() and size == 10.5 else None)
         assert "（续）" not in text
         for entry in entries:
             numbers = [(x, y) for text, x, y in spans if text == entry.number]
             for x, y in numbers:
-                assert min(abs(x - column) for column in
-                           (LEFT + 7, LEFT + (COL_W + GAP) / 2 + 7)) < .01
+                assert abs(x - (LEFT + 21)) < .01
                 title_x = min(sx for _, sx, sy in spans
                               if abs(sy - y) < .01 and x < sx < x + 80)
                 title_offsets.append(title_x - x)
@@ -85,22 +107,36 @@ def main():
                 assert descriptor and "/FontFile2" in descriptor.get_object()
                 embedded.add(str(font["/BaseFont"]))
     assert embedded
+    for role in ("Code", "Chinese", "Latin", "Heading", "HeadingBold"):
+        assert any(layout["fonts"][role] in name for name in embedded), role
+    colors = set()
+    for page in reader.pages:
+        for operands, operator in ContentStream(page.get_contents(), reader).operations:
+            if operator == b"rg":
+                colors.add(tuple(round(float(value) * 255) for value in operands))
+    for color in (CODE_TEXT, CODE_BLUE, CODE_GREEN, CODE_COMMENT):
+        assert tuple(bytes.fromhex(color[1:])) in colors, color
+    # 跨行注释和字符串中的符号仍按词法着色，不重写代码。
+    sample = '/* first\nsecond */\nconst char *s = "// text";\n'
+    colored = code_lines(sample, "test.cpp")
+    assert colored[1] == [("second */", CODE_COMMENT)]
+    assert ("// text", CODE_GREEN) in colored[2]
     for entry, record in zip(entries, layout["entries"]):
         assert entry.path == record["path"]
         assert record["sha256"] == hashlib.sha256((ROOT / entry.path).read_bytes()).hexdigest()
         rows = [row for row in layout["rows"] if row["path"] == entry.path]
         assert rows and rows[0]["page"] == record["page"]
-        if TITLE_HEIGHT + len(rows) * LEADING <= TOP - BOTTOM:
+        if TITLE_HEIGHT + CARD_TOP + CARD_BOTTOM + (len(rows) - 1) * LEADING <= TOP - BOTTOM:
             assert len({row["page"] for row in rows}) == 1, entry.path
         elif entry.number.split(".")[1] != "1":
-            assert abs(rows[0]["y"] - (TOP - TITLE_HEIGHT)) < .01, entry.path
+            assert abs(rows[0]["y"] - (TOP - TITLE_HEIGHT - CARD_TOP)) < .01, entry.path
         restored = {}
         for row in rows:
             assert row["part"] == 0, (entry.path, row["line"], "源码需要手动换行")
-            assert BOTTOM <= row["y"] <= TOP
-            assert abs(row["x"] - LEFT) < .01
+            assert BOTTOM + CARD_BOTTOM <= row["y"] <= TOP
+            assert abs(row["x"] - LEFT - CARD_PAD) < .01
             assert row["width"] <= CODE_W + .001
-            assert row["x"] + row["width"] <= PAGE_W
+            assert row["x"] + row["width"] <= PAGE_W - RIGHT - CARD_PAD + .001
             assert row["part"] == len(restored.setdefault(row["line"], []))
             restored[row["line"]].append(row["text"])
         expected = [line.expandtabs(4) for line in entry.source.splitlines()]
@@ -108,7 +144,7 @@ def main():
         assert ["".join(parts) for parts in restored.values()] == expected
     # 检查实际 PDF 的文字层，避免只验证排版清单。
     texts = [page.extract_text() for page in reader.pages]
-    assert "XCPC 算法模板" in texts[0]
+    assert "目录" in texts[0]
     for text in texts:
         for phrase in ("代码直接来自源码", "阅读顺序", "源码行号", "每张纸", "双面短边翻转",
                        "接口 /", "template/", "support/", "多测入口", "单测题删除",

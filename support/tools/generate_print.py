@@ -10,6 +10,14 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+from fontTools.fontBuilder import FontBuilder
+from fontTools.pens.cu2quPen import Cu2QuPen
+from fontTools.pens.ttGlyphPen import TTGlyphPen
+from fontTools.ttLib import TTCollection, TTFont as OpenTypeFont
+from pygments import lex
+from pygments.lexers import BashLexer, CppLexer
+from pygments.token import Token
+from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
@@ -20,12 +28,18 @@ from reportlab.pdfgen import canvas
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "output/pdf/template.pdf"
 PAGE_W, PAGE_H = A4
-LEFT, RIGHT, GAP = 17 * mm, 15 * mm, 10 * mm
-TOP, BOTTOM = PAGE_H - 22 * mm, 16 * mm
+LEFT, RIGHT = 20 * mm, 20 * mm
+TOP, BOTTOM = PAGE_H - 28 * mm, 28 * mm
 COL_W = PAGE_W - LEFT - RIGHT
-CODE_SIZE, LEADING = 9.5, 12
-CODE_W = COL_W
+CODE_SIZE, LEADING = 8, 10.5
+CARD_PAD, CARD_HEAD = 2.5 * mm, 22
+CARD_TOP = CARD_HEAD + CARD_PAD + .8 * CODE_SIZE
+CARD_BOTTOM = CARD_PAD + .2 * CODE_SIZE
+CODE_W = COL_W - 2 * CARD_PAD
 TITLE_HEIGHT = 25
+FONT_DIR = ROOT / "support/fonts"
+CODE_TEXT, CODE_BLUE = "#30343B", "#506B82"
+CODE_GREEN, CODE_COMMENT = "#58715D", "#70757D"
 
 # 只维护目录名和顺序；正文来自对应文件。
 CHAPTERS = [
@@ -193,17 +207,74 @@ CHAPTERS = [
 ]
 
 
-def register_fonts(code_font: Path, chinese_font: Path) -> None:
-    pdfmetrics.registerFont(TTFont("Code", str(code_font)))
-    pdfmetrics.registerFont(TTFont("Chinese", str(chinese_font), subfontIndex=0))
-    pdfmetrics.registerFont(TTFont("ChineseHeading", "C:/Windows/Fonts/STXINWEI.TTF"))
+def font_file(path: Path, index=0) -> Path:
+    """ReportLab 需要 TrueType 轮廓；仅在本地缓存中转换 OTF 或拆出 TTC。"""
+    if not path.is_file():
+        raise FileNotFoundError(f"缺少字体：{path}；准备方法见 support/fonts/README.md")
+    with OpenTypeFont(path, fontNumber=index) as font:
+        if "glyf" in font and path.suffix.lower() != ".ttc":
+            return path
+        key = hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+        target = ROOT / "build/fonts" / f"{path.stem}-{key}-{index}.ttf"
+        if target.exists():
+            return target
+        if "CFF " in font:
+            glyph_set = font.getGlyphSet()
+            glyphs = {}
+            for name in font.getGlyphOrder():
+                pen = TTGlyphPen(glyph_set)
+                glyph_set[name].draw(Cu2QuPen(pen, 1, reverse_direction=True))
+                glyphs[name] = pen.glyph()
+            del font["CFF "]
+            if "VORG" in font:
+                del font["VORG"]
+            font.sfntVersion = "\x00\x01\x00\x00"
+            builder = FontBuilder(font=font)
+            builder.isTTF = True
+            builder.setupGlyf(glyphs)
+            builder.setupMaxp()
+            builder.setupPost()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        font.save(target)
+        return target
+
+
+def heading_face(path: Path, style: str, index: int | None) -> int:
+    if index is not None or path.suffix.lower() != ".ttc":
+        return index or 0
+    if not path.is_file():
+        raise FileNotFoundError(f"缺少苹方：{path}；请提供字体文件，不使用替代字体")
+    with TTCollection(path, lazy=True) as collection:
+        for i, font in enumerate(collection.fonts):
+            names = {name.toUnicode() for name in font["name"].names}
+            if "PingFang SC" in names and style in names:
+                return i
+    raise ValueError(f"字体集合中未找到 PingFang SC {style}：{path}；可显式指定字体编号")
+
+
+def register_fonts(code_font: Path, chinese_font: Path,
+                   latin_font: Path, math_font: Path,
+                   heading_font: Path, heading_index=None, bold_index=None,
+                   heading_bold_font: Path | None = None) -> None:
+    heading_bold_font = heading_bold_font or heading_font
+    heading_index = heading_face(heading_font, "Regular", heading_index)
+    bold_index = heading_face(heading_bold_font, "Semibold", bold_index)
+    for name, path, index in (
+        ("Code", code_font, 0), ("Chinese", chinese_font, 0),
+        ("Latin", latin_font, 0), ("Math", math_font, 0),
+        ("Heading", heading_font, heading_index),
+        ("HeadingBold", heading_bold_font, bold_index),
+    ):
+        pdfmetrics.registerFont(TTFont(name, str(font_file(path, index))))
+    glyph.cache_clear()
 
 
 @lru_cache(maxsize=None)
 def glyph(char: str, size: float, heading=False, code=False) -> tuple[str, float]:
-    font = ("Times-Bold" if ord(char) < 128 else "ChineseHeading") if heading else (
-        "Code" if ord(char) < 128 else "Chinese" if code else "ChineseHeading")
-    if font != "Times-Bold" and ord(char) not in pdfmetrics.getFont(font).face.charToGlyph:
+    font = "HeadingBold" if heading else "Code" if code else (
+        "Chinese" if ord(char) >= 0x2E80 else
+        "Math" if 0x2200 <= ord(char) <= 0x22FF else "Latin")
+    if ord(char) not in pdfmetrics.getFont(font).face.charToGlyph:
         raise ValueError(f"字体缺少字符 {char!r} (U+{ord(char):04X})")
     return font, pdfmetrics.stringWidth(char, font, size)
 
@@ -213,42 +284,52 @@ def width(text: str, size: float, heading=False, code=False) -> float:
 
 
 def draw_text(pdf: canvas.Canvas, x: float, y: float, text: str,
-              size: float, gray: float = 0, heading=False, code=False) -> None:
-    pdf.setFillGray(gray)
+              size: float, gray: float = 0, heading=False, code=False,
+              color=None, font=None) -> None:
+    pdf.setFillColor(HexColor(color)) if color else pdf.setFillGray(gray)
     obj = pdf.beginText(x, y)
     previous = None
+    run = []
     for char in text:
-        font, _ = glyph(char, size, heading, code)
-        if font != previous:
-            obj.setFont(font, size)
-            previous = font
-        obj.textOut(char)
+        selected = font or glyph(char, size, heading, code)[0]
+        if selected != previous:
+            if run:
+                obj.textOut("".join(run))
+                run = []
+            obj.setFont(selected, size)
+            previous = selected
+        run.append(char)
+    if run:
+        obj.textOut("".join(run))
     pdf.drawText(obj)
 
 
-def wrap(text: str, size: float, max_width: float) -> list[str]:
-    """仅作显示折行，拼接结果必须逐字符等于原文。"""
-    if not text:
-        return [""]
-    result = []
-    while text:
-        length, measured = 0, 0.0
-        for char in text:
-            advance = glyph(char, size, code=True)[1]
-            if measured + advance > max_width:
-                break
-            measured += advance
-            length += 1
-        if not length:
-            raise ValueError("可用行宽小于单个字符")
-        if length < len(text):
-            # 尽量在空白处分行，但不删除或添加原文空格。
-            space = text.rfind(" ", max(1, length // 2), length)
-            if space >= 0:
-                length = space + 1
-        result.append(text[:length])
-        text = text[length:]
-    return result
+def code_lines(source: str, path: str) -> list[list[tuple[str, str]]]:
+    """整文件分词，保留跨行注释状态；所有 token 拼接后仍为源码原文。"""
+    lexer = CppLexer if path.endswith(".cpp") else BashLexer
+    lines = [[]]
+    for token, value in lex(source, lexer(stripnl=False, ensurenl=False)):
+        color = CODE_TEXT
+        if token in Token.Comment.PreprocFile:
+            color = CODE_GREEN
+        elif token in Token.Comment.Preproc or token in Token.Keyword or (
+                token in Token.Number or token in Token.Name.Builtin) or (
+                token in Token.Name and value in {"vector", "string", "pair", "LL", "ULL"}):
+            color = CODE_BLUE
+        elif token in Token.String:
+            color = CODE_GREEN
+        elif token in Token.Comment:
+            color = CODE_COMMENT
+        parts = value.split("\n")
+        for i, part in enumerate(parts):
+            if i:
+                lines.append([])
+            if part:
+                lines[-1].append((part, color))
+    if source.endswith("\n"):
+        lines.pop()
+    assert ["".join(text for text, _ in line) for line in lines] == source.splitlines()
+    return lines
 
 
 @dataclass
@@ -287,6 +368,7 @@ class Book:
         self.col = 0
         self.y = TOP
         self.chapter = "目录"
+        self.chapter_start = True
         self.page_titles = []
         self.result = {}
         self.audit = []
@@ -298,82 +380,93 @@ class Book:
     def running_header(self):
         pdf = self.pdf
         label = str(self.page)
-        draw_text(pdf, PAGE_W - RIGHT - width(label, 8), PAGE_H - 11 * mm, label, 8)
-        pdf.setStrokeGray(.65)
-        pdf.setLineWidth(.35)
-        pdf.line(LEFT, PAGE_H - 13 * mm, PAGE_W - RIGHT, PAGE_H - 13 * mm)
+        if not self.chapter_start:
+            draw_text(pdf, LEFT, PAGE_H - 18 * mm, self.chapter, 8,
+                      gray=.4, font="Heading")
+        label_width = pdfmetrics.stringWidth(label, "Heading", 8)
+        draw_text(pdf, (PAGE_W - label_width) / 2, 15 * mm, label, 8,
+                  gray=.4, font="Heading")
 
     def new_page(self, chapter: str):
         self.running_header()
         self.pdf.showPage()
         self.page += 1
         self.chapter, self.col, self.y = chapter, 0, TOP
+        self.chapter_start = False
         self.page_titles = []
 
     def next_column(self):
         self.new_page(self.chapter)
 
     def contents(self):
-        draw_text(self.pdf, LEFT, TOP, "XCPC 算法模板", 24, heading=True)
-        col_width = (COL_W - GAP) / 2
-        number_width = max(width(entry.number, 9) for entry in self.entries)
-        title_offset = 7 + number_width + width("  ", 9)
+        draw_text(self.pdf, (PAGE_W - width("目录", 22, heading=True)) / 2,
+                  TOP, "目录", 22, heading=True)
+        number_width = max(width(entry.number, 10.5) for entry in self.entries)
+        title_offset = 21 + number_width + width("  ", 10.5)
         self.y = TOP - 44
-        def next_contents_column():
-            if self.col == 0:
-                self.col, self.y = 1, TOP - 44 if self.page == 1 else TOP
-            else:
-                self.new_page("目录")
-            return LEFT + self.col * (col_width + GAP)
-
         for number, (chapter, _) in enumerate(CHAPTERS, 1):
             items = [entry for entry in self.entries if entry.chapter == chapter]
             if self.y - 38 < BOTTOM:
-                next_contents_column()
-            x = LEFT + self.col * (col_width + GAP)
-            draw_text(self.pdf, x, self.y, f"{number}  {chapter}", 12, heading=True)
+                self.new_page("目录")
+            draw_text(self.pdf, LEFT, self.y, f"{number}  {chapter}", 12, heading=True)
+            page = str(self.locations.get(items[0].path, ""))
+            draw_text(self.pdf, PAGE_W - RIGHT - width(page, 11), self.y, page, 11)
             self.y -= 21
             for entry in items:
-                if self.y < BOTTOM + 14:
-                    x = next_contents_column()
-                draw_text(self.pdf, x + 7, self.y, entry.number, 9)
-                draw_text(self.pdf, x + title_offset, self.y, entry.title, 9)
+                if self.y < BOTTOM:
+                    self.new_page("目录")
+                draw_text(self.pdf, LEFT + 21, self.y, entry.number, 10.5)
+                draw_text(self.pdf, LEFT + title_offset, self.y, entry.title, 10.5)
                 page = str(self.locations.get(entry.path, ""))
-                draw_text(self.pdf, x + col_width - width(page, 9), self.y, page, 9)
-                start = x + title_offset + width(entry.title, 9) + 6
-                end = x + col_width - width(page, 9) - 6
-                self.pdf.setStrokeGray(.55)
-                self.pdf.setLineWidth(.35)
-                self.pdf.setDash(1, 2)
-                self.pdf.line(start, self.y + 2, end, self.y + 2)
-                self.pdf.setDash()
+                draw_text(self.pdf, PAGE_W - RIGHT - width(page, 10), self.y, page, 10)
+                start = LEFT + title_offset + width(entry.title, 10.5) + 6
+                end = PAGE_W - RIGHT - width(page, 10) - 6
+                if start < end:
+                    self.pdf.setFillGray(.53)
+                    for dot in range(int(start), int(end), 9):
+                        self.pdf.circle(dot, self.y + 2, .35, stroke=0, fill=1)
                 self.pdf.linkRect("", entry.path,
-                                  (x, self.y - 3, x + col_width, self.y + 10), thickness=0)
-                self.y -= 17
+                                  (LEFT, self.y - 3, PAGE_W - RIGHT, self.y + 11),
+                                  thickness=0)
+                self.y -= 15
             self.y -= 12
 
     def title(self, entry: Entry):
         label = entry.number + "  " + entry.title
-        draw_text(self.pdf, self.x, self.y, label, 13, heading=True)
-        self.y -= 8
-        self.pdf.setStrokeGray(.4)
-        self.pdf.setLineWidth(.4)
-        self.pdf.line(self.x, self.y, self.x + COL_W, self.y)
-        self.y -= 17
+        draw_text(self.pdf, self.x, self.y, label, 14, heading=True)
+        self.y -= TITLE_HEIGHT
+
+    def card(self, entry: Entry, count: int):
+        height = CARD_TOP + CARD_BOTTOM + (count - 1) * LEADING
+        pdf = self.pdf
+        pdf.saveState()
+        clip = pdf.beginPath()
+        clip.roundRect(LEFT, self.y - height, COL_W, height, 2 * mm)
+        pdf.clipPath(clip, stroke=0, fill=0)
+        pdf.setFillColor(HexColor("#F5F5F7"))
+        pdf.rect(LEFT, self.y - CARD_HEAD, COL_W, CARD_HEAD, stroke=0, fill=1)
+        pdf.restoreState()
+        pdf.setStrokeColor(HexColor("#D1D1D6"))
+        pdf.setLineWidth(.4)
+        pdf.roundRect(LEFT, self.y - height, COL_W, height, 2 * mm, stroke=1, fill=0)
+        baseline = self.y - 14
+        icon = "\ue61d" if entry.path.endswith(".cpp") else "\uebca"
+        draw_text(pdf, LEFT + CARD_PAD, baseline, icon, 9, gray=.44, code=True)
+        draw_text(pdf, LEFT + CARD_PAD + 4 * mm, baseline,
+                  Path(entry.path).name, 9, color=CODE_TEXT, font="Heading")
+        self.y -= CARD_TOP
 
     def entry(self, entry: Entry):
-        rows = []
-        for number, source_line in enumerate(entry.source.splitlines(), 1):
-            line = source_line.expandtabs(4)
-            pieces = wrap(line, CODE_SIZE, CODE_W)
-            assert "".join(pieces) == line
-            for part, text in enumerate(pieces):
-                assert width(text, CODE_SIZE, code=True) <= CODE_W + .001
-                rows.append((number, part, text))
+        source = entry.source.expandtabs(4)
+        tokens = code_lines(source, entry.path)
+        rows = list(enumerate(source.splitlines(), 1))
+        for number, text in rows:
+            if width(text, CODE_SIZE, code=True) > CODE_W + .001:
+                raise ValueError(f"源码行超宽，需手动换行：{entry.path}:{number}")
         title_height = TITLE_HEIGHT
         available = self.y - BOTTOM
-        full_height = title_height + len(rows) * LEADING
-        if available < title_height + min(8, len(rows)) * LEADING or (
+        full_height = title_height + CARD_TOP + CARD_BOTTOM + (len(rows) - 1) * LEADING
+        if available < title_height + CARD_TOP + CARD_BOTTOM + min(8, len(rows)) * LEADING or (
                 full_height > available and (full_height <= TOP - BOTTOM or self.page_titles)):
             self.next_column()
         self.result[entry.path] = self.page
@@ -384,28 +477,30 @@ class Book:
         self.page_titles.append(entry.title)
         index = 0
         while index < len(rows):
-            capacity = int((self.y - BOTTOM) // LEADING)
+            capacity = int((self.y - BOTTOM - CARD_TOP - CARD_BOTTOM) // LEADING) + 1
             end = min(index + capacity, len(rows))
             if end < len(rows):
                 if len(rows) - end < 6:
                     end = len(rows) - 6
                 # 只在页末附近的空行处分隔，避免过度留白。
                 candidates = [i + 1 for i in range(max(index + 1, end - 4), end)
-                              if rows[i][2] == "" and rows[i][1] == 0]
+                              if rows[i][1] == ""]
                 if candidates:
                     end = candidates[-1]
-                elif rows[end][1] and end > index + 1:
-                    while end > index and rows[end][1]:
-                        end -= 1
             if end <= index:
                 raise ValueError(f"无法分页：{entry.path}")
-            for number, part, text in rows[index:end]:
-                draw_text(self.pdf, self.x, self.y, text, CODE_SIZE, code=True)
-                self.audit.append({"path": entry.path, "line": number, "part": part,
+            self.card(entry, end - index)
+            for number, text in rows[index:end]:
+                x = LEFT + CARD_PAD
+                for value, color in tokens[number - 1]:
+                    draw_text(self.pdf, x, self.y, value, CODE_SIZE, code=True, color=color)
+                    x += width(value, CODE_SIZE, code=True)
+                self.audit.append({"path": entry.path, "line": number, "part": 0,
                                    "text": text, "page": self.page, "column": self.col,
-                                   "x": self.x, "y": self.y,
+                                   "x": LEFT + CARD_PAD, "y": self.y,
                                    "width": width(text, CODE_SIZE, code=True)})
                 self.y -= LEADING
+            self.y += LEADING - CARD_BOTTOM
             index = end
             if index < len(rows):
                 self.next_column()
@@ -418,18 +513,14 @@ class Book:
         self.contents()
         self.new_page("正文")
         for number, (chapter, _) in enumerate(CHAPTERS, 1):
-            first = next(entry for entry in self.entries if entry.chapter == chapter)
-            first_rows = sum(len(wrap(line.expandtabs(4), CODE_SIZE, CODE_W))
-                             for line in first.source.splitlines())
-            first_height = 35 + TITLE_HEIGHT + first_rows * LEADING
-            if self.y - BOTTOM < 160 or (
-                    self.page_titles and first_height > self.y - BOTTOM):
-                self.next_column()
+            if self.page_titles:
+                self.new_page(f"{number} {chapter}")
             self.chapter = f"{number} {chapter}"
-            draw_text(self.pdf, self.x, self.y, self.chapter, 18, heading=True)
-            self.y -= 35
+            self.chapter_start = True
+            draw_text(self.pdf, self.x, self.y, self.chapter, 22, heading=True)
+            self.y -= 44
             key = "chapter-" + chapter
-            self.pdf.bookmarkHorizontalAbsolute(key, self.y + 35)
+            self.pdf.bookmarkHorizontalAbsolute(key, self.y + 44)
             self.pdf.addOutlineEntry(f"{number} {chapter}", key, level=0)
             for entry in self.entries:
                 if entry.chapter == chapter:
@@ -442,10 +533,22 @@ class Book:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
-    parser.add_argument("--code-font", type=Path, default=Path("C:/Windows/Fonts/consola.ttf"))
+    parser.add_argument("--code-font", type=Path,
+                        default=FONT_DIR / "MapleMono-NF-CN-Regular.ttf")
     parser.add_argument("--chinese-font", type=Path, default=Path("C:/Windows/Fonts/simsun.ttc"))
+    parser.add_argument("--latin-font", type=Path, default=FONT_DIR / "lmroman10-regular.otf")
+    parser.add_argument("--math-font", type=Path, default=FONT_DIR / "latinmodern-math.otf")
+    parser.add_argument("--heading-font", type=Path, default=FONT_DIR / "PingFang.ttc")
+    parser.add_argument("--heading-bold-font", type=Path,
+                        help="单独的苹方 Semibold 文件；默认从同一 TTC 中选择")
+    parser.add_argument("--heading-index", type=int,
+                        help="TTC 中的苹方常规字体编号")
+    parser.add_argument("--heading-bold-index", type=int,
+                        help="TTC 中的苹方 Semibold 字体编号")
     args = parser.parse_args()
-    register_fonts(args.code_font, args.chinese_font)
+    register_fonts(args.code_font, args.chinese_font, args.latin_font, args.math_font,
+                   args.heading_font, args.heading_index, args.heading_bold_index,
+                   args.heading_bold_font)
     entries = load_entries()
     locations, pages, _ = Book(io.BytesIO(), entries).build()
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -453,6 +556,8 @@ def main():
     assert (locations, pages) == (final_locations, final_pages)
     manifest = {
         "pages": pages, "font_size": CODE_SIZE, "line_height": LEADING,
+        "fonts": {name: pdfmetrics.getFont(name).face.name.decode("ascii")
+                  for name in ("Code", "Chinese", "Latin", "Math", "Heading", "HeadingBold")},
         "page_size": [PAGE_W, PAGE_H],
         "entries": [{"path": entry.path, "title": entry.title,
                      "page": locations[entry.path],
