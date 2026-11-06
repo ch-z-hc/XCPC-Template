@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 from generate_print import (
     BOTTOM, CODE_SIZE, CODE_W, LEADING, MAX_CODE_SIZE, MIN_CODE_SIZE,
-    TITLE_HEIGHT, TOP, card_bottom, card_top, plan_code, split_rows,
+    TITLE_HEIGHT, TOP, card_bottom, card_top, plan_code, split_rows, start_on_fresh_page,
 )
 
 
@@ -46,6 +46,23 @@ def main():
     assert len(plan.chunks) == 1 and MIN_CODE_SIZE < plan.font_size < CODE_SIZE
     gap = TOP - TITLE_HEIGHT - card_top(plan.font_size) - card_bottom(plan.font_size) - 59 * plan.line_height - BOTTOM
     assert abs(gap) < .001
+    # 页尾只剩不足半页时，不放下一份长代码的开头。
+    rows = list(enumerate(["x"] * 66))
+    fresh = plan_code(rows, TOP, CODE_W * .7)
+    top = BOTTOM + (TOP - BOTTOM) * .4
+    assert start_on_fresh_page(plan_code(rows, top, CODE_W * .7), fresh, top)
+    # 足够接排的长代码、能完整放下的短代码仍利用剩余空间。
+    top = TOP - 100
+    assert not start_on_fresh_page(plan_code(rows, top, CODE_W * .7), fresh, top)
+    short = list(enumerate(["x"] * 8))
+    top = BOTTOM + 160
+    assert not start_on_fresh_page(plan_code(short, top, CODE_W * .7),
+                                   plan_code(short, TOP, CODE_W * .7), top)
+    # 缩小字号可整页容纳时，也应整体移到下一页。
+    rows = list(enumerate(["x"] * 60))
+    top = TOP - 100
+    assert start_on_fresh_page(plan_code(rows, top, CODE_W * .7),
+                               plan_code(rows, TOP, CODE_W * .7), top)
     print("PASS: pagination boundaries, whole-source coverage, width limits and near-full final page")
 
 

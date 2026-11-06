@@ -427,6 +427,17 @@ def plan_code(rows, top, max_width):
     return CodeLayout(low, LEADING * low / CODE_SIZE, split_rows(rows, top, low))
 
 
+def start_on_fresh_page(layout, fresh, top):
+    if len(layout.chunks) == 1:
+        return False
+    # 放不完且剩余不足半页时，标题和代码一起移到下一页。
+    return (len(fresh.chunks) == 1
+            or top - BOTTOM - TITLE_HEIGHT < (TOP - BOTTOM - TITLE_HEIGHT) / 2
+            or (len(fresh.chunks) == len(layout.chunks) - 1
+                and last_page_gap(fresh, TOP) <= fresh.line_height
+                and last_page_gap(layout, top) > layout.line_height))
+
+
 class Book:
     def __init__(self, target, entries: list[Entry], locations=None):
         self.pdf = canvas.Canvas(target, pagesize=(PAGE_W, PAGE_H), pageCompression=1)
@@ -533,18 +544,13 @@ class Book:
         rows = list(enumerate(source.splitlines(), 1))
         max_width = max(width(text, CODE_SIZE, code=True) for _, text in rows)
         smallest = split_rows(rows, self.y, MIN_CODE_SIZE)
-        # 短代码尽量整份放在一页；长代码直接利用当前页剩余空间。
-        if not smallest or (self.page_titles and len(smallest) > 1 and
-                            len(split_rows(rows, TOP, CODE_SIZE)) == 1):
+        if not smallest:
             self.next_column()
         try:
             layout = plan_code(rows, self.y, max_width)
             if self.page_titles and len(layout.chunks) > 1:
                 fresh = plan_code(rows, TOP, max_width)
-                if (len(fresh.chunks) == len(layout.chunks) - 1
-                        and last_page_gap(fresh, TOP) <= fresh.line_height
-                        and last_page_gap(layout, self.y) > layout.line_height):
-                    # 新增页数相同时，优先让长代码完整结束在页底。
+                if start_on_fresh_page(layout, fresh, self.y):
                     self.next_column()
                     layout = fresh
         except ValueError as error:

@@ -143,6 +143,9 @@ def main():
         if len(pages) > 1:
             assert sum(row["page"] == pages[0] for row in rows) >= 8
             assert sum(row["page"] == pages[-1] for row in rows) >= 6
+            # 标题下至少保留半页空间，避免在前一份代码末页塞入短开头。
+            title_top = rows[0]["y"] + card_top(size) + TITLE_HEIGHT
+            assert title_top - BOTTOM - TITLE_HEIGHT >= (TOP - BOTTOM - TITLE_HEIGHT) / 2
         restored = {}
         for row in rows:
             assert row["font_size"] == size and row["line_height"] == leading
