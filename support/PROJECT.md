@@ -73,11 +73,14 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 ## 打印模板册
 
-从 `.cpp` 原文生成 A4 竖版单栏 PDF，保留代码空格和缩进。视觉风格参考 [Calculatelove 的竖版笔记](https://calculatelove.github.io/cp-library-v4-LaTeX/)：左右 20 mm 页边距、单栏目录、苹方标题、浅灰圆角代码卡片、蓝灰／绿色词法高亮、无横线页眉和居中页码。代码为 8 pt、行距 10.5 pt，仍不显示代码行号，不额外插入接口说明或使用提示。
+从 `.cpp` 原文生成 A4 竖版单栏 PDF，保留代码空格和缩进。视觉风格参考 [Calculatelove 的竖版笔记](https://calculatelove.github.io/cp-library-v4-LaTeX/)：左右 20 mm 页边距、单栏目录、苹方标题、浅灰圆角代码卡片、蓝灰／绿色词法高亮、无横线页眉和居中页码。不显示代码行号，不额外插入接口说明或使用提示。
+
+代码基准为 8 pt、行距 10.5 pt。短代码优先完整放在同一页，必要时略微缩小；长代码利用当前页剩余空间，并在 7.5–8.5 pt 内按实际行宽与页数自动选择字号，行距同比例调整。先减少页数，再在这些页内尽量放大，使末页靠近页底；如果另起一页不增加该份代码所需的新增页数，并能让末页收在页底附近，则优先这样放置。同一份代码跨页保持同一字号和行距。若字号上限或行宽限制使末页仍有空白，后续代码可接排，不把字强行放大或拉开行距。正文不删空行、不自动折行、不改变源码。
 
 ```text
 python -m pip install -r requirements-print.txt
 python support/tools/generate_print.py
+python support/verify/print_pagination_check.py
 python support/verify/print_book_check.py
 ```
 

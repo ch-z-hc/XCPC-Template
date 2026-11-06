@@ -13,9 +13,9 @@ from pypdf.generic import ContentStream
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
 from generate_print import (  # noqa: E402
-    BOTTOM, CARD_BOTTOM, CARD_PAD, CARD_TOP, CODE_BLUE, CODE_COMMENT, CODE_GREEN,
+    BOTTOM, CARD_PAD, CODE_BLUE, CODE_COMMENT, CODE_GREEN,
     CODE_SIZE, CODE_TEXT, CODE_W, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W, RIGHT,
-    TITLE_HEIGHT, TOP, code_lines, load_entries,
+    MIN_CODE_SIZE, MAX_CODE_SIZE, TITLE_HEIGHT, TOP, card_top, card_bottom, code_lines, load_entries,
 )
 
 
@@ -25,6 +25,10 @@ def main():
     path = parser.parse_args().pdf
     layout = json.loads(path.with_suffix(".layout.json").read_text(encoding="utf-8"))
     assert layout["font_size"] == CODE_SIZE and layout["line_height"] == LEADING
+    assert layout["font_size_range"] == [MIN_CODE_SIZE, MAX_CODE_SIZE]
+    code_baselines = {}
+    for row in layout["rows"]:
+        code_baselines.setdefault(row["page"], []).append((row["y"], row["font_size"]))
     entries = load_entries()
     paths = {entry.path for entry in entries}
     for name in ("stress_linux", "stress_windows", "gen"):
@@ -57,15 +61,12 @@ def main():
         assert len(footer) == 1 and footer[0][0] == str(number), (number, footer)
         assert footer[0][3] == 8 and abs(footer[0][2] - 15 * 72 / 25.4) < .01
         assert abs(footer[0][1] - PAGE_W / 2) < 10
-        filenames = []
-        page.extract_text(visitor_text=lambda text, cm, tm, font, size:
-                          filenames.append(text.strip())
-                          if text.strip() and size == 7.5 else None)
-        assert not filenames, (number, filenames)
         def check_font(text, cm, tm, font, size):
             if not text.strip():
                 return
-            if size == CODE_SIZE and BOTTOM <= tm[5] <= TOP or any(
+            is_code = any(abs(y - tm[5]) < .001 and abs(size - row_size) < .001
+                          for y, row_size in code_baselines.get(number, []))
+            if is_code or any(
                     char in "\ue61d\uebca" for char in text):
                 role = "Code"
             elif size in (12, 14, 22):
@@ -131,14 +132,22 @@ def main():
         assert record["sha256"] == hashlib.sha256((ROOT / entry.path).read_bytes()).hexdigest()
         rows = [row for row in layout["rows"] if row["path"] == entry.path]
         assert rows and rows[0]["page"] == record["page"]
-        if TITLE_HEIGHT + CARD_TOP + CARD_BOTTOM + (len(rows) - 1) * LEADING <= TOP - BOTTOM:
-            assert len({row["page"] for row in rows}) == 1, entry.path
-        elif entry.number.split(".")[1] != "1":
-            assert abs(rows[0]["y"] - (TOP - TITLE_HEIGHT - CARD_TOP)) < .01, entry.path
+        size, leading = record["font_size"], record["line_height"]
+        assert MIN_CODE_SIZE <= size <= MAX_CODE_SIZE
+        assert abs(leading / size - LEADING / CODE_SIZE) < 1e-8
+        assert rows[-1]["page"] == record["end_page"]
+        gap = rows[-1]["y"] - card_bottom(size) - BOTTOM
+        assert abs(gap - record["last_page_gap"]) < .001
+        pages = sorted({row["page"] for row in rows})
+        assert pages == list(range(record["page"], record["end_page"] + 1))
+        if len(pages) > 1:
+            assert sum(row["page"] == pages[0] for row in rows) >= 8
+            assert sum(row["page"] == pages[-1] for row in rows) >= 6
         restored = {}
         for row in rows:
+            assert row["font_size"] == size and row["line_height"] == leading
             assert row["part"] == 0, (entry.path, row["line"], "源码需要手动换行")
-            assert BOTTOM + CARD_BOTTOM <= row["y"] <= TOP
+            assert BOTTOM + card_bottom(size) - .001 <= row["y"] <= TOP
             assert abs(row["x"] - LEFT - CARD_PAD) < .01
             assert row["width"] <= CODE_W + .001
             assert row["x"] + row["width"] <= PAGE_W - RIGHT - CARD_PAD + .001

@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 import shutil
 from dataclasses import dataclass
 from functools import lru_cache
@@ -32,9 +33,8 @@ LEFT, RIGHT = 20 * mm, 20 * mm
 TOP, BOTTOM = PAGE_H - 28 * mm, 28 * mm
 COL_W = PAGE_W - LEFT - RIGHT
 CODE_SIZE, LEADING = 8, 10.5
+MIN_CODE_SIZE, MAX_CODE_SIZE = 7.5, 8.5
 CARD_PAD, CARD_HEAD = 2.5 * mm, 22
-CARD_TOP = CARD_HEAD + CARD_PAD + .8 * CODE_SIZE
-CARD_BOTTOM = CARD_PAD + .2 * CODE_SIZE
 CODE_W = COL_W - 2 * CARD_PAD
 TITLE_HEIGHT = 25
 FONT_DIR = ROOT / "support/fonts"
@@ -359,6 +359,74 @@ def load_entries() -> list[Entry]:
     return entries
 
 
+def card_top(size):
+    return CARD_HEAD + CARD_PAD + .8 * size
+
+
+def card_bottom(size):
+    return CARD_PAD + .2 * size
+
+
+def split_rows(rows, top, size):
+    """同一份代码保持字号和行距一致；页末最多提前两行寻找空行。"""
+    leading = LEADING * size / CODE_SIZE
+    chunks, index = [], 0
+    y = top - TITLE_HEIGHT
+    while index < len(rows):
+        capacity = math.floor((y - BOTTOM - card_top(size) - card_bottom(size))
+                              / leading + 1e-8) + 1
+        if capacity < (min(8, len(rows)) if not chunks else 1):
+            return []
+        end = min(index + capacity, len(rows))
+        if end < len(rows):
+            if len(rows) - end < 6:
+                end = len(rows) - 6
+            candidates = [i + 1 for i in range(max(index + 1, end - 2), end)
+                          if rows[i][1] == ""]
+            if candidates:
+                end = candidates[-1]
+        if end <= index or (not chunks and end - index < min(8, len(rows))):
+            return []
+        chunks.append(end - index)
+        index, y = end, TOP
+    return chunks
+
+
+@dataclass
+class CodeLayout:
+    font_size: float
+    line_height: float
+    chunks: list[int]
+
+
+def last_page_gap(layout, top):
+    y = top - TITLE_HEIGHT if len(layout.chunks) == 1 else TOP
+    return max(0, y - BOTTOM - card_top(layout.font_size) - card_bottom(layout.font_size)
+               - (layout.chunks[-1] - 1) * layout.line_height)
+
+
+def plan_code(rows, top, max_width):
+    upper = min(MAX_CODE_SIZE, CODE_SIZE * CODE_W / max_width) if max_width else MAX_CODE_SIZE
+    if upper < MIN_CODE_SIZE:
+        raise ValueError("源码行在最小字号下仍超宽，需手动换行")
+    normal = split_rows(rows, top, CODE_SIZE)
+    if upper >= CODE_SIZE and len(normal) == 1:
+        return CodeLayout(CODE_SIZE, LEADING, normal)
+    smallest = split_rows(rows, top, MIN_CODE_SIZE)
+    if not smallest:
+        raise ValueError("当前页不足以容纳代码开头")
+    # 先减少页数，再取这些页能容纳的最大字号，使末页尽量接近页底。
+    low, high = MIN_CODE_SIZE, upper
+    for _ in range(40):
+        middle = (low + high) / 2
+        chunks = split_rows(rows, top, middle)
+        if chunks and len(chunks) <= len(smallest):
+            low = middle
+        else:
+            high = middle
+    return CodeLayout(low, LEADING * low / CODE_SIZE, split_rows(rows, top, low))
+
+
 class Book:
     def __init__(self, target, entries: list[Entry], locations=None):
         self.pdf = canvas.Canvas(target, pagesize=(PAGE_W, PAGE_H), pageCompression=1)
@@ -374,6 +442,7 @@ class Book:
         self.page_titles = []
         self.result = {}
         self.audit = []
+        self.layouts = {}
 
     @property
     def x(self):
@@ -438,8 +507,8 @@ class Book:
         draw_text(self.pdf, self.x, self.y, label, 14, heading=True)
         self.y -= TITLE_HEIGHT
 
-    def card(self, entry: Entry, count: int):
-        height = CARD_TOP + CARD_BOTTOM + (count - 1) * LEADING
+    def card(self, entry: Entry, count: int, layout: CodeLayout):
+        height = card_top(layout.font_size) + card_bottom(layout.font_size) + (count - 1) * layout.line_height
         pdf = self.pdf
         pdf.saveState()
         clip = pdf.beginPath()
@@ -456,21 +525,30 @@ class Book:
         draw_text(pdf, LEFT + CARD_PAD, baseline, icon, 9, gray=.44, code=True)
         draw_text(pdf, LEFT + CARD_PAD + 4 * mm, baseline,
                   Path(entry.path).name, 9, color=CODE_TEXT, font="Heading")
-        self.y -= CARD_TOP
+        self.y -= card_top(layout.font_size)
 
     def entry(self, entry: Entry):
         source = entry.source.expandtabs(4)
         tokens = code_lines(source, entry.path)
         rows = list(enumerate(source.splitlines(), 1))
-        for number, text in rows:
-            if width(text, CODE_SIZE, code=True) > CODE_W + .001:
-                raise ValueError(f"源码行超宽，需手动换行：{entry.path}:{number}")
-        title_height = TITLE_HEIGHT
-        available = self.y - BOTTOM
-        full_height = title_height + CARD_TOP + CARD_BOTTOM + (len(rows) - 1) * LEADING
-        if available < title_height + CARD_TOP + CARD_BOTTOM + min(8, len(rows)) * LEADING or (
-                full_height > available and (full_height <= TOP - BOTTOM or self.page_titles)):
+        max_width = max(width(text, CODE_SIZE, code=True) for _, text in rows)
+        smallest = split_rows(rows, self.y, MIN_CODE_SIZE)
+        # 短代码尽量整份放在一页；长代码直接利用当前页剩余空间。
+        if not smallest or (self.page_titles and len(smallest) > 1 and
+                            len(split_rows(rows, TOP, CODE_SIZE)) == 1):
             self.next_column()
+        try:
+            layout = plan_code(rows, self.y, max_width)
+            if self.page_titles and len(layout.chunks) > 1:
+                fresh = plan_code(rows, TOP, max_width)
+                if (len(fresh.chunks) == len(layout.chunks) - 1
+                        and last_page_gap(fresh, TOP) <= fresh.line_height
+                        and last_page_gap(layout, self.y) > layout.line_height):
+                    # 新增页数相同时，优先让长代码完整结束在页底。
+                    self.next_column()
+                    layout = fresh
+        except ValueError as error:
+            raise ValueError(f"{entry.path}: {error}") from error
         self.result[entry.path] = self.page
         self.pdf.bookmarkHorizontalAbsolute(entry.path, self.y + 12)
         self.pdf.addOutlineEntry(entry.number + " " + entry.title,
@@ -478,35 +556,27 @@ class Book:
         self.title(entry)
         self.page_titles.append(entry.title)
         index = 0
-        while index < len(rows):
-            capacity = int((self.y - BOTTOM - CARD_TOP - CARD_BOTTOM) // LEADING) + 1
-            end = min(index + capacity, len(rows))
-            if end < len(rows):
-                if len(rows) - end < 6:
-                    end = len(rows) - 6
-                # 只在页末附近的空行处分隔，避免过度留白。
-                candidates = [i + 1 for i in range(max(index + 1, end - 4), end)
-                              if rows[i][1] == ""]
-                if candidates:
-                    end = candidates[-1]
-            if end <= index:
-                raise ValueError(f"无法分页：{entry.path}")
-            self.card(entry, end - index)
+        for count in layout.chunks:
+            end = index + count
+            self.card(entry, count, layout)
             for number, text in rows[index:end]:
                 x = LEFT + CARD_PAD
                 for value, color in tokens[number - 1]:
-                    draw_text(self.pdf, x, self.y, value, CODE_SIZE, code=True, color=color)
-                    x += width(value, CODE_SIZE, code=True)
+                    draw_text(self.pdf, x, self.y, value, layout.font_size, code=True, color=color)
+                    x += width(value, layout.font_size, code=True)
                 self.audit.append({"path": entry.path, "line": number, "part": 0,
                                    "text": text, "page": self.page, "column": self.col,
                                    "x": LEFT + CARD_PAD, "y": self.y,
-                                   "width": width(text, CODE_SIZE, code=True)})
-                self.y -= LEADING
-            self.y += LEADING - CARD_BOTTOM
+                                   "width": width(text, layout.font_size, code=True),
+                                   "font_size": layout.font_size, "line_height": layout.line_height})
+                self.y -= layout.line_height
+            self.y += layout.line_height - card_bottom(layout.font_size)
             index = end
             if index < len(rows):
                 self.next_column()
                 self.page_titles.append(entry.title)
+        self.layouts[entry.path] = {"font_size": layout.font_size, "line_height": layout.line_height,
+                                   "end_page": self.page, "last_page_gap": max(0, self.y - BOTTOM)}
         self.y -= 24
 
     def build(self):
@@ -554,15 +624,18 @@ def main():
     entries = load_entries()
     locations, pages, _ = Book(io.BytesIO(), entries).build()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    final_locations, final_pages, audit = Book(str(args.output), entries, locations).build()
+    book = Book(str(args.output), entries, locations)
+    final_locations, final_pages, audit = book.build()
     assert (locations, pages) == (final_locations, final_pages)
     manifest = {
         "pages": pages, "font_size": CODE_SIZE, "line_height": LEADING,
+        "font_size_range": [MIN_CODE_SIZE, MAX_CODE_SIZE],
         "fonts": {name: pdfmetrics.getFont(name).face.name.decode("ascii")
                   for name in ("Code", "Chinese", "Latin", "Math", "Heading", "HeadingBold")},
         "page_size": [PAGE_W, PAGE_H],
         "entries": [{"path": entry.path, "title": entry.title,
                      "page": locations[entry.path],
+                     **book.layouts[entry.path],
                      "sha256": hashlib.sha256((ROOT / entry.path).read_bytes()).hexdigest()}
                     for entry in entries],
         "rows": audit,
