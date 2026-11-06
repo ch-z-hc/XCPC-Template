@@ -16,6 +16,7 @@ from generate_print import (  # noqa: E402
     BOTTOM, CARD_PAD, CODE_BLUE, CODE_COMMENT, CODE_GREEN,
     CODE_SIZE, CODE_TEXT, CODE_W, LEADING, LEFT, OUTPUT, PAGE_H, PAGE_W, RIGHT,
     MIN_CODE_SIZE, MAX_CODE_SIZE, TITLE_HEIGHT, TOP, card_top, card_bottom, code_lines, load_entries,
+    code_boundaries, page_capacity,
 )
 
 
@@ -159,6 +160,13 @@ def main():
         expected = [line.expandtabs(4) for line in entry.source.splitlines()]
         assert list(restored) == list(range(1, len(expected) + 1))
         assert ["".join(parts) for parts in restored.values()] == expected
+        breaks = [row["line"] - 1 for row, previous in zip(rows[1:], rows)
+                  if row["page"] != previous["page"]]
+        for start, end, function in code_boundaries(entry.source.expandtabs(4), entry.path):
+            limit = page_capacity(TOP, MIN_CODE_SIZE if function else size)
+            if end - start <= limit:
+                assert not any(start < point < end for point in breaks), (
+                    entry.path, "分页拆开了函数或完整语句", start + 1, end, breaks)
     # 检查实际 PDF 的文字层，避免只验证排版清单。
     texts = [page.extract_text() for page in reader.pages]
     assert "目录" in texts[0]

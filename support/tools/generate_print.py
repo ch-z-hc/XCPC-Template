@@ -24,6 +24,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
+from code_boundaries import code_boundaries
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -367,9 +368,19 @@ def card_bottom(size):
     return CARD_PAD + .2 * size
 
 
-def split_rows(rows, top, size):
-    """同一份代码保持字号和行距一致；页末最多提前两行寻找空行。"""
+def page_capacity(top, size, title=False):
+    return math.floor((top - (TITLE_HEIGHT if title else 0) - BOTTOM
+                       - card_top(size) - card_bottom(size)) / (LEADING * size / CODE_SIZE) + 1e-8) + 1
+
+
+def split_rows(rows, top, size, boundaries=()):
+    """能放入单页的函数不拆分；超长函数优先在完整语句之间分页。"""
     leading = LEADING * size / CODE_SIZE
+    full = page_capacity(TOP, size)
+    minimum_full = page_capacity(TOP, MIN_CODE_SIZE)
+    if any(function and full < end - start <= minimum_full for start, end, function in boundaries):
+        return []
+    protected = [(start, end) for start, end, _ in boundaries if end - start <= full]
     chunks, index = [], 0
     y = top - TITLE_HEIGHT
     while index < len(rows):
@@ -385,6 +396,13 @@ def split_rows(rows, top, size):
                           if rows[i][1] == ""]
             if candidates:
                 end = candidates[-1]
+            while True:
+                previous = end
+                for start, stop in protected:
+                    if start < end < stop:
+                        end = min(end, start)
+                if end == previous:
+                    break
         if end <= index or (not chunks and end - index < min(8, len(rows))):
             return []
         chunks.append(end - index)
@@ -405,26 +423,26 @@ def last_page_gap(layout, top):
                - (layout.chunks[-1] - 1) * layout.line_height)
 
 
-def plan_code(rows, top, max_width):
+def plan_code(rows, top, max_width, boundaries=()):
     upper = min(MAX_CODE_SIZE, CODE_SIZE * CODE_W / max_width) if max_width else MAX_CODE_SIZE
     if upper < MIN_CODE_SIZE:
         raise ValueError("源码行在最小字号下仍超宽，需手动换行")
-    normal = split_rows(rows, top, CODE_SIZE)
+    normal = split_rows(rows, top, CODE_SIZE, boundaries)
     if upper >= CODE_SIZE and len(normal) == 1:
         return CodeLayout(CODE_SIZE, LEADING, normal)
-    smallest = split_rows(rows, top, MIN_CODE_SIZE)
+    smallest = split_rows(rows, top, MIN_CODE_SIZE, boundaries)
     if not smallest:
         raise ValueError("当前页不足以容纳代码开头")
     # 先减少页数，再取这些页能容纳的最大字号，使末页尽量接近页底。
     low, high = MIN_CODE_SIZE, upper
     for _ in range(40):
         middle = (low + high) / 2
-        chunks = split_rows(rows, top, middle)
+        chunks = split_rows(rows, top, middle, boundaries)
         if chunks and len(chunks) <= len(smallest):
             low = middle
         else:
             high = middle
-    return CodeLayout(low, LEADING * low / CODE_SIZE, split_rows(rows, top, low))
+    return CodeLayout(low, LEADING * low / CODE_SIZE, split_rows(rows, top, low, boundaries))
 
 
 def start_on_fresh_page(layout, fresh, top):
@@ -542,14 +560,15 @@ class Book:
         source = entry.source.expandtabs(4)
         tokens = code_lines(source, entry.path)
         rows = list(enumerate(source.splitlines(), 1))
+        boundaries = code_boundaries(source, entry.path)
         max_width = max(width(text, CODE_SIZE, code=True) for _, text in rows)
-        smallest = split_rows(rows, self.y, MIN_CODE_SIZE)
+        smallest = split_rows(rows, self.y, MIN_CODE_SIZE, boundaries)
         if not smallest:
             self.next_column()
         try:
-            layout = plan_code(rows, self.y, max_width)
+            layout = plan_code(rows, self.y, max_width, boundaries)
             if self.page_titles and len(layout.chunks) > 1:
-                fresh = plan_code(rows, TOP, max_width)
+                fresh = plan_code(rows, TOP, max_width, boundaries)
                 if start_on_fresh_page(layout, fresh, self.y):
                     self.next_column()
                     layout = fresh
