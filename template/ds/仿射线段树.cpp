@@ -38,6 +38,10 @@ struct AffineSegTree {
     }
 
     void init(const V < ll > &a, ll mod_) {
+        if (&a == &sum || &a == &mul || &a == &add) {
+            V < ll > b = a;
+            init(b, mod_); return;
+        }
         mod = mod_; n = max(0, int(a.size()) - 1);
         sum.assign(4 * n + 5, 0); add = sum;
         mul.assign(4 * n + 5, 1 % mod);

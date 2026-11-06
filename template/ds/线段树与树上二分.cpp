@@ -44,6 +44,10 @@ struct SegTree {
     }
 
     void init(const V < ll > &a) {
+        if (&a == &sum || &a == &mx || &a == &lazy) {
+            V < ll > b = a;
+            init(b); return;
+        }
         n = int(a.size()) - 1;
         sum.assign(4 * n + 5, 0);
         mx.assign(4 * n + 5, 0);

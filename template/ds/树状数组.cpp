@@ -22,6 +22,10 @@ struct Fenwick {
     }
 
     void init(const V < ll > &a) {
+        if (&a == &tr) {
+            V < ll > b = a;
+            init(b); return;
+        }
         init(max(0, int(a.size()) - 1));
         for (int i = 1; i <= n; ++ i) {
             tr[i] += a[i];

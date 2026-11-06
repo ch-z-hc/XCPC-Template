@@ -27,6 +27,10 @@ struct PST {
     }
 
     void build(const V < ll > &a) {
+        if (&a == &val) {
+            V < ll > b = a;
+            build(b); return;
+        }
         int n = int(a.size()) - 1;
         val.assign(a.begin() + 1, a.end());
         sort(val.begin(), val.end());
