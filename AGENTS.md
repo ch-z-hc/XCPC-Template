@@ -89,7 +89,7 @@
 - `support/tools/generate_html.py` 直接复用 PDF 的 `load_entries`、`code_lines` 与配色；页面外观和交互在 `support/pages/`，输出到忽略的 `dist/`。不维护第二份模板或章节目录。
 - 复制内容须与对应源码逐字符一致，保留空白和末尾换行；代码不加行号，不做展示层的中英文空格改写。
 - 保持浅色代码卡片、目录搜索、原生 PDF / OEIS 入口，手机代码只在卡片内横向滚动。修改后运行 `html_book_check.py` 和真实浏览器交互检查，检查桌面及手机。
-- 网页代码字体由 Maple Mono NF CN 生成 WOFF2 子集，并附原 OFL 许可；苹方等系统字体只通过 CSS 调用，不上传分发。
+- HTML 字体按 PDF 分工：标题用苹方 Semibold，界面和文件名用苹方 Regular，目录正文用宋体 / Latin Modern Roman，非代码数学符号用 Latin Modern Math，代码用 Maple Mono NF CN。Maple Mono 与 Latin Modern 生成 WOFF2 子集并附原 OFL / GFL 许可；苹方和宋体通过 CSS `local()` 调用，不上传分发；缺少本机字体时须如实说明回退限制。
 - `Publish book` 工作流在相关源码 push 后更新 HTML，也响应 Release 更新；PDF 仍从最新正式 Release 下载，不因源码 push 自动重新生成。
 
 ## To Do 对应关系

@@ -20,7 +20,9 @@ python support/verify/html_book_check.py --site dist
 python -m http.server 8765 --bind 127.0.0.1 --directory dist
 ```
 
-生成器默认从 `build/pages-font/` 读取字体和许可；CI 从 Maple Mono v7.9 官方发行包取得这两个文件，并验证固定 SHA-256。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
+生成器默认从 `build/pages-font/` 读取 Maple Mono 和许可；CI 从 Maple Mono v7.9 官方发行包取得这两个文件，并验证固定 SHA-256。另需在 `build/pages-text-font/` 放置 `lmroman10-regular.otf`（2.007）、`latinmodern-math.otf`（1.959）和 `GUST-FONT-LICENSE.txt`，可用 `--text-font-dir` 指定目录；CI 的 `Prepare PDF text fonts` 步骤记录下载地址和校验值。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL / GFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
+
+标题、目录和代码分别沿用 PDF 的字体，具体分工见 [字体说明](fonts/README.md)。苹方与宋体调用设备本机字体；未安装时会回退，不宣称所有设备都显示相同字形。在安装这两种字体的环境运行 `html_ui_check.py --check-pdf-fonts`，通过 Chromium 的 Rendered Fonts 核对实际字形来源，不能只检查 CSS 的 `font-family` 字符串。
 
 浏览器检查另需 `python -m pip install playwright==1.58.0` 和 `python -m playwright install chromium`；启动上面的预览服务后运行 `python support/verify/html_ui_check.py --url http://127.0.0.1:8765/`。可通过 `--browser` 使用已有 Chromium。检查覆盖真实剪贴板、备用复制与失败反馈、搜索、前后篇和历史导航、320 / 390 / 768 px 布局、手机目录和禁用 JavaScript 时的阅读。截图保存在 `build/html-preview/`。
 

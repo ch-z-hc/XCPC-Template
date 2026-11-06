@@ -5,6 +5,35 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "PDF Heading";
+  src: local("PingFangSC-Regular"), local("PingFang SC Regular");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "PDF Heading";
+  src: local("PingFangSC-Semibold"), local("PingFang SC Semibold");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "PDF Chinese";
+  src: local("SimSun"), local("宋体");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "PDF Roman";
+  src: url("lmroman10-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0000-21FF, U+2300-2E7F;
+}
+@font-face {
+  font-family: "PDF Math";
+  src: url("latinmodern-math.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+2200-22FF;
+}
 :root {
   color-scheme: light;
   --ink: #25272b;
@@ -15,7 +44,8 @@
   --code-blue: {{CODE_BLUE}};
   --code-green: {{CODE_GREEN}};
   --code-comment: {{CODE_COMMENT}};
-  --ui-font: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --ui-font: "PDF Heading", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --text-font: "PDF Roman", "PDF Math", "PDF Chinese", "SimSun", "Songti SC", serif;
   --top: 58px;
   --sidebar: 278px;
 }
@@ -54,11 +84,11 @@ button, a, input, summary, pre { -webkit-tap-highlight-color: transparent; }
 .toc-group { margin-bottom: 8px; }
 .toc-group summary { display: flex; gap: 10px; align-items: baseline; padding: 9px 6px; font-weight: 600; cursor: pointer; list-style: none; font-size: 13px; }
 .toc-group summary::-webkit-details-marker { display: none; }
-.toc-group summary > span { color: #969aa0; font-size: 11px; min-width: 13px; font-weight: 400; }
+.toc-group summary > span { color: #969aa0; font-size: 11px; min-width: 13px; }
 .toc-group summary::after { content: "›"; color: #92969d; margin-left: auto; transform: rotate(0); }
 .toc-group[open] summary::after { transform: rotate(90deg); }
 .toc-links { padding: 2px 0 7px; }
-.toc-links a { display: flex; align-items: baseline; gap: 9px; padding: 7px 8px; margin: 1px 0; border-radius: 5px; font-size: 12px; line-height: 1.65; color: #666b72; }
+.toc-links a { display: flex; align-items: baseline; gap: 9px; padding: 7px 8px; margin: 1px 0; border-radius: 5px; font: 400 13px/1.65 var(--text-font); color: #666b72; font-variant-ligatures: none; }
 .toc-links a:hover { background: #f0f0f3; color: var(--ink); }
 .toc-links a[aria-current] { background: #e9edf1; color: #3c5870; }
 .entry-number { flex: none; min-width: 28px; font-size: 10px; color: #92969d; font-variant-numeric: tabular-nums; }
@@ -66,7 +96,7 @@ button, a, input, summary, pre { -webkit-tap-highlight-color: transparent; }
 main { margin: var(--top) 0 0 var(--sidebar); padding: 32px; min-width: 0; }
 .paper { max-width: 1040px; min-height: calc(100dvh - var(--top) - 64px); margin: 0 auto; padding: 42px 48px 24px; background: white; box-shadow: 0 2px 12px #25272b06; }
 .chapter-label { color: #8a8e95; font-size: 12px; margin: 0 0 12px; }
-h1 { margin: 0 0 28px; font-size: 28px; line-height: 1.4; letter-spacing: -.5px; font-weight: 600; overflow-wrap: anywhere; }
+h1 { margin: 0 0 28px; font-size: 28px; line-height: 1.4; font-weight: 600; overflow-wrap: anywhere; }
 h1:focus { outline: none; }
 .code-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 14px; background: #f5f5f7; border-bottom: 1px solid #e8e8eb; }
@@ -85,6 +115,7 @@ pre::selection, code::selection, code span::selection { background: #dce5ed; }
 .page-nav { display: flex; justify-content: space-between; gap: 32px; margin: 32px 0 18px; padding-top: 20px; border-top: 1px solid #ececee; }
 .page-nav a { max-width: 48%; display: flex; flex-direction: column; gap: 3px; color: #626c76; font-size: 13px; overflow-wrap: anywhere; }
 .page-nav small { font-size: 10px; color: #a0a3a9; }
+.page-nav a > span { font-family: var(--text-font); font-variant-ligatures: none; }
 .page-nav a:hover { color: #3c5870; }
 #next { margin-left: auto; text-align: right; }
 footer { text-align: center; font-size: 10px; color: #a0a3a9; margin-top: 36px; }

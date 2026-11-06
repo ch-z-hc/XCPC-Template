@@ -88,6 +88,11 @@ def main():
         required = {ord(c) for entry in expected for c in entry.source if not c.isspace()}
         assert not required - set(font.getBestCmap())
     assert "SIL OPEN FONT LICENSE Version 1.1" in (site / "assets/OFL.txt").read_text()
+    assert "LaTeX Project Public License" in (site / "assets/GUST-FONT-LICENSE.txt").read_text()
+    for filename, name in (("lmroman10-regular.woff2", "LMRoman10-Regular"),
+                           ("latinmodern-math.woff2", "LatinModernMath-Regular")):
+        with TTFont(site / "assets" / filename) as font:
+            assert font["name"].getDebugName(6) == name
     print(f"PASS: {len(expected)} HTML entries, exact source text, stable links, font coverage and PDF resources")
 
 

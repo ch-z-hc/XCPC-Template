@@ -37,12 +37,13 @@ def code_html(source, path):
     return "\n".join(lines) + ("\n" if source.endswith("\n") else "")
 
 
-def build_font(source, license_path, target, text):
+def build_font(source, license_path, target, text, filename="maple-mono-nf-cn.woff2",
+               license_name="OFL.txt"):
     with TTFont(source) as font:
         required = {ord(c) for c in text if not c.isspace()}
         missing = required - set(font.getBestCmap())
         if missing:
-            raise ValueError(f"代码字体缺字：{''.join(map(chr, sorted(missing)))}")
+            raise ValueError(f"{source.name} 缺字：{''.join(map(chr, sorted(missing)))}")
         options = subset.Options()
         options.hinting = False
         options.layout_features = []
@@ -50,8 +51,8 @@ def build_font(source, license_path, target, text):
         subsetter.populate(text=text)
         subsetter.subset(font)
         font.flavor = "woff2"
-        font.save(target / "maple-mono-nf-cn.woff2")
-    shutil.copyfile(license_path, target / "OFL.txt")
+        font.save(target / filename)
+    shutil.copyfile(license_path, target / license_name)
 
 
 def main():
@@ -60,6 +61,7 @@ def main():
     parser.add_argument("--code-font", type=Path,
                         default=ROOT / "build/pages-font/MapleMono-NF-CN-Regular.ttf")
     parser.add_argument("--font-license", type=Path, default=ROOT / "build/pages-font/LICENSE.txt")
+    parser.add_argument("--text-font-dir", type=Path, default=ROOT / "build/pages-text-font")
     args = parser.parse_args()
     entries = load_entries()
     toc, articles = [], []
@@ -100,6 +102,14 @@ def main():
     assets.mkdir(exist_ok=True)
     build_font(args.code_font, args.font_license, assets,
                "".join(e.source for e in entries) + "".join(e.title for e in entries))
+    text = "".join(e.title for e in entries) + "".join(c for c, _ in CHAPTERS) + "0123456789. "
+    license_path = args.text_font_dir / "GUST-FONT-LICENSE.txt"
+    build_font(args.text_font_dir / "lmroman10-regular.otf", license_path, assets,
+               "".join(c for c in text if ord(c) < 0x2E80 and not 0x2200 <= ord(c) <= 0x22FF),
+               "lmroman10-regular.woff2", "GUST-FONT-LICENSE.txt")
+    build_font(args.text_font_dir / "latinmodern-math.otf", license_path, assets,
+               "".join(c for c in text if 0x2200 <= ord(c) <= 0x22FF) + "∑∞∈",
+               "latinmodern-math.woff2", "GUST-FONT-LICENSE.txt")
     document = (PAGES / "index.html").read_text()
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     for marker, value in {"<!-- TOC -->": "\n".join(toc),

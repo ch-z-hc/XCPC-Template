@@ -16,6 +16,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8765/XCPC-Template/")
     parser.add_argument("--browser", help="可选的 Chromium 可执行文件")
+    parser.add_argument("--check-pdf-fonts", action="store_true",
+                        help="要求已安装苹方与宋体，核对浏览器实际使用的 PDF 字体")
     parser.add_argument("--screenshots", type=Path, default=ROOT / "build/html-preview")
     args = parser.parse_args()
     args.screenshots.mkdir(parents=True, exist_ok=True)
@@ -59,6 +61,24 @@ def main():
         page.locator("#search").fill("")
         page.locator("#search").dispatch_event("input")
         page.screenshot(path=str(args.screenshots / "desktop.png"), full_page=True)
+        if args.check_pdf_fonts:
+            page.evaluate("document.fonts.ready")
+            session = context.new_cdp_session(page)
+            session.send("DOM.enable")
+            session.send("CSS.enable")
+            root = session.send("DOM.getDocument")["root"]["nodeId"]
+            for selector, names in (
+                ('.entry:not([hidden]) h1', {"PingFangSC-Semibold"}),
+                ('.entry:not([hidden]) .filename', {"PingFangSC-Regular"}),
+                ('a[data-entry="template-ds-树状数组"]', {"SimSun", "LMRoman10-Regular"}),
+                ('.entry:not([hidden]) code', {"MapleMono-NF-CN-Regular"}),
+            ):
+                node = session.send("DOM.querySelector", {"nodeId": root, "selector": selector})["nodeId"]
+                fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node})["fonts"]
+                actual_names = {font["postScriptName"] for font in fonts if font["glyphCount"]}
+                assert names <= actual_names, (selector, actual_names)
+                print(f"PASS: actual rendered fonts {selector}: {sorted(actual_names)}", flush=True)
+            session.detach()
         # Clipboard API 被拒绝时，验证真实的旧接口复制，不只模拟返回成功。
         page.evaluate('() => { navigator.clipboard.writeText = () => Promise.reject(new Error("denied")); }')
         button = page.locator('.entry:not([hidden]) .copy-button')
