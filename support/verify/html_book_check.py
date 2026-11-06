@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 import sys
@@ -81,6 +83,31 @@ def main():
             continue
         assert not parsed.path.startswith("/"), url
         assert (site / unquote(parsed.path)).exists(), url
+    snapshot = json.loads((ROOT / "support/pages/pdf-labels.json").read_text())
+    assert {face["name"] for face in snapshot["fonts"].values()} == {
+        "PingFangSC-Regular", "PingFangSC-Semibold", "SimSun",
+        "LMRoman10-Regular", "LatinModernMath-Regular"}
+    label_resources = {urlsplit(url).path for url in book.resources if url.startswith("assets/labels/")}
+    assert len(label_resources) == 1
+    sprite_path = site / label_resources.pop()
+    sprite = sprite_path.read_text()
+    assert hashlib.sha256(sprite.encode()).hexdigest().startswith(sprite_path.stem)
+    for key, record in snapshot["labels"].items():
+        svg = record["svg"]
+        assert svg.split(">", 1)[1].removesuffix("</svg>").replace('id="label"', f'id="{key}"') in sprite
+        assert "<path " in svg and "<text" not in svg
+    assert "local(" not in (site / "assets/book.css").read_text()
+    for url in book.resources:
+        path = site / urlsplit(url).path
+        match = re.search(r"-([0-9a-f]{16})\.(css|js|woff2)$", path.name)
+        if match:
+            assert hashlib.sha256(path.read_bytes()).hexdigest().startswith(match[1])
+    manifest = json.loads((site / "pdf/manifest.json").read_text())
+    for name, record in manifest.items():
+        data = (site / record["file"]).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == record["sha256"]
+        assert data == (site / name).read_bytes()
+        assert record["file"] in viewer.resources
     for name in ("template.pdf", "oeis-2up.pdf"):
         with (site / name).open("rb") as file:
             assert file.read(5) == b"%PDF-", name

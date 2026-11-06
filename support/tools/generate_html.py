@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -11,6 +12,7 @@ from urllib.parse import quote
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
+from pdf_labels import PDFLabels
 
 from generate_print import (
     ROOT, CHAPTERS, CODE_TEXT, CODE_BLUE, CODE_GREEN, CODE_COMMENT,
@@ -62,8 +64,23 @@ def main():
                         default=ROOT / "build/pages-font/MapleMono-NF-CN-Regular.ttf")
     parser.add_argument("--font-license", type=Path, default=ROOT / "build/pages-font/LICENSE.txt")
     parser.add_argument("--text-font-dir", type=Path, default=ROOT / "build/pages-text-font")
+    parser.add_argument("--refresh-labels", action="store_true", help="用 PDF 原字体更新完整文字的 SVG 快照")
+    parser.add_argument("--heading-font", type=Path)
+    parser.add_argument("--heading-bold-font", type=Path)
+    parser.add_argument("--chinese-font", type=Path)
     args = parser.parse_args()
     entries = load_entries()
+    assets = args.output / "assets"
+    assets.mkdir(parents=True, exist_ok=True)
+    font_paths = None
+    if args.refresh_labels:
+        if not all((args.heading_font, args.heading_bold_font, args.chinese_font)):
+            parser.error("--refresh-labels 需指定 --heading-font、--heading-bold-font、--chinese-font")
+        font_paths = {"regular": args.heading_font, "bold": args.heading_bold_font,
+                      "chinese": args.chinese_font, "latin": args.text_font_dir / "lmroman10-regular.otf",
+                      "math": args.text_font_dir / "latinmodern-math.otf"}
+    labels = PDFLabels(PAGES / "pdf-labels.json", assets / "labels", font_paths)
+    label = labels.render
     toc, articles = [], []
     for chapter_number, (chapter, _) in enumerate(CHAPTERS, 1):
         links = []
@@ -74,34 +91,36 @@ def main():
             title = html.escape(entry.title)
             links.append(
                 f'<a href="#{quote(key, safe="")}" data-entry="{html.escape(key)}">'
-                f'<span class="entry-number">{entry.number}</span><span>{title}</span></a>')
+                f'<span class="entry-number">{label(entry.number, "body")}</span>'
+                f'<span>{label(entry.title, "body", 13)}</span></a>')
         toc.append(
             f'<details class="toc-group"{" open" if chapter_number == 1 else ""}>'
-            f'<summary><span>{chapter_number}</span>{html.escape(chapter)}</summary>'
+            f'<summary><span>{label(str(chapter_number), "bold")}</span>{label(chapter, "bold")}</summary>'
             f'<div class="toc-links">{"".join(links)}</div></details>')
     for index, entry in enumerate(entries):
         key = entry_id(entry)
         title = html.escape(entry.title)
-        filename = html.escape(Path(entry.path).name)
         source_hash = hashlib.sha256(entry.source.encode()).hexdigest()
         articles.append(
             f'<article class="entry" id="{html.escape(key)}" '
             f'data-path="{html.escape(entry.path)}" data-title="{title}" '
             f'data-number="{entry.number}" data-sha256="{source_hash}"'
             f'{" hidden" if index else ""}>'
-            f'<p class="chapter-label">{entry.number.split(".")[0]} · {html.escape(entry.chapter)}</p>'
-            f'<h1 tabindex="-1">{entry.number} {title}</h1>'
+            f'<p class="chapter-label">{label(entry.number.split(".")[0] + " · " + entry.chapter)}</p>'
+            f'<h1 tabindex="-1">{label(entry.number + " " + entry.title, "bold", 0, "label-wide")}'
+            f'{label(entry.number + " " + entry.title, "bold", 12, "label-narrow")}</h1>'
+            f'<template class="nav-label">{label(entry.number + " " + entry.title, "body", 13)}</template>'
             f'<div class="code-card"><div class="card-header">'
-            f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>{filename}</span>'
+            f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>'
+            f'{label(Path(entry.path).name, "regular", 0, "label-wide")}'
+            f'{label(Path(entry.path).name, "regular", 13, "label-narrow")}</span>'
             f'<button class="copy-button" type="button" aria-label="复制代码：{title}">'
-            f'{COPY_ICON}<span>复制</span></button></div>'
+            f'{COPY_ICON}<span class="copy-text">{label("复制")}</span></button></div>'
             f'<pre tabindex="0" aria-label="源码：{title}"><code>{code_html(entry.source, entry.path)}</code></pre>'
             f'</div></article>')
-    args.output.mkdir(parents=True, exist_ok=True)
-    assets = args.output / "assets"
-    assets.mkdir(exist_ok=True)
     build_font(args.code_font, args.font_license, assets,
-               "".join(e.source for e in entries) + "".join(e.title for e in entries))
+               "".join(e.source for e in entries) + "".join(e.title for e in entries)
+               + (PAGES / "index.html").read_text() + (PAGES / "book.js").read_text())
     text = "".join(e.title for e in entries) + "".join(c for c, _ in CHAPTERS) + "0123456789. "
     license_path = args.text_font_dir / "GUST-FONT-LICENSE.txt"
     build_font(args.text_font_dir / "lmroman10-regular.otf", license_path, assets,
@@ -114,16 +133,31 @@ def main():
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     for marker, value in {"<!-- TOC -->": "\n".join(toc),
                           "<!-- ENTRIES -->": "\n".join(articles),
-                          "{{COUNT}}": str(len(entries)), "{{REVISION}}": revision}.items():
+                          "{{COUNT}}": label(f"{len(entries)} 个条目"), "{{REVISION}}": revision}.items():
         assert document.count(marker) == 1, marker
         document = document.replace(marker, value)
-    (args.output / "index.html").write_text(document, encoding="utf-8")
+    document = re.sub(r"\{\{L:(regular|bold|body):([^}]+)}}", lambda m: label(m[2], m[1]), document)
+    document = document.replace("{{LABEL_SPRITE}}", labels.finish())
     css = (PAGES / "book.css").read_text()
     for name, color in {"CODE_TEXT": CODE_TEXT, "CODE_BLUE": CODE_BLUE,
                         "CODE_GREEN": CODE_GREEN, "CODE_COMMENT": CODE_COMMENT}.items():
         css = css.replace("{{" + name + "}}", color)
+    for path in assets.glob("*.woff2"):
+        if re.search(r"-[0-9a-f]{16}\.woff2$", path.name):
+            continue
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+        versioned = f"{path.stem}-{digest}.woff2"
+        shutil.copyfile(path, assets / versioned)
+        css = css.replace(path.name, versioned)
+        document = document.replace(path.name, versioned)
     (assets / "book.css").write_text(css, encoding="utf-8")
     shutil.copyfile(PAGES / "book.js", assets / "book.js")
+    for name in ("book.css", "book.js"):
+        data = (assets / name).read_bytes()
+        versioned = f"{Path(name).stem}-{hashlib.sha256(data).hexdigest()[:16]}{Path(name).suffix}"
+        (assets / versioned).write_bytes(data)
+        document = document.replace("assets/" + name, "assets/" + versioned)
+    (args.output / "index.html").write_text(document, encoding="utf-8")
     shutil.copyfile(PAGES / "pdf.html", args.output / "pdf.html")
     (args.output / ".nojekyll").touch()
     print(f"PASS: {len(entries)} HTML entries generated from PDF sources: {args.output}")

@@ -74,7 +74,7 @@
       anchor.hidden = !entry;
       if (entry) {
         anchor.href = "#" + encodeURIComponent(entry.id);
-        anchor.querySelector("span").textContent = `${entry.dataset.number} ${entry.dataset.title}`;
+        anchor.querySelector(":scope > span").replaceChildren(entry.querySelector(".nav-label").content.cloneNode(true));
       }
     }
     status.textContent = "";
@@ -99,6 +99,10 @@
     }
   }
 
+  function copyLabel(button, name) {
+    button.querySelector(".copy-text").replaceChildren(document.getElementById("label-" + name).content.cloneNode(true));
+  }
+
   document.addEventListener("click", async event => {
     const button = event.target.closest(".copy-button");
     if (!button) return;
@@ -113,19 +117,19 @@
         legacyCopy(code.textContent);
       }
       button.classList.add("copied");
-      button.querySelector("span").textContent = "已复制";
+      copyLabel(button, "copied");
       status.textContent = `已复制：${entry.dataset.title}`;
     } catch {
       const range = document.createRange();
       range.selectNodeContents(code);
       getSelection().removeAllRanges();
       getSelection().addRange(range);
-      button.querySelector("span").textContent = "请手动复制";
+      copyLabel(button, "manual");
       status.textContent = "自动复制失败，代码已选中，请手动复制。";
     } finally {
       setTimeout(() => {
         button.classList.remove("copied");
-        button.querySelector("span").textContent = "复制";
+        copyLabel(button, "copy");
         button.disabled = false;
       }, 1800);
     }

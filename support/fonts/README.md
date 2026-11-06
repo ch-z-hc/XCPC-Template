@@ -4,7 +4,18 @@
 
 HTML 按 PDF 的字体分工排版：标题使用苹方简体 Semibold，代码卡片标题和界面文字使用苹方简体 Regular；目录正文使用宋体与 Latin Modern Roman，非代码数学符号使用 Latin Modern Math；代码及中文注释使用同一 Maple Mono NF CN Regular。Maple Mono、Latin Modern Roman 2.007 与 Latin Modern Math 1.959 构建为 WOFF2 子集，附 OFL / GFL 许可，随 Pages 产物发布。
 
-苹方与宋体通过 CSS `local()` 调用设备已安装的字体，不上传分发字体文件。设备缺少对应字体时会回退，因此跨设备无法保证这两类文字的字形完全一致；要使用 PDF 的原字体，设备需安装相应字体。HTML 产物与字体子集位于忽略的 `dist/`，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
+HTML 的目录、标题、文件名及静态界面标签按上述字体生成完整文字的 SVG 轮廓，浏览器无需安装苹方或宋体；同时保留真实文本供搜索与辅助技术读取。代码仍是原生文本，可完整复制。苹方与宋体字体文件不随网页分发。轮廓快照保存在 `support/pages/pdf-labels.json`，记录原字体名称与 SHA-256；CI 直接使用快照，遇到新标签会报错，不能静默回退字体。
+
+修改章节标题、文件名或界面标签后，在拥有与 PDF 相同字体的环境更新快照：
+
+```bash
+python support/tools/generate_html.py --refresh-labels \
+  --heading-font /path/to/PingFangSC-Regular.otf \
+  --heading-bold-font /path/to/PingFangSC-Semibold.otf \
+  --chinese-font /path/to/simsun.ttc
+```
+
+这三个输入使用独立字重文件或所需字体位于索引 0 的集合；Latin Modern 与 Maple Mono 路径沿用常规 HTML 构建参数。提交更新后的快照，不提交原字体文件。HTML 产物与字体子集位于忽略的 `dist/`，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
 
 | 用途 | 字体 | 默认文件 |
 | --- | --- | --- |

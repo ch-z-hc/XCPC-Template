@@ -90,7 +90,9 @@ jobs:
             test -s "dist/$file"
           done
       - name: Check HTML and source consistency
-        run: python support/verify/html_book_check.py --site dist
+        run: |
+          python support/tools/version_pages.py --site dist
+          python support/verify/html_book_check.py --site dist
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist

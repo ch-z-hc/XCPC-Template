@@ -40,8 +40,8 @@
   </a>
   <nav aria-label="阅读方式">
     <a href="./">HTML</a>
-    <a href="template.pdf" data-tab="template" aria-current="page">PDF</a>
-    <a href="oeis-2up.pdf" data-tab="oeis">OEIS</a>
+    <a href="template.pdf" data-tab="template" data-filename="template.pdf" aria-current="page">PDF</a>
+    <a href="oeis-2up.pdf" data-tab="oeis" data-filename="oeis-2up.pdf">OEIS</a>
   </nav>
   <a class="file" href="template.pdf" target="_blank" rel="noopener">template.pdf</a>
 </header>
@@ -54,7 +54,7 @@
     const tab = tabs.find(t => "#" + t.dataset.tab === location.hash) || tabs[0];
     tabs.forEach(t => t === tab ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"));
     file.href = tab.getAttribute("href");
-    file.textContent = tab.getAttribute("href");
+    file.textContent = tab.dataset.filename;
     viewer.title = tab.textContent;
     const source = tab.getAttribute("href") + "#navpanes=0";
     if (viewer.getAttribute("src") !== source) viewer.src = source;

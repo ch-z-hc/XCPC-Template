@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import os
+import re
+import subprocess
 from pathlib import Path
 import sys
 
@@ -16,15 +19,24 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8765/XCPC-Template/")
     parser.add_argument("--browser", help="可选的 Chromium 可执行文件")
-    parser.add_argument("--check-pdf-fonts", action="store_true",
-                        help="要求已安装苹方与宋体，核对浏览器实际使用的 PDF 字体")
+    parser.add_argument("--isolated-fonts", action="store_true",
+                        help="Linux 下仅允许 DejaVu 系统字体，验证页面不依赖本机 PDF 字体")
     parser.add_argument("--screenshots", type=Path, default=ROOT / "build/html-preview")
     args = parser.parse_args()
     args.screenshots.mkdir(parents=True, exist_ok=True)
     expected = load_entries()
     errors = []
+    env = dict(os.environ)
+    if args.isolated_fonts:
+        config = args.screenshots.resolve() / "fonts.conf"
+        config.write_text('<fontconfig><dir>/usr/share/fonts/truetype/dejavu</dir>'
+                          f'<cachedir>{args.screenshots.resolve()}/font-cache</cachedir></fontconfig>')
+        env["FONTCONFIG_FILE"] = str(config)
+        for name in ("PingFang SC", "SimSun"):
+            actual = subprocess.check_output(["fc-match", "-f", "%{family}", name], env=env, text=True)
+            assert "DejaVu" in actual, actual
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, executable_path=args.browser)
+        browser = p.chromium.launch(headless=True, executable_path=args.browser, env=env)
         context = browser.new_context(viewport={"width": 1440, "height": 1000},
                                       permissions=["clipboard-read", "clipboard-write"])
         context.set_default_timeout(60000)
@@ -61,24 +73,27 @@ def main():
         page.locator("#search").fill("")
         page.locator("#search").dispatch_event("input")
         page.screenshot(path=str(args.screenshots / "desktop.png"), full_page=True)
-        if args.check_pdf_fonts:
+        if args.isolated_fonts:
             page.evaluate("document.fonts.ready")
             session = context.new_cdp_session(page)
             session.send("DOM.enable")
             session.send("CSS.enable")
             root = session.send("DOM.getDocument")["root"]["nodeId"]
             for selector, names in (
-                ('.entry:not([hidden]) h1', {"PingFangSC-Semibold"}),
-                ('.entry:not([hidden]) .filename', {"PingFangSC-Regular"}),
-                ('a[data-entry="template-ds-树状数组"]', {"SimSun", "LMRoman10-Regular"}),
                 ('.entry:not([hidden]) code', {"MapleMono-NF-CN-Regular"}),
             ):
                 node = session.send("DOM.querySelector", {"nodeId": root, "selector": selector})["nodeId"]
                 fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node})["fonts"]
                 actual_names = {font["postScriptName"] for font in fonts if font["glyphCount"]}
                 assert names <= actual_names, (selector, actual_names)
+                assert all(font["isCustomFont"] for font in fonts if font["glyphCount"])
                 print(f"PASS: actual rendered fonts {selector}: {sorted(actual_names)}", flush=True)
             session.detach()
+            for selector in ('.entry:not([hidden]) h1', '.toc-heading h2',
+                             'a[data-entry="template-ds-树状数组"]'):
+                label = page.locator(selector).locator('.pdf-label:visible').first
+                assert label.locator('svg use').evaluate('el => el.getBBox().width > 0')
+            print("PASS: PDF vector labels render without installed PDF fonts", flush=True)
         # Clipboard API 被拒绝时，验证真实的旧接口复制，不只模拟返回成功。
         page.evaluate('() => { navigator.clipboard.writeText = () => Promise.reject(new Error("denied")); }')
         button = page.locator('.entry:not([hidden]) .copy-button')
@@ -104,7 +119,8 @@ def main():
         expect(page.locator('.entry:not([hidden])')).to_have_attribute("data-path", "template/ds/树状数组.cpp")
         page.goto(args.url + "#oeis")
         page.wait_for_url("**/pdf.html#oeis", wait_until="domcontentloaded", timeout=60000)
-        expect(page.locator("iframe")).to_have_attribute("src", "oeis-2up.pdf#navpanes=0")
+        expect(page.locator("iframe")).to_have_attribute("src", re.compile(r"pdf/oeis-2up-[0-9a-f]{16}\.pdf#navpanes=0"))
+        expect(page.locator(".file")).to_have_text("oeis-2up.pdf")
         page.locator('nav a[href="./"]').click()
         expect(page.locator(".entry:not([hidden])")).to_have_count(1)
         for width in (320, 390, 768):
