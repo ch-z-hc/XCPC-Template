@@ -2,12 +2,29 @@
 
 ## 在线阅读与下载
 
-- [PDF 在线阅读](https://ch-z-hc.github.io/XCPC-Template/)：算法模板册和 OEIS 2 合 1 打印版。
+- [HTML 在线阅读](https://ch-z-hc.github.io/XCPC-Template/)：目录搜索、单篇阅读与一键复制代码。
+- [PDF 在线阅读](https://ch-z-hc.github.io/XCPC-Template/pdf.html)：算法模板册和 OEIS 2 合 1 打印版。
 - [最新 Release](https://github.com/ch-z-hc/XCPC-Template/releases/latest)：下载 `template.pdf`、`oeis-2up.pdf`。
 
-PDF 作为 Release 附件发布，不提交到 Git。网页提供 Template 和 OEIS 两项切换，使用浏览器原生 PDF 阅读器；发布或编辑 Release 后自动同步最新正式版，也可在 Actions 中手动运行 `Publish PDFs`。只推送源码不会重新生成或更新线上 PDF。
+HTML 直接从 `main` 分支源码生成，与 PDF 共用章节顺序、词法配色和代码内容。页面保留 HTML / PDF / OEIS 三个入口；PDF 作为 Release 附件发布，不提交到 Git，使用浏览器原生阅读器。相关源码 push、发布或编辑 Release 时触发 `Publish book`，也可手动运行。HTML 使用最新源码，PDF 使用最新正式 Release 附件；源码 push 不会重新生成 PDF，两者版本可能不同。
 
 更新时先生成、校验 PDF，并提交和推送对应源码，再创建新标签的草稿 Release，上传根目录的 `template.pdf`、`oeis-2up.pdf` 后发布。OEIS 原版仅作为本地生成缓存，不发布。
+
+### HTML 本地构建与检查
+
+```text
+python -m pip install -r requirements-pages.txt
+python support/tools/generate_html.py --code-font /path/to/MapleMono-NF-CN-Regular.ttf --font-license /path/to/LICENSE.txt
+gh release download --repo ch-z-hc/XCPC-Template --dir dist --pattern template.pdf --pattern oeis-2up.pdf
+python support/verify/html_book_check.py --site dist
+python -m http.server 8765 --bind 127.0.0.1 --directory dist
+```
+
+生成器默认从 `build/pages-font/` 读取字体和许可；CI 从 Maple Mono v7.9 官方发行包取得这两个文件，并验证固定 SHA-256。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
+
+浏览器检查另需 `python -m pip install playwright==1.58.0` 和 `python -m playwright install chromium`；启动上面的预览服务后运行 `python support/verify/html_ui_check.py --url http://127.0.0.1:8765/`。可通过 `--browser` 使用已有 Chromium。检查覆盖真实剪贴板、备用复制与失败反馈、搜索、前后篇和历史导航、320 / 390 / 768 px 布局、手机目录和禁用 JavaScript 时的阅读。截图保存在 `build/html-preview/`。
+
+HTML 为每个文件保留稳定锚点；`/` 或 `Ctrl/Cmd + K` 聚焦搜索。代码可手动选中或点击复制，复制保留原始空格、缩进和末尾换行。原首页的 `#template` / `#oeis` 链接会转到相应 PDF 阅读器。
 
 ## 目录结构
 

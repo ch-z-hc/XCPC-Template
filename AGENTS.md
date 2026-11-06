@@ -81,7 +81,15 @@
 - 版面只保留目录、算法标题、必要说明、代码和简洁页眉页码；阅读顺序、生成方式和打印设置写在 `support/PROJECT.md`，不印入模板册。
 - 目录标题和顺序在生成脚本的 `CHAPTERS` 中维护；接口索引保存在 `support/PROJECT.md`，适用条件、复杂度和易错点保留在源码注释中。
 - 新增模板时同步维护接口索引和打印目录，运行 `support/verify/print_book_check.py` 检查完整性，并渲染 PDF 检查裁切、乱码和分页。
-- 不重新引入 MkDocs 或其他文档站；对拍说明保存在 `support/tools/stress/README.md`。
+- 不引入 MkDocs；HTML 阅读页按下节维护，对拍说明保存在 `support/tools/stress/README.md`。
+
+## HTML 阅读页
+
+- `support/tools/generate_html.py` 直接复用 PDF 的 `load_entries`、`code_lines` 与配色；页面外观和交互在 `support/pages/`，输出到忽略的 `dist/`。不维护第二份模板或章节目录。
+- 复制内容须与对应源码逐字符一致，保留空白和末尾换行；代码不加行号，不做展示层的中英文空格改写。
+- 保持浅色代码卡片、目录搜索、原生 PDF / OEIS 入口，手机代码只在卡片内横向滚动。修改后运行 `html_book_check.py` 和真实浏览器交互检查，检查桌面及手机。
+- 网页代码字体由 Maple Mono NF CN 生成 WOFF2 子集，并附原 OFL 许可；苹方等系统字体只通过 CSS 调用，不上传分发。
+- `Publish book` 工作流在相关源码 push 后更新 HTML，也响应 Release 更新；PDF 仍从最新正式 Release 下载，不因源码 push 自动重新生成。
 
 ## To Do 对应关系
 

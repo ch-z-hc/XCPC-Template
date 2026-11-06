@@ -1,0 +1,95 @@
+"""核对 HTML 全部代码、目录、字体和站内资源，不依赖截图判断内容完整性。"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+from html.parser import HTMLParser
+from pathlib import Path
+import sys
+from urllib.parse import unquote, urlsplit
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "support/tools"))
+from generate_html import code_html, entry_id, load_entries
+from fontTools.ttLib import TTFont
+
+
+class BookParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.entries, self.links, self.resources = [], [], []
+        self.current = None
+        self.in_code = False
+        self.copies = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "article":
+            self.current = {**attrs, "source": ""}
+            self.entries.append(self.current)
+        if tag == "code":
+            self.in_code = True
+        if tag == "a" and "data-entry" in attrs:
+            self.links.append(attrs)
+        if tag == "button" and attrs.get("class") == "copy-button":
+            self.copies += 1
+        for key in ("href", "src"):
+            if key in attrs:
+                self.resources.append(attrs[key])
+
+    def handle_endtag(self, tag):
+        if tag == "code":
+            self.in_code = False
+        if tag == "article":
+            self.current = None
+
+    def handle_data(self, text):
+        if self.in_code:
+            self.current["source"] += text
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--site", type=Path, default=ROOT / "dist")
+    args = parser.parse_args()
+    site = args.site.resolve()
+    document = (site / "index.html").read_text(encoding="utf-8")
+    book = BookParser()
+    book.feed(document)
+    expected = load_entries()
+    assert len(book.entries) == len(book.links) == book.copies == len(expected)
+    assert len({entry["id"] for entry in book.entries}) == len(expected)
+    for entry, link, original in zip(book.entries, book.links, expected):
+        assert entry["id"] == link["data-entry"] == entry_id(original)
+        assert unquote(urlsplit(link["href"]).fragment) == entry["id"]
+        assert entry["data-path"] == original.path
+        assert entry["data-title"] == original.title
+        assert entry["data-number"] == original.number
+        assert entry["source"] == original.source, original.path
+        assert entry["data-sha256"] == hashlib.sha256(original.source.encode()).hexdigest()
+    sample = '\n\t// 中文 <>&\nconst char *s = "</code><script>alert(1)</script>";\n'
+    escaped = code_html(sample, "sample.cpp")
+    assert "<script>" not in escaped and "</code>" not in escaped
+    probe = BookParser()
+    probe.feed(f'<article><pre><code>{escaped}</code></pre></article>')
+    assert probe.entries[0]["source"] == sample
+    viewer = BookParser()
+    viewer.feed((site / "pdf.html").read_text())
+    for url in book.resources + viewer.resources:
+        parsed = urlsplit(url)
+        if parsed.scheme or parsed.netloc or not parsed.path:
+            continue
+        assert not parsed.path.startswith("/"), url
+        assert (site / unquote(parsed.path)).exists(), url
+    for name in ("template.pdf", "oeis-2up.pdf"):
+        with (site / name).open("rb") as file:
+            assert file.read(5) == b"%PDF-", name
+    with TTFont(site / "assets/maple-mono-nf-cn.woff2") as font:
+        required = {ord(c) for entry in expected for c in entry.source if not c.isspace()}
+        assert not required - set(font.getBestCmap())
+    assert "SIL OPEN FONT LICENSE Version 1.1" in (site / "assets/OFL.txt").read_text()
+    print(f"PASS: {len(expected)} HTML entries, exact source text, stable links, font coverage and PDF resources")
+
+
+if __name__ == "__main__":
+    main()
