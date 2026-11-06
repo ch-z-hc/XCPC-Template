@@ -12,7 +12,7 @@ using namespace std;
 // checkConvexHull 为 O(n)，只判断简单多边形的逆时针凸性，不检测自交。
 
 V < P > convexHull(V < P > ps) {
-    // 严格凸包，不保留边上的中间点。
+    // 求凸包
     sort(ps.begin(), ps.end());
     ps.erase(unique(ps.begin(), ps.end(), [](P a, P b) {
         return a.x == b.x && a.y == b.y;
@@ -33,7 +33,7 @@ V < P > convexHull(V < P > ps) {
 
 
 V < P > convexHullNonStrict(V < P > ps) {
-    // 凸包，保留边上的点。
+    // 求凸包（边界上的点也在凸包内）
     sort(ps.begin(), ps.end());
     ps.erase(unique(ps.begin(), ps.end(), [](P a, P b) {
         return a.x == b.x && a.y == b.y;
@@ -53,7 +53,9 @@ V < P > convexHullNonStrict(V < P > ps) {
 }
 
 bool checkConvexHull(V < P > p) {
-    // 判断简单多边形是否逆时针凸，允许共线边界点。
+    // 输入须为简单多边形；判断是否为逆时针凸多边形，允许共线边界点。
+    // 注意：不可通过再跑一次凸包判断点数是否相同
+    // 因为点数相同 不能代表是凸包的连接方式
     int n = p.size();
     for (int i = 0; i < n; ++ i) {
         int pre = i - 1;
@@ -67,7 +69,7 @@ bool checkConvexHull(V < P > p) {
 }
 
 db convexDiameter(V < P > ps) {
-    // 旋转卡壳求凸包直径。
+    // 旋转卡壳求 凸包直径
     int n = ps.size();
     if (n <= 1) return 0;
     db s = 0;
@@ -90,7 +92,7 @@ db convexDiameter(V < P > ps) {
 }
 
 V < P > MincowskySum(V < P > p, V < P > q) {
-    // p、q 为凸包，顺 / 逆时针均可。
+    // p, q 为两个凸包，顺 / 逆时针均可，O(n + m) 求闵可夫斯基和
     // 任一输入为空集时，和集也为空。
     if (p.empty() || q.empty()) return {};
     auto normalize = [](V < P > & ps) {

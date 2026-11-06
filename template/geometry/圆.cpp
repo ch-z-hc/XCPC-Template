@@ -15,11 +15,12 @@ struct Circle {
     bool contains(P p) const { return p.distTo(o) <= r + EPS; }
 };
 
+// 下列圆相关操作均 O(1)。circumcircle 三点共线时返回 false。
+// 成功时返回 true，将外接圆写入 ans；失败时不要使用 ans。
 Circle diameter_circle(P a, P b) {
     return {(a + b) / 2, a.distTo(b) / 2};
 }
 
-// 三点共线返回 false，否则将外接圆写入 ans 并返回 true。
 bool circumcircle(P a, P b, P c, Circle &ans) {
     P u = b - a, v = c - a;
     db d = 2 * u.det(v);

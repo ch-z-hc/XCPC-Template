@@ -56,14 +56,14 @@ ostream & operator << (ostream &out, const P &A) {
     return out;
 }
 
-// 夹角与极角比较均 O(1)；排序直接比较叉积，不用 EPS。
+// 向量夹角与极角排序，O(1)；排序使用精确叉积，不用 EPS 比较角度。
 db rad(P p1, P p2) {
-    // 从 p1 到 p2 的有向夹角，逆时针为正。
+    // 求向量 p1 p2 的角度（逆时针为正，顺时针为负，范围 (- pi, pi]）
     return atan2l(p1.det(p2), p1.dot(p2));
 }
 
 bool polar_cmpX(P a, P b) {
-    // 从 X 轴正半轴起逆时针排序，零向量排最前。
+    // 极角排序 X 轴正半轴（包含）开始逆时针转
     bool za = a.x == 0 && a.y == 0, zb = b.x == 0 && b.y == 0;
     if (za || zb) return za && ! zb;
     if (a.quadX() != b.quadX())
@@ -72,7 +72,7 @@ bool polar_cmpX(P a, P b) {
 }
 
 bool polar_cmpY(P a, P b) {
-    // 从 Y 轴负半轴之后起逆时针排序，该半轴排最后；零向量排最前。
+    // 极角排序 Y 轴负半轴（不包含）开始逆时针转
     bool za = a.x == 0 && a.y == 0, zb = b.x == 0 && b.y == 0;
     if (za || zb) return za && ! zb;
     if (a.quadY() != b.quadY())

@@ -5,14 +5,14 @@
 
 using namespace std;
 
-// 独立三维凸包，使用 P3，无需二维基础定义。
+// 独立三维片段，不修改 点与向量.cpp 的 P / EPS；无模数。
 // 增量凸包最坏 O(n² log n) 时间、O(n) 空间；面积 / 体积 O(n)。
 // build(ps, eps) 保留输入顺序；p 和三角面 faces 均为 0-based。
 // dim 为 -1 / 0 / 1 / 2 / 3：空 / 点 / 线 / 面 / 体。
 // dim < 3 时 faces 为空，area / volume 均返回 0，不计算平面凸包面积。
 // 支持重复点、共面面片；不扰动输入。eps 是距离容差，默认 1e-9。
-// 坐标须有限，非零点线面距离应明显大于 eps 和舍入误差。
-// 大坐标或近退化数据需缩放并调整 eps，浮点判定不保证精确。
+// 适用：有限坐标、适中尺度，非零点线面距离应明显大于 eps 和舍入误差。
+// 近退化或大坐标数据须缩放并调整 eps；此浮点实现不保证精确谓词。
 
 struct P3 {
     db x = 0, y = 0, z = 0;
@@ -105,5 +105,5 @@ struct Hull3D {
     }
 };
 
-// 用法：Hull3D hull; hull.build(ps); hull.area(); hull.volume();
+// Hull3D hull; hull.build(ps); hull.area(); hull.volume();
 // hull.faces 中每个三角面的顶点按外法向排列。

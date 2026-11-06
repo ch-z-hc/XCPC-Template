@@ -6,10 +6,12 @@
 using namespace std;
 
 // 先复制本章的“点与向量”“直线与线段”“圆”。
-// 有限坐标、非负半径。
+// 有限坐标、非负半径，无模数。
 // 多圆面积并 / 周长并，O(n² log n) 时间、O(n) 额外空间。
 // circle_union(cs) 返回 {面积, 周长}；空集、零半径圆贡献为 0。
-// 相同圆只计一次；积分未被覆盖的圆弧，周长含洞的边界。
+// 相同圆只计一次，支持包含、内外相切、分离和有洞的圆并。
+// 只积分未被覆盖的圆弧，周长包含洞的边界；不把相切看作有长覆盖。
+// 包含判定不额外加 EPS，避免误删近乎重合的小圆；acos 参数截断。
 // 适中尺度浮点数据使用 long double；极近退化不保证精确拓扑。
 
 pair < db, db > circle_union(const V < Circle > &cs) {
@@ -33,7 +35,6 @@ pair < db, db > circle_union(const V < Circle > &cs) {
                 if (j < i) { hidden = 1; break; }
                 continue;
             }
-            // 包含判定不加 EPS，避免误删近乎重合的小圆。
             if (d + a.r <= b.r) { hidden = 1; break; }
             if (d >= a.r + b.r || d + b.r <= a.r) continue;
             db mid = atan2l(v.y, v.x);
@@ -67,4 +68,4 @@ pair < db, db > circle_union(const V < Circle > &cs) {
     return {max(0.L, area), perimeter};
 }
 
-// 用法：auto [area, perimeter] = circle_union(cs);
+// auto [area, perimeter] = circle_union(cs);

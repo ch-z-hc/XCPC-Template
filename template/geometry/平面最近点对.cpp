@@ -53,4 +53,4 @@ struct ClosestPair {
     }
 };
 
-// 用法：ClosestPair cp; auto [u, v] = cp.build(points); db distance = sqrtl(cp.d2);
+// ClosestPair cp; auto [u, v] = cp.build(points); db distance = sqrtl(cp.d2);

@@ -33,4 +33,4 @@ struct ConvexQuery {
     }
 };
 
-// 用法：ConvexQuery cq; cq.build(points); int state = cq.query(p);
+// ConvexQuery cq; cq.build(points); int state = cq.query(p);
