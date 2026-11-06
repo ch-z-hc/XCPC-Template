@@ -93,7 +93,7 @@ python support/tools/prepare_oeis.py
 
 ## 对拍工具
 
-`support/tools/stress/` 提供 `gen.cpp`、`sol.cpp`、`bf.cpp`、`stress.cpp`，四份源码均收录到打印册的 `template` 章节。复制到专用题目目录，Linux 下运行：
+`support/tools/stress/` 提供 `gen.cpp`、`sol.cpp`、`bf.cpp`、`stress.cpp`。打印册分别收录 Linux 对拍、Windows 对拍和随机生成器；`sol.cpp`、`bf.cpp` 两份占位示例不印入册。按平台将 `stress_linux.cpp` 或 `stress_windows.cpp` 复制为 `stress.cpp`，也可直接使用自动区分平台的通用版。复制到专用题目目录，Linux 下运行：
 
 ```text
 g++ -std=c++17 -O2 gen.cpp -o gen

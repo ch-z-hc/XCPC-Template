@@ -26,6 +26,11 @@ def main():
     layout = json.loads(path.with_suffix(".layout.json").read_text(encoding="utf-8"))
     assert layout["font_size"] == CODE_SIZE and layout["line_height"] == LEADING
     entries = load_entries()
+    paths = {entry.path for entry in entries}
+    for name in ("stress_linux", "stress_windows", "gen"):
+        assert f"support/tools/stress/{name}.cpp" in paths, name
+    for name in ("sol", "bf"):
+        assert f"support/tools/stress/{name}.cpp" not in paths, name
     index = (ROOT / "support/PROJECT.md").read_text(encoding="utf-8")
     for entry in entries:
         if entry.path.startswith("template/"):

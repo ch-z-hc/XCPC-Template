@@ -22,10 +22,11 @@ spec.loader.exec_module(stress)
 
 def check_cpp():
     base = ROOT / "support/tools/stress"
-    source = (base / "stress.cpp").read_text(encoding="utf-8")
+    runner_name = "stress_windows" if os.name == "nt" else "stress_linux"
+    source = (base / f"{runner_name}.cpp").read_text(encoding="utf-8")
     suffix = ".exe" if os.name == "nt" else ""
     flags = ["g++", "-std=c++17", "-O2", "-Wall", "-Wextra", "-pedantic"]
-    for name in ("gen", "sol", "bf", "stress"):
+    for name in ("gen", "sol", "bf", "stress", "stress_linux", "stress_windows"):
         subprocess.run([*flags, "-fsyntax-only", str(base / f"{name}.cpp")], check=True)
     with tempfile.TemporaryDirectory(prefix="cpp-stress-") as name:
         work = Path(name)

@@ -2,6 +2,8 @@
 
 将本目录的 `gen.cpp`、`sol.cpp`、`bf.cpp`、`stress.cpp` 复制到专用题目目录，在该目录编译、运行。示例生成长度为 1..10、元素为 1..100 的数组，两份程序均求数组和。比赛时只替换前三份源码，对拍器尽量不改；全部使用正常的 `cin` / `cout`，不使用 `freopen`。
 
+打印册分别收录 `stress_linux.cpp`、`stress_windows.cpp`，按平台选一份复制为 `stress.cpp` 即可；`stress.cpp` 本身是自动区分平台的通用版。随机生成器也收录到打印册，`sol.cpp`、`bf.cpp` 两份占位示例只保留在源码目录，不再印入册。
+
 ## Linux
 
 ```sh

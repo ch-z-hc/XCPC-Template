@@ -46,10 +46,9 @@ CHAPTERS = [
     ("template", [
         ("support/tools/contest_main.cpp", "template"),
         ("support/tools/linux_commands.txt", "Linux 编译与运行"),
-        ("support/tools/stress/stress.cpp", "C++ 对拍"),
+        ("support/tools/stress/stress_linux.cpp", "Linux 对拍"),
+        ("support/tools/stress/stress_windows.cpp", "Windows 对拍"),
         ("support/tools/stress/gen.cpp", "随机数据生成器"),
-        ("support/tools/stress/sol.cpp", "对拍待测程序示例"),
-        ("support/tools/stress/bf.cpp", "对拍暴力程序示例"),
     ]),
     ("数据结构", [
         ("template/ds/并查集.cpp", "并查集"),
