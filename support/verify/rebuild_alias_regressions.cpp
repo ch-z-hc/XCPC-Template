@@ -30,7 +30,7 @@ void check_seg(SegTree &st, const V < ll > &a) {
 
 ll norm(ll x, ll mod) { x %= mod; return x < 0 ? x + mod : x; }
 
-void check_affine(AffineSegTree &st, const V < ll > &a, ll mod) {
+void check_affine(AffineSeg &st, const V < ll > &a, ll mod) {
     assert(st.n == int(a.size()) - 1 && st.mod == mod);
     for (int l = 1; l <= st.n; ++ l) {
         ll sum = 0;
@@ -90,9 +90,9 @@ int main(int argc, char **argv) {
     }
     if (only.empty() || only == "affine") for (const auto &input : cases) {
         for (ll mod : {1ll, 11ll, ll(INT_MAX)})
-            for (auto member : {&AffineSegTree::sum, &AffineSegTree::mul,
-                                &AffineSegTree::add}) {
-                AffineSegTree st; st.init(input, mod); check_affine(st, input, mod);
+            for (auto member : {&AffineSeg::sum, &AffineSeg::mul,
+                                &AffineSeg::add}) {
+                AffineSeg st; st.init(input, mod); check_affine(st, input, mod);
                 if (st.n) st.modify(1, st.n, -2, 3);
                 auto a = st.*member;
                 ll next = mod == 11 ? INT_MAX : 11;

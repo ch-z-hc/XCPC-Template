@@ -18,7 +18,7 @@ using namespace std;
 // 浮点参数用 add_line_real / add_seg_real；混用后不保证整数精确判等。
 // query 返回浮点近似值；整数 DP 仅插入 add_line，并用 query_int 精确取值。
 
-struct LiChaoTree {
+struct LiChao {
     struct Line {
         ld k = 0, b = 0;
         int id = 0;
@@ -33,8 +33,8 @@ struct LiChaoTree {
     V < int > tr;
     V < Line > line;
 
-    LiChaoTree(int r = 0) { init(1, r); }
-    LiChaoTree(int l, int r) { init(l, r); }
+    LiChao(int r = 0) { init(1, r); }
+    LiChao(int l, int r) { init(l, r); }
 
     void init(int r) { init(1, r); }
 
@@ -171,11 +171,11 @@ struct LiChaoTree {
     }
 };
 
-// 用法（整数直线）：LiChaoTree tr(1, 10000); long long k = 3, b = -2;
+// 用法（整数直线）：LiChao tr(1, 10000); long long k = 3, b = -2;
 // tr.add_line(k, b); ll ans;
 // if (tr.query_int(2, ans)) cout << ans << '\n';
 // 整数端点线段：tr.add_seg(1, 2, 5, 7); int id = tr.query_id(3);
 // 线段插值可能为分数，近似值用 ld y = tr.query(3)，不能套 query_int。
-// 浮点直线另建树：LiChaoTree real(1, 10000);
+// 浮点直线另建树：LiChao real(1, 10000);
 // real.add_line_real(0.5L, 0.0L); ld y = real.query(2); // y = 1。
 // add_line 接收整数；浮点斜率误传入时会被截断。

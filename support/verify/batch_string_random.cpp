@@ -33,7 +33,7 @@ V < array < int, 3 > > brute_runs(const string &s) {
 }
 
 void check(const string &s) {
-    auto pos = lyndon_factorization(s);
+    auto pos = duval(s);
     assert(pos.front() == 0 && pos.back() == int(s.size()));
     string prev;
     for (int i = 1; i < int(pos.size()); ++ i) {
@@ -43,7 +43,7 @@ void check(const string &s) {
         if (i > 1) assert(! byte_less(prev, cur));
         prev = cur;
     }
-    assert(enumerate_runs(s) == brute_runs(s));
+    assert(runs(s) == brute_runs(s));
 }
 
 int main() {
@@ -63,8 +63,8 @@ int main() {
         check(s);
     }
     string s(100000, 'a');
-    auto runs = enumerate_runs(s);
-    assert((runs == V < array < int, 3 > > {{1, 0, 100000}}));
-    assert(lyndon_factorization(s).size() == 100001);
+    auto res = runs(s);
+    assert((res == V < array < int, 3 > > {{1, 0, 100000}}));
+    assert(duval(s).size() == 100001);
     cout << "PASS: Lyndon and runs exhaustive/randomized checks\n";
 }

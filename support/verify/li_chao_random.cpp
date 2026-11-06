@@ -11,7 +11,7 @@ struct BruteLine {
     long long d = 0;
 };
 
-void check(LiChaoTree &tree, const std::vector<BruteLine> &lines,
+void check(LiChao &tree, const std::vector<BruteLine> &lines,
            int left, int right) {
     for (int x = left; x <= right; ++x) {
         int expected_id = 0;
@@ -42,7 +42,7 @@ int main() {
     std::mt19937 rng(821731);
 
     {
-        LiChaoTree tree(-3, 3);
+        LiChao tree(-3, 3);
         int id = tree.add_seg(std::numeric_limits<int>::min(),
                                   std::numeric_limits<int>::min(),
                                   std::numeric_limits<int>::max(),
@@ -53,7 +53,7 @@ int main() {
         }
     }
     {
-        LiChaoTree tree(-3, 3);
+        LiChao tree(-3, 3);
         std::vector<BruteLine> lines(1);
         for (auto [slope, intercept] : std::vector<std::pair<long double, long double>>{
                  {-1.4e-9L, -1.2e-9L}, {-0.6e-9L, -1.6e-9L}, {-1.6e-9L, 0.2e-9L}}) {
@@ -67,7 +67,7 @@ int main() {
     }
 
     for (int test = 0; test < 300; ++test) {
-        LiChaoTree tree(domain_left, domain_right);
+        LiChao tree(domain_left, domain_right);
         std::vector<BruteLine> lines(1);
 
         for (int operation = 0; operation < 100; ++operation) {
@@ -110,7 +110,7 @@ int main() {
     }
 
     for (int test = 0; test < 300; ++test) {
-        LiChaoTree tree(domain_left, domain_right);
+        LiChao tree(domain_left, domain_right);
         std::vector<BruteLine> lines(1);
         for (int operation = 0; operation < 100; ++operation) {
             long double slope = (int(rng() % 81) - 40) * 1e-10L;
@@ -122,7 +122,7 @@ int main() {
     }
 
     for (int test = 0; test < 100; ++test) {
-        LiChaoTree tree(domain_left, domain_right);
+        LiChao tree(domain_left, domain_right);
         std::vector<BruteLine> lines(1);
         for (int operation = 0; operation < 50; ++operation) {
             int x0 = std::numeric_limits<int>::min() + int(rng() % 1000);
@@ -145,7 +145,7 @@ int main() {
         }
     }
     {
-        LiChaoTree tree(1, 39989);
+        LiChao tree(1, 39989);
         tree.add_seg(1, 1, 24, 1);
         tree.add_seg(1, 1000000000, 24, 1);
         assert(tree.query_id(24) == 1);

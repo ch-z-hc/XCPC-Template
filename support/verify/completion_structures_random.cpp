@@ -81,7 +81,7 @@ void check_intervals(mt19937 &rng) {
 }
 
 void check_functional(mt19937 &rng) {
-    FunctionalGraph graph;
+    FuncGraph graph;
     for (int rep = 0; rep < 2000; ++ rep) {
         int n = 1 + int(rng() % 30);
         V < int > to(n + 1);
@@ -103,7 +103,7 @@ void check_functional(mt19937 &rng) {
                 at[v] = int(path.size()); path.push_back(v); v = to[v];
             }
             int start = at[v], len = int(path.size()) - start;
-            for (int w = 1; w <= n; ++ w) assert(graph.distance(u, w) == at[w]);
+            for (int w = 1; w <= n; ++ w) assert(graph.dis(u, w) == at[w]);
             assert(graph.dep[u] == start && graph.entry[u] == path[start]);
             for (ull k : {0ull, ull(rng() % 100), 1ull << 63, ULLONG_MAX}) {
                 ull pos = k < path.size() ? k : start + (k - start) % len;

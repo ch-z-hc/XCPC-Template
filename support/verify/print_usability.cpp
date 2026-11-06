@@ -15,7 +15,7 @@
 int main(int argc, char **argv) {
     if (argc > 1) {
         string mode = argv[1];
-        if (mode == "wide-domain") { LiChaoTree unsupported(INT_MIN, INT_MAX); }
+        if (mode == "wide-domain") { LiChao unsupported(INT_MIN, INT_MAX); }
         LRCostFlow flow(1);
         if (mode == "supply-overflow") {
             flow.add_supply(1, LLONG_MAX); flow.add_supply(1, 1);
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
         assert(ans == 40);
     }
     {
-        LiChaoTree tree(1001, 1001);
+        LiChao tree(1001, 1001);
         ll ans = 0;
         assert(! tree.query_int(1001, ans));
         tree.add_line(1000000000000000LL, 1);
@@ -50,14 +50,14 @@ int main(int argc, char **argv) {
         tree.add_line(-1000000000000000LL, -1);
         assert(tree.query_int(1001, ans));
         assert(ans == -1000000000000000LL * 1001 - 1);
-        LiChaoTree real(1, 2);
+        LiChao real(1, 2);
         real.add_line_real(0.5L, 0.0L);
         assert(real.query(2) == 1 && ! real.query_int(2, ans));
-        LiChaoTree segment(1, 5);
+        LiChao segment(1, 5);
         segment.add_seg(1, 2, 5, 7);
         assert(! segment.query_int(3, ans) && segment.query(3) == 4.5L);
         for (int l : {INT_MIN, INT_MAX - 2}) {
-            LiChaoTree endpoint(l, l + 2);
+            LiChao endpoint(l, l + 2);
             endpoint.add_line(2, 3);
             for (int offset = 0; offset < 3; ++ offset) {
                 int x = l + offset;

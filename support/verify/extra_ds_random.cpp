@@ -43,7 +43,7 @@ void check_fenwick() {
 }
 
 void check_affine() {
-    AffineSegTree st;
+    AffineSeg st;
     const ll mods[] = {1, 2, 17, 998244353, INT_MAX};
     for (int tc = 0; tc < 2200; ++ tc) {
         int n = rnd(0, 30);
@@ -75,7 +75,7 @@ void check_affine() {
             assert(st.query(r, l - 1) == 0);
         }
     }
-    cout << "AffineSegTree: 2200 cases OK\n";
+    cout << "AffineSeg: 2200 cases OK\n";
 }
 
 void check_fenwick2d() {

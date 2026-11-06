@@ -176,7 +176,7 @@ int main() {
     }
     {
         Fenwick bit(3); bit.add(2, 1); assert(bit.kth(1) == 2);
-        AffineSegTree seg; seg.init({0, 1, 2}, 7);
+        AffineSeg seg; seg.init({0, 1, 2}, 7);
         seg.modify(1, 2, 2, 1); assert(seg.query(1, 2) == 1);
         V < int > q; assert(FPS::sqrt({1, 2, 1}, 3, q) && q[1] == 1);
         assert(bitset_lcs("abc", "ac") == 2);
@@ -338,10 +338,10 @@ int main() {
         assert(heap.top(root) == 1); root = heap.pop(root); assert(heap.top(root) == 3);
     }
     {
-        assert((subset_convolution({1, 2}, {3, 4}, 7) == V < int > {3, 3}));
+        assert((subset_conv({1, 2}, {3, 4}, 7) == V < int > {3, 3}));
         Multipoint poly; poly.build({0, 1, 2});
-        assert((poly.evaluate({1, 2, 3}) == V < int > {1, 6, 17}));
-        assert((poly.interpolate({1, 6, 17}) == V < int > {1, 2, 3}));
+        assert((poly.eval({1, 2, 3}) == V < int > {1, 6, 17}));
+        assert((poly.interp({1, 6, 17}) == V < int > {1, 2, 3}));
         KruskalTree tree(3); tree.add_edge(1, 2, 4); tree.add_edge(2, 3, 7);
         ll value; tree.build(); assert(tree.query(1, 3, value) && value == 7);
         KthAncestor ancestor(3); ancestor.add_edge(1, 2); ancestor.add_edge(2, 3);
@@ -354,32 +354,32 @@ int main() {
         cut.build(); assert(cut.query(1, 3) == 4);
     }
     {
-        PersistentXorTrie trie;
+        PXorTrie trie;
         int a = trie.insert(0, 3), b = trie.insert(a, 5);
         unsigned long long value; assert(trie.max_xor(a, b, 2, value) && value == 7);
         KDTree kd; kd.build({{0, 0}, {2, 1}});
         pair < ll, int > nearest;
         assert(kd.nearest(1, 1, nearest) && nearest.second == 1 && kd.query(0, 0, 2, 1) == 2);
-        KShortestWalk walk(2); walk.add_edge(1, 2, 3); walk.add_edge(2, 2, 1);
+        KWalk walk(2); walk.add_edge(1, 2, 3); walk.add_edge(2, 2, 1);
         assert((walk.query(1, 2, 3) == V < ll > {3, 4, 5}));
         LRCostFlow flow(2); flow.add_edge(1, 2, 1, 3, -2);
         flow.add_edge(2, 1, 0, 3, 1);
         assert(flow.solve() == make_pair(true, -3ll));
         Dominator dom(3); dom.add_edge(1, 2); dom.add_edge(2, 3); dom.build(1);
         assert(dom.idom[3] == 2);
-        WeightedBlossom match(3);
+        WBlossom match(3);
         match.add_edge(1, 2, 5); match.add_edge(2, 3, 7); match.add_edge(1, 3, 6);
         assert(match.solve() == 7 && match.match[2] == 3);
         MaxClique clique(3); clique.add_edge(1, 2);
-        assert(clique.max_clique().size() == 2);
-        assert(clique.max_independent_set().size() == 2);
+        assert(clique.clique().size() == 2);
+        assert(clique.indep().size() == 2);
         Min25 sieve; sieve.init(100, 1000);
-        assert(sieve.count_primes() == 25);
+        assert(sieve.pi() == 25);
         assert(sieve.sum({1, 0, 0}, [](ll, int) { return 1; }) == 100);
         Simplex lp; auto optimum = lp.solve({{1, 1}}, {3}, {1, 2});
         assert(optimum.status == 1 && abs(optimum.value - 6) < 1e-9L);
-        assert((lyndon_factorization("abab") == V < int > {0, 2, 4}));
-        assert((enumerate_runs("abab") == V < array < int, 3 > > {{2, 0, 4}}));
+        assert((duval("abab") == V < int > {0, 2, 4}));
+        assert((runs("abab") == V < array < int, 3 > > {{2, 0, 4}}));
         DLX dlx(2); dlx.add_row(7, {1, 2});
         V < int > rows; assert((dlx.solve(rows) && rows == V < int > {7}));
         auto circle = circle_union({{{0, 0}, 1}, {{0, 0}, 1}});
@@ -395,12 +395,12 @@ int main() {
         assert(tree.kth(3) == 3);
         assert(lis(V < int > {0, 2, 2, 3}).size() == 2);
         assert(lis(V < int > {0, 2, 2, 3}, false).size() == 3);
-        assert((gcd_convolution({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 13, 8}));
-        assert((lcm_convolution({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 3, 18}));
-        FunctionalGraph graph; graph.build({0, 2, 3, 2});
-        assert(graph.jump(1, 100) == 3 && graph.distance(1, 3) == 2);
-        assert((stirling_first(3, 97)[3] == V < ll > {0, 2, 3, 1}));
-        assert((stirling_second_row(3) == V < ll > {0, 1, 3, 1}));
+        assert((gcd_conv({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 13, 8}));
+        assert((lcm_conv({0, 1, 2}, {0, 3, 4}, 97) == V < ll > {0, 3, 18}));
+        FuncGraph graph; graph.build({0, 2, 3, 2});
+        assert(graph.jump(1, 100) == 3 && graph.dis(1, 3) == 2);
+        assert((stirling1(3, 97)[3] == V < ll > {0, 2, 3, 1}));
+        assert((stirling2_row(3) == V < ll > {0, 1, 3, 1}));
         Hash2D hash, small; hash.build({"ab", "cd"}); small.build({"b"});
         assert(hash.query(0, 1, 0, 1) == small.query(0, 0, 0, 0));
         auto rect = min_rectangle({{0, 0}, {3, 0}, {3, 2}, {0, 2}});

@@ -4,7 +4,7 @@
 int main() {
     mt19937_64 rng(20261014);
     for (int test = 0; test < 300; ++ test) {
-        PersistentXorTrie trie;
+        PXorTrie trie;
         V < int > root(1), par(1);
         V < unsigned long long > val(1);
         for (int i = 1; i <= 180; ++ i) {
@@ -38,7 +38,7 @@ int main() {
         assert(trie.max_xor(0, one, ~0ull, ans) && ans == 0ull);
         assert(! trie.max_xor(one, one, 0, ans));
     }
-    PersistentXorTrie trie;
+    PXorTrie trie;
     V < int > root(1);
     V < unsigned long long > a(100);
     for (int i = 1; i < int(a.size()); ++ i) {

@@ -31,13 +31,13 @@ struct KruskalTree {
         for (int v : t[u]) { dep[v] = dep[u] + 1; dfs(v, u, root); }
     }
 
-    void build(bool descending = false) {
+    void build(bool rev = false) {
         tot = n;
         fa.resize(2 * n + 1); iota(fa.begin(), fa.end(), 0);
         t.assign(2 * n + 1, {}); weight.assign(2 * n + 1, 0);
         auto e = edges;
         sort(e.begin(), e.end(), [&](Edge a, Edge b) {
-            return descending ? a.w > b.w : a.w < b.w;
+            return rev ? a.w > b.w : a.w < b.w;
         });
         for (auto [u, v, w] : e) {
             u = find(u); v = find(v);

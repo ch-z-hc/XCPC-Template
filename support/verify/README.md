@@ -115,7 +115,7 @@ bash support/verify/run_linux.sh
 | 题目 | 对应模板 | 数据组数 |
 | --- | --- | ---: |
 | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum) | `Beats` | 33 |
-| [Range Affine Range Sum](https://judge.yosupo.jp/problem/range_affine_range_sum) | `AffineSegTree` | 19 |
+| [Range Affine Range Sum](https://judge.yosupo.jp/problem/range_affine_range_sum) | `AffineSeg` | 19 |
 | [Point Add Rectangle Sum](https://judge.yosupo.jp/problem/point_add_rectangle_sum) | `Fenwick2D` | 18 |
 | [Dynamic Tree Vertex Add Path Sum](https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum) | `LCT` | 15 |
 | [General Matching](https://judge.yosupo.jp/problem/general_matching) | `Blossom` | 12 |
@@ -131,9 +131,9 @@ bash support/verify/run_linux.sh
 | [Closest Pair](https://judge.yosupo.jp/problem/closest_pair) | `ClosestPair` | 29 |
 | [Inverse Matrix](https://judge.yosupo.jp/problem/inverse_matrix) | `matrix_inv` | 26 |
 | [Primitive Root](https://judge.yosupo.jp/problem/primitive_root) | `primitive_root` | 14 |
-| [Subset Convolution](https://judge.yosupo.jp/problem/subset_convolution) | `subset_convolution` | 11 |
-| [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation) | `Multipoint::evaluate` | 11 |
-| [Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) | `Multipoint::interpolate` | 9 |
+| [Subset Convolution](https://judge.yosupo.jp/problem/subset_convolution) | `subset_conv` | 11 |
+| [Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation) | `Multipoint::eval` | 11 |
+| [Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation) | `Multipoint::interp` | 9 |
 
 合计 20 题、409 组数据。除 `DMST` 仅提供最小权值、不恢复父亲数组，因此比较官方答案首项外，其余均使用题目官方 checker，允许不同的合法匹配、点对、平方根和原根方案。每组限时 120 秒，仅用于本地正确性验证，不据此宣称满足题目的在线时限。
 

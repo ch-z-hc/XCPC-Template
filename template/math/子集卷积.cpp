@@ -9,7 +9,7 @@ using namespace std;
 // 1 <= mod <= INT_MAX，可为合数；系数允许为负，结果归一化。
 // 分层子集 zeta / Mobius 变换，时间 O(n^2 2^n)，空间 O(n 2^n)。
 // n = 20 时主要数组约占 180 MiB；不是 FWT 的 OR 卷积。
-V < int > subset_convolution(const V < int > &a, const V < int > &b,
+V < int > subset_conv(const V < int > &a, const V < int > &b,
                               int mod) {
     int size = int(a.size()), n = __builtin_ctz(unsigned(size));
     V < int > cnt(size), ans(size), c(size);
@@ -46,4 +46,4 @@ V < int > subset_convolution(const V < int > &a, const V < int > &b,
     return ans;
 }
 
-// 用法：auto c = subset_convolution(a, b, 998244353);
+// 用法：auto c = subset_conv(a, b, 998244353);

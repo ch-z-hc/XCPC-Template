@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
     ios::sync_with_stdio(0); cin.tie(0);
     bool exact = argc == 2 && string(argv[1]) == "exact";
     int n, last = 0; cin >> n;
-    LiChaoTree tree(exact ? -20 : 1, exact ? 20 : 39989);
+    LiChao tree(exact ? -20 : 1, exact ? 20 : 39989);
     while (n --) {
         int op; cin >> op;
         if (op == 0) {

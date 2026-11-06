@@ -13,7 +13,7 @@ ll brute(const V < V < ll > > &g, int mask, V < ll > &dp) {
     return dp[mask] = ans;
 }
 
-void check(WeightedBlossom &blossom, const V < V < ll > > &g) {
+void check(WBlossom &blossom, const V < V < ll > > &g) {
     int n = blossom.n;
     V < ll > dp(1 << n, -1);
     ll expected = brute(g, (1 << n) - 1, dp);
@@ -33,7 +33,7 @@ void check(WeightedBlossom &blossom, const V < V < ll > > &g) {
 
 void test_random() {
     mt19937_64 rng(20261011);
-    WeightedBlossom blossom;
+    WBlossom blossom;
     for (int test = 0; test < 20000; ++ test) {
         int n = int(rng() % 13);
         blossom.init(n);
@@ -59,7 +59,7 @@ void test_random() {
 }
 
 void test_exhaustive() {
-    WeightedBlossom blossom(5);
+    WBlossom blossom(5);
     for (int mask = 0; mask < 59049; ++ mask) {
         blossom.init(5);
         V < V < ll > > g(6, V < ll > (6));
@@ -74,7 +74,7 @@ void test_exhaustive() {
 }
 
 void test_regressions() {
-    WeightedBlossom blossom(4);
+    WBlossom blossom(4);
     blossom.add_edge(1, 2, 100);
     blossom.add_edge(1, 3, 1); blossom.add_edge(2, 4, 1);
     assert(blossom.solve() == 100);
@@ -99,7 +99,7 @@ void test_regressions() {
 
 void test_large() {
     const int n = 500;
-    WeightedBlossom blossom(n);
+    WBlossom blossom(n);
     for (int u = 1; u <= n; ++ u)
         for (int v = u + 1; v <= n; ++ v)
             blossom.add_edge(u, v, 1000000);
@@ -117,7 +117,7 @@ void test_library_checker() {
         {1, 3}, {7, 9}, {0, 13}, {6, 12}, {1, 2}, {3, 4},
         {0, 6}, {7, 8}, {9, 10}, {5, 13}, {11, 12}
     };
-    WeightedBlossom blossom(14);
+    WBlossom blossom(14);
     V < V < ll > > g(15, V < ll > (15));
     for (auto &e : a) {
         int u = e[0] + 1, v = e[1] + 1;

@@ -17,7 +17,7 @@ struct Simplex {
     struct Result { int status; ld value; V < ld > x; };
     int n = 0, m = 0;
     ld eps = 1e-12L;
-    V < int > nonbasic, basic;
+    V < int > nbas, bas;
     V < V < ld > > a;
 
     void pivot(int r, int s) {
@@ -28,16 +28,16 @@ struct Simplex {
         for (int j = 0; j < n + 2; ++ j) if (j != s) a[r][j] *= inv;
         for (int i = 0; i < m + 2; ++ i) if (i != r) a[i][s] *= -inv;
         a[r][s] = inv;
-        swap(basic[r], nonbasic[s]);
+        swap(bas[r], nbas[s]);
     }
 
     bool phase(int row) {
         while (true) {
             int s = -1;
             for (int j = 0; j <= n; ++ j) {
-                if (row == m && nonbasic[j] == -1) continue;
+                if (row == m && nbas[j] == -1) continue;
                 if (a[row][j] < -eps &&
-                    (s == -1 || nonbasic[j] < nonbasic[s])) s = j;
+                    (s == -1 || nbas[j] < nbas[s])) s = j;
             }
             if (s == -1) return true;
             int r = -1;
@@ -46,7 +46,7 @@ struct Simplex {
                 ld x = a[i][n + 1] / a[i][s];
                 ld y = a[r][n + 1] / a[r][s];
                 if (x < y - eps ||
-                    (abs(x - y) <= eps && basic[i] < basic[r])) r = i;
+                    (abs(x - y) <= eps && bas[i] < bas[r])) r = i;
             }
             if (r == -1) return false;
             pivot(r, s);
@@ -57,13 +57,13 @@ struct Simplex {
                  const V < ld > &c) {
         m = int(b.size()); n = int(c.size());
         a.assign(m + 2, V < ld > (n + 2));
-        basic.resize(m); nonbasic.resize(n + 1);
+        bas.resize(m); nbas.resize(n + 1);
         for (int i = 0; i < m; ++ i) {
             for (int j = 0; j < n; ++ j) a[i][j] = A[i][j];
-            basic[i] = n + i; a[i][n] = -1; a[i][n + 1] = b[i];
+            bas[i] = n + i; a[i][n] = -1; a[i][n + 1] = b[i];
         }
-        for (int j = 0; j < n; ++ j) nonbasic[j] = j, a[m][j] = -c[j];
-        nonbasic[n] = -1; a[m + 1][n] = 1;
+        for (int j = 0; j < n; ++ j) nbas[j] = j, a[m][j] = -c[j];
+        nbas[n] = -1; a[m + 1][n] = 1;
         int r = -1;
         for (int i = 0; i < m; ++ i)
             if (r == -1 || a[i][n + 1] < a[r][n + 1]) r = i;
@@ -71,18 +71,18 @@ struct Simplex {
             pivot(r, n);
             if (! phase(m + 1) || abs(a[m + 1][n + 1]) > eps)
                 return {0, 0, {}};
-            for (int i = 0; i < m; ++ i) if (basic[i] == -1) {
+            for (int i = 0; i < m; ++ i) if (bas[i] == -1) {
                 int s = -1;
                 for (int j = 0; j <= n; ++ j)
                     if (abs(a[i][j]) > eps &&
-                        (s == -1 || nonbasic[j] < nonbasic[s])) s = j;
+                        (s == -1 || nbas[j] < nbas[s])) s = j;
                 if (s != -1) pivot(i, s);
             }
         }
         bool ok = phase(m);
         V < ld > x(n);
         for (int i = 0; i < m; ++ i)
-            if (0 <= basic[i] && basic[i] < n) x[basic[i]] = a[i][n + 1];
+            if (0 <= bas[i] && bas[i] < n) x[bas[i]] = a[i][n + 1];
         ld inf = numeric_limits < ld >::infinity();
         return {ok ? 1 : 2, ok ? a[m][n + 1] : inf, x};
     }

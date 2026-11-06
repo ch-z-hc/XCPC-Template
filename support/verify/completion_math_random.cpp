@@ -52,8 +52,8 @@ void check_divisors(mt19937 &rng) {
         divisor_zeta(c, mod, true); assert(c == a);
         c = a; multiple_zeta(c, mod); assert(c == m);
         multiple_zeta(c, mod, true); assert(c == a);
-        assert(gcd_convolution(a, b, mod) == cg);
-        assert(lcm_convolution(a, b, mod) == cl);
+        assert(gcd_conv(a, b, mod) == cg);
+        assert(lcm_conv(a, b, mod) == cl);
     }
 }
 
@@ -75,14 +75,14 @@ void check_stirling(mt19937 &rng) {
             for (int j = 0; j <= used; ++ j) self(self, i + 1, max(used, j + 1));
         };
         partition(partition, 0, 0);
-        assert(stirling_first(n, 1000000007)[n] == first);
-        assert(stirling_second(n, 1000000007)[n] == second);
-        assert(stirling_second_row(n) == second);
+        assert(stirling1(n, 1000000007)[n] == first);
+        assert(stirling2(n, 1000000007)[n] == second);
+        assert(stirling2_row(n) == second);
     }
     for (int rep = 0; rep < 2000; ++ rep) {
         int n = int(rng() % 70);
         ll mod = V < ll > {1, 8, 97, 2147483648ll}[rep % 4];
-        auto s = stirling_first(n, mod), t = stirling_second(n, mod);
+        auto s = stirling1(n, mod), t = stirling2(n, mod);
         ll x = rng() % mod, power = 1 % mod, falling = 1 % mod, rising = 1 % mod;
         V < ll > f(n + 1, 1 % mod), p(n + 1, 1 % mod);
         for (int i = 1; i <= n; ++ i) {
@@ -97,9 +97,9 @@ void check_stirling(mt19937 &rng) {
             falling = (falling + t[n][i] * f[i]) % mod;
         }
         assert(sum == rising && falling == power);
-        assert(stirling_second_row(n) == stirling_second(n, NTT_MOD)[n]);
+        assert(stirling2_row(n) == stirling2(n, NTT_MOD)[n]);
     }
-    auto row = stirling_second_row(4096);
+    auto row = stirling2_row(4096);
     assert(row[1] == 1 && row.back() == 1 && row[4095] == 4096ll * 4095 / 2);
 }
 

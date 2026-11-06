@@ -41,9 +41,9 @@ int main() {
         V < V < int > > g(n + 1);
         for (int i = 1; i < n; ++ i) to[i] = i + 1, g[i].push_back(i + 1);
         to[n] = n;
-        FunctionalGraph graph; graph.build(to);
+        FuncGraph graph; graph.build(to);
         assert(graph.dep[1] == n - 1 && graph.jump(1, ULLONG_MAX) == n);
-        assert(graph.distance(1, n) == n - 1 && graph.distance(n, 1) == -1);
+        assert(graph.dis(1, n) == n - 1 && graph.dis(n, 1) == -1);
         V < int > sg; assert(grundy(g, sg) && sg[1] == (n - 1) % 2);
         g[n].push_back(1); assert(! grundy(g, sg));
     }

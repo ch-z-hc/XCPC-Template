@@ -10,10 +10,10 @@ using namespace std;
 // 两种字典序的 Lyndon 根 + LCP / LCS；时间、空间 O(n log n)，结果排序去重。
 // 参考 Bannai 等人的 runs 定理；不使用字符串哈希，无碰撞风险。
 
-V < array < int, 3 > > enumerate_runs(const string &s) {
+V < array < int, 3 > > runs(const string &s) {
     int n = int(s.size());
     if (n < 2) return {};
-    SA forward(s), backward(string(s.rbegin(), s.rend()));
+    SA sa(s), rsa(string(s.rbegin(), s.rend()));
     V < array < int, 3 > > ans;
     for (int order = 0; order < 2; ++ order) {
         // 反向字符序保留同一前缀规则；后缀字典序不能直接取 rk 的相反数。
@@ -26,8 +26,8 @@ V < array < int, 3 > > enumerate_runs(const string &s) {
                 st.pop_back();
             int j = st.back();
             if (j != n) {
-                int p = j - i, right = forward.lcp(i, j);
-                int left = i ? backward.lcp(n - i, n - j) : 0;
+                int p = j - i, right = sa.lcp(i, j);
+                int left = i ? rsa.lcp(n - i, n - j) : 0;
                 if (left + right >= p) ans.push_back({p, i - left, j + right});
             }
             st.push_back(i);
@@ -38,4 +38,4 @@ V < array < int, 3 > > enumerate_runs(const string &s) {
     return ans;
 }
 
-// 用法：auto runs = enumerate_runs(s); // 依次读取 {period, l, r}。
+// 用法：auto res = runs(s); // 依次读取 {period, l, r}。

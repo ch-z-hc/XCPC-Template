@@ -12,7 +12,7 @@ using namespace std;
 // 反向 Dijkstra + 可持久化左偏堆维护偏离边；query 可重复调用。
 // 时间 O((n + m) log(n + m + 1) + k log(k + 1))。
 // 空间 O(m + n log(n + m + 1) + k)，递归仅用于对数深度的堆合并。
-struct KShortestWalk {
+struct KWalk {
     static const ll inf = 1ll << 62;
     struct Edge { int u, v; ll w; };
     struct Node {
@@ -24,7 +24,7 @@ struct KShortestWalk {
     V < V < int > > g, rg;
     V < Node > tr;
 
-    KShortestWalk(int n = 0) { init(n); }
+    KWalk(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_; edges.clear(); tr.clear();
@@ -97,6 +97,6 @@ struct KShortestWalk {
         return ans;
     }
 };
-const ll KShortestWalk::inf;
-// 用法：KShortestWalk kw(n); kw.add_edge(u, v, w);
+const ll KWalk::inf;
+// 用法：KWalk kw(n); kw.add_edge(u, v, w);
 // V < ll > ans = kw.query(s, t, k); // ans[0] 是最短长度。

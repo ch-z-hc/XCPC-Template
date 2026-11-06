@@ -17,7 +17,7 @@ int brute(const MaxClique &mc, bool independent) {
 
 void check(MaxClique &mc) {
     for (bool independent : {false, true}) {
-        auto ans = independent ? mc.max_independent_set() : mc.max_clique();
+        auto ans = independent ? mc.indep() : mc.clique();
         assert(int(ans.size()) == brute(mc, independent));
         set < int > seen;
         for (int u : ans) {
@@ -25,7 +25,7 @@ void check(MaxClique &mc) {
             for (int v : seen) if (u != v) assert(bool(mc.g[u][v]) != independent);
         }
     }
-    assert(int(mc.max_clique().size()) == brute(mc, 0));
+    assert(int(mc.clique().size()) == brute(mc, 0));
 }
 
 int main() {
@@ -46,8 +46,8 @@ int main() {
         mc.init(3); check(mc);
     }
     MaxClique mc(100);
-    assert(mc.max_clique().size() == 1 && mc.max_independent_set().size() == 100);
+    assert(mc.clique().size() == 1 && mc.indep().size() == 100);
     for (int u = 1; u <= 100; ++ u) for (int v = 1; v <= 100; ++ v) mc.add_edge(u, v);
-    assert(mc.max_clique().size() == 100 && mc.max_independent_set().size() == 1);
+    assert(mc.clique().size() == 100 && mc.indep().size() == 1);
     cout << "max clique random tests passed\n";
 }

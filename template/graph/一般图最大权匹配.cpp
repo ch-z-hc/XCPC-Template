@@ -13,7 +13,7 @@ using namespace std;
 // 正边权 w <= LLONG_MAX / (8 * max(1, n))，保证对偶值和总权不溢出。
 // 参考 bqi343/cp-notebook 的 GeneralWeightedMatch.h，CC0-1.0。
 // github.com/bqi343/cp-notebook；保留收缩、展开和对偶调整的原算法。
-struct WeightedBlossom {
+struct WBlossom {
     struct Edge { int u = 0, v = 0; ll w = 0; };
     int n = 0, nx = 0;
     ll timer = 0;
@@ -23,7 +23,7 @@ struct WeightedBlossom {
     V < ll > lab, seen;
     queue < int > q;
 
-    WeightedBlossom(int n = 0) { init(n); }
+    WBlossom(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_; nx = n; timer = 0;
@@ -237,5 +237,5 @@ struct WeightedBlossom {
     }
 };
 
-// 用法：WeightedBlossom blossom(n); blossom.add_edge(u, v, w);
+// 用法：WBlossom blossom(n); blossom.add_edge(u, v, w);
 // ll ans = blossom.solve(); 匹配边取所有 u < blossom.match[u]。

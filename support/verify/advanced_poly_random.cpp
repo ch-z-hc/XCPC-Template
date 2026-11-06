@@ -22,7 +22,7 @@ int main() {
                 t = (t - 1) & s;
             } while (true);
         }
-        assert(subset_convolution(a, b, mod) == expected);
+        assert(subset_conv(a, b, mod) == expected);
     }
     const int mod = FPS::mod;
     Multipoint poly;
@@ -34,13 +34,13 @@ int main() {
         for (int i = 0; i < n; ++ i)
             for (int j = m - 1; j >= 0; -- j)
                 expected[i] = (1ll * expected[i] * x[i] + a[j]) % mod;
-        poly.build(x); assert(poly.evaluate(a) == expected);
-        assert(poly.evaluate({}) == V < int > (n));
-        poly.build(x); assert(poly.evaluate(a) == expected);
+        poly.build(x); assert(poly.eval(a) == expected);
+        assert(poly.eval({}) == V < int > (n));
+        poly.build(x); assert(poly.eval(a) == expected);
         iota(x.begin(), x.end(), 0); shuffle(x.begin(), x.end(), rng);
         for (int &v : y) v = rng() % mod;
         poly.build(x);
-        auto got = poly.interpolate(y);
+        auto got = poly.interp(y);
         V < int > coefficients(n);
         for (int i = 0; i < n; ++ i) {
             V < int > basis{1}; long long den = 1;
@@ -57,13 +57,13 @@ int main() {
                 coefficients[j] = (coefficients[j] + w * basis[j]) % mod;
         }
         assert(got == coefficients);
-        assert(poly.evaluate(got) == y);
+        assert(poly.eval(got) == y);
     }
     V < int > x(4096), a(5000);
     iota(x.begin(), x.end(), 0); a[0] = 5; a[1] = 2; a[3] = 1;
-    poly.build(x); auto y = poly.evaluate(a);
+    poly.build(x); auto y = poly.eval(a);
     for (int i = 0; i < int(x.size()); ++ i)
         assert(y[i] == (1ll * i * i % mod * i + 2 * i + 5) % mod);
-    a.resize(x.size()); assert(poly.interpolate(y) == a);
+    a.resize(x.size()); assert(poly.interp(y) == a);
     cout << "advanced polynomial: subset / multipoint / interpolation OK\n";
 }

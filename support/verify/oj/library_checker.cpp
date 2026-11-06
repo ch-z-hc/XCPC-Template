@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
         int n, q; cin >> n >> q;
         V < ll > a(n + 1);
         for (int i = 1; i <= n; ++ i) cin >> a[i];
-        AffineSegTree tree; tree.init(a, 998244353);
+        AffineSeg tree; tree.init(a, 998244353);
         while (q --) {
             int op, l, r; cin >> op >> l >> r;
             if (! op) {
@@ -161,21 +161,21 @@ int main(int argc, char **argv) {
         int n; cin >> n; V < int > a(1 << n), b(1 << n);
         for (int &x : a) cin >> x;
         for (int &x : b) cin >> x;
-        for (int x : subset_convolution(a, b, 998244353)) cout << x << ' ';
+        for (int x : subset_conv(a, b, 998244353)) cout << x << ' ';
         cout << '\n';
     } else if (mode == "multipoint_evaluation") {
         int n, m; cin >> n >> m; V < int > a(n), x(m);
         for (int &v : a) cin >> v;
         for (int &v : x) cin >> v;
         Multipoint poly; poly.build(x);
-        for (int v : poly.evaluate(a)) cout << v << ' ';
+        for (int v : poly.eval(a)) cout << v << ' ';
         cout << '\n';
     } else if (mode == "polynomial_interpolation") {
         int n; cin >> n; V < int > x(n), y(n);
         for (int &v : x) cin >> v;
         for (int &v : y) cin >> v;
         Multipoint poly; poly.build(x);
-        for (int v : poly.interpolate(y)) cout << v << ' ';
+        for (int v : poly.interp(y)) cout << v << ' ';
         cout << '\n';
     } else assert(false);
 }

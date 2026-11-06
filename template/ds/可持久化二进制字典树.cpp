@@ -11,11 +11,11 @@ using namespace std;
 // 空差集返回 false；仅返回 true 时 ans 有效。
 // 单次插入 / 查询 O(64)，每次插入新增 65 个节点，空间 O(64 * 插入次数)。
 // 前缀版本 root[i] 插入 a[i]，闭区间 [l, r] 用 root[l - 1]、root[r] 作差。
-struct PersistentXorTrie {
+struct PXorTrie {
     struct Node { array < int, 2 > ch{}; int cnt = 0; };
     V < Node > tr;
 
-    PersistentXorTrie() { init(); }
+    PXorTrie() { init(); }
     void init() { tr.assign(1, {}); }
 
     int insert(int p, unsigned long long x) {
@@ -45,7 +45,7 @@ struct PersistentXorTrie {
     }
 };
 
-// 用法：PersistentXorTrie trie; V < int > root(n + 1);
+// 用法：PXorTrie trie; V < int > root(n + 1);
 // for (int i = 1; i <= n; ++ i) root[i] = trie.insert(root[i - 1], a[i]);
 // unsigned long long ans;
 // bool ok = trie.max_xor(root[l - 1], root[r], x, ans);

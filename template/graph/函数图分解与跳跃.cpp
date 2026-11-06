@@ -9,10 +9,10 @@ using namespace std;
 
 // 函数图：每点恰有一条出边；to 为 1-based，to[0] 不使用。
 // build 递归处理反向树；预处理 O(64 n)，空间 O(64 n)，可重复构建。
-// jump(u, k) 支持整个 ull 范围，O(64)；distance(u, v) 不可达返回 -1。
+// jump(u, k) 支持整个 ull 范围，O(64)；dis(u, v) 不可达返回 -1。
 // cycles 为 0-based 环列表，沿出边顺序；bel 为环编号，pos 为环上位置。
 // 非环点 pos = -1；entry 为入环点，dep 为到环步数。
-struct FunctionalGraph {
+struct FuncGraph {
     int n = 0;
     V < V < int > > g, cycles;
     V < int > bel, pos, entry, dep;
@@ -60,7 +60,7 @@ struct FunctionalGraph {
         return u;
     }
 
-    ll distance(int u, int v) {
+    ll dis(int u, int v) {
         if (bel[u] != bel[v]) return -1;
         if (dep[v]) {
             if (dep[u] < dep[v]) return -1;
@@ -72,5 +72,5 @@ struct FunctionalGraph {
     }
 };
 
-// 用法：FunctionalGraph graph; graph.build({0, 2, 3, 2});
-// int v = graph.jump(1, 100); ll d = graph.distance(1, 3);
+// 用法：FuncGraph graph; graph.build({0, 2, 3, 2});
+// int v = graph.jump(1, 100); ll d = graph.dis(1, 3);

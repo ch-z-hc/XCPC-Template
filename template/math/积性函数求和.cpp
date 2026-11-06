@@ -7,11 +7,11 @@ typedef long long ll;
 using namespace std;
 
 // Min_25 筛：积性函数 f，f(1) = 1，素数处 f(p) = c[0] + c[1] * p + c[2] * p^2。
-// init(n, mod) 后调用 sum(c, prime_power)，回调返回 f(p^e)，须与 c 一致。
+// init(n, mod) 后调用 sum(c, f)，回调返回 f(p^e)，须与 c 一致。
 // 0 <= n <= 10^12，2 <= mod <= INT_MAX，可为合数；回调 O(1)。
 // 固定次数下常用复杂度 O(n^(3/4) / log n)，空间 O(sqrt(n))。
 // 内部素数与整除分块表为 0-based；sum 可重复调用，init 清空全部状态。
-// count_primes() 返回不取模的 pi(n)，不是 sum({1,0,0}, ...) 的模值。
+// pi() 返回不取模的 pi(n)，不是 sum({1,0,0}, ...) 的模值。
 
 struct Min25 {
     ll n = 0, mod = 2;
@@ -70,10 +70,10 @@ struct Min25 {
         }
     }
 
-    ll count_primes() { return n < 2 ? 0 : cnt[0]; }
+    ll pi() { return n < 2 ? 0 : cnt[0]; }
 
     template < class F >
-    ll sum(array < ll, 3 > c, F prime_power) {
+    ll sum(array < ll, 3 > c, F f) {
         if (! n) return 0;
         for (ll &x : c) x = norm(x);
         V < ll > value(w.size()), pre(prime.size() + 1);
@@ -91,8 +91,8 @@ struct Min25 {
             for (int i = k; i < int(prime.size()) && prime[i] <= x / prime[i]; ++ i) {
                 ll p = prime[i], cur = p;
                 for (int e = 1; cur <= x / p; ++ e, cur *= p) {
-                    ll a = norm(prime_power(p, e));
-                    ll b = norm(prime_power(p, e + 1));
+                    ll a = norm(f(p, e));
+                    ll b = norm(f(p, e + 1));
                     ans = (ans + a * self(self, x / cur, i + 1) % mod + b) % mod;
                 }
             }

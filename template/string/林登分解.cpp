@@ -8,7 +8,7 @@ using namespace std;
 // 字符按 unsigned char 比较；返回 0-based 分界点，块为 [pos[i], pos[i+1])。
 // 结果含首尾 0 和 n；空串返回 {0}，相等的因子分别保留。
 
-V < int > lyndon_factorization(const string &s) {
+V < int > duval(const string &s) {
     int n = int(s.size());
     V < int > pos{0};
     for (int i = 0; i < n; ) {
@@ -24,4 +24,4 @@ V < int > lyndon_factorization(const string &s) {
     return pos;
 }
 
-// 用法：auto pos = lyndon_factorization(s);
+// 用法：auto pos = duval(s);

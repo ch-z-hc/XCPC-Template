@@ -9,7 +9,7 @@ using namespace std;
 // 区间仿射变换 a[i] = a[i] * mul + add，区间求和；1-based 闭区间。
 // init(a, mod)，1 <= mod <= 2^31 - 1；赋值为 modify(l, r, 0, v)。
 // 建树 O(n)，修改 / 查询 O(log n)，空间 O(n)；允许负参数并归一化。
-struct AffineSegTree {
+struct AffineSeg {
     int n = 0;
     ll mod = 1;
     V < ll > sum, mul, add;
@@ -74,5 +74,5 @@ struct AffineSegTree {
     ll query(int l, int r) { return n && l <= r ? query(1, 1, n, l, r) : 0; }
 };
 
-// 用法：AffineSegTree st; st.init(a, mod); st.modify(l, r, mul, add);
+// 用法：AffineSeg st; st.init(a, mod); st.modify(l, r, mul, add);
 // ll ans = st.query(l, r);

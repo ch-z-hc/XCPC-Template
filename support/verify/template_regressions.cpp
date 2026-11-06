@@ -125,7 +125,7 @@ int main() {
         assert(match.solve() == 2);
     }
     {
-        LiChaoTree tree(4);
+        LiChao tree(4);
         int id = tree.add_line_real(0, -1e20L);
         assert(tree.query_id(2) == id);
         assert(tree.query(2) == -1e20L);

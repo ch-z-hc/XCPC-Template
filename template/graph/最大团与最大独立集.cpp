@@ -7,10 +7,10 @@ using namespace std;
 // 一般无向图的精确最大团 / 最大独立集；顶点编号 1-based，自环忽略，重边合并。
 // 贪心染色给出上界，递归分支限界；最坏时间 O(2^n n^2)，空间 O(n^2)。
 // 适用于小规模图，实际耗时依赖图结构。
-// max_clique / max_independent_set 返回一个最优顶点集合，可重复调用；init 清空图。
+// clique / indep 返回一个最优顶点集合，可重复调用；init 清空图。
 struct MaxClique {
     int n = 0;
-    bool independent = 0;
+    bool rev = 0;
     V < V < char > > g;
     V < int > cur, ans;
 
@@ -26,7 +26,7 @@ struct MaxClique {
         if (u != v) g[u][v] = g[v][u] = 1;
     }
 
-    bool adjacent(int u, int v) { return bool(g[u][v]) != independent; }
+    bool adjacent(int u, int v) { return bool(g[u][v]) != rev; }
 
     void dfs(const V < int > &p) {
         if (p.empty()) {
@@ -57,16 +57,16 @@ struct MaxClique {
         }
     }
 
-    V < int > solve(bool independent_) {
-        independent = independent_; cur.clear(); ans.clear();
+    V < int > solve(bool rev_) {
+        rev = rev_; cur.clear(); ans.clear();
         V < int > p(n); iota(p.begin(), p.end(), 1);
         dfs(p);
         return ans;
     }
 
-    V < int > max_clique() { return solve(0); }
-    V < int > max_independent_set() { return solve(1); }
+    V < int > clique() { return solve(0); }
+    V < int > indep() { return solve(1); }
 };
 
 // 用法：MaxClique mc(n); mc.add_edge(u, v);
-// V < int > clique = mc.max_clique(), independent = mc.max_independent_set();
+// V < int > clique = mc.clique(), iset = mc.indep();

@@ -38,14 +38,14 @@ void check_min25() {
             if (x > 1 && factors == 0) ++ primes;
             ans = (ans + val) % mod;
         }
-        assert(sieve.count_primes() == primes);
+        assert(sieve.pi() == primes);
         assert(sieve.sum(c, f) == ans);
         assert(sieve.sum(c, f) == ans);
         auto one = [](ll, int) { return 1; };
         assert(sieve.sum({1, 0, 0}, one) == n % mod);
     }
     sieve.init(1000000, 1000000007);
-    assert(sieve.count_primes() == 78498);
+    assert(sieve.pi() == 78498);
     auto phi = [](ll p, int e) {
         ll ans = p - 1;
         while (-- e) ans *= p;
