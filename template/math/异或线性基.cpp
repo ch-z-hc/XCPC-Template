@@ -47,7 +47,6 @@ struct Basis {
     }
 };
 
-// 调用示例：
-// Basis base;
+// 用法：Basis base;
 // base.insert(x);
 // auto ans = base.max_xor();

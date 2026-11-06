@@ -37,5 +37,4 @@ V < int > kmp(const string &s, const string &t) {
     return ans;
 }
 
-// 调用示例：
-// V < int > ans = kmp(s, t);
+// 用法：V < int > ans = kmp(s, t);

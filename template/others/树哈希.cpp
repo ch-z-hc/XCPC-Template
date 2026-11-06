@@ -24,6 +24,5 @@ uint64_t tree_hash(const V < V < int > > &g, int u = 1, int fa = 0) {
     return h;
 }
 
-// 调用示例：
-// uint64_t h = tree_hash(g, root);
+// 用法：uint64_t h = tree_hash(g, root);
 // 这是随机化哈希，存在极小概率碰撞；需要严格判定时应使用同构算法。

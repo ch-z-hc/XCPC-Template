@@ -59,4 +59,4 @@ struct SAT {
     }
 };
 
-// 调用示例：SAT sat(n); sat.add(u, 1, v, 0); if (sat.solve()) use(sat.ans);
+// 用法：SAT sat(n); sat.add(u, 1, v, 0); if (sat.solve()) use(sat.ans);

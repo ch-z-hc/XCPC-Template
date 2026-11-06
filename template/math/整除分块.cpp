@@ -20,5 +20,4 @@ V < pair < ll, ll > > div_blocks(ll n) {
     return ans;
 }
 
-// 调用示例：
-// for (auto [l, r] : div_blocks(n)) { /* n / l 在区间内相同。 */ }
+// 用法：for (auto [l, r] : div_blocks(n)) { /* n / l 在区间内相同。 */ }

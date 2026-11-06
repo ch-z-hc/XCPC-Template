@@ -163,7 +163,6 @@ struct ScalingMCMF {
     }
 };
 
-// 调用示例：
-// ScalingMCMF mcf(n);
+// 用法：ScalingMCMF mcf(n);
 // mcf.add_edge(u, v, cap, cost);
 // auto [flow, cost] = mcf.flow(s, t);

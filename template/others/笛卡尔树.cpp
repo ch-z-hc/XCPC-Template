@@ -30,6 +30,5 @@ struct Cartesian {
     }
 };
 
-// 调用示例：
-// Cartesian tree;
+// 用法：Cartesian tree;
 // tree.build(a); // a[0] 为占位，tree.root 为根。

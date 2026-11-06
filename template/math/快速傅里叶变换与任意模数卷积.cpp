@@ -127,7 +127,6 @@ V < int > conv_mod(const V < ll > &a, const V < ll > &b, int mod) {
     return c;
 }
 
-// 调用示例：
-// V < ll > a{1, -2, 3}, b{4, 5};
+// 用法：V < ll > a{1, -2, 3}, b{4, 5};
 // auto c = fft_mul(a, b);
 // auto d = conv_mod(a, b, 1000000007);

@@ -83,5 +83,5 @@ struct DynConn {
     }
 };
 
-// DynConn dc(n); dc.add(u, v); int id = dc.query(u, v);
+// 用法：DynConn dc(n); dc.add(u, v); int id = dc.query(u, v);
 // dc.erase(u, v); auto ans = dc.solve();

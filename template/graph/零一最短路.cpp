@@ -23,4 +23,4 @@ V < int > bfs01(const V < V < pair < int, int > > > &g, int s) {
     return dis;
 }
 
-// auto dis = bfs01(g, s);
+// 用法：auto dis = bfs01(g, s);

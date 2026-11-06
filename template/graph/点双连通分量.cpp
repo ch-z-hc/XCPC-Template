@@ -94,7 +94,6 @@ struct VBCC {
     }
 };
 
-// 调用示例：
-// VBCC vbcc(n);
+// 用法：VBCC vbcc(n);
 // vbcc.add_edge(u, v);
 // vbcc.build(); // vbcc.bcc 保存各分量。

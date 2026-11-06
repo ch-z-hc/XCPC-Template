@@ -47,7 +47,6 @@ struct CutVertex {
     }
 };
 
-// 调用示例：
-// CutVertex cut(n);
+// 用法：CutVertex cut(n);
 // cut.add_edge(u, v);
 // V < int > ans = cut.find();

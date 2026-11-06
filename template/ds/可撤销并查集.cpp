@@ -6,7 +6,7 @@ using namespace std;
 
 // 可撤销并查集；编号为 1..n，按大小合并，不使用路径压缩。
 // 初始化 O(n)，find 和 merge 为 O(log n)，撤销每次合并 O(1)。
-// 注意 snapshot 记录操作栈长度，合并失败也占一个记录；仅能回滚到已有快照。
+// snapshot 记录栈长度；合并失败也入栈，只能回滚到已有快照。
 struct RollbackDSU {
     V < int > fa, siz;
     V < pair < int, int > > stk;
@@ -48,8 +48,7 @@ struct RollbackDSU {
     }
 };
 
-// 调用示例：
-// RollbackDSU dsu(n);
+// 用法：RollbackDSU dsu(n);
 // int snap = dsu.snapshot();
 // dsu.merge(u, v);
 // dsu.rollback(snap);

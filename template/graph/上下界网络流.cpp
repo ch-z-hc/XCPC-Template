@@ -135,8 +135,7 @@ struct LRFlow {
     }
 };
 
-// 调用示例：
-// LRFlow flow(n);
+// 用法：LRFlow flow(n);
 // int id = flow.add_edge(u, v, lo, hi);
 // auto [ok, ans] = flow.solve(s, t, 1);
 // if (ok) { ll val = flow.f[id]; }

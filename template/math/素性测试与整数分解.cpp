@@ -92,6 +92,5 @@ V < ull > factor(ull n) {
     return ans;
 }
 
-// 调用示例：
-// bool op = is_prime(n);
+// 用法：bool op = is_prime(n);
 // V < ull > p = factor(n);

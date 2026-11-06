@@ -62,4 +62,4 @@ V < ll > dominance(const V < array < ll, 3 > > &a) {
     return ans;
 }
 
-// 调用示例：auto cnt = dominance(points);
+// 用法：auto cnt = dominance(points);

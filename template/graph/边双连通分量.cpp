@@ -91,8 +91,7 @@ struct EBCC {
     }
 };
 
-// 调用示例：
-// EBCC ebcc(n);
+// 用法：EBCC ebcc(n);
 // ebcc.add_edge(u, v);
 // ebcc.build();
 // int id = ebcc.bel[u];

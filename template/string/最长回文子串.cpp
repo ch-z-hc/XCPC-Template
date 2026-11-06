@@ -63,6 +63,5 @@ struct Manacher {
     }
 };
 
-// 调用示例：
-// Manacher man(s);
+// 用法：Manacher man(s);
 // bool op = man.query(l, r);

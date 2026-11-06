@@ -7,8 +7,8 @@ typedef long long ll;
 using namespace std;
 
 // 朱刘算法，求以 root 为根、边从根向外的最小树形图。
-// 顶点编号 1-based，允许负权、重边与自环；无解返回 false。
-// solve 成功返回 true，将最小权写入 ans；失败时不要使用 ans。
+// 顶点编号 1-based，允许负权、重边与自环。
+// solve 无解返回 false，否则将最小权写入 ans 并返回 true。
 // 时间 O(n(n + m))，有解时为 O(nm)；空间 O(n + m)。
 // 所有权值减法及答案累加须在 ll 范围内；solve 不修改原图。
 struct DMST {
@@ -66,5 +66,5 @@ struct DMST {
     }
 };
 
-// 调用示例：DMST mst(n); mst.add_edge(u, v, w);
+// 用法：DMST mst(n); mst.add_edge(u, v, w);
 // ll ans; bool ok = mst.solve(root, ans); // 成功时使用 ans。

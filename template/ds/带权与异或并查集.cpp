@@ -8,8 +8,7 @@ using namespace std;
 
 // 带权并查集，顶点 1-based；差值版 WDSU、异或版 XDSU。
 // merge(u, v, w) 添加 value[v] - value[u] = w 或 value[u] xor value[v] = w。
-// 返回约束是否相容；query(u, v, ans) 成功时将上述关系写入 ans。
-// query 连通时返回 true，不连通返回 false，此时不要使用 ans。
+// merge 返回约束是否相容；query(u, v, ans) 返回是否连通，连通时 ans 为上述关系。
 // 路径压缩 + 按大小合并，均摊 O(alpha(n))，空间 O(n)；差值运算须不溢出 ll。
 
 struct WDSU {
@@ -81,5 +80,5 @@ struct XDSU {
     }
 };
 
-// 调用示例：WDSU dsu(n); bool ok = dsu.merge(u, v, w);
+// 用法：WDSU dsu(n); bool ok = dsu.merge(u, v, w);
 // ll d; bool connected = dsu.query(u, v, d);

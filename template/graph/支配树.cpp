@@ -74,5 +74,5 @@ struct Dominator {
     }
 };
 
-// 调用示例：Dominator dt(n); dt.add_edge(u, v); dt.build(root);
+// 用法：Dominator dt(n); dt.add_edge(u, v); dt.build(root);
 // dt.idom[v] 为 v 的直接支配点；dt.tree 为以 root 为根的支配树。

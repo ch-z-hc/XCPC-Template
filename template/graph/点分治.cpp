@@ -81,4 +81,4 @@ struct Centroid {
     }
 };
 
-// 调用示例：Centroid tree(n); tree.add_edge(u, v, w); ll ans = tree.query(k);
+// 用法：Centroid tree(n); tree.add_edge(u, v, w); ll ans = tree.query(k);

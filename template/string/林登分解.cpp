@@ -24,4 +24,4 @@ V < int > lyndon_factorization(const string &s) {
     return pos;
 }
 
-// auto pos = lyndon_factorization(s);
+// 用法：auto pos = lyndon_factorization(s);

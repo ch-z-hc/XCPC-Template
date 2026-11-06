@@ -80,5 +80,5 @@ struct Multipoint {
     }
 };
 const int Multipoint::mod;
-// 调用：Multipoint poly; poly.build(x);
+// 用法：Multipoint poly; poly.build(x);
 // auto y = poly.evaluate(a); auto f = poly.interpolate(y);

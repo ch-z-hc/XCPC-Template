@@ -74,7 +74,6 @@ struct Dinic {
     }
 };
 
-// 调用示例：
-// Dinic dinic(n);
+// 用法：Dinic dinic(n);
 // dinic.add_edge(u, v, cap);
 // ll ans = dinic.flow(s, t);

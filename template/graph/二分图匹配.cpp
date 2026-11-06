@@ -46,7 +46,6 @@ struct Kuhn {
     }
 };
 
-// 调用示例：
-// Kuhn match(n, m);
+// 用法：Kuhn match(n, m);
 // match.add_edge(u, v);
 // int ans = match.solve();

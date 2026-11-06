@@ -22,4 +22,4 @@ int min_rotation(const string &s) {
     return n ? min(i, j) : 0;
 }
 
-// 调用示例：int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);
+// 用法：int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);

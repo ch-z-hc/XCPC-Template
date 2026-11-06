@@ -49,7 +49,6 @@ struct Bridge {
     }
 };
 
-// 调用示例：
-// Bridge bridge(n);
+// 用法：Bridge bridge(n);
 // bridge.add_edge(id, u, v);
 // V < int > ans = bridge.find();

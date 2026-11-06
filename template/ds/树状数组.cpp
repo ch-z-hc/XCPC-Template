@@ -57,7 +57,6 @@ struct Fenwick {
     }
 };
 
-// 调用示例：
-// Fenwick bit(a); // a[0] 为占位。
+// 用法：Fenwick bit(a); // a[0] 为占位。
 // bit.add(x, v);
 // ll ans = bit.query(l, r);

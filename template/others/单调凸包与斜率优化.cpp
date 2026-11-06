@@ -7,7 +7,7 @@ typedef long long ll;
 using namespace std;
 
 // 单调凸包优化：加入的斜率 k 不增，查询横坐标 x 不减，求最小 kx + b。
-// 允许相等斜率和相等查询；查询前必须已有直线，无模数要求。
+// 允许相等斜率和相等查询；查询前必须已有直线。
 // x、k、b 和返回值均为 ll；差值、交叉乘积与 kx + b 的中间量不能溢出。
 // |x|、|k|、|b| <= 10^9 是充分限制；DP 须按实际截距重新检查。
 // add / query 均摊 O(1)，空间 O(插入总数)；不返回最优直线编号。
@@ -43,4 +43,4 @@ struct CHT {
     }
 };
 
-// 调用：CHT hull; hull.add(k, b); ll ans = hull.query(x); cout << ans << '\n';
+// 用法：CHT hull; hull.add(k, b); ll ans = hull.query(x); cout << ans << '\n';

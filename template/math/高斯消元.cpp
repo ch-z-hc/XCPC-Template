@@ -96,8 +96,7 @@ int gauss_xor(V < bitset < N > > a, int m, V < int > &x) {
     return r == m ? 1 : 2;
 }
 
-// 调用示例：
-// V < ld > x; int op = gauss(a, m, x);
+// 用法：V < ld > x; int op = gauss(a, m, x);
 // V < ll > y; int op = gauss_mod(b, m, p, y);
 // 异或示例：x0 ^ x1 = 1，x1 = 0；N 必须为编译期常量，且 N > m。
 // const int N = 1005; int n = 2, m = 2;

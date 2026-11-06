@@ -10,9 +10,9 @@ using namespace std;
 // Bellman-Ford 检测全图负环，再以势能重标边权运行 n 次 Dijkstra。
 // 时间 O(nm + n(n + m) log n)，含结果矩阵的空间 O(n^2 + m)。
 // 要求 n * max|w| < inf / 4，保证负环检测、势能和重标距离安全。
-// 有限距离的绝对值小于 inf；不可达为 inf，全图有负环返回 false。
-// solve 成功返回 true，将距离矩阵写入 ans；失败时不要使用 ans。
-// solve 不修改图，可重复调用；不使用模数。
+// 有限距离绝对值 < inf，不可达为 inf。
+// solve 遇负环返回 false，否则将距离矩阵写入 ans 并返回 true。
+// solve 不修改图，可重复调用。
 struct Johnson {
     static const ll inf = 1ll << 62;
     struct Edge { int u, v; ll w; };
@@ -72,5 +72,5 @@ struct Johnson {
     }
 };
 const ll Johnson::inf;
-// Johnson g(n); g.add_edge(u, v, w);
+// 用法：Johnson g(n); g.add_edge(u, v, w);
 // V < V < ll > > dis; bool ok = g.solve(dis); // 成功时使用 dis[u][v]。

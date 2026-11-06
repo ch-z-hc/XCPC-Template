@@ -85,5 +85,5 @@ struct LCT {
     ll query(int u, int v) { make_root(u); access(v); return tr[v].sum; }
 };
 
-// LCT tree; tree.init(a); tree.link(u, v); tree.modify(u, value);
+// 用法：LCT tree; tree.init(a); tree.link(u, v); tree.modify(u, value);
 // if (tree.same(u, v)) ll_sum = tree.query(u, v); tree.cut(u, v);

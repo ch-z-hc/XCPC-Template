@@ -6,11 +6,11 @@ using namespace std;
 
 // Dancing Links 精确覆盖：选若干行，使每列恰好出现一次；列编号 1-based。
 // init(cols) 清空矩阵；add_row(id, columns) 要求行 id 唯一，列合法且不重复。
-// 空行无需选择；solve(rows) 成功时将第一组行 id 写入 rows 并返回 true。
-// 无解返回 false，0 列返回 true 并输出空解；失败时不要使用 rows。
-// 每次 solve 都恢复全部链，可重复求解，之后仍可 add_row；不修改原矩阵。
+// 空行无需选择；solve(rows) 返回是否有解，成功时 rows 为第一组行 id。
+// 0 列返回空解；仅返回 true 时 rows 有效。
+// solve 后恢复全部链，可重复求解或继续 add_row。
 // 构建 O(cols + 非零元数)，搜索最坏为指数级；空间 O(cols + 非零元数 + 行数)。
-// 递归层数不超过列数；选当前非零元最少的列分支，不使用模数。
+// 递归层数不超过列数；选当前非零元最少的列分支。
 struct DLX {
     struct Node { int l, r, u, d, col, row; };
     int cols = 0;
@@ -86,6 +86,6 @@ struct DLX {
     }
 };
 
-// 调用：DLX dlx(cols); dlx.add_row(id, {c1, c2});
+// 用法：DLX dlx(cols); dlx.add_row(id, {c1, c2});
 // V < int > rows; bool ok = dlx.solve(rows);
 // 成功时 rows 是选中行的 id，不是行的插入次序。

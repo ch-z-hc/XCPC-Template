@@ -90,5 +90,5 @@ struct Blossom {
     }
 };
 
-// 调用示例：Blossom blossom(n); blossom.add_edge(u, v);
+// 用法：Blossom blossom(n); blossom.add_edge(u, v);
 // int ans = blossom.solve(); 匹配边可取所有 u < blossom.match[u]。

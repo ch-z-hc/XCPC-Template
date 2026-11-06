@@ -69,7 +69,7 @@ struct HLD {
     }
 };
 
-// 调用示例：HLD hld(n); hld.add_edge(u, v); hld.build(root);
+// 用法：HLD hld(n); hld.add_edge(u, v); hld.build(root);
 // a 为 1-based 点权；先复制数据结构章的“线段树与树上二分”。
 // V < ll > b(n + 1);
 // for (int u = 1; u <= n; ++ u) b[hld.in[u]] = a[u];

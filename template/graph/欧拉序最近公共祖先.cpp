@@ -67,8 +67,7 @@ struct EulerLCA {
     }
 };
 
-// 调用示例：
-// EulerLCA lca(n);
+// 用法：EulerLCA lca(n);
 // lca.add_edge(u, v);
 // lca.build(root);
 // int p = lca.lca(u, v);

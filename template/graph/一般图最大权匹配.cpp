@@ -10,7 +10,7 @@ using namespace std;
 // 一般无向图最大权匹配，带权 Blossom；时间 O(n^3)，空间 O(n^2)。
 // 顶点 1-based；允许未匹配，不优先最大基数；自环、非正权忽略。
 // 重边保留最大权；solve 返回最大总权，match[u] 为匹配点，未匹配为 0。
-// 每次 solve 从空匹配重算，init 清空图；无模数要求。
+// 每次 solve 从空匹配重算，init 清空图。
 // 正边权 w <= LLONG_MAX / (8 * max(1, n))，保证对偶值和总权不溢出。
 // 参考 bqi343/cp-notebook 的 GeneralWeightedMatch.h，CC0-1.0。
 // github.com/bqi343/cp-notebook；保留收缩、展开和对偶调整的原算法。
@@ -238,5 +238,5 @@ struct WeightedBlossom {
     }
 };
 
-// 调用：WeightedBlossom blossom(n); blossom.add_edge(u, v, w);
+// 用法：WeightedBlossom blossom(n); blossom.add_edge(u, v, w);
 // ll ans = blossom.solve(); 匹配边取所有 u < blossom.match[u]。

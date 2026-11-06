@@ -38,5 +38,4 @@ V < int > euler_d(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// 调用示例：
-// V < int > path = euler_d(n, edges);
+// 用法：V < int > path = euler_d(n, edges);

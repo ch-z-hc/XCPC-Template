@@ -16,7 +16,7 @@ struct MoTree {
     V < int > in, out, ord, dep;
     V < Query > qs;
 
-    // 示例维护：将下面 3 个声明替换为此段成员，再按题意改。
+    // 示例维护：用以下成员替换下方 3 个函数声明。
     // V < int > color, cnt, ans; int kinds = 0;
     // void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
     // void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
@@ -82,8 +82,8 @@ struct MoTree {
     }
 };
 
-// MoTree mo(n); mo.add_edge(u, v); mo.build(); int id = mo.query(u, v);
-// 以上示例求路径上不同颜色数；color 按顶点 1-based，颜色压到 [1, m]。
+// 用法：MoTree mo(n); mo.add_edge(u, v); mo.build(); int id = mo.query(u, v);
+// 统计路径上不同颜色数；color 按顶点 1-based，颜色离散到 [1, m]。
 // mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
 // mo.ans.resize(mo.qs.size()); mo.solve(); // 答案为 mo.ans[id]。
 // 重跑 solve 前清零 cnt 和 kinds；build 会清空已记录的查询。

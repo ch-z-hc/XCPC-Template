@@ -9,7 +9,7 @@ using namespace std;
 // 区间加、区间求和与树上二分；下标为 1-based，区间为闭区间 [l, r]。
 // 初始化 O(n)，修改、查询与搜索为 O(log n)，空间 O(n)。
 // 要求 a 保留下标 0 的占位，所有计算不溢出 ll；init 可重新构建。
-// 空区间修改无效，查询返回 0；不使用模数。
+// 空区间修改无效，查询返回 0。
 // first_ge / last_ge 找区间内第一个 / 最后一个 >= v 的位置，不存在返回 -1。
 // kth 找全局前缀和首次 >= k 的位置，要求所有元素非负；k 非法返回 -1。
 struct SegTree {
@@ -116,5 +116,5 @@ struct SegTree {
         return l;
     }
 };
-// SegTree st; st.init(a); st.modify(l, r, v); ll ans = st.query(l, r);
+// 用法：SegTree st; st.init(a); st.modify(l, r, v); ll ans = st.query(l, r);
 // int first = st.first_ge(l, r, v), last = st.last_ge(l, r, v), id = st.kth(k);

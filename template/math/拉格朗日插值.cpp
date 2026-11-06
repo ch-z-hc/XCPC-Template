@@ -36,5 +36,4 @@ ll lagrange(const V < ll > &x,
     return ans;
 }
 
-// 调用示例：
-// ll ans = lagrange(x, y, at, mod);
+// 用法：ll ans = lagrange(x, y, at, mod);

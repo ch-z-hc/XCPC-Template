@@ -72,6 +72,6 @@ struct KruskalTree {
     }
 };
 
-// 调用：KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
+// 用法：KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
 // ll ans; bool ok = tree.query(u, v, ans);
 // tree.t、tree.weight 可用于额外的树上统计。

@@ -8,7 +8,7 @@ using namespace std;
 
 // Kruskal 最小生成树；无向图顶点编号 1..n，允许负边权和重边。
 // 复杂度 O(m log m)，空间 O(n + m)。图不连通时返回最小生成森林且 ok 为 false。
-// 选边过程的权值累加须能用 ll 表示，不使用模数。
+// 选边过程的权值累加须能用 ll 表示。
 
 struct Edge {
     int u, v, id;
@@ -48,7 +48,6 @@ MST kruskal(int n, V < Edge > edges) {
     return ans;
 }
 
-// 调用示例：
-// V < Edge > edges;
+// 用法：V < Edge > edges;
 // auto ans = kruskal(n, edges);
 // ans.sum 为总权，ans.ids 为选边编号，ans.ok 表示图是否连通。

@@ -6,7 +6,7 @@ using namespace std;
 
 // 长链剖分第 k 级祖先；输入为连通树，顶点 1-based，dep[root] = 1。
 // build 为 O(n log n)，query 为 O(1)，空间 O(n log n)；k >= 0。
-// k = 0 返回自身，越过根返回 0；可重复 build 更换根，无模数要求。
+// k = 0 返回自身，越过根返回 0；可重复 build 更换根。
 // 长链按子树最大深度选择，不是按 siz；递归深度最坏 O(n)。
 struct KthAncestor {
     int n = 0, lg = 1;
@@ -62,5 +62,5 @@ struct KthAncestor {
     }
 };
 
-// 调用：KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
+// 用法：KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
 // int p = tree.query(u, k);

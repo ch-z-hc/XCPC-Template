@@ -32,4 +32,4 @@ V < int > exkmp(const string &s, const string &t) {
     return ans;
 }
 
-// 调用示例：auto z = get_z(s); auto match = exkmp(s, t);
+// 用法：auto z = get_z(s); auto match = exkmp(s, t);

@@ -65,5 +65,5 @@ ll matrix_tree(int n, const V < tuple < int, int, ll > > &edges,
     return det(a, mod);
 }
 
-// 调用示例：det({{1, 2}, {3, 4}}, 998244353);
+// 用法：det({{1, 2}, {3, 4}}, 998244353);
 // matrix_tree(3, {{1, 2, 1}, {2, 3, 1}, {1, 3, 1}}, 998244353);

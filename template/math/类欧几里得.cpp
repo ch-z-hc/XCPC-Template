@@ -41,6 +41,6 @@ ll floor_sum(ll n, ll m, ll a, ll b) {
     return ans;
 }
 
-// 调用示例：ll ans = floor_sum(4, 10, 6, 3); // ans = 3。
+// 用法：ll ans = floor_sum(4, 10, 6, 3); // ans = 3。
 // floor_sum(4, 10, -6, 3) = -4。
 // cout << ans << '\n';

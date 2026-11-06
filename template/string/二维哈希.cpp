@@ -54,5 +54,5 @@ struct Hash2D {
     }
 };
 const ll Hash2D::Table::bx, Hash2D::Table::by;
-// Hash2D hash; hash.build({"abc", "def"});
+// 用法：Hash2D hash; hash.build({"abc", "def"});
 // auto value = hash.query(0, 1, 1, 2);

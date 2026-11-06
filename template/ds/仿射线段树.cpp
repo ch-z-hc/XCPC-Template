@@ -70,5 +70,5 @@ struct AffineSegTree {
     ll query(int l, int r) { return n && l <= r ? query(1, 1, n, l, r) : 0; }
 };
 
-// AffineSegTree st; st.init(a, mod); st.modify(l, r, mul, add);
+// 用法：AffineSegTree st; st.init(a, mod); st.modify(l, r, mul, add);
 // ll ans = st.query(l, r);

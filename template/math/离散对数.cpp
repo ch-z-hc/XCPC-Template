@@ -54,4 +54,4 @@ ll exbsgs(ll a, ll b, ll mod) {
     return ans == -1 ? -1 : ans + cnt;
 }
 
-// 调用示例：ll x = exbsgs(a, b, mod);
+// 用法：ll x = exbsgs(a, b, mod);

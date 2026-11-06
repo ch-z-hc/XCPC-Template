@@ -55,8 +55,7 @@ struct LCA {
     }
 };
 
-// 调用示例：
-// LCA tree(n);
+// 用法：LCA tree(n);
 // tree.add_edge(u, v);
 // tree.build(root);
 // int p = tree.lca(u, v);

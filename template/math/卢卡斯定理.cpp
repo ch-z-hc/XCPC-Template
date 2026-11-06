@@ -38,4 +38,4 @@ struct Lucas {
     }
 };
 
-// 调用示例：Lucas comb; comb.init(p); ll ans = comb.choose(n, k);
+// 用法：Lucas comb; comb.init(p); ll ans = comb.choose(n, k);

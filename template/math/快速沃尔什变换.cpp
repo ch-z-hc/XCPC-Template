@@ -66,8 +66,7 @@ void fwt_xor(V < ll > &a, ll mod, bool inv = false) {
     }
 }
 
-// 调用示例：
-// fwt_or(a, mod);
+// 用法：fwt_or(a, mod);
 // ifwt_or(a, mod); // 恢复原数组。
 // fwt_xor(a, mod);
 // fwt_xor(a, mod, 1);

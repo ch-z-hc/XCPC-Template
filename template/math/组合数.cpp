@@ -36,7 +36,6 @@ struct Comb {
     }
 };
 
-// 调用示例：
-// Comb comb;
+// 用法：Comb comb;
 // comb.init(n, mod);
 // ll ans = comb.choose(n, k);

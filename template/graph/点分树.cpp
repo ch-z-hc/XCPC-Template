@@ -6,7 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-// 点分树：静态连通树，边权非负（可为 0），顶点 1-based，不使用模数。
+// 点分树：静态连通树，边权非负（可为 0），顶点 1-based。
 // build 后初始点权为 0；modify 增加点权（可为负），query 求距离 <= r 的点权和。
 // build 可重复调用，保留边并清空点权；建树后不再加边。
 // build 为 O(n log^2 n)，修改和查询为 O(log^2 n)，空间 O(n log n)。
@@ -113,6 +113,5 @@ struct CentroidTree {
     }
 };
 
-// 调用示例：
-// CentroidTree tree(n); tree.add_edge(u, v, w); // 加入全部 n - 1 条边。
+// 用法：CentroidTree tree(n); tree.add_edge(u, v, w); // 加入全部 n - 1 条边。
 // tree.build(); tree.modify(u, delta); ll ans = tree.query(u, radius);

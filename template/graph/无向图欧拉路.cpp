@@ -44,5 +44,4 @@ V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// 调用示例：
-// V < int > path = euler_u(n, edges);
+// 用法：V < int > path = euler_u(n, edges);

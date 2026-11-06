@@ -12,7 +12,6 @@ using namespace std;
 // area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。
 
 db area(V < P > ps) {
-    // 求多边形面积（逆时针顺序给出点 -> 面积为正）
     db ret = 0; if (ps.size() == 0) return 0;
     for (int i = 1; i + 1 < (int)ps.size(); ++ i) {
         ret += (ps[i] - ps[0]).det(ps[i + 1] - ps[0]);
@@ -21,11 +20,7 @@ db area(V < P > ps) {
 }
 
 int contain(V < P > ps, P p) {
-    // 0 : outside
-    // 1 : on_seg
-    // 2 : inside
-
-    // ps 是多边形，判断 p 在多边形 内部 / 线段上 / 外部
+    // p 的位置：0 外部 / 1 边界 / 2 内部。
     int n = ps.size(), ret = 0;
     for (int i = 0; i < n; ++ i) {
         P u = ps[i], v = ps[(i + 1) % n];
@@ -39,7 +34,7 @@ int contain(V < P > ps, P p) {
 }
 
 V < P > convexCut(V<P> ps, P q1, P q2) {
-    // 直线切割凸包，返回直线左边凸包的点
+    // 保留有向直线 q1 -> q2 左侧的凸多边形。
     V < P > qs;
     int n = ps.size();
     for (int i = 0; i < n; ++ i) {

@@ -73,5 +73,5 @@ struct VTree {
     }
 };
 
-// 调用示例：VTree tree(n); tree.add_edge(u, v); tree.build(root);
+// 用法：VTree tree(n); tree.add_edge(u, v); tree.build(root);
 // int rt = tree.query(key); // 从 rt 沿 tree.t 做虚树 DP。

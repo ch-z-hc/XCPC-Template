@@ -11,7 +11,7 @@ using namespace std;
 // build 递归处理反向树；预处理 O(64 n)，空间 O(64 n)，可重复构建。
 // jump(u, k) 支持整个 ull 范围，O(64)；distance(u, v) 不可达返回 -1。
 // cycles 为 0-based 环列表，沿出边顺序；bel 为环编号，pos 为环上位置。
-// 非环点 pos = -1；entry 为入环点，dep 为到环步数；不使用模数。
+// 非环点 pos = -1；entry 为入环点，dep 为到环步数。
 struct FunctionalGraph {
     int n = 0;
     V < V < int > > g, cycles;
@@ -72,5 +72,5 @@ struct FunctionalGraph {
     }
 };
 
-// FunctionalGraph graph; graph.build({0, 2, 3, 2});
+// 用法：FunctionalGraph graph; graph.build({0, 2, 3, 2});
 // int v = graph.jump(1, 100); ll d = graph.distance(1, 3);

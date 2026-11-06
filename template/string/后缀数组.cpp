@@ -88,6 +88,5 @@ struct SA {
     }
 };
 
-// 调用示例：
-// SA sa(s);
+// 用法：SA sa(s);
 // int len = sa.lcp(x, y);

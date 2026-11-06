@@ -34,6 +34,5 @@ Matrix matrix_pow(Matrix a, ll b, ll mod) {
     return res;
 }
 
-// 调用示例：
-// Matrix c = matrix_mul(a, b, mod);
+// 用法：Matrix c = matrix_mul(a, b, mod);
 // Matrix p = matrix_pow(a, k, mod);

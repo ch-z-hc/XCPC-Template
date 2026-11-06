@@ -76,8 +76,7 @@ struct KM {
     }
 };
 
-// 调用示例：
-// KM km(n, m);
+// 用法：KM km(n, m);
 // km.add_edge(u, v, w);
 // auto [ok, ans] = km.solve();
 // if (ok) { int v = km.ml[u]; }

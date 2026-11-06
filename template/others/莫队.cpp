@@ -12,7 +12,7 @@ using namespace std;
 struct Mo {
     struct Query { int l, r, id; };
 
-    // 示例维护：将下面 3 个声明替换为此段成员，再按题意改。
+    // 示例维护：用以下成员替换下方 3 个函数声明。
     // V < int > a, cnt, ans; int kinds = 0;
     // void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
     // void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
@@ -39,9 +39,8 @@ struct Mo {
     }
 };
 
-// 调用示例：
-// 以上示例求不同值个数，a 的值先离散到 [1, m]，a 的下标为 1-based。
+// 用法：统计不同值个数，a 的值先离散到 [1, m]。
 // Mo mo; mo.a = a; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
 // mo.ans.resize(qs.size()); mo.solve(n, qs); // 答案在 mo.ans。
 // qs 的类型为 V < Mo::Query >，每个查询的 id 为答案下标。
-// 重跑前清零 cnt 和 kinds；不同维护逻辑的重置方式也按题意修改。
+// 重跑前清零 cnt 和 kinds。

@@ -87,7 +87,6 @@ struct HK {
     }
 };
 
-// 调用示例：
-// HK hk(n, m);
+// 用法：HK hk(n, m);
 // hk.add_edge(u, v);
 // int ans = hk.solve();

@@ -199,8 +199,7 @@ struct SeqTreap {
     ll at(int pos) { return query(pos, pos); }
 };
 
-// 调用示例：
-// Treap t; t.insert(3); t.insert(3); t.erase(3);
+// 用法：Treap t; t.insert(3); t.insert(3); t.erase(3);
 // ll x; bool ok = t.kth(1, x); // 成功时使用 x。
 // SeqTreap s; s.insert(1, 2); s.insert(2, 5); s.reverse(1, 2);
 // ll sum = s.query(1, 2), val = s.at(1);

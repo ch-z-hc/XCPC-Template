@@ -4,7 +4,7 @@ typedef long double ld;
 
 using namespace std;
 
-// 自适应 Simpson 积分；用于局部采样能解析的平滑函数，无数组下标或模数。
+// 自适应 Simpson 积分，适用于局部采样能解析的平滑函数。
 // eps > 0，max_dep >= 0；eps 是绝对误差估计，不是任意连续函数的严格保证。
 // 尖峰或高频振荡需按已知位置分段；达到深度上限仍返回当前近似值。
 // 采样值与积分近似须可用 double 表示；使用范围更宽的 long double 中间量。
@@ -38,5 +38,4 @@ double simpson(F f, double l, double r, double eps = 1e-8,
     return solve(solve, l, r, simpson(l, r), eps, max_dep);
 }
 
-// 调用示例：
-// double ans = simpson([](double x) { return x * x; }, 0, 1);
+// 用法：double ans = simpson([](double x) { return x * x; }, 0, 1);

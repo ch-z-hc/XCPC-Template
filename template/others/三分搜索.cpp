@@ -4,7 +4,7 @@ typedef long double ld;
 
 using namespace std;
 
-// 连续单峰函数三分；接口不涉及数组下标，返回极值位置近似值。
+// 连续单峰函数三分，返回极值位置的近似值。
 // l <= r；极值区间外须严格单调，非最优平台会使三分误判。
 // 调用函数次数 O(times)，额外空间 O(1)。
 
@@ -26,5 +26,4 @@ ld ternary_max(F f, ld l, ld r, int times = 200) {
     return l + (r / 2 - l / 2);
 }
 
-// 调用示例：
-// ld x = ternary_min([](ld x) { return x * x; }, -10, 10);
+// 用法：ld x = ternary_min([](ld x) { return x * x; }, -10, 10);

@@ -6,7 +6,7 @@ using namespace std;
 
 // 最长上升子序列及方案恢复；a 为 1-based，a[0] 不使用。
 // strict 为真时严格递增，否则非递减；返回一组原下标，长度即最优长度。
-// O(n log n) 时间、O(n) 空间；重复值按 strict 处理，不使用模数。
+// 时间 O(n log n)，空间 O(n)。
 template < class T >
 V < int > lis(const V < T > &a, bool strict = true) {
     V < T > tail;
@@ -24,4 +24,4 @@ V < int > lis(const V < T > &a, bool strict = true) {
     return ans;
 }
 
-// auto ids = lis(a); auto nondecreasing = lis(a, false);
+// 用法：auto ids = lis(a); auto nondecreasing = lis(a, false);

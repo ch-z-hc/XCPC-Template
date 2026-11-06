@@ -46,4 +46,4 @@ V < int > subset_convolution(const V < int > &a, const V < int > &b,
     return ans;
 }
 
-// 调用：auto c = subset_convolution(a, b, 998244353);
+// 用法：auto c = subset_convolution(a, b, 998244353);

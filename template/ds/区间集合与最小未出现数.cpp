@@ -8,7 +8,7 @@ using namespace std;
 // s 中区间互不相交、互不相邻；insert 合并，erase 切开，clear 可复用。
 // contains 判断点是否覆盖，mex(x) 返回 >= x 的最小未覆盖整数。
 // insert / erase 为 O((k + 1) log m)，k 为触及区间数、m 为区间数。
-// contains / mex 为 O(log m)，空间 O(m)；不使用模数。
+// contains / mex 为 O(log m)，空间 O(m)。
 // 不做端点 +/- 1，支持 LLONG_MIN / MAX 端点，但半开区间不能覆盖 LLONG_MAX。
 struct IntervalSet {
     set < pair < ll, ll > > s;
@@ -50,5 +50,5 @@ struct IntervalSet {
     }
 };
 
-// IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
+// 用法：IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
 // bool covered = seg.contains(1); ll x = seg.mex(1); // 2。

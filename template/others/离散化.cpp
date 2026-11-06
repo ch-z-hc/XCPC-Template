@@ -20,7 +20,6 @@ V < int > discretize(const V < T > &a, V < T > &key) {
     return id;
 }
 
-// 调用示例：
-// V < int > a{30, 10, 30}, key;
+// 用法：V < int > a{30, 10, 30}, key;
 // V < int > id = discretize(a, key); // id = {2, 1, 2}，key = {10, 30}。
 // 原值为 key[id[i] - 1]，不同值个数为 int(key.size())。

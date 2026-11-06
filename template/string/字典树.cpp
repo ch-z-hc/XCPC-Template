@@ -54,7 +54,6 @@ struct Trie {
     }
 };
 
-// 调用示例：
-// Trie trie;
+// 用法：Trie trie;
 // trie.insert("aba");
 // int cnt = trie.prefix("ab");

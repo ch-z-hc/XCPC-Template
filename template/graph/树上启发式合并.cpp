@@ -15,7 +15,7 @@ struct DSUOnTree {
     V < V < int > > g;
     V < int > siz, son, in, out, ord;
 
-    // 示例维护：将下面 3 个声明替换为此段成员，再按题意改。
+    // 示例维护：用以下成员替换下方 3 个函数声明。
     // V < int > color, cnt, ans; int kinds = 0;
     // void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
     // void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
@@ -81,9 +81,8 @@ struct DSUOnTree {
     }
 };
 
-// 调用示例：
-// DSUOnTree dsu(n);
+// 用法：DSUOnTree dsu(n);
 // dsu.add_edge(u, v);
-// 以上示例求每个子树的不同颜色数；颜色压到 [1, m]。
+// 统计子树内不同颜色数，颜色离散到 [1, m]。
 // dsu.color = color; dsu.cnt.assign(m + 1, 0); dsu.kinds = 0;
 // dsu.ans.resize(n + 1); dsu.build(1); // 顶点 u 的答案为 dsu.ans[u]。

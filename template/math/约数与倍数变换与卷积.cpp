@@ -48,5 +48,5 @@ V < ll > lcm_convolution(V < ll > a, V < ll > b, ll mod) {
     return a;
 }
 
-// divisor_zeta(a, mod); divisor_zeta(a, mod, true); // 恢复 a。
+// 用法：divisor_zeta(a, mod); divisor_zeta(a, mod, true); // 恢复 a。
 // auto c = gcd_convolution(a, b, mod); auto d = lcm_convolution(a, b, mod);

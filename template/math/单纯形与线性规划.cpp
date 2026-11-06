@@ -88,5 +88,5 @@ struct Simplex {
     }
 };
 
-// Simplex lp; auto ans = lp.solve(A, b, c);
+// 用法：Simplex lp; auto ans = lp.solve(A, b, c);
 // if (ans.status == 1) { ld optimum = ans.value; }

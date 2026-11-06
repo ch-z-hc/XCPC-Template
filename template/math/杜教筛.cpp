@@ -74,5 +74,5 @@ struct DuJiao {
     }
 };
 
-// 调用示例：DuJiao d; d.init(5000000);
+// 用法：DuJiao d; d.init(5000000);
 // ll a = d.phi(n), b = d.mu(n); cout << a << ' ' << b << '\n';

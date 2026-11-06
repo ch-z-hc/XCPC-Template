@@ -8,7 +8,7 @@ using namespace std;
 
 // 1-based 数组 a，a[0] 不使用；返回左右最近的严格更小元素下标。
 // greater = true 时改为严格更大；不存在时 left = 0，right = n + 1。
-// 时间 O(n)，空间 O(n)；相等元素不算更小 / 更大，无模数要求。
+// 时间 O(n)，空间 O(n)；相等元素不算更小 / 更大。
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
                                               bool greater = false) {
     int n = int(a.size()) - 1;
@@ -29,4 +29,4 @@ pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
     return {left, right};
 }
 
-// 调用：auto [left, right] = monotonic_bounds(a);
+// 用法：auto [left, right] = monotonic_bounds(a);

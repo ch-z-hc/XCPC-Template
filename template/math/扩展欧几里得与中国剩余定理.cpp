@@ -53,5 +53,5 @@ bool crt(const V < ll > &r, const V < ll > &m, ll &ans, ll &mod) {
     return true;
 }
 
-// 调用示例：ll ans, mod; bool ok = crt({2, 3}, {3, 5}, ans, mod);
+// 用法：ll ans, mod; bool ok = crt({2, 3}, {3, 5}, ans, mod);
 // 仅在 ok 为 true 时使用输出；此例 ans = 8，mod = 15。

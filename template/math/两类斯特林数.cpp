@@ -43,5 +43,5 @@ V < ll > stirling_second_row(int n) {
     return a;
 }
 
-// auto s = stirling_first(n, mod); auto t = stirling_second(n, mod);
+// 用法：auto s = stirling_first(n, mod); auto t = stirling_second(n, mod);
 // auto row = stirling_second_row(n);

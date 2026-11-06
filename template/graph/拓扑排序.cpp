@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 有向图拓扑排序；g 使用 1-based 顶点编号，存在环时返回 false。
-// 成功返回 true，将拓扑序写入 ans；失败时不要使用 ans。
+// 有向图拓扑排序；g 使用 1-based 顶点编号。
+// 有环返回 false，否则将拓扑序写入 ans 并返回 true。
 // 复杂度 O(n + m)，空间 O(n)。
 
 bool topo(const V < V < int > > &g, V < int > &ans) {
@@ -27,6 +27,5 @@ bool topo(const V < V < int > > &g, V < int > &ans) {
     return int(ans.size()) == n;
 }
 
-// 调用示例：
-// V < int > ans;
+// 用法：V < int > ans;
 // if (topo(g, ans)) for (int u : ans) { /* 拓扑序。 */ }

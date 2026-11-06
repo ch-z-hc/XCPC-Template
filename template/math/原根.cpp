@@ -26,4 +26,4 @@ ull primitive_root(ull p) {
     }
 }
 
-// 调用：ull g = primitive_root(p);
+// 用法：ull g = primitive_root(p);

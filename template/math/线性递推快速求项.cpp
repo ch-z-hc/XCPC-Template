@@ -37,5 +37,5 @@ int linear_kth(const V < int > &init, const V < int > &rec, ull k) {
     return bostan_mori(p, q, k);
 }
 
-// int ans = linear_kth({0, 1}, {1, 1}, 1000000000000000000ull);
+// 用法：int ans = linear_kth({0, 1}, {1, 1}, 1000000000000000000ull);
 // int coef = bostan_mori({1}, {1, FPS::mod - 1}, k); // 恒为 1。

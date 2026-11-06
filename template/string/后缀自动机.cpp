@@ -85,7 +85,6 @@ struct SAM {
     }
 };
 
-// 调用示例：
-// SAM sam;
+// 用法：SAM sam;
 // sam.build(s);
 // ll ans = sam.query();

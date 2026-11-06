@@ -29,6 +29,5 @@ struct Sieve {
     }
 };
 
-// 调用示例：
-// Sieve sieve;
+// 用法：Sieve sieve;
 // sieve.build(n); // sieve.phi[i]、sieve.mu[i] 分别为 phi(i)、mu(i)。

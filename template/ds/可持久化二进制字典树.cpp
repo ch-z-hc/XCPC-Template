@@ -8,7 +8,7 @@ using namespace std;
 // insert(root, x) 返回插入后的新根，不修改旧版本；init 清空全部版本。
 // max_xor(left, right, x, ans) 将两个版本的多重集合差与 x 的最大异或值写入 ans。
 // 要求 left 是 right 的祖先版本，或其多重集合被 right 包含。
-// 空差集返回 false，成功返回 true，此时才能使用 ans。
+// 空差集返回 false；仅返回 true 时 ans 有效。
 // 单次插入 / 查询 O(64)，每次插入新增 65 个节点，空间 O(64 * 插入次数)。
 // 前缀版本 root[i] 插入 a[i]，闭区间 [l, r] 用 root[l - 1]、root[r] 作差。
 struct PersistentXorTrie {
@@ -45,7 +45,7 @@ struct PersistentXorTrie {
     }
 };
 
-// 调用：PersistentXorTrie trie; V < int > root(n + 1);
+// 用法：PersistentXorTrie trie; V < int > root(n + 1);
 // for (int i = 1; i <= n; ++ i) root[i] = trie.insert(root[i - 1], a[i]);
 // unsigned long long ans;
 // bool ok = trie.max_xor(root[l - 1], root[r], x, ans);

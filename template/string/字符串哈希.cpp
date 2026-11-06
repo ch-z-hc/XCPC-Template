@@ -48,4 +48,4 @@ struct Hash {
     }
 };
 const ll Hash::mod1, Hash::mod2, Hash::base;
-// 调用示例：Hash h(s); bool same = h.query(l1, r1) == h.query(l2, r2);
+// 用法：Hash h(s); bool same = h.query(l1, r1) == h.query(l2, r2);

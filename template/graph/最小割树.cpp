@@ -10,7 +10,7 @@ using namespace std;
 // 总容量须放入 ll；支持重边、自环和不连通图，可重复 build。
 // t 为最小割树，路径最小边权等于两点最小割；query 同点约定返回 0。
 // build 调用 n - 1 次最大流，另有 O(n^2 + n log n) 工作；query 为 O(log n)。
-// 空间 O(n + m + n log n)，递归树遍历深度最坏 O(n)，无模数要求。
+// 空间 O(n + m + n log n)，递归树遍历深度最坏 O(n)。
 struct GomoryHu {
     struct Edge { int u, v; ll cap; };
     int n = 0, lg = 1;
@@ -82,5 +82,5 @@ struct GomoryHu {
     }
 };
 
-// 调用：GomoryHu tree(n); tree.add_edge(u, v, cap); tree.build();
+// 用法：GomoryHu tree(n); tree.add_edge(u, v, cap); tree.build();
 // ll value = tree.query(s, t);

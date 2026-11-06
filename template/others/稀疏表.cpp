@@ -28,7 +28,6 @@ struct ST {
     }
 };
 
-// 调用示例：
-// ST st;
+// 用法：ST st;
 // st.build(a);
 // ll ans = st.query(l, r);

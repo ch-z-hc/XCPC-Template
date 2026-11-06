@@ -64,4 +64,4 @@ struct PST {
     }
 };
 
-// 调用示例：PST tree; tree.build(a); ll x = tree.kth(l, r, k);
+// 用法：PST tree; tree.build(a); ll x = tree.kth(l, r, k);

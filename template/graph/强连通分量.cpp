@@ -61,8 +61,7 @@ struct SCC {
     }
 };
 
-// 调用示例：
-// SCC scc(n);
+// 用法：SCC scc(n);
 // scc.add_edge(u, v);
 // int cnt = scc.build();
 // int id = scc.bel[u];

@@ -108,7 +108,6 @@ struct MCMF {
     }
 };
 
-// 调用示例：
-// MCMF mcf(n);
+// 用法：MCMF mcf(n);
 // mcf.add_edge(u, v, cap, cost);
 // auto [flow, cost] = mcf.flow(s, t);

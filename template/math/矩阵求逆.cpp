@@ -7,8 +7,7 @@ typedef long long ll;
 using namespace std;
 
 // 质数模数 2 <= mod <= INT_MAX；输入为 0-based 方阵，允许负元素。
-// 成功返回 true，逆矩阵写入 b；不可逆返回 false，此时不要使用 b。
-// 空矩阵可逆，输出空矩阵。
+// 不可逆返回 false，否则将逆矩阵写入 b 并返回 true；空矩阵可逆。
 // Gauss-Jordan 消元，时间 O(n^3 + n log mod)，额外空间 O(n^2)。
 bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
     int n = int(a.size());
@@ -44,4 +43,4 @@ bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
     return true;
 }
 
-// 调用：V < V < ll > > b; bool ok = matrix_inv(a, 1000000007, b);
+// 用法：V < V < ll > > b; bool ok = matrix_inv(a, 1000000007, b);

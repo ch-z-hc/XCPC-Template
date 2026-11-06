@@ -79,4 +79,4 @@ struct ExLucas {
     }
 };
 
-// 调用示例：ExLucas c; c.init(1000); ll ans = c.choose(n, k);
+// 用法：ExLucas c; c.init(1000); ll ans = c.choose(n, k);

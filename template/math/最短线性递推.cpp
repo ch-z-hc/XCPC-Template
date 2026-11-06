@@ -93,6 +93,5 @@ ll kth(const V < ll > &init, const V < ll > &rec,
     return ans;
 }
 
-// 调用示例：
-// V < ll > rec = bm(s, mod);
+// 用法：V < ll > rec = bm(s, mod);
 // ll ans = kth(init, rec, k, mod);

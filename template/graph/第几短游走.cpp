@@ -98,5 +98,5 @@ struct KShortestWalk {
     }
 };
 const ll KShortestWalk::inf;
-// 调用：KShortestWalk kw(n); kw.add_edge(u, v, w);
+// 用法：KShortestWalk kw(n); kw.add_edge(u, v, w);
 // V < ll > ans = kw.query(s, t, k); // ans[0] 是最短长度。

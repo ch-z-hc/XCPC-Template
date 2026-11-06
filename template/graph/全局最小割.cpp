@@ -8,7 +8,7 @@ using namespace std;
 
 // Stoer-Wagner 无向图全局最小割，边权非负，顶点 1-based。
 // 允许重边，忽略自环；所有边权之和必须小于 LLONG_MAX。
-// 时间 O(n^3)，空间 O(n^2)，不使用模数。
+// 时间 O(n^3)，空间 O(n^2)。
 // 返回 {割权值, 一侧顶点集合}；n < 2 时返回 {0, {}}。
 // 非连通图最小割为 0；solve 不修改原图，可以重复调用。
 struct MinCut {
@@ -65,5 +65,5 @@ struct MinCut {
     }
 };
 
-// MinCut g(n); g.add_edge(u, v, w); // 无向边只添加一次。
+// 用法：MinCut g(n); g.add_edge(u, v, w); // 无向边只添加一次。
 // auto [ans, side] = g.solve();

@@ -8,7 +8,7 @@ using namespace std;
 
 // AC 自动机；仅处理小写字母，模式串非空，模式编号和状态编号均为 0-based。
 // build 为 O(状态数 * 26)，匹配为 O(文本长度 + 状态数 + 模式数)；空间 O(状态数 * 26)。
-// 注意新增模式串后必须重新 build；保留原始儿子以支持重复构建。
+// 新增模式串后须重新 build；可重复构建。
 struct AC {
     struct Node {
         array < int, 26 > ch{}, go{};
@@ -79,8 +79,7 @@ struct AC {
     }
 };
 
-// 调用示例：
-// AC ac;
+// 用法：AC ac;
 // ac.insert("aba");
 // ac.build();
 // V < ll > cnt = ac.query(s);

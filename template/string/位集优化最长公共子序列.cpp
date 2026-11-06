@@ -28,4 +28,4 @@ int bitset_lcs(const string &s, const string &t) {
     return ans;
 }
 
-// int ans = bitset_lcs(s, t);
+// 用法：int ans = bitset_lcs(s, t);

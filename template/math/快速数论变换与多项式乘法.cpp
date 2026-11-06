@@ -58,5 +58,4 @@ V < ll > multiply(V < ll > a, V < ll > b) {
     return a;
 }
 
-// 调用示例：
-// V < ll > c = multiply(a, b);
+// 用法：V < ll > c = multiply(a, b);

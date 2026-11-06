@@ -8,7 +8,7 @@ using namespace std;
 // grundy(g, sg) 成功时写入所有状态的 SG 值并返回 true，终止状态为 0。
 // 存在有向环返回 false，此时不要使用 sg。
 // 多个互不影响子游戏的 SG 值异或，非零当且仅当先手必胜。
-// 递归 DFS，O(n + m) 时间、空间；深链需提高栈限制，不使用模数。
+// 递归 DFS，O(n + m) 时间、空间；深链需提高栈限制。
 bool grundy(const V < V < int > > &g, V < int > &sg) {
     int n = int(g.size()) - 1;
     V < int > color(n + 1, 0);
@@ -27,4 +27,4 @@ bool grundy(const V < V < int > > &g, V < int > &sg) {
     return true;
 }
 
-// V < int > sg; if (grundy(g, sg)) { int win = sg[u] ^ sg[v]; }
+// 用法：V < int > sg; if (grundy(g, sg)) { int win = sg[u] ^ sg[v]; }

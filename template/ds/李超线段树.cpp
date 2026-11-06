@@ -10,11 +10,11 @@ using namespace std;
 
 // 密集整数区间上的最大值 Li Chao Tree；查询横坐标必须位于 [L, R]。
 // add_line 为 O(log X)，add_seg 为 O(log^2 X)，query 为 O(log X)。
-// X = R - L + 1，按整段坐标开约 4X 个 int，非动态开点、非坐标压缩。
+// X = R - L + 1，按整段坐标开约 4X 个 int。
 // 空间 O(X + q)，q 为插入次数；X <= (INT_MAX - 4) / 4 且须能存下数组。
 // add_line / add_seg 接收整数，使用有理数精确比较，同值取较早加入的编号。
-// 整数运算用 ll：端点差、a * x + c、再乘另一条线的 d 均不能溢出。
-// 仅有最终答案放入 ll 不够；线段端点在树外时也须检查中间量。
+// ll 中间量不能溢出：端点差、a * x + c 及其与另一条线的 d 的乘积。
+// 线段端点在树外时也须满足此限制。
 // 充分范围：所有横坐标在 [0, 40000]，|k|、|b|、|y| <= 10^9。
 // 浮点参数用 add_line_real / add_seg_real；混用后不保证整数精确判等。
 // query 返回浮点近似值；整数 DP 仅插入 add_line，并用 query_int 精确取值。
@@ -172,12 +172,11 @@ struct LiChaoTree {
     }
 };
 
-// 调用示例：
-// 整数直线：LiChaoTree tr(1, 10000); long long k = 3, b = -2;
+// 用法（整数直线）：LiChaoTree tr(1, 10000); long long k = 3, b = -2;
 // tr.add_line(k, b); ll ans;
 // if (tr.query_int(2, ans)) cout << ans << '\n';
 // 整数端点线段：tr.add_seg(1, 2, 5, 7); int id = tr.query_id(3);
 // 线段插值可能为分数，近似值用 ld y = tr.query(3)，不能套 query_int。
 // 浮点直线另建树：LiChaoTree real(1, 10000);
 // real.add_line_real(0.5L, 0.0L); ld y = real.query(2); // y = 1。
-// 不要写 add_line(0.5L, 0)：能编译但斜率会被截成整数 0。
+// add_line 接收整数；浮点斜率误传入时会被截断。

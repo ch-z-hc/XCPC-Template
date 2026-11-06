@@ -40,5 +40,5 @@ struct LagrangeEq {
     }
 };
 
-// LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
+// 用法：LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
 // ll ans = poly.query(10); // 100。

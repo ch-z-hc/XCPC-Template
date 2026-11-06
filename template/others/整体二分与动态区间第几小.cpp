@@ -99,5 +99,5 @@ struct KthOffline {
     }
 };
 
-// 调用示例：KthOffline solver; solver.init(a); solver.modify(p, x);
+// 用法：KthOffline solver; solver.init(a); solver.modify(p, x);
 // int id = solver.query(l, r, k); auto ans = solver.solve(); // 答案为 ans[id]。

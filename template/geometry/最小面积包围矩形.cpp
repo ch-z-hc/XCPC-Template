@@ -6,10 +6,10 @@
 using namespace std;
 
 // 先复制本章的“点与向量”；输入为严格逆时针凸包，无重复点、无首尾重复。
-// 调用者可用 convexHull 取得凸包；不直接接收任意点集或顺时针多边形。
+// 可先用 convexHull 取得所需凸包。
 // 旋转卡壳 O(n) 时间、O(n) 空间（输入按值传入），下标 0-based。
 // 返回最小面积及逆时针四角；空集返回空角点，1 / 2 点返回退化矩形。
-// 不使用模数，坐标与中间点积、叉积须在 db 精度可用范围内。
+// 坐标及中间点积、叉积须在 db 精度可用范围内。
 struct MinRect {
     db area = 0;
     V < P > corners;
@@ -46,4 +46,4 @@ MinRect min_rectangle(V < P > ps) {
     return ans;
 }
 
-// auto rect = min_rectangle(hull); db ans = rect.area;
+// 用法：auto rect = min_rectangle(hull); db ans = rect.area;

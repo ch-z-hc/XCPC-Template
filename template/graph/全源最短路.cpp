@@ -20,4 +20,4 @@ bool floyd(V < V < ll > > &dis, ll inf = (1ll << 62)) {
     return true;
 }
 
-// bool ok = floyd(dis); // dis 在原矩阵上更新。
+// 用法：bool ok = floyd(dis); // dis 在原矩阵上更新。

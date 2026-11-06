@@ -84,5 +84,5 @@ struct MergeSegTree {
     }
 };
 
-// MergeSegTree st(n); int a = 0; st.add(a, x, cnt);
+// 用法：MergeSegTree st(n); int a = 0; st.add(a, x, cnt);
 // int b = st.split(a, l, r); st.merge(a, b); ll sum = st.query(a, l, r);

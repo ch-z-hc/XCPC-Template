@@ -9,7 +9,7 @@ using namespace std;
 // 差分约束：add(u, v, w) 表示 x[u] - x[v] <= w。
 // 变量编号 1-based；Bellman-Ford 复杂度 O(nm)，空间 O(n + m)。
 // 所有松弛中的 dis[v] + w 均须能用 ll 表示，包括判负环前的松弛。
-// 不处理数值溢出；全 0 初始化等价于从超级源点连向所有变量。
+// 全 0 初始化等价于从超级源点连向所有变量。
 
 struct Diff {
     int n = 0;
@@ -37,8 +37,7 @@ struct Diff {
     }
 };
 
-// 调用示例：
-// Diff dc(n);
+// 用法：Diff dc(n);
 // dc.add(u, v, w);
 // V < ll > dis;
 // bool op = dc.solve(dis);

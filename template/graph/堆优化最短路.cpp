@@ -10,7 +10,7 @@ typedef V < V < pair < int, ll > > > Graph;
 
 // 非负边权单源最短路；图和距离均为 1-based，g[u] 保存 {v, w}。
 // 使用二叉堆，复杂度 O((n + m) log n)，空间 O(n + m)。
-// 要求路径计算不溢出 ll，有效距离小于 inf；不可达返回 inf，不使用模数。
+// 要求路径计算不溢出 ll，有效距离小于 inf；不可达返回 inf。
 V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     int n = int(g.size()) - 1;
     V < ll > dis(n + 1, inf);
@@ -29,7 +29,6 @@ V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     return dis;
 }
 
-// 调用示例：
-// Graph g(n + 1);
+// 用法：Graph g(n + 1);
 // g[u].push_back({v, w}); // 无向边还需添加反向边。
 // V < ll > dis = dijkstra(g, s);

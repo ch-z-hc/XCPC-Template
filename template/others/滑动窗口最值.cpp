@@ -33,5 +33,4 @@ V < T > window_max(const V < T > &a, int k) {
     return ans;
 }
 
-// 调用示例：
-// auto ans = window_min(a, k);
+// 用法：auto ans = window_min(a, k);

@@ -45,5 +45,5 @@ struct LeftistHeap {
     }
 };
 
-// 调用：LeftistHeap heap; int root = 0;
+// 用法：LeftistHeap heap; int root = 0;
 // root = heap.merge(root, heap.push(x)); root = heap.pop(root);

@@ -11,7 +11,6 @@ using namespace std;
 // linear_inverse：mod 为质数，0 <= n < mod，返回 1..n 的逆元，inv[0] = 0。
 // batch_inverse：mod 为质数，a 为 0-based，每项模 mod 后非零。
 // 时间分别 O(log b)、O(n)、O(n + log mod)，空间 O(1)、O(n)、O(n)。
-// 本文件不提供合数模数逆元；更大模数不能直接套本文件的乘法。
 ll pow_mod(ll a, unsigned long long b, ll mod) {
     a %= mod;
     if (a < 0) a += mod;
@@ -47,5 +46,5 @@ V < ll > batch_inverse(const V < ll > &a, ll mod) {
     return ans;
 }
 
-// 调用：ll x = pow_mod(a, b, mod);
+// 用法：ll x = pow_mod(a, b, mod);
 // auto inv = linear_inverse(n, mod); auto values = batch_inverse(a, mod);

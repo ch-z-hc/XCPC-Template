@@ -67,4 +67,4 @@ struct RectUnion {
     }
 };
 
-// RectUnion scan; auto [area, perimeter] = scan.solve(rectangles);
+// 用法：RectUnion scan; auto [area, perimeter] = scan.solve(rectangles);

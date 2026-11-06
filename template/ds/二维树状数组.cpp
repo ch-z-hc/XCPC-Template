@@ -58,5 +58,5 @@ struct Fenwick2D {
     }
 };
 
-// Fenwick2D bit; bit.build(points); bit.add(x, y, v);
+// 用法：Fenwick2D bit; bit.build(points); bit.add(x, y, v);
 // ll ans = bit.query(x1, y1, x2, y2); // 闭矩形。

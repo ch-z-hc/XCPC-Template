@@ -38,4 +38,4 @@ V < array < int, 3 > > enumerate_runs(const string &s) {
     return ans;
 }
 
-// auto runs = enumerate_runs(s); // 依次读取 {period, l, r}。
+// 用法：auto runs = enumerate_runs(s); // 依次读取 {period, l, r}。

@@ -5,15 +5,14 @@
 using namespace std;
 typedef long long ll;
 
-// 静态二维 KD-tree，无模数；点和查询坐标绝对值均不超过 1e9。
-// 平方距离最多 8e18，使用 ll；不支持插入、删除或点权。
+// 静态二维 KD-tree；点和查询坐标绝对值均不超过 1e9。
+// 平方距离最多 8e18，使用 ll。
 // build(ps) 接收 {x, y}，原下标 0-based，重复点分别保留，可重复 build。
-// nearest(x, y, ans, exclude = -1) 成功时将 {平方距离, 原下标} 写入 ans；
-// 距离相等取较小下标，默认可返回自身，exclude 只排除指定原下标。
-// 成功返回 true，空集或排除后为空返回 false。
+// nearest(x, y, ans, exclude = -1) 返回是否找到点，成功时 ans = {平方距离, 原下标}。
+// 等距取较小下标；exclude 只排除指定原下标，默认可返回自身。
 // query(lx, ly, rx, ry) 统计闭矩形内点数，非法矩形返回 0。
 // 建树平均 O(n log n)，空间 O(n)，递归深度 O(log n)。
-// 两种查询最坏均 O(n)，最近邻不保证 O(log n)。
+// 两种查询最坏均 O(n)。
 
 struct KDTree {
     struct Node {
@@ -99,6 +98,6 @@ struct KDTree {
     }
 };
 
-// KDTree kd; kd.build(ps); pair < ll, int > ans;
+// 用法：KDTree kd; kd.build(ps); pair < ll, int > ans;
 // bool ok = kd.nearest(x, y, ans); // 成功时使用 ans。
 // int cnt = kd.query(lx, ly, rx, ry);

@@ -13,7 +13,7 @@ using namespace std;
 // solve 返回 {是否可行, 最小费用}；成功后 f[id] 为原边流，失败时 f 为空。
 // 可重复 solve；init 清空图和需求。固定 s -> t 流量 k：s 加 k，t 加 -k。
 // sum(hi) + sum(abs(b))、sum(hi * abs(cost)) 均须 <= LLONG_MAX / 4。
-// 单点累计 supply 须能用 ll 表示；cost != LLONG_MIN，无模数要求。
+// 单点累计 supply 须能用 ll 表示；cost != LLONG_MIN。
 // 时间 O(nm + A m log n)，A 为增广次数；空间 O(n + m)。
 // 先饱和负费用边，初始残量费用非负；故不遗漏与需求无关的负环。
 struct LRCostFlow {
@@ -89,5 +89,5 @@ struct LRCostFlow {
     }
 };
 
-// 调用：LRCostFlow flow(n); int id = flow.add_edge(u, v, lo, hi, cost);
+// 用法：LRCostFlow flow(n); int id = flow.add_edge(u, v, lo, hi, cost);
 // auto [ok, cost] = flow.solve(); if (ok) { ll x = flow.f[id]; }

@@ -6,7 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-// Min_25 筛：积性函数 f，f(1) = 1，素数处 f(p) = c[0]+c[1]p+c[2]p^2。
+// Min_25 筛：积性函数 f，f(1) = 1，素数处 f(p) = c[0] + c[1] * p + c[2] * p^2。
 // init(n, mod) 后调用 sum(c, prime_power)，回调返回 f(p^e)，须与 c 一致。
 // 0 <= n <= 10^12，2 <= mod <= INT_MAX，可为合数；回调 O(1)。
 // 固定次数下常用复杂度 O(n^(3/4) / log n)，空间 O(sqrt(n))。
@@ -102,9 +102,8 @@ struct Min25 {
     }
 };
 
-// 示例：求 1..n 的约数个数之和；素数处为 2，素数幂处为 e + 1。
+// 用法：求 1..n 的约数个数之和；素数处为 2，素数幂处为 e + 1。
 // Min25 sieve; sieve.init(n, mod);
 // ll ans = sieve.sum({2, 0, 0}, [](ll, int e) -> ll {
-//     return e + 1; // 此例只需要 e，其他函数按题意改，须满足 O(1)。
+//     return e + 1;
 // });
-// 如求欧拉函数之和，改用 c = {-1, 1, 0} 和对应的素数幂回调。

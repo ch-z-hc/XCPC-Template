@@ -6,7 +6,7 @@ using namespace std;
 
 // 一般无向图的精确最大团 / 最大独立集；顶点编号 1-based，自环忽略，重边合并。
 // 贪心染色给出上界，递归分支限界；最坏时间 O(2^n n^2)，空间 O(n^2)。
-// 适用于小规模图，实际耗时依赖图结构；不是最大团的多项式算法。
+// 适用于小规模图，实际耗时依赖图结构。
 // max_clique / max_independent_set 返回一个最优顶点集合，可重复调用；init 清空图。
 struct MaxClique {
     int n = 0;
@@ -68,5 +68,5 @@ struct MaxClique {
     V < int > max_independent_set() { return solve(1); }
 };
 
-// 调用：MaxClique mc(n); mc.add_edge(u, v);
+// 用法：MaxClique mc(n); mc.add_edge(u, v);
 // V < int > clique = mc.max_clique(), independent = mc.max_independent_set();

@@ -19,5 +19,4 @@ V < int > primes(int n) {
     return prime;
 }
 
-// 调用示例：
-// V < int > prime = primes(n);
+// 用法：V < int > prime = primes(n);

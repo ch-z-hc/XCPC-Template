@@ -50,4 +50,4 @@ void bounded_knapsack(V < ll > &dp, int w, ll value, int count,
     }
 }
 
-// auto cur = dc_dp(prev, cost); bounded_knapsack(dp, w, value, count);
+// 用法：auto cur = dc_dp(prev, cost); bounded_knapsack(dp, w, value, count);

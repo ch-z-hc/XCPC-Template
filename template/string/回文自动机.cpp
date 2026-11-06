@@ -68,4 +68,4 @@ struct PAM {
     }
 };
 
-// 调用示例：PAM pam(s); auto cnt = pam.count(); int tot = pam.distinct();
+// 用法：PAM pam(s); auto cnt = pam.count(); int tot = pam.distinct();
