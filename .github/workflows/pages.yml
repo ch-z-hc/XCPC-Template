@@ -1,0 +1,42 @@
+name: Publish PDFs
+
+on:
+  release:
+    types: [published, edited]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Download latest release PDFs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          mkdir _site
+          cp support/pages/index.html _site/
+          gh release download --dir _site \
+            --pattern template.pdf --pattern oeis.pdf --pattern oeis-2up.pdf
+          for file in template.pdf oeis.pdf oeis-2up.pdf; do
+            test -s "_site/$file"
+          done
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment

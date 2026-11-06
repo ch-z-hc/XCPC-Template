@@ -1,5 +1,14 @@
 # XCPC Template
 
+## 在线阅读与下载
+
+- [PDF 在线阅读](https://ch-z-hc.github.io/XCPC-Template/)：算法模板册、OEIS 原版和 2 合 1 打印版。
+- [最新 Release](https://github.com/ch-z-hc/XCPC-Template/releases/latest)：下载 `template.pdf`、`oeis.pdf`、`oeis-2up.pdf`。
+
+PDF 作为 Release 附件发布，不提交到 Git。网页通过 GitHub Pages 提供原生 PDF 预览；发布或编辑 Release 后自动同步最新正式版，也可在 Actions 中手动运行 `Publish PDFs`。只推送源码不会重新生成或更新线上 PDF。
+
+更新时先生成、校验 PDF，并提交和推送对应源码，再创建新标签的草稿 Release，上传上述三份 PDF 后发布。OEIS 原版取自 `output/pdf/oeis.pdf`，其余两份使用根目录的正式打印文件。
+
 ## 目录结构
 
 - `template/`：可直接复制的 C++17 算法模板，按数据结构、图论、数学等分类；
