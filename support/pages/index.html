@@ -1,10 +1,69 @@
 <!doctype html>
 <html lang="zh-CN">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XCPC Template</title>
-<body style="margin: 32px; font: 16px/2 system-ui, sans-serif">
-<a href="template.pdf">template.pdf</a><br>
-<a href="oeis-2up.pdf">oeis-2up.pdf</a>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { display: flex; flex-direction: column; height: 100dvh; font: 13px system-ui, sans-serif; background: #282828; }
+  header {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center; gap: 16px; flex: none; height: 48px; padding: 0 20px;
+    background: #f5f5f7; border-bottom: 1px solid #d2d2d7;
+  }
+  a { text-decoration: none; }
+  .repo { display: flex; align-items: center; gap: 7px; color: #0066cc; min-width: 0; }
+  .repo svg { width: 16px; height: 16px; fill: currentColor; flex: none; }
+  .repo span, .file { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  nav { display: flex; gap: 2px; padding: 3px; background: #e5e5ea; border-radius: 10px; }
+  nav a { padding: 5px 18px; border-radius: 7px; color: #6e6e73; text-align: center; }
+  nav a[aria-current] { color: #1d1d1f; background: white; box-shadow: 0 1px 3px #0002; }
+  a:focus-visible { outline: 2px solid #0066cc; outline-offset: 2px; }
+  .file { justify-self: end; max-width: 100%; font: 12px ui-monospace, monospace; color: #6e6e73; }
+  .file:hover { color: #0066cc; }
+  iframe { display: block; flex: 1; width: 100%; min-height: 0; border: 0; }
+  @media (max-width: 640px) {
+    header { gap: 8px; padding: 0 12px; }
+    .repo span { display: none; }
+    nav a { padding: 5px 12px; }
+    .file { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="repo" href="https://github.com/ch-z-hc/XCPC-Template" aria-label="GitHub 仓库">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.16-.89-1.16-.73-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.96 0-.88.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.73c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.08-1.87 3.75-3.65 3.95.29.25.54.74.54 1.49v2.32c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>
+    <span>ch-z-hc/XCPC-Template</span>
+  </a>
+  <nav aria-label="PDF">
+    <a href="template.pdf" data-tab="template" aria-current="page">Template</a>
+    <a href="oeis-2up.pdf" data-tab="oeis">OEIS</a>
+  </nav>
+  <a class="file" href="template.pdf" target="_blank" rel="noopener">template.pdf</a>
+</header>
+<iframe title="Template" src="template.pdf#navpanes=0"></iframe>
+<script>
+  const tabs = [...document.querySelectorAll("nav a")];
+  const file = document.querySelector(".file");
+  const viewer = document.querySelector("iframe");
+  function show() {
+    const tab = tabs.find(t => "#" + t.dataset.tab === location.hash) || tabs[0];
+    tabs.forEach(t => t === tab ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"));
+    file.href = tab.getAttribute("href");
+    file.textContent = tab.getAttribute("href");
+    viewer.title = tab.textContent;
+    const source = tab.getAttribute("href") + "#navpanes=0";
+    if (viewer.getAttribute("src") !== source) viewer.src = source;
+  }
+  tabs.forEach(tab => tab.addEventListener("click", event => {
+    event.preventDefault();
+    location.hash = tab.dataset.tab;
+  }));
+  addEventListener("hashchange", show);
+  show();
+</script>
 </body>
 </html>

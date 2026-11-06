@@ -26,7 +26,7 @@ def main():
     layout = json.loads(path.with_suffix(".layout.json").read_text(encoding="utf-8"))
     assert layout["font_size"] == CODE_SIZE and layout["line_height"] == LEADING
     entries = load_entries()
-    index = (ROOT / "README.md").read_text(encoding="utf-8")
+    index = (ROOT / "support/PROJECT.md").read_text(encoding="utf-8")
     for entry in entries:
         if entry.path.startswith("template/"):
             assert f"`{entry.path}`" in index, (entry.path, "接口索引漏收")
