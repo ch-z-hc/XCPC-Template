@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/math/最短线性递推.cpp"
 #include "../../template/math/拉格朗日插值.cpp"
 #include "../../template/math/矩阵快速幂.cpp"

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/上下界网络流.cpp"
 #include "../../template/graph/二分图最大权匹配.cpp"
 #include "../../template/graph/分层增广二分图匹配.cpp"

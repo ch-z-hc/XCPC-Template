@@ -1,7 +1,4 @@
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 // Linux：gen、sol、bf 同目录；逐 token 比较，无内置限时。

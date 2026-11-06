@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/others/舞蹈链精确覆盖.cpp"
 
 bool brute(int cols, const V < V < int > > &rows) {

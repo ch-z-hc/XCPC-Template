@@ -1,7 +1,4 @@
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 // Windows：gen.exe、sol.exe、bf.exe 同目录；逐 token 比较，无内置限时。

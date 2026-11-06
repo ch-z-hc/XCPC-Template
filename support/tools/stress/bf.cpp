@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 // 示例：数组求和；实际使用时换成小数据暴力。

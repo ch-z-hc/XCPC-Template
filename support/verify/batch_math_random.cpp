@@ -2,7 +2,7 @@
 #include "../../template/math/单纯形与线性规划.cpp"
 #include "../../template/math/高斯消元.cpp"
 
-#include <cassert>
+#include <bits/stdc++.h>
 
 ll power(ll a, int e, ll mod) {
     ll ans = 1;

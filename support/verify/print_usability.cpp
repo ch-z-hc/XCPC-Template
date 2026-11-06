@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 
 #define main contest_entry_main
 #include "../tools/contest_main.cpp"

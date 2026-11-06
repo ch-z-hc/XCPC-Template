@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/点双连通分量.cpp"
 #include "../../template/graph/边双连通分量.cpp"
 #include "../../template/graph/圆方树.cpp"

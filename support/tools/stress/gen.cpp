@@ -1,6 +1,4 @@
-#include <iostream>
-#include <random>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 // ./gen seed：n 为 1..10，数组元素为 1..100。

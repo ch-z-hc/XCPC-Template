@@ -1,7 +1,4 @@
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 // 同目录编译 gen、sol、bf；逐 token 精确比较，无内置限时。

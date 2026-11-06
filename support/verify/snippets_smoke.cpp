@@ -1,6 +1,4 @@
-#include <cassert>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../../template/others/常用定义.cpp"
 #include "../../template/ds/并查集.cpp"

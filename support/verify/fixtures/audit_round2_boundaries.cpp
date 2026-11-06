@@ -1,6 +1,4 @@
-#include <cmath>
-#include <iomanip>
-#include <iostream>
+#include <bits/stdc++.h>
 
 #include "../../../template/geometry/点与向量.cpp"
 #include "../../../template/geometry/直线与线段.cpp"

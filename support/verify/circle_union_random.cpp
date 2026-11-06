@@ -2,7 +2,7 @@
 #include "../../template/geometry/直线与线段.cpp"
 #include "../../template/geometry/圆.cpp"
 #include "../../template/geometry/圆面积并与周长并.cpp"
-#include <cassert>
+#include <bits/stdc++.h>
 
 const db pi = acosl(-1);
 

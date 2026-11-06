@@ -1,5 +1,4 @@
-#include <cassert>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../../template/ds/李超线段树.cpp"
 #include "../../template/ds/动态开点线段树合并与分裂.cpp"

@@ -1,7 +1,4 @@
-#include <cassert>
-#include <random>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../../template/graph/树上启发式合并.cpp"
 

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/ds/可持久化二进制字典树.cpp"
 
 int main() {

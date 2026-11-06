@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/第几短游走.cpp"
 
 V < ll > brute(const KShortestWalk &kw, int s, int t, int k) {

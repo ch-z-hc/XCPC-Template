@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/math/素性测试与整数分解.cpp"
 #include "../../template/math/高斯消元.cpp"
 #include "../../template/math/扩展欧几里得与中国剩余定理.cpp"

@@ -1,8 +1,4 @@
-#include <algorithm>
-#include <cassert>
-#include <random>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../../template/string/后缀数组.cpp"
 

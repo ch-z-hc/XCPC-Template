@@ -1,7 +1,4 @@
-#include <cassert>
-#include <limits>
-#include <random>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../../template/ds/李超线段树.cpp"
 

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/math/多项式基本运算.cpp"
 #include "../../template/math/快速傅里叶变换与任意模数卷积.cpp"
 

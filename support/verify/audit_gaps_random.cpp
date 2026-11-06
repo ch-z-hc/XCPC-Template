@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/math/矩阵快速幂.cpp"
 #include "../../template/math/自适应辛普森积分.cpp"
 #include "../../template/math/组合数.cpp"

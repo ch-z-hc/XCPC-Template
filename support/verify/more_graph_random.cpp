@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/点分树.cpp"
 #include "../../template/graph/最小斯坦纳树.cpp"
 

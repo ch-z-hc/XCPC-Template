@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/geometry/点与向量.cpp"
 #include "../../template/geometry/直线与线段.cpp"
 #include "../../template/geometry/圆.cpp"

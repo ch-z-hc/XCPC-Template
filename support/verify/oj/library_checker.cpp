@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../../template/ds/仿射线段树.cpp"
 #include "../../../template/ds/吉司机线段树.cpp"
 #include "../../../template/ds/二维树状数组.cpp"

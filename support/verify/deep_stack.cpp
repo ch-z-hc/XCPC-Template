@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/强连通分量.cpp"
 #include "../../template/graph/割点.cpp"
 #include "../../template/graph/桥.cpp"

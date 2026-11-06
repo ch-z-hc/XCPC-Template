@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/others/单调栈与左右最近更小与更大.cpp"
 #include "../../template/others/单调凸包与斜率优化.cpp"
 #include "../../template/ds/左偏树与可并堆.cpp"

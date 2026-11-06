@@ -2,7 +2,7 @@
 #include "../../template/string/林登分解.cpp"
 #include "../../template/string/极大周期子串.cpp"
 
-#include <cassert>
+#include <bits/stdc++.h>
 
 bool byte_less(const string &a, const string &b) {
     return lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),

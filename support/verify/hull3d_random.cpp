@@ -1,5 +1,5 @@
 #include "../../template/geometry/三维凸包.cpp"
-#include <cassert>
+#include <bits/stdc++.h>
 
 using ll = long long;
 using A3 = array < ll, 3 >;

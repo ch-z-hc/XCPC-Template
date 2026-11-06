@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/支配树.cpp"
 
 V < int > reachable(const V < V < int > > &g, int root, int ban) {

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/ds/可撤销并查集.cpp"
 #include "../../template/math/素性测试与整数分解.cpp"
 #include "../../template/math/原根.cpp"

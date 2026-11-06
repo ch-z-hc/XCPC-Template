@@ -1,5 +1,5 @@
 #include "../../template/ds/二维最近邻.cpp"
-#include <cassert>
+#include <bits/stdc++.h>
 
 using Point = pair < ll, ll >;
 

@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <cassert>
 
 #include "../../../template/math/杜教筛.cpp"
 #include "../../../template/math/扩展卢卡斯定理.cpp"

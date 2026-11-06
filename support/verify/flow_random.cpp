@@ -1,4 +1,4 @@
-#include <cassert>
+#include <bits/stdc++.h>
 #include "../../template/graph/最大流.cpp"
 #include "../../template/graph/势能最短路费用流.cpp"
 #include "../../template/graph/容量缩放费用流.cpp"
