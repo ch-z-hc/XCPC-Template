@@ -84,19 +84,19 @@ python support/tools/prepare_oeis.py
 
 ## 对拍工具
 
-`support/tools/stress/stress.cpp` 是 C++ 对拍程序，已收录到打印册的 `template` 章节。将它复制到题目目录，同目录准备 `gen.cpp`、`brute.cpp`、`a.cpp`，Linux 下运行：
+`support/tools/stress/` 提供 `gen.cpp`、`sol.cpp`、`bf.cpp`、`stress.cpp`，四份源码均收录到打印册的 `template` 章节。复制到专用题目目录，Linux 下运行：
 
 ```text
 g++ -std=c++17 -O2 gen.cpp -o gen
-g++ -std=c++17 -O2 brute.cpp -o brute
-g++ -std=c++17 -O2 a.cpp -o a
+g++ -std=c++17 -O2 sol.cpp -o sol
+g++ -std=c++17 -O2 bf.cpp -o bf
 g++ -std=c++17 -O2 stress.cpp -o stress
 ./stress
 ```
 
-程序逐轮生成数据、运行暴力和待测代码，直接用 `system("diff -wB brute.out a.out")` 比较答案。答案不同或程序异常退出时停止，种子显示在终端，输入和两份输出留在当前目录；再次运行会覆盖这些文件。编译、开栈和限时按需使用册首的 Linux 命令，不封装进对拍程序。
+对拍只依赖 C++17 和系统重定向，不需要 Python、`diff` 或 `fc`。程序以轮数为种子，依次运行生成器、待测程序和暴力，自己逐 token 比较，忽略空白和换行差异。每 100 轮输出一次 `AC`；答案不同输出 `WA seed=...`，运行或文件错误输出 `RE` 后停止，保留 `in.txt`、`out.txt`、`ans.txt`。再次运行会覆盖文件；没有内置限时，浮点与多解题需要修改比较逻辑。
 
-`support/tools/stress/` 另有最大子段和、区间操作、排列逆序对、树上路径、图最短路和字符串匹配的生成器、暴力和参考程序。原 Python / Bash 工具保留；Python 版支持 ASan / UBSan、浮点比较和独立失败目录。具体用法见 [Linux 对拍说明](support/tools/stress/README.md)。
+Windows 使用 MinGW g++，输出文件名加 `.exe`，PowerShell 运行 `.\stress.exe`。编译、种子复现和限制见 [对拍说明](support/tools/stress/README.md)。原有 6 组题型示例和 Python / Bash 工具保留，不是这套纯 C++ 对拍的依赖。
 
 ## 回归验证
 
