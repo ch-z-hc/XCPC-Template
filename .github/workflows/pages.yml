@@ -31,8 +31,8 @@ jobs:
           mkdir _site
           cp support/pages/index.html _site/
           gh release download --dir _site \
-            --pattern template.pdf --pattern oeis.pdf --pattern oeis-2up.pdf
-          for file in template.pdf oeis.pdf oeis-2up.pdf; do
+            --pattern template.pdf --pattern oeis-2up.pdf
+          for file in template.pdf oeis-2up.pdf; do
             test -s "_site/$file"
           done
       - uses: actions/upload-pages-artifact@v4
