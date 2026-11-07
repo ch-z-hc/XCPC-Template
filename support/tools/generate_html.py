@@ -109,7 +109,6 @@ def main():
             f'<p class="chapter-label">{label(entry.number.split(".")[0] + " · " + entry.chapter)}</p>'
             f'<h1 tabindex="-1">{label(entry.number + " " + entry.title, "bold", 0, "label-wide")}'
             f'{label(entry.number + " " + entry.title, "bold", 12, "label-narrow")}</h1>'
-            f'<template class="nav-label">{label(entry.number + " " + entry.title, "body", 13)}</template>'
             f'<div class="code-card"><div class="card-header">'
             f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>'
             f'{label(Path(entry.path).name, "regular", 0, "label-wide")}'

@@ -5,7 +5,7 @@
   entries.forEach(entry => { entry.hidden = true; });
   const links = [...document.querySelectorAll(".toc-links a")];
   const groups = [...document.querySelectorAll(".toc-group")];
-  const byId = new Map(entries.map((entry, index) => [entry.id, {entry, index, link: links[index]}]));
+  const byId = new Map(entries.map((entry, index) => [entry.id, {entry, link: links[index]}]));
   const search = document.querySelector("#search");
   const sidebar = document.querySelector(".sidebar");
   const menu = document.querySelector(".menu-button");
@@ -68,15 +68,6 @@
     current.link.setAttribute("aria-current", "page");
     current.link.closest("details").open = true;
     document.title = `${current.entry.dataset.title} · XCPC Template`;
-    for (const [name, offset] of [["previous", -1], ["next", 1]]) {
-      const anchor = document.getElementById(name);
-      const entry = entries[current.index + offset];
-      anchor.hidden = !entry;
-      if (entry) {
-        anchor.href = "#" + encodeURIComponent(entry.id);
-        anchor.querySelector(":scope > span").replaceChildren(entry.querySelector(".nav-label").content.cloneNode(true));
-      }
-    }
     status.textContent = "";
     setMenu(false, false);
     window.scrollTo(0, 0);

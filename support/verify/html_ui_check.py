@@ -66,7 +66,7 @@ def main():
         expect(page.locator("#search")).to_have_value("")
         page.locator("#search").fill("树状数组")
         page.locator('[data-entry="template-ds-树状数组"]').click()
-        page.locator("#next").click()
+        page.locator('[data-entry="template-ds-二维树状数组"]').click()
         expect(page.locator('.entry:not([hidden])')).to_have_attribute("data-path", "template/ds/二维树状数组.cpp")
         page.go_back()
         expect(page.locator('.entry:not([hidden])')).to_have_attribute("data-path", "template/ds/树状数组.cpp")
