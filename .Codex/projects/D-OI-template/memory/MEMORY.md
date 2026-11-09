@@ -1,0 +1,2 @@
+- [2026-08-18 MkDocs 公式完善](session-2026-08-18.md) — 公式渲染与复杂度规范已实现，修改尚未提交
+- [MkDocs 公式生成策略](mkdocs-formula-generation.md) — 公式在文档生成阶段转换，算法源码保持可复制
