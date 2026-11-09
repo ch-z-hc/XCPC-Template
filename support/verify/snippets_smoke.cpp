@@ -135,7 +135,6 @@
 #include "../../template/geometry/矩形面积并与周长并.cpp"
 #include "../../template/geometry/圆面积并与周长并.cpp"
 #include "../../template/geometry/三维凸包.cpp"
-#include "../../template/geometry/三维凸包最大点积查询.cpp"
 #include "../../template/geometry/二维凸包最大点积查询.cpp"
 #include "../../template/geometry/二维动态凸包.cpp"
 #include "../../template/ds/区间集合与最小未出现数.cpp"
@@ -389,8 +388,6 @@ int main() {
         assert(abs(circle.first - acosl(-1)) < 1e-9L);
         Hull3D hull; hull.build({{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}});
         assert(hull.dim == 3 && abs(hull.volume() - 1.L / 6) < 1e-9L);
-        HullQuery3D support; support.build(hull.p); db dot_value;
-        assert(support.query(-1, 2, 3, dot_value) && dot_value == 3 && support.pos == 3);
     }
     {
         LagrangeEq poly; poly.build({1, 4, 9}, 1000000007);

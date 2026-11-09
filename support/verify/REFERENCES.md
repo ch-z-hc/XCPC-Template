@@ -15,13 +15,17 @@
 | `舞蹈链精确覆盖.cpp` | Knuth，[Dancing Links](https://arxiv.org/abs/cs/0011047)，Algorithm X 与可逆十字链。 |
 | `支配树.cpp` | Lengauer、Tarjan，[A Fast Algorithm for Finding Dominators in a Flowgraph](https://doi.org/10.1145/357062.357071)。 |
 | `一般图最大权匹配.cpp` | [bqi343/cp-notebook GeneralWeightedMatch.h](https://github.com/bqi343/cp-notebook/blob/master/Implementations/content/graphs%20(12)/Matching/GeneralWeightedMatch.h)，CC0-1.0；改为动态存储、ll、可重复 solve，保留 Blossom 收缩、展开与对偶调整算法。 |
-| `三维凸包.cpp` | [CGAL 3D Convex Hulls](https://doc.cgal.org/latest/Convex_hull_3/index.html)；独立增量实现，不复制 CGAL 代码，不扰动输入。 |
+| `三维凸包.cpp` | [CGAL 3D Convex Hulls](https://doc.cgal.org/latest/Convex_hull_3/index.html)；[随机增量凸包分析](https://jshun.csail.mit.edu/convexhull.pdf)。独立实现随机增量与冲突图，不复制 CGAL 代码，不扰动输入。 |
 | `林登分解.cpp` | Duval 算法；[Lyndon Factorization 官方题面与参考解](https://github.com/yosupo06/library-checker-problems/tree/master/string/lyndon_factorization)。独立实现字符串字节比较与分界点返回。 |
 | `极大周期子串.cpp` | Bannai 等，[The Runs Theorem](https://arxiv.org/abs/1406.0263)；独立实现两种字符序的 Lyndon 根，复用本库后缀数组，不复制官方分治 Z 算法。 |
 
-## 凸包点积查询
+## 三维凸包
 
-三维查询扩展：`三维凸包最大点积查询.cpp` 复用现有 `Hull3D`，在三角面邻接图上从上次答案开始搜索，穿过等值区域寻找上升边。面片保留的非极点不能直接套用“没有更优邻点就是全局最优”；立方体表面的网格点是回归反例。凸包极点定义参考 [CGAL 3D Convex Hulls](https://doc.cgal.org/4.9/Convex_hull_3/index.html)；代码独立实现。查询最坏 O(h)，h 为三角面所用点数，不承诺 O(log n)；退化输入扫描原点，浮点误差约定沿用三维凸包。`hull_query3d_random.cpp` 用全点枚举对拍，覆盖退化、重复、等值面、方向反转、不同起点及重建。
+`三维凸包.cpp` 使用随机增量和面点冲突表，创建新面时合并相邻旧面的未来冲突点，期望时间 O(n log n)。成品凸包 O(n) 空间，工作冲突表最坏可达 O(n²)；触发退化回退后不适用快速时间界。默认种子用于复现，可显式传入随机种子。
+
+`build(ps, eps, true)` 使用精确整数判向：缓存面法向量，通过带舍入误差界的浮点过滤确定符号，不确定时使用 `__int128` 计算；不依赖 Boost。坐标跨度限制见源码，面积和体积仍为浮点近似。默认浮点接口保留原来的距离容差约定。
+
+## 凸包点积查询
 
 - `二维凸包最大点积查询.cpp`：用 Andrew 扫描构造上下凸链，按查询方向选择凸链并二分点积峰值；凸包与极点定义参考 [CGAL 2D Convex Hulls and Extreme Points](https://doc.cgal.org/latest/Convex_hull_2/index.html)。独立整数实现，不复制 CGAL 代码。
 - `二维动态凸包.cpp`：按插入编号分块，更新时从块内仍存活的原点重建 `HullQuery`，最大点积取各块答案的最大值。支持在线删除；分块不是对数复杂度的全动态凸包算法，全局包含查询通过合并各块凸包顶点后重建完成。
