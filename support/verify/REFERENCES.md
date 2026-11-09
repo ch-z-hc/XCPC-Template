@@ -19,6 +19,11 @@
 | `林登分解.cpp` | Duval 算法；[Lyndon Factorization 官方题面与参考解](https://github.com/yosupo06/library-checker-problems/tree/master/string/lyndon_factorization)。独立实现字符串字节比较与分界点返回。 |
 | `极大周期子串.cpp` | Bannai 等，[The Runs Theorem](https://arxiv.org/abs/1406.0263)；独立实现两种字符序的 Lyndon 根，复用本库后缀数组，不复制官方分治 Z 算法。 |
 
+## 二维凸包查询
+
+- `二维凸包最大点积查询.cpp`：用 Andrew 扫描构造上下凸链，按查询方向选择凸链并二分点积峰值；凸包与极点定义参考 [CGAL 2D Convex Hulls and Extreme Points](https://doc.cgal.org/latest/Convex_hull_2/index.html)。独立整数实现，不复制 CGAL 代码。
+- `二维动态凸包.cpp`：按插入编号分块，更新时从块内仍存活的原点重建 `HullQuery`，最大点积取各块答案的最大值。支持在线删除；分块不是对数复杂度的全动态凸包算法，全局包含查询通过合并各块凸包顶点后重建完成。
+
 ## 常用补充的算法参考
 
 本批独立实现，不直接复制参考库代码；已有 Comb、NTT、FPS 和 P 定义按文件头复用。

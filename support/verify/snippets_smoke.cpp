@@ -135,6 +135,8 @@
 #include "../../template/geometry/矩形面积并与周长并.cpp"
 #include "../../template/geometry/圆面积并与周长并.cpp"
 #include "../../template/geometry/三维凸包.cpp"
+#include "../../template/geometry/二维凸包最大点积查询.cpp"
+#include "../../template/geometry/二维动态凸包.cpp"
 #include "../../template/ds/区间集合与最小未出现数.cpp"
 #include "../../template/graph/函数图分解与跳跃.cpp"
 #include "../../template/math/等距拉格朗日插值.cpp"

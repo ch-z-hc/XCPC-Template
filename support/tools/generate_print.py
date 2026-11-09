@@ -187,6 +187,8 @@ CHAPTERS = [
         ("template/geometry/矩形面积并与周长并.cpp", "矩形面积并与周长并"),
         ("template/geometry/圆面积并与周长并.cpp", "圆面积并与周长并"),
         ("template/geometry/三维凸包.cpp", "三维凸包"),
+        ("template/geometry/二维凸包最大点积查询.cpp", "二维凸包最大点积查询"),
+        ("template/geometry/二维动态凸包.cpp", "二维动态凸包"),
     ]),
     ("其他算法", [
         ("template/others/离散化.cpp", "离散化"),

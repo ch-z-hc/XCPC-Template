@@ -68,7 +68,9 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 计算几何按点与向量、直线与线段、多边形、凸包、圆等拆开，原函数接口不变。先复制 `点与向量.cpp`，再按文件头注明的依赖复制所需部分；基础定义只需一份。原凸多边形切割示例移至 `support/verify/geometry_cut_submission.cpp`；拆分前的两份完整文件备份在 `build/geometry-before-split-20261010/`。
 
-新增的三维凸包独立使用 `P3`，无需复制二维基础定义。`极大周期子串.cpp` 先复制后缀数组，`上下界最小费用流.cpp` 先复制常规费用流；依赖均写在各文件头。
+三维凸包独立使用 `P3`，无需复制二维基础定义。`极大周期子串.cpp` 先复制后缀数组，`上下界最小费用流.cpp` 先复制常规费用流；依赖均写在各文件头。
+
+二维最大点积查询独立使用整数 `HullQuery::P`，不混用浮点 `P` / `EPS`；坐标与查询系数绝对值不超过 `1e9`。二维动态凸包先复制最大点积查询片段；分块更新摊还 O(B log(B + 1))，最大点积查询 O(ceil(Q / B) log(B + 1))，Q 为累计插入次数。`snapshot` / `contains` 会重建全局凸包，O(Q log(Q + 1))；反复包含查询可复用快照。
 
 `等距拉格朗日插值.cpp` 先复制组合数，`两类斯特林数.cpp` 先复制 NTT，`线性递推快速求项.cpp` 先复制 FPS；`最小面积包围矩形.cpp` 只依赖点向量定义，输入需先取得严格逆时针凸包。
 
@@ -205,6 +207,8 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/string/极大周期子串.cpp` | `runs(s)`；返回 `{最小周期, l, r}`，依赖 `后缀数组.cpp` |
 | `template/geometry/圆面积并与周长并.cpp` | `circle_union(cs)`；返回圆并的面积与周长，依赖 `点与向量.cpp`、`直线与线段.cpp`、`圆.cpp` |
 | `template/geometry/三维凸包.cpp` | `P3`、`Hull3D::build`、`area`、`volume`；`dim` 为维度，`faces` 为外向三角面 |
+| `template/geometry/二维凸包最大点积查询.cpp` | `HullQuery::build`、`query(a, b, ans)`、`contains`；独立整点凸包，最大点积查询 O(log n)，空集返回 false |
+| `template/geometry/二维动态凸包.cpp` | `DynamicHull::add`、`erase(id)`、`query`、`snapshot`、`contains`；依赖 `HullQuery`，分块在线插入删除，重复点按编号分别删除 |
 | `template/others/舞蹈链精确覆盖.cpp` | `DLX::init`、`add_row`、`solve(rows)`；写入精确覆盖行编号，无解返回 `false` |
 | `template/ds/吉司机线段树.cpp` | `Beats::init`、`add`、`chmin`、`chmax`、`query`、`query_min`、`query_max`；区间加、截断、和与最值 |
 | `template/ds/可持久化数组.cpp` | `PArray::init`、`modify(root, pos, value)`、`query(root, pos)`；`root` 为初始根，修改返回新根 |
