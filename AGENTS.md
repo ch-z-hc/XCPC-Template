@@ -59,6 +59,7 @@
 
 ## Git 工作流
 
+- 修改通过相关验证后，自动提交并推送到本仓库的 upstream，无须重复询问；只提交本轮相关改动，不 force-push，不提交凭据、私密数据或本机配置。
 - 每个有明确意义的阶段单独提交。
 - 提交前检查 `git diff --check` 和 `git status`。
 - 提交信息使用简洁的 Conventional Commits 风格，例如：
