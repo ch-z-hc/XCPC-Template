@@ -31,6 +31,8 @@ for source in template/*/*.cpp support/tools/contest_main.cpp support/tools/stre
             includes+=(-include template/geometry/多边形.cpp)
         elif [[ "$source" == template/geometry/二维动态凸包.cpp ]]; then
             includes=(-include template/geometry/二维凸包最大点积查询.cpp)
+        elif [[ "$source" == template/geometry/三维凸包最大点积查询.cpp ]]; then
+            includes=(-include template/geometry/三维凸包.cpp)
         elif [[ "$source" == template/geometry/凸多边形包含查询.cpp ]]; then
             includes+=(-include template/geometry/多边形.cpp -include template/geometry/凸包与直径与闵可夫斯基和.cpp)
         fi

@@ -208,6 +208,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/geometry/圆面积并与周长并.cpp` | `circle_union(cs)`；返回圆并的面积与周长，依赖 `点与向量.cpp`、`直线与线段.cpp`、`圆.cpp` |
 | `template/geometry/三维凸包.cpp` | `P3`、`Hull3D::build`、`area`、`volume`；`dim` 为维度，`faces` 为外向三角面 |
 | `template/geometry/二维凸包最大点积查询.cpp` | `HullQuery::build`、`query(a, b, ans)`、`contains`；独立整点凸包，最大点积查询 O(log n)，空集返回 false |
+| `template/geometry/三维凸包最大点积查询.cpp` | 先复制三维凸包；`HullQuery3D::build`、`query(a, b, c, ans)`，`pos` 为原输入编号；浮点沿边上升，查询最坏 O(h)，退化时扫描 O(n)，空集返回 false，非精确整数算法 |
 | `template/geometry/二维动态凸包.cpp` | `DynamicHull::add`、`erase(id)`、`query`、`snapshot`、`contains`；依赖 `HullQuery`，分块在线插入删除，重复点按编号分别删除 |
 | `template/others/舞蹈链精确覆盖.cpp` | `DLX::init`、`add_row`、`solve(rows)`；写入精确覆盖行编号，无解返回 `false` |
 | `template/ds/吉司机线段树.cpp` | `Beats::init`、`add`、`chmin`、`chmax`、`query`、`query_min`、`query_max`；区间加、截断、和与最值 |
