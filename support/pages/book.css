@@ -32,7 +32,7 @@
   --ui-font: "Maple Mono Web", sans-serif;
   --text-font: "PDF Roman", "PDF Math", "Maple Mono Web", serif;
   --top: 58px;
-  --sidebar: 278px;
+  --sidebar: 310px;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -73,10 +73,10 @@ button, a, input, summary, pre { -webkit-tap-highlight-color: transparent; }
 .toc-group summary::after { content: "›"; color: #92969d; margin-left: auto; transform: rotate(0); }
 .toc-group[open] summary::after { transform: rotate(90deg); }
 .toc-links { padding: 2px 0 7px; }
-.toc-links a { display: flex; align-items: baseline; gap: 9px; padding: 7px 8px; margin: 1px 0; border-radius: 5px; font: 400 14px/1.65 var(--text-font); color: #000; font-variant-ligatures: none; }
+.toc-links a { display: flex; align-items: baseline; gap: 9px; padding: 7px 8px; margin: 1px 0; border-radius: 5px; font: 400 16px/1.65 var(--text-font); color: #000; font-variant-ligatures: none; }
 .toc-links a:hover { background: #f0f0f3; color: var(--ink); }
 .toc-links a[aria-current] { background: #e9edf1; color: #3c5870; }
-.entry-number { flex: none; min-width: 32px; font-size: 14px; color: inherit; font-variant-numeric: tabular-nums; }
+.entry-number { flex: none; min-width: 32px; font-size: 16px; color: inherit; font-variant-numeric: tabular-nums; }
 .toc-links a[aria-current] .entry-number { color: inherit; }
 main { margin: var(--top) 0 0 var(--sidebar); padding: 32px; min-width: 0; }
 .paper { max-width: 1040px; min-height: calc(100dvh - var(--top) - 64px); margin: 0 auto; padding: 42px 48px 24px; background: white; box-shadow: 0 2px 12px #25272b06; }
@@ -98,7 +98,6 @@ code { font: 400 14px/1.8 "Maple Mono Web", ui-monospace, monospace; font-varian
 .t-comment { color: var(--code-comment); }
 pre::selection, code::selection, code span::selection { background: #dce5ed; }
 @media (max-width: 1100px) and (min-width: 801px) {
-  :root { --sidebar: 246px; }
   main { padding: 22px; }
   .paper { padding: 32px 28px 22px; }
 }
@@ -111,13 +110,13 @@ pre::selection, code::selection, code span::selection { background: #dce5ed; }
   .repo-link span { display: none; }
   .menu-button { display: flex; align-items: center; justify-content: center; width: 32px; height: 40px; padding: 4px; border: 0; background: transparent; color: #565b63; }
   .menu-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
-  .sidebar { width: min(320px, 88vw); z-index: 25; transform: translateX(-100%); padding: 24px 18px; }
+  .sidebar { width: min(340px, 96vw); z-index: 25; transform: translateX(-100%); padding: 24px 18px; }
   .toc-open .sidebar { transform: translateX(0); }
   .toc-open { overflow: hidden; }
   .backdrop { position: fixed; inset: var(--top) 0 0; z-index: 20; background: #20252a50; border: 0; padding: 0; }
   .search-box { padding: 11px 10px; }
   .search-box input { font-size: 16px; }
-  .toc-links a { padding: 10px 8px; font-size: 14px; }
+  .toc-links a { padding: 10px 8px; }
   main { margin-left: 0; padding: 0; }
   .paper { padding: 30px 18px 22px; min-height: calc(100dvh - var(--top)); box-shadow: none; }
   h1 { font-size: 23px; margin-bottom: 22px; }
@@ -148,6 +147,7 @@ pre::selection, code::selection, code span::selection { background: #dce5ed; }
 .label-narrow { display: none; }
 h1 { color: #000; }
 .toc-links a > span:last-child { min-width: 0; }
+.toc-links .pdf-label > svg { stroke: currentColor; stroke-width: 12; stroke-linejoin: round; }
 @media (max-width: 800px) {
   .label-wide { display: none; }
   .label-narrow { display: inline-block; }
