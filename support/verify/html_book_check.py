@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
-from generate_html import code_html, entry_id, load_entries
+from generate_html import COLORS, code_html, code_lines, entry_id, load_entries
 from fontTools.ttLib import TTFont
 
 
@@ -23,14 +23,18 @@ class BookParser(HTMLParser):
         self.current = None
         self.in_code = False
         self.copies = 0
+        self.code_colors = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "article":
-            self.current = {**attrs, "source": ""}
+            self.current = {**attrs, "source": "", "colors": []}
             self.entries.append(self.current)
         if tag == "code":
             self.in_code = True
+        if tag == "span" and self.in_code:
+            classes = attrs.get("class", "").split()
+            self.code_colors.append(next((color for color in COLORS.values() if color and color in classes), ""))
         if tag == "a" and "data-entry" in attrs:
             self.links.append(attrs)
         if tag == "button" and attrs.get("class") == "copy-button":
@@ -40,6 +44,8 @@ class BookParser(HTMLParser):
                 self.resources.append(attrs[key])
 
     def handle_endtag(self, tag):
+        if tag == "span" and self.in_code:
+            self.code_colors.pop()
         if tag == "code":
             self.in_code = False
         if tag == "article":
@@ -48,6 +54,8 @@ class BookParser(HTMLParser):
     def handle_data(self, text):
         if self.in_code:
             self.current["source"] += text
+            color = self.code_colors[-1] if self.code_colors else ""
+            self.current["colors"].extend((char, color) for char in text)
 
 
 def main():
@@ -68,6 +76,13 @@ def main():
         assert entry["data-title"] == original.title
         assert entry["data-number"] == original.number
         assert entry["source"] == original.source, original.path
+        colors = []
+        for line in code_lines(original.source, original.path):
+            colors.extend((char, COLORS[color]) for value, color in line for char in value)
+            colors.append(("\n", ""))
+        if not original.source.endswith("\n"):
+            colors.pop()
+        assert entry["colors"] == colors, f"{original.path}: 代码颜色发生变化"
         assert entry["data-sha256"] == hashlib.sha256(original.source.encode()).hexdigest()
     sample = '\n\t// 中文 <>&\nconst char *s = "</code><script>alert(1)</script>";\n'
     escaped = code_html(sample, "sample.cpp")
@@ -75,6 +90,14 @@ def main():
     probe = BookParser()
     probe.feed(f'<article><pre><code>{escaped}</code></pre></article>')
     assert probe.entries[0]["source"] == sample
+    style_sample = '// 中文 f()\nnamespace demo { template < class T > long long f(T x) { return g<T>(x); } }\n'
+    styled = code_html(style_sample, "sample.cpp")
+    for name in ("demo", "f", "g"):
+        assert f'<span class="t-bold">{name}</span>' in styled, name
+    for name in ("template", "class", "long"):
+        assert f'<span class="t-blue">{name}</span>' in styled, name
+    assert '<span class="t-comment">// 中文 f()</span>' in styled
+    assert "t-bold" not in code_html("echo hello\n", "commands.txt")
     viewer = BookParser()
     viewer.feed((site / "pdf.html").read_text())
     for url in book.resources + viewer.resources:
@@ -113,6 +136,10 @@ def main():
             assert file.read(5) == b"%PDF-", name
     with TTFont(site / "assets/maple-mono-nf-cn.woff2") as font:
         required = {ord(c) for entry in expected for c in entry.source if not c.isspace()}
+        assert not required - set(font.getBestCmap())
+    with TTFont(site / "assets/maple-mono-nf-cn-bold.woff2") as font:
+        assert font["name"].getDebugName(6) == "MapleMono-NF-CN-Bold"
+        assert font["OS/2"].usWeightClass == 700
         assert not required - set(font.getBestCmap())
     assert "SIL OPEN FONT LICENSE Version 1.1" in (site / "assets/OFL.txt").read_text()
     assert "LaTeX Project Public License" in (site / "assets/GUST-FONT-LICENSE.txt").read_text()

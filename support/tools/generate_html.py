@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+from itertools import groupby
 import re
 import shutil
 import subprocess
@@ -13,6 +14,8 @@ from urllib.parse import quote
 from fontTools import subset
 from fontTools.ttLib import TTFont
 from pdf_labels import PDFLabels
+from tree_sitter import Language, Parser
+import tree_sitter_cpp
 
 from generate_print import (
     ROOT, CHAPTERS, CODE_TEXT, CODE_BLUE, CODE_GREEN, CODE_COMMENT,
@@ -28,14 +31,49 @@ def entry_id(entry):
     return Path(entry.path).with_suffix("").as_posix().replace("/", "-")
 
 
+def bold_characters(source, path):
+    if not path.endswith(".cpp"):
+        return set()
+    offsets, byte = {}, 0
+    for index, char in enumerate(source):
+        offsets[byte] = index
+        byte += len(char.encode())
+    offsets[byte] = len(source)
+    tree = Parser(Language(tree_sitter_cpp.language())).parse(source.encode())
+    stack, bold = [tree.root_node], set()
+    while stack:
+        node = stack.pop()
+        stack.extend(node.named_children)
+        if node.type == "namespace_identifier":
+            name = node
+        elif node.type == "function_declarator":
+            name = node.child_by_field_name("declarator")
+        elif node.type == "call_expression":
+            name = node.child_by_field_name("function")
+        else:
+            continue
+        while name and name.type in ("qualified_identifier", "template_function",
+                                     "template_method", "field_expression"):
+            name = name.child_by_field_name("name") or name.child_by_field_name("field")
+        if name and name.type in ("identifier", "field_identifier", "namespace_identifier",
+                                  "operator_name", "destructor_name"):
+            bold.update(range(offsets[name.start_byte], offsets[name.end_byte]))
+    return bold
+
+
 def code_html(source, path):
-    lines = []
+    lines, offset = [], 0
+    bold = bold_characters(source, path)
     for tokens in code_lines(source, path):
         parts = []
         for value, color in tokens:
-            text = html.escape(value, quote=False)
-            parts.append(f'<span class="{COLORS[color]}">{text}</span>' if COLORS[color] else text)
+            for heavy, run in groupby(enumerate(value, offset), lambda item: item[0] in bold):
+                text = html.escape("".join(char for _, char in run), quote=False)
+                classes = " ".join(filter(None, (COLORS[color], "t-bold" if heavy else "")))
+                parts.append(f'<span class="{classes}">{text}</span>' if classes else text)
+            offset += len(value)
         lines.append("".join(parts))
+        offset += 1
     return "\n".join(lines) + ("\n" if source.endswith("\n") else "")
 
 
@@ -62,6 +100,8 @@ def main():
     parser.add_argument("--output", type=Path, default=ROOT / "dist")
     parser.add_argument("--code-font", type=Path,
                         default=ROOT / "build/pages-font/MapleMono-NF-CN-Regular.ttf")
+    parser.add_argument("--code-bold-font", type=Path,
+                        default=ROOT / "build/pages-font/MapleMono-NF-CN-Bold.ttf")
     parser.add_argument("--font-license", type=Path, default=ROOT / "build/pages-font/LICENSE.txt")
     parser.add_argument("--text-font-dir", type=Path, default=ROOT / "build/pages-text-font")
     parser.add_argument("--refresh-labels", action="store_true", help="用 PDF 原字体更新完整文字的 SVG 快照")
@@ -120,6 +160,8 @@ def main():
     build_font(args.code_font, args.font_license, assets,
                "".join(e.source for e in entries) + "".join(e.title for e in entries)
                + (PAGES / "index.html").read_text() + (PAGES / "book.js").read_text())
+    build_font(args.code_bold_font, args.font_license, assets,
+               "".join(e.source for e in entries), "maple-mono-nf-cn-bold.woff2")
     text = "".join(e.title for e in entries) + "".join(c for c, _ in CHAPTERS) + "0123456789. "
     license_path = args.text_font_dir / "GUST-FONT-LICENSE.txt"
     build_font(args.text_font_dir / "lmroman10-regular.otf", license_path, assets,

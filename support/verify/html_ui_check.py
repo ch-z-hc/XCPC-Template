@@ -47,6 +47,13 @@ def main():
         actual = page.locator(".entry code").all_text_contents()
         assert actual == [entry.source for entry in expected]
         assert page.evaluate('document.fonts.check(\'14px "Maple Mono Web"\')')
+        code = page.locator('.entry:not([hidden]) code')
+        assert code.evaluate("el => [el, ...el.querySelectorAll('span')].every(node => getComputedStyle(node).fontStyle === 'normal')")
+        for name in ("chkmin", "chkmax", "solve", "main"):
+            token = code.locator(".t-bold").filter(has_text=re.compile(f"^{name}$")).first
+            expect(token).to_have_css("font-weight", "700")
+        expect(code).to_have_css("font-weight", "400")
+        expect(page.locator('.entry:not([hidden]) pre')).to_have_css("background-color", "rgb(255, 255, 255)")
         for path in ("support/tools/contest_main.cpp", "template/ds/树状数组.cpp",
                      "template/geometry/点与向量.cpp", "support/tools/linux_commands.txt"):
             entry = next(item for item in expected if item.path == path)
@@ -80,7 +87,8 @@ def main():
             session.send("CSS.enable")
             root = session.send("DOM.getDocument")["root"]["nodeId"]
             for selector, names in (
-                ('.entry:not([hidden]) code', {"MapleMono-NF-CN-Regular"}),
+                ('.entry:not([hidden]) code', {"MapleMono-NF-CN-Regular", "MapleMono-NF-CN-Bold"}),
+                ('.entry:not([hidden]) .t-bold', {"MapleMono-NF-CN-Bold"}),
             ):
                 node = session.send("DOM.querySelector", {"nodeId": root, "selector": selector})["nodeId"]
                 fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node})["fonts"]

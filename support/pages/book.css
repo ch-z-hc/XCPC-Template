@@ -6,6 +6,13 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Maple Mono Web";
+  src: url("maple-mono-nf-cn-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
   font-family: "PDF Roman";
   src: url("lmroman10-regular.woff2") format("woff2");
   font-weight: 400;
@@ -92,7 +99,8 @@ h1:focus { outline: none; }
 .copy-button:hover { color: #3c5870; border-color: #9baab7; }
 .copy-button.copied { color: #58715d; border-color: #b7c7bb; }
 pre { margin: 0; padding: 20px; overflow-x: auto; scrollbar-width: thin; tab-size: 4; background: white; }
-code { font: 400 14px/1.8 "Maple Mono Web", ui-monospace, monospace; font-variant-ligatures: none; color: var(--code-text); white-space: pre; }
+code { font: 400 14px/1.8 "Maple Mono Web", ui-monospace, monospace; font-variant-ligatures: none; font-synthesis: none; color: var(--code-text); white-space: pre; }
+.t-bold { font-weight: 700; }
 .t-blue { color: var(--code-blue); }
 .t-green { color: var(--code-green); }
 .t-comment { color: var(--code-comment); }
