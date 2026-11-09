@@ -2,26 +2,26 @@
 
 ## 在线阅读与下载
 
-- [HTML 在线阅读](https://ch-z-hc.github.io/XCPC-Template/)：目录搜索、单篇阅读与一键复制代码。
-- [PDF 在线阅读](https://ch-z-hc.github.io/XCPC-Template/pdf.html)：算法模板册和 OEIS 2 合 1 打印版。
-- [最新 Release](https://github.com/ch-z-hc/XCPC-Template/releases/latest)：下载 `template.pdf`、`oeis-2up.pdf`。
+- [HTML 在线阅读](https://chzhc.cn/xcpc/)：目录搜索、单篇阅读与一键复制代码。
+- [PDF 在线阅读](https://chzhc.cn/xcpc/pdf.html)：算法模板册和 OEIS 2 合 1 打印版。
+- PDF 下载：[算法模板册](https://chzhc.cn/xcpc/template.pdf)、[OEIS 2 合 1 打印版](https://chzhc.cn/xcpc/oeis-2up.pdf)。
 
-HTML 直接从 `main` 分支源码生成，与 PDF 共用章节顺序、词法配色和代码内容。页面保留 HTML / PDF / OEIS 三个入口；PDF 作为 Release 附件发布，不提交到 Git，使用浏览器原生阅读器。相关源码 push、发布或编辑 Release 时触发 `Publish book`，也可手动运行。HTML 使用最新源码，PDF 使用最新正式 Release 附件；源码 push 不会重新生成 PDF，两者版本可能不同。
+HTML 直接从源码生成，与 PDF 共用章节顺序、词法配色和代码内容。页面保留 HTML / PDF / OEIS 三个入口，PDF 使用浏览器原生阅读器。网站部署到 `https://chzhc.cn/xcpc/`，不再使用 GitHub Pages、Deployments 或 Releases；PDF 保留在本机并随静态网站发布，不提交到 Git。
 
-更新时先生成、校验 PDF，并提交和推送对应源码，再创建新标签的草稿 Release，上传根目录的 `template.pdf`、`oeis-2up.pdf` 后发布。OEIS 原版仅作为本地生成缓存，不发布。
+更新时生成、校验相应产物，将已校验的 `template.pdf`、`oeis-2up.pdf` 放入 `dist/`，运行资源版本化与检查后部署该目录。只修改 HTML 样式时可复用现有 PDF；修改模板源码后，需另行生成并校验新版 PDF。提交、推送源码与部署网站是独立步骤。OEIS 原版仅作为本地生成缓存，不发布。
 
 ### HTML 本地构建与检查
 
 ```text
 python -m pip install -r requirements-pages.txt
 python support/tools/generate_html.py --code-font /path/to/MapleMono-NF-CN-Regular.ttf --font-license /path/to/LICENSE.txt
-gh release download --repo ch-z-hc/XCPC-Template --dir dist --pattern template.pdf --pattern oeis-2up.pdf
+cp template.pdf oeis-2up.pdf dist/
 python support/tools/version_pages.py --site dist
 python support/verify/html_book_check.py --site dist
 python -m http.server 8765 --bind 127.0.0.1 --directory dist
 ```
 
-生成器默认从 `build/pages-font/` 读取 Maple Mono 和许可；CI 从 Maple Mono v7.9 官方发行包取得这两个文件，并验证固定 SHA-256。另需在 `build/pages-text-font/` 放置 `lmroman10-regular.otf`（2.007）、`latinmodern-math.otf`（1.959）和 `GUST-FONT-LICENSE.txt`，可用 `--text-font-dir` 指定目录；CI 的 `Prepare PDF text fonts` 步骤记录下载地址和校验值。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL / GFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
+生成器默认从 `build/pages-font/` 读取 Maple Mono 和许可，从 Maple Mono v7.9 官方发行包取得这两个文件。另需在 `build/pages-text-font/` 放置 `lmroman10-regular.otf`（2.007）、`latinmodern-math.otf`（1.959）和 `GUST-FONT-LICENSE.txt`，可用 `--text-font-dir` 指定目录；字体下载地址见 [字体说明](fonts/README.md)，GFL 许可取自 [GUST 官方许可文件](https://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt)。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL / GFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
 
 标题、目录和代码分别沿用 PDF 的字体，具体分工见 [字体说明](fonts/README.md)。标题、目录与文件名使用原字体生成的完整文字 SVG，并保留真实文本；代码使用随页发布的 Maple Mono，读者无需安装字体。修改文字标签后须按字体说明更新 `support/pages/pdf-labels.json`。CSS、脚本、网络字体与 PDF 阅读路径带内容哈希，更新后不会继续使用同名旧资源；根目录 PDF 下载地址仍保留。
 
