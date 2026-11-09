@@ -1,4 +1,4 @@
-"""与 PDF 共用目录、源码和词法配色，生成可复制代码的静态阅读页。"""
+"""与 PDF 共用目录和源码，按 One Dark Pro Mix 生成可复制代码的静态阅读页。"""
 from __future__ import annotations
 
 import argparse
@@ -14,16 +14,19 @@ from urllib.parse import quote
 from fontTools import subset
 from fontTools.ttLib import TTFont
 from pdf_labels import PDFLabels
+from pygments import lex
+from pygments.lexers import BashLexer, CppLexer
+from pygments.token import Token
 from tree_sitter import Language, Parser
 import tree_sitter_cpp
 
-from generate_print import (
-    ROOT, CHAPTERS, CODE_TEXT, CODE_BLUE, CODE_GREEN, CODE_COMMENT,
-    code_lines, load_entries,
-)
+from generate_print import ROOT, CHAPTERS, load_entries
 
 PAGES = ROOT / "support/pages"
-COLORS = {CODE_TEXT: "", CODE_BLUE: "t-blue", CODE_GREEN: "t-green", CODE_COMMENT: "t-comment"}
+# Acer 的 One Dark Pro Mix 3.19.0；仅用于 HTML，不改变打印册配色。
+COLORS = {"": "#abb2bf", "t-keyword": "#c678dd", "t-function": "#61afef",
+          "t-type": "#e5c07b", "t-variable": "#e06c75", "t-string": "#98c379",
+          "t-number": "#d19a66", "t-comment": "#7f848e", "t-escape": "#56b6c2"}
 COPY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg>'
 
 
@@ -31,50 +34,71 @@ def entry_id(entry):
     return Path(entry.path).with_suffix("").as_posix().replace("/", "-")
 
 
-def bold_characters(source, path):
+def name_styles(source, path):
     if not path.endswith(".cpp"):
-        return set()
+        return {}, set()
     offsets, byte = {}, 0
     for index, char in enumerate(source):
         offsets[byte] = index
         byte += len(char.encode())
     offsets[byte] = len(source)
     tree = Parser(Language(tree_sitter_cpp.language())).parse(source.encode())
-    stack, bold = [tree.root_node], set()
+    stack, styles, macros = [tree.root_node], {}, set()
     while stack:
         node = stack.pop()
         stack.extend(node.named_children)
-        if node.type == "namespace_identifier":
-            name = node
+        heavy = False
+        if node.type in ("namespace_identifier", "type_identifier"):
+            name, color = node, "t-type"
+            heavy = node.type == "namespace_identifier"
+        elif node.type == "using_declaration" and any(child.type == "namespace" for child in node.children):
+            name, color, heavy = node.named_children[-1], "t-type", True
+        elif node.type in ("preproc_def", "preproc_function_def"):
+            name, color = node.child_by_field_name("name"), "t-number"
+            if name:
+                macros.add(name.text.decode())
         elif node.type == "function_declarator":
-            name = node.child_by_field_name("declarator")
+            name, color, heavy = node.child_by_field_name("declarator"), "t-function", True
         elif node.type == "call_expression":
-            name = node.child_by_field_name("function")
+            name, color, heavy = node.child_by_field_name("function"), "t-function", True
         else:
             continue
         while name and name.type in ("qualified_identifier", "template_function",
                                      "template_method", "field_expression"):
             name = name.child_by_field_name("name") or name.child_by_field_name("field")
         if name and name.type in ("identifier", "field_identifier", "namespace_identifier",
-                                  "operator_name", "destructor_name"):
-            bold.update(range(offsets[name.start_byte], offsets[name.end_byte]))
-    return bold
+                                  "type_identifier", "operator_name", "destructor_name"):
+            styles.update((index, (color, heavy))
+                          for index in range(offsets[name.start_byte], offsets[name.end_byte]))
+    return styles, macros
 
 
 def code_html(source, path):
-    lines, offset = [], 0
-    bold = bold_characters(source, path)
-    for tokens in code_lines(source, path):
-        parts = []
-        for value, color in tokens:
-            for heavy, run in groupby(enumerate(value, offset), lambda item: item[0] in bold):
-                text = html.escape("".join(char for _, char in run), quote=False)
-                classes = " ".join(filter(None, (COLORS[color], "t-bold" if heavy else "")))
-                parts.append(f'<span class="{classes}">{text}</span>' if classes else text)
-            offset += len(value)
-        lines.append("".join(parts))
-        offset += 1
-    return "\n".join(lines) + ("\n" if source.endswith("\n") else "")
+    cpp = path.endswith(".cpp")
+    styles, macros = name_styles(source, path)
+    parts, offset = [], 0
+    lexer = CppLexer if cpp else BashLexer
+    for token, value in lex(source, lexer(stripnl=False, ensurenl=False)):
+        color = ""
+        if token in Token.Comment.PreprocFile or token in Token.String:
+            color = "t-escape" if token in Token.String.Escape else "t-string"
+        elif token in Token.Comment.Preproc or token in Token.Keyword or token in Token.Operator:
+            color = "t-keyword"
+        elif token in Token.Comment:
+            color = "t-comment"
+        elif token in Token.Number or token in Token.Name and value in macros:
+            color = "t-number"
+        elif token in Token.Name:
+            color = "t-variable"
+        for (role, heavy), run in groupby(enumerate(value, offset),
+                                         lambda item: ("t-number", False) if value in macros
+                                         else styles.get(item[0], (color, False))):
+            text = html.escape("".join(char for _, char in run), quote=False)
+            classes = " ".join(filter(None, (role, "t-bold" if heavy else "")))
+            parts.append(f'<span class="{classes}">{text}</span>' if classes else text)
+        offset += len(value)
+    assert offset == len(source)
+    return "".join(parts)
 
 
 def build_font(source, license_path, target, text, filename="maple-mono-nf-cn.woff2",
@@ -180,9 +204,8 @@ def main():
     document = re.sub(r"\{\{L:(regular|bold|body):([^}]+)}}", lambda m: label(m[2], m[1]), document)
     document = document.replace("{{LABEL_SPRITE}}", labels.finish())
     css = (PAGES / "book.css").read_text()
-    for name, color in {"CODE_TEXT": CODE_TEXT, "CODE_BLUE": CODE_BLUE,
-                        "CODE_GREEN": CODE_GREEN, "CODE_COMMENT": CODE_COMMENT}.items():
-        css = css.replace("{{" + name + "}}", color)
+    for name, color in COLORS.items():
+        css = css.replace("{{" + (name or "code-text") + "}}", color)
     for path in assets.glob("*.woff2"):
         if re.search(r"-[0-9a-f]{16}\.woff2$", path.name):
             continue

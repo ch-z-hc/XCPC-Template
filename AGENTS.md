@@ -89,9 +89,9 @@
 
 ## HTML 阅读页
 
-- `support/tools/generate_html.py` 直接复用 PDF 的 `load_entries`、`code_lines` 与配色；页面外观和交互在 `support/pages/`，输出到忽略的 `dist/`。不维护第二份模板或章节目录。
+- `support/tools/generate_html.py` 直接复用 PDF 的 `load_entries` 与源码；HTML 代码使用 Acer VS Code 的 One Dark Pro Mix 配色，PDF 配色独立保留。页面外观和交互在 `support/pages/`，输出到忽略的 `dist/`。不维护第二份模板或章节目录。
 - 复制内容须与对应源码逐字符一致，保留空白和末尾换行；代码不加行号，不做展示层的中英文空格改写。
-- 保持浅色代码卡片、目录搜索、原生 PDF / OEIS 入口，手机代码只在卡片内横向滚动。修改后运行 `html_book_check.py` 和真实浏览器交互检查，检查桌面及手机。
+- 页面保持浅色，代码正文使用 One Dark Pro Mix 深灰底，保留目录搜索、原生 PDF / OEIS 入口，手机代码只在卡片内横向滚动。修改后运行 `html_book_check.py` 和真实浏览器交互检查，检查桌面及手机。
 - HTML 字形按 PDF 分工：标题用苹方 Semibold，静态界面和文件名用苹方 Regular，目录正文用宋体 / Latin Modern Roman，非代码数学符号用 Latin Modern Math。上述完整文字生成 SVG 轮廓，保留真实文本供搜索与辅助技术使用；快照为 `support/pages/pdf-labels.json`，标签变化时按字体说明更新。代码保持原生文本，使用随页发布的 Maple Mono NF CN WOFF2 子集，输入框也使用该网络字体。不依赖本机字体，不分发苹方或宋体字体文件。
 - CSS、JavaScript、网络字体和 PDF 阅读入口使用内容哈希路径；将已校验的本机 PDF 放入 `dist/` 后运行 `version_pages.py`。验收须包含 `html_ui_check.py --isolated-fonts`，在没有安装 PDF 字体的浏览器环境核对字形与复制。
 - 网站统一发布到 `https://chzhc.cn/xcpc/`，不再使用 GitHub Pages、Deployments 或 Releases。PDF 使用本机已校验的产物，随静态网站部署；GitHub 推送不会自动部署网站或重新生成 PDF。

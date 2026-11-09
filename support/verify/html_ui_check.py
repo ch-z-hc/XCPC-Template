@@ -53,7 +53,11 @@ def main():
             token = code.locator(".t-bold").filter(has_text=re.compile(f"^{name}$")).first
             expect(token).to_have_css("font-weight", "700")
         expect(code).to_have_css("font-weight", "400")
-        expect(page.locator('.entry:not([hidden]) pre')).to_have_css("background-color", "rgb(255, 255, 255)")
+        expect(page.locator('.entry:not([hidden]) pre')).to_have_css("background-color", "rgb(40, 44, 52)")
+        expect(page.locator(".paper")).to_have_css("background-color", "rgb(255, 255, 255)")
+        for role, color in (("keyword", "rgb(198, 120, 221)"), ("function", "rgb(97, 175, 239)"),
+                            ("number", "rgb(209, 154, 102)"), ("string", "rgb(152, 195, 121)")):
+            expect(code.locator(f".t-{role}").first).to_have_css("color", color)
         for path in ("support/tools/contest_main.cpp", "template/ds/树状数组.cpp",
                      "template/geometry/点与向量.cpp", "support/tools/linux_commands.txt"):
             entry = next(item for item in expected if item.path == path)

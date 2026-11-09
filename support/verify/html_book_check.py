@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
-from generate_html import COLORS, code_html, code_lines, entry_id, load_entries
+from generate_html import COLORS, code_html, entry_id, load_entries
 from fontTools.ttLib import TTFont
 
 
@@ -23,18 +23,17 @@ class BookParser(HTMLParser):
         self.current = None
         self.in_code = False
         self.copies = 0
-        self.code_colors = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "article":
-            self.current = {**attrs, "source": "", "colors": []}
+            self.current = {**attrs, "source": ""}
             self.entries.append(self.current)
         if tag == "code":
             self.in_code = True
         if tag == "span" and self.in_code:
             classes = attrs.get("class", "").split()
-            self.code_colors.append(next((color for color in COLORS.values() if color and color in classes), ""))
+            assert set(classes) <= set(COLORS) | {"t-bold"}, classes
         if tag == "a" and "data-entry" in attrs:
             self.links.append(attrs)
         if tag == "button" and attrs.get("class") == "copy-button":
@@ -44,8 +43,6 @@ class BookParser(HTMLParser):
                 self.resources.append(attrs[key])
 
     def handle_endtag(self, tag):
-        if tag == "span" and self.in_code:
-            self.code_colors.pop()
         if tag == "code":
             self.in_code = False
         if tag == "article":
@@ -54,8 +51,6 @@ class BookParser(HTMLParser):
     def handle_data(self, text):
         if self.in_code:
             self.current["source"] += text
-            color = self.code_colors[-1] if self.code_colors else ""
-            self.current["colors"].extend((char, color) for char in text)
 
 
 def main():
@@ -76,13 +71,6 @@ def main():
         assert entry["data-title"] == original.title
         assert entry["data-number"] == original.number
         assert entry["source"] == original.source, original.path
-        colors = []
-        for line in code_lines(original.source, original.path):
-            colors.extend((char, COLORS[color]) for value, color in line for char in value)
-            colors.append(("\n", ""))
-        if not original.source.endswith("\n"):
-            colors.pop()
-        assert entry["colors"] == colors, f"{original.path}: 代码颜色发生变化"
         assert entry["data-sha256"] == hashlib.sha256(original.source.encode()).hexdigest()
     sample = '\n\t// 中文 <>&\nconst char *s = "</code><script>alert(1)</script>";\n'
     escaped = code_html(sample, "sample.cpp")
@@ -92,11 +80,22 @@ def main():
     assert probe.entries[0]["source"] == sample
     style_sample = '// 中文 f()\nnamespace demo { template < class T > long long f(T x) { return g<T>(x); } }\n'
     styled = code_html(style_sample, "sample.cpp")
-    for name in ("demo", "f", "g"):
-        assert f'<span class="t-bold">{name}</span>' in styled, name
+    assert '<span class="t-type t-bold">demo</span>' in styled
+    assert '<span class="t-type t-bold">std</span>' in code_html('using namespace std;\n', "sample.cpp")
+    for name in ("f", "g"):
+        assert f'<span class="t-function t-bold">{name}</span>' in styled, name
     for name in ("template", "class", "long"):
-        assert f'<span class="t-blue">{name}</span>' in styled, name
-    assert '<span class="t-comment">// 中文 f()</span>' in styled
+        assert f'<span class="t-keyword">{name}</span>' in styled, name
+    assert '<span class="t-comment">// 中文 f()\n</span>' in styled
+    palette_sample = code_html('struct Point {}; Point p; int n = 42; const char *s = "ok";\n', "sample.cpp")
+    for role, text in (("type", "Point"), ("variable", "n"), ("number", "42"), ("string", "ok")):
+        assert f'<span class="t-{role}">{text}</span>' in palette_sample, (role, text)
+    macro_sample = code_html('#define V vector\nV<int> a;\n', "sample.cpp")
+    assert macro_sample.count('<span class="t-number">V</span>') == 2
+    css = (site / "assets/book.css").read_text()
+    assert "background: #282c34" in css
+    for role, color in COLORS.items():
+        assert f'.{role} {{ color: {color}; }}' in css if role else f'--code-text: {color};' in css
     assert "t-bold" not in code_html("echo hello\n", "commands.txt")
     viewer = BookParser()
     viewer.feed((site / "pdf.html").read_text())

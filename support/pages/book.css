@@ -32,10 +32,7 @@
   --muted: #70757d;
   --line: #d1d1d6;
   --accent: #506b82;
-  --code-text: {{CODE_TEXT}};
-  --code-blue: {{CODE_BLUE}};
-  --code-green: {{CODE_GREEN}};
-  --code-comment: {{CODE_COMMENT}};
+  --code-text: {{code-text}};
   --ui-font: "Maple Mono Web", sans-serif;
   --text-font: "PDF Roman", "PDF Math", "Maple Mono Web", serif;
   --top: 58px;
@@ -98,13 +95,18 @@ h1:focus { outline: none; }
 .copy-button > svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 1.5; fill: none; }
 .copy-button:hover { color: #3c5870; border-color: #9baab7; }
 .copy-button.copied { color: #58715d; border-color: #b7c7bb; }
-pre { margin: 0; padding: 20px; overflow-x: auto; scrollbar-width: thin; tab-size: 4; background: white; }
+pre { margin: 0; padding: 20px; overflow-x: auto; scrollbar-width: thin; tab-size: 4; background: #282c34; color-scheme: dark; }
 code { font: 400 14px/1.8 "Maple Mono Web", ui-monospace, monospace; font-variant-ligatures: none; font-synthesis: none; color: var(--code-text); white-space: pre; }
 .t-bold { font-weight: 700; }
-.t-blue { color: var(--code-blue); }
-.t-green { color: var(--code-green); }
-.t-comment { color: var(--code-comment); }
-pre::selection, code::selection, code span::selection { background: #dce5ed; }
+.t-keyword { color: {{t-keyword}}; }
+.t-function { color: {{t-function}}; }
+.t-type { color: {{t-type}}; }
+.t-variable { color: {{t-variable}}; }
+.t-string { color: {{t-string}}; }
+.t-number { color: {{t-number}}; }
+.t-comment { color: {{t-comment}}; }
+.t-escape { color: {{t-escape}}; }
+pre::selection, code::selection, code span::selection { background: #67769660; }
 @media (max-width: 1100px) and (min-width: 801px) {
   main { padding: 22px; }
   .paper { padding: 32px 28px 22px; }
