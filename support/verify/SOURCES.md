@@ -154,7 +154,8 @@
 | `template/others/分治三维偏序.cpp` | [P3810 三维偏序 / 陌上花开](https://www.luogu.com.cn/problem/P3810) | 直接能力；返回每个点被其他点支配的数量，题目最终需要统计数量分布。 |
 | `template/others/常用定义.cpp` | 无独立原题；`chkmin`、`chkmax`、模加减和类型别名 | 辅助定义；烟测中的断言验证边界，不拿 A+B 题冒充验证题。 |
 | `template/others/离散化.cpp` | [P1955 程序自动分析](https://www.luogu.com.cn/problem/P1955) | 应用；离散化编号后配合 DSU，离散化本身不是整题算法。 |
-| `template/others/分治动态规划与单调队列多重背包.cpp` | [CF 321E Ciel and Gondolas](https://codeforces.com/problemset/problem/321/E)、[P1776 宝物筛选](https://www.luogu.com.cn/problem/P1776) | 分别对应分治 DP 单层转移与单调队列多重背包；前者必须证明最优决策单调并自行准备代价函数。 |
+| `template/others/决策单调性.cpp` | [CF 321E Ciel and Gondolas](https://codeforces.com/problemset/problem/321/E) | 题目对应分治 DP 单层转移，须自行准备代价函数；二分栈另以 `monotone_dp_random.cpp` 对拍验证，要求决策间的严格更优关系为后缀，非整题通过记录。 |
+| `template/others/单调队列多重背包.cpp` | [P1776 宝物筛选](https://www.luogu.com.cn/problem/P1776) | 单调队列多重背包，逐种加入物品。 |
 | `template/others/莫队.cpp` | [P1494 小 Z 的袜子](https://www.luogu.com.cn/problem/P1494) | 应用；补全窗口增删与记录答案函数，维护颜色计数、同色点对数与分数约分，单点区间单独处理。 |
 | `template/others/带修改莫队.cpp` | [P1903 带修莫队 / 数颜色](https://www.luogu.com.cn/problem/P1903) | 应用；补全增删与记录答案函数，维护不同值个数，颜色建议离散化。 |
 | `template/others/树上莫队.cpp` | [SPOJ COT2 Count on a tree II](https://www.spoj.com/problems/COT2/)、[洛谷收录题面](https://www.luogu.com.cn/problem/SP10707) | 应用；静态路径颜色数，补全按点增删与记录答案函数。原站返回 403，已核对洛谷题面；不是 P4074 的带修改树上莫队。 |

@@ -58,7 +58,7 @@ HTML 为每个文件保留稳定锚点；`/` 或 `Ctrl/Cmd + K` 聚焦搜索。�
 Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp` 片段。
 完成一个模板的标准是：代码整理、接口说明、验证题和一次编译/运行验证都完成。
 
-全部 145 个文件的原题 / 公开验证题见 [题源索引](verify/SOURCES.md)；实际验证范围和使用限制见 [审查报告](verify/AUDIT.md)。题目链接不等于整题通过记录；李超树已修复整数线段数学同值的编号判定，浮点调用仍受舍入误差影响。
+各模板的原题 / 公开验证题见 [题源索引](verify/SOURCES.md)；实际验证范围和使用限制见 [审查报告](verify/AUDIT.md)。题目链接不等于整题通过记录；李超树已修复整数线段数学同值的编号判定，浮点调用仍受舍入误差影响。
 
 ## 调用方式
 
@@ -149,6 +149,7 @@ bash support/verify/run_linux.sh
 脚本将栈设为 256 MiB，先检查所有模板和验证程序的语法，再运行无输入测试，启用 ASan / UBSan 和标准库断言。`deep_stack.cpp` 验证 20 万节点深链、边双大环和 20 万条边的欧拉路递归，需要上述栈设置。
 
 - `snippets_smoke.cpp`：公开接口烟测；
+- `monotone_dp_random.cpp`：决策单调性分治与二分栈，对拍朴素转移，覆盖同值、负费用、不可达层与大规模调用次数；
 - `common_templates_random.cpp`、`template_regressions.cpp`：常用模板随机测试和已知边界回归；
 - `dsu_on_tree_random.cpp`、`geometry_random.cpp`、`li_chao_random.cpp`、`suffix_array_random.cpp`：专项随机测试；
 - `graph_random.cpp`：LCA、SCC、双连通分量、欧拉路、匹配、差分约束和可撤销并查集；
@@ -329,7 +330,8 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/math/行列式与矩阵树定理.cpp` | `det`、`matrix_tree`，质数模数；有向版本为从根向外的树 |
 | `template/others/带修改莫队.cpp` | `MoModify::init`、`modify`、`query`、`solve()`；补全 `add`、`del`、`answer`，按值增删 |
 | `template/others/树上莫队.cpp` | `MoTree::init`、`add_edge`、`build`、`query`、`solve()`；补全 `add`、`del`、`answer`，按点增删 |
-| `template/others/分治动态规划与单调队列多重背包.cpp` | `dc_dp`、`bounded_knapsack`，分别为单层分治转移与一种物品的多重背包转移 |
+| `template/others/决策单调性.cpp` | `dc_dp(prev, cost)` 分治计算一层，`binary_stack_dp(n, cost, base)` 二分栈顺序递推；均取最小值，`cost(l, r)` 为闭区间费用 |
+| `template/others/单调队列多重背包.cpp` | `bounded_knapsack`，加入一种物品的多重背包转移 |
 | `template/string/位集优化最长公共子序列.cpp` | `bitset_lcs`，只求 LCS 长度，支持任意字节 |
 
 ## 约定
