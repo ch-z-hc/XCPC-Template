@@ -2,20 +2,11 @@
 
 字体文件仅保存在本机，不提交到 Git。生成器缺少字体时直接报错，不静默替换。
 
-HTML 按 PDF 的字体分工排版：标题使用苹方简体 Semibold，代码卡片标题和界面文字使用苹方简体 Regular；目录正文使用宋体与 Latin Modern Roman，非代码数学符号使用 Latin Modern Math；代码及中文注释使用 Maple Mono NF CN Regular，C++ 函数名和命名空间使用独立的 Bold 字重，不使用斜体。代码区使用 Acer VS Code 的 One Dark Pro Mix 3.19.0 深灰背景与语法配色，字号及页面其他区域保持原样；Pygments 分词结合 Tree-sitter 的函数、命名空间和类型识别，不改变 PDF 配色。Maple Mono、Latin Modern Roman 2.007 与 Latin Modern Math 1.959 构建为 WOFF2 子集，附 OFL / GFL 许可，随静态网站产物发布。
+HTML 界面与主站统一：中文使用霞鹜文楷，英文和数字使用 Maple Mono，通过 `https://chzhc.cn/guestbook/fonts.css` 加载完整共享字体。标题、目录和文件名使用原生文本，不再生成 PDF 字体的 SVG 标签；旧 `pdf-labels.json` 与生成工具仅供历史方案参考，不参与当前构建。
 
-HTML 的目录、标题、文件名及静态界面标签按上述字体生成完整文字的 SVG 轮廓，浏览器无需安装苹方或宋体；同时保留真实文本供搜索与辅助技术读取。代码仍是原生文本，可完整复制。苹方与宋体字体文件不随网页分发。轮廓快照保存在 `support/pages/pdf-labels.json`，记录原字体名称与 SHA-256；常规 HTML 构建直接使用快照，遇到新标签会报错，不能静默回退字体。
+代码及中文注释继续使用 Maple Mono NF CN Regular，C++ 函数名和命名空间使用独立的 Bold 字重，不使用斜体。代码区保留 One Dark Pro Mix 3.19.0 深灰背景与语法配色。Regular 和 Bold 构建为 WOFF2 子集，附 OFL 许可，随静态网站发布。HTML 构建不需要下面的 PDF 专用字体，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
 
-修改章节标题、文件名或界面标签后，在拥有与 PDF 相同字体的环境更新快照：
-
-```bash
-python support/tools/generate_html.py --refresh-labels \
-  --heading-font /path/to/PingFangSC-Regular.otf \
-  --heading-bold-font /path/to/PingFangSC-Semibold.otf \
-  --chinese-font /path/to/simsun.ttc
-```
-
-这三个输入使用独立字重文件或所需字体位于索引 0 的集合；Latin Modern 与 Maple Mono 路径沿用常规 HTML 构建参数。提交更新后的快照，不提交原字体文件。HTML 产物与字体子集位于忽略的 `dist/`，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
+以下为 PDF 打印册字体约定：
 
 | 用途 | 字体 | 默认文件 |
 | --- | --- | --- |

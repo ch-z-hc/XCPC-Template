@@ -13,7 +13,6 @@ from urllib.parse import quote
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
-from pdf_labels import PDFLabels
 from pygments import lex
 from pygments.lexers import BashLexer, CppLexer
 from pygments.token import Token
@@ -127,24 +126,13 @@ def main():
     parser.add_argument("--code-bold-font", type=Path,
                         default=ROOT / "build/pages-font/MapleMono-NF-CN-Bold.ttf")
     parser.add_argument("--font-license", type=Path, default=ROOT / "build/pages-font/LICENSE.txt")
-    parser.add_argument("--text-font-dir", type=Path, default=ROOT / "build/pages-text-font")
-    parser.add_argument("--refresh-labels", action="store_true", help="用 PDF 原字体更新完整文字的 SVG 快照")
-    parser.add_argument("--heading-font", type=Path)
-    parser.add_argument("--heading-bold-font", type=Path)
-    parser.add_argument("--chinese-font", type=Path)
     args = parser.parse_args()
     entries = load_entries()
     assets = args.output / "assets"
     assets.mkdir(parents=True, exist_ok=True)
-    font_paths = None
-    if args.refresh_labels:
-        if not all((args.heading_font, args.heading_bold_font, args.chinese_font)):
-            parser.error("--refresh-labels 需指定 --heading-font、--heading-bold-font、--chinese-font")
-        font_paths = {"regular": args.heading_font, "bold": args.heading_bold_font,
-                      "chinese": args.chinese_font, "latin": args.text_font_dir / "lmroman10-regular.otf",
-                      "math": args.text_font_dir / "latinmodern-math.otf"}
-    labels = PDFLabels(PAGES / "pdf-labels.json", assets / "labels", font_paths)
-    label = labels.render
+
+    label = html.escape
+
     toc, articles = [], []
     for chapter_number, (chapter, _) in enumerate(CHAPTERS, 1):
         links = []
@@ -155,11 +143,11 @@ def main():
             title = html.escape(entry.title)
             links.append(
                 f'<a href="#{quote(key, safe="")}" data-entry="{html.escape(key)}">'
-                f'<span class="entry-number">{label(entry.number, "body")}</span>'
-                f'<span>{label(entry.title, "body", 13)}</span></a>')
+                f'<span class="entry-number">{label(entry.number)}</span>'
+                f'<span>{label(entry.title)}</span></a>')
         toc.append(
             f'<details class="toc-group"{" open" if chapter_number == 1 else ""}>'
-            f'<summary><span>{label(str(chapter_number), "bold")}</span>{label(chapter, "bold")}</summary>'
+            f'<summary><span>{label(str(chapter_number))}</span>{label(chapter)}</summary>'
             f'<div class="toc-links">{"".join(links)}</div></details>')
     for index, entry in enumerate(entries):
         key = entry_id(entry)
@@ -171,12 +159,10 @@ def main():
             f'data-number="{entry.number}" data-sha256="{source_hash}"'
             f'{" hidden" if index else ""}>'
             f'<p class="chapter-label">{label(entry.number.split(".")[0] + " · " + entry.chapter)}</p>'
-            f'<h1 tabindex="-1">{label(entry.number + " " + entry.title, "bold", 0, "label-wide")}'
-            f'{label(entry.number + " " + entry.title, "bold", 12, "label-narrow")}</h1>'
+            f'<h1 tabindex="-1">{label(entry.number + " " + entry.title)}</h1>'
             f'<div class="code-card"><div class="card-header">'
             f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>'
-            f'{label(Path(entry.path).name, "regular", 0, "label-wide")}'
-            f'{label(Path(entry.path).name, "regular", 13, "label-narrow")}</span>'
+            f'{label(Path(entry.path).name)}</span>'
             f'<button class="copy-button" type="button" aria-label="复制代码：{title}">'
             f'{COPY_ICON}<span class="copy-text">{label("复制")}</span></button></div>'
             f'<pre tabindex="0" aria-label="源码：{title}"><code>{code_html(entry.source, entry.path)}</code></pre>'
@@ -186,14 +172,6 @@ def main():
                + (PAGES / "index.html").read_text() + (PAGES / "book.js").read_text())
     build_font(args.code_bold_font, args.font_license, assets,
                "".join(e.source for e in entries), "maple-mono-nf-cn-bold.woff2")
-    text = "".join(e.title for e in entries) + "".join(c for c, _ in CHAPTERS) + "0123456789. "
-    license_path = args.text_font_dir / "GUST-FONT-LICENSE.txt"
-    build_font(args.text_font_dir / "lmroman10-regular.otf", license_path, assets,
-               "".join(c for c in text if ord(c) < 0x2E80 and not 0x2200 <= ord(c) <= 0x22FF),
-               "lmroman10-regular.woff2", "GUST-FONT-LICENSE.txt")
-    build_font(args.text_font_dir / "latinmodern-math.otf", license_path, assets,
-               "".join(c for c in text if 0x2200 <= ord(c) <= 0x22FF) + "∑∞∈",
-               "latinmodern-math.woff2", "GUST-FONT-LICENSE.txt")
     document = (PAGES / "index.html").read_text()
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     for marker, value in {"<!-- TOC -->": "\n".join(toc),
@@ -201,8 +179,6 @@ def main():
                           "{{COUNT}}": label(f"{len(entries)} 个条目"), "{{REVISION}}": revision}.items():
         assert document.count(marker) == 1, marker
         document = document.replace(marker, value)
-    document = re.sub(r"\{\{L:(regular|bold|body):([^}]+)}}", lambda m: label(m[2], m[1]), document)
-    document = document.replace("{{LABEL_SPRITE}}", labels.finish())
     css = (PAGES / "book.css").read_text()
     for name, color in COLORS.items():
         css = css.replace("{{" + (name or "code-text") + "}}", color)

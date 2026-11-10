@@ -21,11 +21,11 @@ python support/verify/html_book_check.py --site dist
 python -m http.server 8765 --bind 127.0.0.1 --directory dist
 ```
 
-生成器默认从 `build/pages-font/` 读取 Maple Mono 和许可，从 Maple Mono v7.9 官方发行包取得这两个文件。另需在 `build/pages-text-font/` 放置 `lmroman10-regular.otf`（2.007）、`latinmodern-math.otf`（1.959）和 `GUST-FONT-LICENSE.txt`，可用 `--text-font-dir` 指定目录；字体下载地址见 [字体说明](fonts/README.md)，GFL 许可取自 [GUST 官方许可文件](https://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt)。输出包含源码生成的 HTML、样式、脚本、WOFF2 子集和 OFL / GFL 许可，不需要 Node.js 构建或运行服务。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
+生成器默认从 `build/pages-font/` 读取 Maple Mono Regular、Bold 和 OFL 许可，可通过 `--code-font`、`--code-bold-font` 和 `--font-license` 指定。代码使用随页发布的 WOFF2 子集；构建不再需要苹方、宋体或文字 SVG 快照。`html_book_check.py` 核对全部篇目的代码文本、目录锚点、字体覆盖和本地 PDF 资源。
 
-标题、目录和代码分别沿用 PDF 的字体，具体分工见 [字体说明](fonts/README.md)。标题、目录与文件名使用原字体生成的完整文字 SVG，并保留真实文本；代码使用随页发布的 Maple Mono，读者无需安装字体。修改文字标签后须按字体说明更新 `support/pages/pdf-labels.json`。CSS、脚本、网络字体与 PDF 阅读路径带内容哈希，更新后不会继续使用同名旧资源；根目录 PDF 下载地址仍保留。
+网页沿用主站的白底、蓝色链接、青色虚线标题与轻量分隔线。标题、目录和界面使用主站完整共享字体接口 `https://chzhc.cn/guestbook/fonts.css`（中文霞鹜文楷、英文和数字 Maple Mono），此接口直接提供字体源资产，不是博客构建裁剪版。代码保留 One Dark Pro Mix 配色与 Maple Mono NF CN，打印 PDF 不受网页样式影响。CSS、脚本、代码字体与 PDF 阅读路径带内容哈希，根目录 PDF 下载地址仍保留。
 
-浏览器检查另需 `python -m pip install playwright==1.58.0` 和 `python -m playwright install chromium`；启动上面的预览服务后运行 `python support/verify/html_ui_check.py --url http://127.0.0.1:8765/`。可通过 `--browser` 使用已有 Chromium；Linux 下加 `--isolated-fonts`，用只包含 DejaVu 的独立 Fontconfig 验证未安装 PDF 字体时的渲染。检查覆盖真实剪贴板、备用复制与失败反馈、搜索、前后篇和历史导航、320 / 390 / 768 px 布局、手机目录和禁用 JavaScript 时的阅读。截图保存在 `build/html-preview/`。
+浏览器检查另需 `python -m pip install playwright==1.58.0` 和 `python -m playwright install chromium`；启动上面的预览服务后运行 `python support/verify/html_ui_check.py --url http://127.0.0.1:8765/`。可通过 `--browser` 使用已有 Chromium；Linux 下加 `--isolated-fonts`，用只包含 DejaVu 的独立 Fontconfig 验证未安装中文字体时的渲染。检查覆盖真实剪贴板、备用复制与失败反馈、搜索、前后篇和历史导航、320 / 390 / 768 px 布局、手机目录和禁用 JavaScript 时的阅读。截图保存在 `build/html-preview/`。
 
 HTML 为每个文件保留稳定锚点；`/` 或 `Ctrl/Cmd + K` 聚焦搜索。代码可手动选中或点击复制，复制保留原始空格、缩进和末尾换行。原首页的 `#template` / `#oeis` 链接会转到相应 PDF 阅读器。
 

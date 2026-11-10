@@ -101,11 +101,20 @@ def main():
                 assert all(font["isCustomFont"] for font in fonts if font["glyphCount"])
                 print(f"PASS: actual rendered fonts {selector}: {sorted(actual_names)}", flush=True)
             session.detach()
+            # 标题和目录使用与主站一致的网络字体，不能退回本机中文字体。
+            session = context.new_cdp_session(page)
+            session.send("DOM.enable")
+            session.send("CSS.enable")
+            root = session.send("DOM.getDocument")["root"]["nodeId"]
             for selector in ('.entry:not([hidden]) h1', '.toc-heading h2',
                              'a[data-entry="template-ds-树状数组"]'):
-                label = page.locator(selector).locator('.pdf-label:visible').first
-                assert label.locator('svg use').evaluate('el => el.getBBox().width > 0')
-            print("PASS: PDF vector labels render without installed PDF fonts", flush=True)
+                node = session.send("DOM.querySelector", {"nodeId": root, "selector": selector})["nodeId"]
+                fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node})["fonts"]
+                names = {font["familyName"] for font in fonts if font["glyphCount"]}
+                assert any("WenKai" in name for name in names), (selector, names)
+                assert all(font["isCustomFont"] for font in fonts if font["glyphCount"]), (selector, fonts)
+            session.detach()
+            print("PASS: site UI fonts render without installed Chinese fonts", flush=True)
         # Clipboard API 被拒绝时，验证真实的旧接口复制，不只模拟返回成功。
         page.evaluate('() => { navigator.clipboard.writeText = () => Promise.reject(new Error("denied")); }')
         button = page.locator('.entry:not([hidden]) .copy-button')
@@ -146,6 +155,7 @@ def main():
             tab.evaluate("document.fonts.ready")
             assert tab.evaluate("document.documentElement.scrollWidth <= innerWidth")
             expect(tab.locator(".menu-button")).to_have_attribute("aria-expanded", "false")
+            assert tab.locator(".topbar").evaluate("el => [...el.querySelectorAll('a,button')].filter(n => n.getBoundingClientRect().width).every(n => n.getBoundingClientRect().bottom <= el.getBoundingClientRect().bottom)")
             tab.locator(".menu-button").click()
             expect(tab.locator("#search")).to_be_focused()
             assert tab.locator("#reader").evaluate("el => el.inert")

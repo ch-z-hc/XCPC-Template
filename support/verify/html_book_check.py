@@ -101,23 +101,13 @@ def main():
     viewer.feed((site / "pdf.html").read_text())
     for url in book.resources + viewer.resources:
         parsed = urlsplit(url)
-        if parsed.scheme or parsed.netloc or not parsed.path:
+        if parsed.scheme or parsed.netloc or not parsed.path or parsed.path in {"/guestbook/fonts.css", "/assets/logo.svg"}:
             continue
         assert not parsed.path.startswith("/"), url
         assert (site / unquote(parsed.path)).exists(), url
-    snapshot = json.loads((ROOT / "support/pages/pdf-labels.json").read_text())
-    assert {face["name"] for face in snapshot["fonts"].values()} == {
-        "PingFangSC-Regular", "PingFangSC-Semibold", "SimSun",
-        "LMRoman10-Regular", "LatinModernMath-Regular"}
-    label_resources = {urlsplit(url).path for url in book.resources if url.startswith("assets/labels/")}
-    assert len(label_resources) == 1
-    sprite_path = site / label_resources.pop()
-    sprite = sprite_path.read_text()
-    assert hashlib.sha256(sprite.encode()).hexdigest().startswith(sprite_path.stem)
-    for key, record in snapshot["labels"].items():
-        svg = record["svg"]
-        assert svg.split(">", 1)[1].removesuffix("</svg>").replace('id="label"', f'id="{key}"') in sprite
-        assert "<path " in svg and "<text" not in svg
+    assert "pdf-label" not in document
+    assert "/guestbook/fonts.css" in document
+    assert 'aria-label="返回主站"' in document
     assert "local(" not in (site / "assets/book.css").read_text()
     for url in book.resources:
         path = site / urlsplit(url).path
@@ -141,11 +131,6 @@ def main():
         assert font["OS/2"].usWeightClass == 700
         assert not required - set(font.getBestCmap())
     assert "SIL OPEN FONT LICENSE Version 1.1" in (site / "assets/OFL.txt").read_text()
-    assert "LaTeX Project Public License" in (site / "assets/GUST-FONT-LICENSE.txt").read_text()
-    for filename, name in (("lmroman10-regular.woff2", "LMRoman10-Regular"),
-                           ("latinmodern-math.woff2", "LatinModernMath-Regular")):
-        with TTFont(site / "assets" / filename) as font:
-            assert font["name"].getDebugName(6) == name
     print(f"PASS: {len(expected)} HTML entries, exact source text, stable links, font coverage and PDF resources")
 
 

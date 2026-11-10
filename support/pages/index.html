@@ -7,32 +7,35 @@
   <meta name="description" content="XCPC 算法模板在线阅读，支持目录搜索与代码复制。">
   <meta name="source-revision" content="{{REVISION}}">
   <title>XCPC Template</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='3' width='22' height='26' rx='3' fill='%23506b82'/%3E%3Cpath d='M11 3v26M16 11h7M16 16h7' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E">
+  <link rel="icon" href="/assets/logo.svg">
+  <link rel="stylesheet" href="/guestbook/fonts.css">
   <link rel="preload" href="assets/maple-mono-nf-cn.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/book.css">
   <script defer src="assets/book.js"></script>
   <noscript><style>.entry[hidden]{display:block!important}.entry{margin-bottom:64px}.copy-button,.search-box,.menu-button{display:none!important}@media(max-width:800px){.sidebar{position:static!important;transform:none!important;width:100%!important;max-height:none!important}.backdrop{display:none!important}}</style></noscript>
 </head>
 <body>
-  <a class="skip-link" href="#reader">{{L:regular:跳到代码}}</a>
-  <header class="topbar">
+  <a class="skip-link" href="#reader">跳到代码</a>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="home-link" href="https://chzhc.cn/" aria-label="返回主站"><img src="/assets/logo.svg" alt="chzhc" width="43" height="30"></a>
+    <span class="nav-divider" aria-hidden="true"></span>
     <button class="menu-button" type="button" aria-label="打开目录" aria-expanded="false" aria-controls="sidebar">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <a class="brand" href="./">{{L:bold:XCPC Template}}</a>
+    <a class="brand" href="./">XCPC Template</a>
     <nav class="view-tabs" aria-label="阅读方式">
-      <a href="./" aria-current="page">{{L:regular:HTML}}</a>
-      <a href="pdf.html#template">{{L:regular:PDF}}</a>
-      <a href="pdf.html#oeis">{{L:regular:OEIS}}</a>
+      <a href="./" aria-current="page">HTML</a>
+      <a href="pdf.html#template">PDF</a>
+      <a href="pdf.html#oeis">OEIS</a>
     </nav>
     <a class="repo-link" href="https://github.com/ch-z-hc/XCPC-Template" aria-label="GitHub 仓库">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.16-.89-1.16-.73-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.96 0-.88.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.73c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.08-1.87 3.75-3.65 3.95.29.25.54.74.54 1.49v2.32c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>
-      <span>{{L:regular:GitHub}}</span>
+      <span>GitHub</span>
     </a>
-  </header>
+  </div></header>
   <button class="backdrop" type="button" aria-label="关闭目录" hidden></button>
   <aside class="sidebar" id="sidebar" aria-label="模板目录">
-    <div class="toc-heading"><h2>{{L:bold:目录}}</h2><span>{{COUNT}}</span></div>
+    <div class="toc-heading"><h2>目录</h2><span>{{COUNT}}</span></div>
     <div class="search-box">
       <label class="sr-only" for="search">搜索模板或函数</label>
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>
@@ -43,7 +46,7 @@
     <nav class="toc" aria-label="章节">
       <!-- TOC -->
     </nav>
-    <p class="empty-search" hidden>{{L:regular:没有找到匹配的模板}}</p>
+    <p class="empty-search" hidden>没有找到匹配的模板</p>
   </aside>
   <main id="reader" tabindex="-1">
     <div class="paper">
@@ -51,8 +54,8 @@
     </div>
   </main>
   <p id="copy-status" class="sr-only" role="status" aria-live="polite"></p>
-  <template id="label-copy">{{L:regular:复制}}</template>
-  <template id="label-copied">{{L:regular:已复制}}</template>
-  <template id="label-manual">{{L:regular:请手动复制}}</template>
+  <template id="label-copy">复制</template>
+  <template id="label-copied">已复制</template>
+  <template id="label-manual">请手动复制</template>
 </body>
 </html>
