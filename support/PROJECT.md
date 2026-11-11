@@ -70,6 +70,8 @@ Microsoft To Do 中的每个模板任务，对应一个可直接复制的 `.cpp`
 
 三维凸包独立使用 `P3`，无需复制二维基础定义。`极大周期子串.cpp` 先复制后缀数组，`上下界最小费用流.cpp` 先复制常规费用流；依赖均写在各文件头。
 
+`嵌套凸多边形切线.cpp` 独立使用整数 `NestedHull::P`。`build(p, q)` 要求两个严格逆时针凸多边形且 `q` 严格位于 `p` 内部，O(n + m) 求两侧切点 `left / right` 和合法弦区间 `l / r`。切点为内凸包原下标；区间使用展开下标，只有访问外凸包坐标时取模。相切算合法，坐标绝对值不超过 `1e9`。可复用切点求支撑方向，或在区间上改写计数 / DP；不适用于任意顺序的外点切线查询。QOJ 14714 的前缀和计数示例在 `support/verify/inside_triangle_submission.cpp`，不混入几何片段。直径和最小面积包围矩形也使用旋转卡壳，分别保留在原文件。
+
 二维最大点积查询独立使用整数 `HullQuery::P`，不混用浮点 `P` / `EPS`；坐标与查询系数绝对值不超过 `1e9`。二维动态凸包先复制最大点积查询片段；分块更新摊还 O(B log(B + 1))，最大点积查询 O(ceil(Q / B) log(B + 1))，Q 为累计插入次数。`snapshot` / `contains` 会重建全局凸包，O(Q log(Q + 1))；反复包含查询可复用快照。
 
 `等距拉格朗日插值.cpp` 先复制组合数，`两类斯特林数.cpp` 先复制 NTT，`线性递推快速求项.cpp` 先复制 FPS；`最小面积包围矩形.cpp` 只依赖点向量定义，输入需先取得严格逆时针凸包。
@@ -237,6 +239,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/geometry/直线与线段.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
 | `template/geometry/多边形.cpp` | `area`、`contain`、`convexCut` |
 | `template/geometry/凸包与直径与闵可夫斯基和.cpp` | `convexHull`、`convexHullNonStrict`、`checkConvexHull`（简单多边形的逆时针凸性）、`convexDiameter`（顺逆时针均可）、`MincowskySum` |
+| `template/geometry/嵌套凸多边形切线.cpp` | `NestedHull::build(p, q)`；`left / right` 两侧切点，`l / r` 展开合法弦区间，整数旋转卡壳 O(n + m) |
 | `template/graph/二分图匹配.cpp` | `Kuhn::add_edge`、`solve` |
 | `template/graph/桥.cpp` | `Bridge::add_edge`、`find` |
 | `template/graph/割点.cpp` | `CutVertex::add_edge`、`find` |

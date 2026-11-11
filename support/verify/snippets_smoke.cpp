@@ -148,6 +148,7 @@
 #include "../../template/others/博弈状态函数.cpp"
 #include "../../template/string/二维哈希.cpp"
 #include "../../template/geometry/最小面积包围矩形.cpp"
+#include "../../template/geometry/嵌套凸多边形切线.cpp"
 
 V < int > dsu_value, dsu_count, dsu_answer;
 int dsu_distinct = 0;
@@ -160,6 +161,12 @@ void DSUOnTree::del(int u) {
 void DSUOnTree::query(int u) { dsu_answer[u] = dsu_distinct; }
 
 int main() {
+    {
+        NestedHull hull;
+        hull.build({{0, 0}, {20, 0}, {0, 20}}, {{1, 1}, {3, 1}, {1, 3}});
+        assert(hull.r == V < int > ({1, 2, 3, 4, 5, 6}));
+        assert(hull.l == V < int > ({2, 3, 4, 5, 6, 7}));
+    }
     {
         Beats seg; seg.init({0, 1, 5, -2});
         seg.chmin(1, 3, 3); seg.chmax(2, 3, 0); seg.add(1, 2, 2);

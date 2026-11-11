@@ -178,6 +178,7 @@ CHAPTERS = [
         ("template/geometry/直线与线段.cpp", "直线与线段"),
         ("template/geometry/多边形.cpp", "多边形"),
         ("template/geometry/凸包与直径与闵可夫斯基和.cpp", "凸包、直径与闵可夫斯基和"),
+        ("template/geometry/嵌套凸多边形切线.cpp", "嵌套凸多边形切线（旋转卡壳）"),
         ("template/geometry/最小面积包围矩形.cpp", "最小面积包围矩形"),
         ("template/geometry/凸多边形包含查询.cpp", "凸多边形包含查询"),
         ("template/geometry/平面最近点对.cpp", "平面最近点对"),
