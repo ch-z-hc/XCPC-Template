@@ -1,12 +1,14 @@
 #define INSIDE_TRIANGLE_NO_MAIN
 #include "inside_triangle_submission.cpp"
 
-using Point = NestedHull::P;
+using Point = P;
 using Wide = __int128_t;
 
-// 真值使用宽整数，枚举全部内点、全部弦与全部三角形。
-Wide cross(Point a, Point b, Point c) {
-    return Wide(b.x - a.x) * (c.y - a.y) - Wide(b.y - a.y) * (c.x - a.x);
+// 测试坐标为 1/1024 的整数倍，放大后用宽整数独立判向。
+// 枚举全部内点、全部弦与全部三角形，不使用模板的浮点叉积。
+Wide orient(Point a, Point b, Point c) {
+    return Wide(llroundl((b.x - a.x) * 1024)) * llroundl((c.y - a.y) * 1024) -
+           Wide(llroundl((b.y - a.y) * 1024)) * llroundl((c.x - a.x) * 1024);
 }
 
 V < Point > convex(V < Point > p) {
@@ -18,12 +20,12 @@ V < Point > convex(V < Point > p) {
     }), p.end());
     V < Point > h;
     for (Point a : p) {
-        while (h.size() > 1 && cross(h[h.size() - 2], h.back(), a) <= 0) h.pop_back();
+        while (h.size() > 1 && orient(h[h.size() - 2], h.back(), a) <= 0) h.pop_back();
         h.push_back(a);
     }
     int k = h.size();
     for (int i = (int)p.size() - 2; i >= 0; -- i) {
-        while ((int)h.size() > k && cross(h[h.size() - 2], h.back(), p[i]) <= 0) h.pop_back();
+        while ((int)h.size() > k && orient(h[h.size() - 2], h.back(), p[i]) <= 0) h.pop_back();
         h.push_back(p[i]);
     }
     h.pop_back();
@@ -33,7 +35,7 @@ V < Point > convex(V < Point > p) {
 bool inside(const V < Point > & p, const V < Point > & q) {
     for (int i = 0; i < (int)p.size(); ++ i)
         for (Point x : q)
-            if (cross(p[i], p[(i + 1) % p.size()], x) <= 0) return 0;
+            if (orient(p[i], p[(i + 1) % p.size()], x) <= 0) return 0;
     return 1;
 }
 
@@ -47,16 +49,16 @@ ll check(const V < Point > & p, const V < Point > & q) {
         assert(0 <= h.left[i] && h.left[i] < m);
         assert(0 <= h.right[i] && h.right[i] < m);
         for (Point x : q) {
-            assert(cross(p[i], q[h.left[i]], x) >= 0);
-            assert(cross(p[i], q[h.right[i]], x) <= 0);
+            assert(orient(p[i], q[h.left[i]], x) >= 0);
+            assert(orient(p[i], q[h.right[i]], x) <= 0);
         }
-        assert(cross(p[i], q[h.left[i]], q[(h.left[i] + 1) % m]) > 0);
-        assert(cross(p[i], q[h.right[i]], q[(h.right[i] + 1) % m]) < 0);
+        assert(orient(p[i], q[h.left[i]], q[(h.left[i] + 1) % m]) > 0);
+        assert(orient(p[i], q[h.right[i]], q[(h.right[i] + 1) % m]) < 0);
         int r = i, l = i + n;
         for (int j = i + 1; j < i + n; ++ j) {
             bool a = 1, b = 1;
             for (Point x : q) {
-                Wide d = cross(p[i], p[j % n], x);
+                Wide d = orient(p[i], p[j % n], x);
                 a = a && d >= 0; b = b && d <= 0;
             }
             good[i][j % n] = a;
@@ -108,14 +110,19 @@ int main() {
     for (int t = 0; t < 10000; ++ t) {
         p.clear(); q.clear();
         for (int i = 0; i < 5 + t % 25; ++ i)
-            p.push_back({int(rng() % 201) - 100, int(rng() % 201) - 100});
+            p.emplace_back(int(rng() % 201) - 100, int(rng() % 201) - 100);
         for (int i = 0; i < 3 + t % 15; ++ i)
-            q.push_back({int(rng() % 101) - 50, int(rng() % 101) - 50});
+            q.emplace_back(int(rng() % 101) - 50, int(rng() % 101) - 50);
         p = convex(p); q = convex(q);
         if (p.size() < 3 || q.size() < 3 || ! inside(p, q)) { -- t; continue; }
         rotate(p.begin(), p.begin() + rng() % p.size(), p.end());
         rotate(q.begin(), q.begin() + rng() % q.size(), q.end());
         check(p, q);
+        if (t % 10 == 1) {
+            for (auto * a : {&p, &q}) for (Point & x : *a)
+                x = {x.x / 8 + 1.L / 16, x.y / 8 - 3.L / 16};
+            check(p, q);
+        }
         if (t % 10 == 0) {
             // 正行列式整系数变换与大平移，不改变拓扑或相切关系。
             for (auto * a : {&p, &q}) for (Point & x : *a)
@@ -127,17 +134,17 @@ int main() {
     // 大规模严格凸链，验证两个内外指针均需扫描的情形。
     p.clear(); q.clear();
     for (ll x = -20000; x <= 20000; ++ x) {
-        p.push_back({2 * x, 2 * x * x});
-        q.push_back({x, x * x + 200000000});
+        p.emplace_back(2 * x, 2 * x * x);
+        q.emplace_back(x, x * x + 200000000);
     }
     NestedHull h; h.build(p, q);
     assert(is_sorted(h.r.begin(), h.r.end()));
     assert(is_sorted(h.l.begin(), h.l.end()));
     for (int i = 0; i < (int)p.size(); i += 97) {
         for (Point x : q) {
-            assert(cross(p[i], q[h.left[i]], x) >= 0);
-            assert(cross(p[i], q[h.right[i]], x) <= 0);
-            assert(cross(p[i], p[h.r[i] % p.size()], x) >= 0);
+            assert(orient(p[i], q[h.left[i]], x) >= 0);
+            assert(orient(p[i], q[h.right[i]], x) <= 0);
+            assert(orient(p[i], p[h.r[i] % p.size()], x) >= 0);
         }
     }
     cout << "PASS: nested tangents, chord ranges, samples, 10000 random cases and large hulls\n";

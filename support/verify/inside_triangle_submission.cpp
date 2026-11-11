@@ -1,8 +1,11 @@
+#include "../../template/geometry/点与向量.cpp"
 #include "../../template/geometry/嵌套凸多边形切线.cpp"
+
+typedef long long ll;
 
 // QOJ 14714：三角形非严格包含内凸多边形。
 // 几何预处理 O(n + m)，前缀和与单调指针计数 O(n)，答案用 ll。
-ll count_triangles(const V < NestedHull::P > & p, const V < NestedHull::P > & q) {
+ll count_triangles(const V < P > & p, const V < P > & q) {
     NestedHull hull; hull.build(p, q);
     int n = p.size(), j = 1;
     V < ll > sum(2 * n + 1);
@@ -25,10 +28,10 @@ int main() {
     int t; cin >> t;
     while (t --) {
         int n; cin >> n;
-        V < NestedHull::P > p(n);
+        V < P > p(n);
         for (auto & x : p) cin >> x.x >> x.y;
         int m; cin >> m;
-        V < NestedHull::P > q(m);
+        V < P > q(m);
         for (auto & x : q) cin >> x.x >> x.y;
         cout << count_triangles(p, q) << '\n';
     }

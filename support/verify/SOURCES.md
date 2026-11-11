@@ -172,7 +172,7 @@
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
-| `template/geometry/嵌套凸多边形切线.cpp` | [QOJ 14714 三角形内部](https://qoj.ac/problem/14714) | 应用；严格嵌套凸多边形的两侧切点与合法弦区间，独立整点类型。题目计数留在 `inside_triangle_submission.cpp`，官方样例与随机暴力对拍见 `nested_hull_random.cpp`；未声称在线 AC。 |
+| `template/geometry/嵌套凸多边形切线.cpp` | [QOJ 14714 三角形内部](https://qoj.ac/problem/14714) | 应用；严格嵌套凸多边形的两侧切点与合法弦区间，复用 `点与向量.cpp` 的基础定义。题目计数留在 `inside_triangle_submission.cpp`，官方样例与随机暴力对拍见 `nested_hull_random.cpp`；未声称在线 AC。 |
 | `template/geometry/最小面积包围矩形.cpp` | [CGAL Minimum Rectangle](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html) | 算法参考；严格逆时针凸包，另测 0 / 1 / 2 点退化；枚举所有边方向作真值，不声称精确实数几何。 |
 | `template/geometry/圆.cpp` | [AOJ CGL_7_D 圆与直线交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_D)、[CGL_7_E 两圆交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_E)、[CGL_7_F 点到圆切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F)、[CGL_7_G 公切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G)、[CGL_7_I 两圆交面积](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_I) | 分别对应交点、切点、公切线与交面积；无穷多交点不返回无限列表，退化圆按源码约定。 |
 | `template/geometry/平面最近点对.cpp` | [Closest Pair](https://judge.yosupo.jp/problem/closest_pair) | 直接；返回原输入点对下标，少于两点时为 `{-1, -1}`。 |
