@@ -4,7 +4,7 @@
 
 HTML 界面与主站统一：中文使用霞鹜文楷，英文和数字使用 Maple Mono，通过 `https://chzhc.cn/guestbook/fonts.css` 加载完整共享字体。标题、目录和文件名使用原生文本，不再生成 PDF 字体的 SVG 标签；旧 `pdf-labels.json` 与生成工具仅供历史方案参考，不参与当前构建。
 
-代码及中文注释继续使用 Maple Mono NF CN Regular，C++ 函数名和命名空间使用独立的 Bold 字重，不使用斜体。代码区保留 One Dark Pro Mix 3.19.0 深灰背景与语法配色。Regular 和 Bold 构建为 WOFF2 子集，附 OFL 许可，随静态网站发布。HTML 构建不需要下面的 PDF 专用字体，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
+代码及中文注释继续使用 Maple Mono NF CN Regular，C++ 函数名和命名空间使用独立的 Bold 字重，不使用斜体。代码区保留 One Dark Pro Mix 3.19.0 深灰背景与语法配色，开启 Maple Mono 的常用与上下文连字（如 `<=`、`>=`、`!=`），不替换源码字符，复制仍为原文。Regular 和 Bold 构建为 WOFF2 子集，保留原字体的 OpenType 连字规则，附 OFL 许可，随静态网站发布。HTML 构建不需要下面的 PDF 专用字体，构建方式见 [项目说明](../PROJECT.md#html-本地构建与检查)。
 
 以下为 PDF 打印册字体约定：
 

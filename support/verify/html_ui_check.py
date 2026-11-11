@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
-from generate_html import entry_id, load_entries
+from generate_html import code_html, entry_id, load_entries
 
 
 def main():
@@ -53,6 +53,22 @@ def main():
             token = code.locator(".t-bold").filter(has_text=re.compile(f"^{name}$")).first
             expect(token).to_have_css("font-weight", "700")
         expect(code).to_have_css("font-weight", "400")
+        expect(code).to_have_css("font-variant-ligatures", "common-ligatures contextual")
+        # 使用真实高亮 HTML 验证连字，不能只检查 CSS 开关或替换源码字符。
+        for operator in ("<=", ">=", "!=", "=="):
+            sample = f"a {operator} b;"
+            page.evaluate("html => { const pre = document.createElement('pre'); pre.id = 'ligature-probe'; "
+                          "pre.style.cssText = 'position:fixed;top:80px;left:20px;z-index:100;width:max-content'; "
+                          "pre.innerHTML = '<code>' + html + '</code>'; document.body.append(pre); }",
+                          code_html(sample, "sample.cpp"))
+            probe = page.locator("#ligature-probe")
+            assert probe.locator("code").text_content() == sample
+            enabled = probe.screenshot()
+            probe.locator("code").evaluate("el => el.style.fontVariantLigatures = 'none'")
+            disabled = probe.screenshot()
+            assert enabled != disabled, f"{operator}: 连字未实际生效"
+            probe.evaluate("el => el.remove()")
+        print("PASS: <= >= != == ligatures change rendered pixels without changing source", flush=True)
         expect(page.locator('.entry:not([hidden]) pre')).to_have_css("background-color", "rgb(40, 44, 52)")
         expect(page.locator(".paper")).to_have_css("background-color", "rgb(255, 255, 255)")
         for role, color in (("keyword", "rgb(198, 120, 221)"), ("function", "rgb(97, 175, 239)"),

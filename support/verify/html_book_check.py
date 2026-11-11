@@ -126,10 +126,12 @@ def main():
     with TTFont(site / "assets/maple-mono-nf-cn.woff2") as font:
         required = {ord(c) for entry in expected for c in entry.source if not c.isspace()}
         assert not required - set(font.getBestCmap())
+        assert "calt" in {record.FeatureTag for record in font["GSUB"].table.FeatureList.FeatureRecord}
     with TTFont(site / "assets/maple-mono-nf-cn-bold.woff2") as font:
         assert font["name"].getDebugName(6) == "MapleMono-NF-CN-Bold"
         assert font["OS/2"].usWeightClass == 700
         assert not required - set(font.getBestCmap())
+        assert "calt" in {record.FeatureTag for record in font["GSUB"].table.FeatureList.FeatureRecord}
     assert "SIL OPEN FONT LICENSE Version 1.1" in (site / "assets/OFL.txt").read_text()
     print(f"PASS: {len(expected)} HTML entries, exact source text, stable links, font coverage and PDF resources")
 

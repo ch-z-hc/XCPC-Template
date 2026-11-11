@@ -109,7 +109,6 @@ def build_font(source, license_path, target, text, filename="maple-mono-nf-cn.wo
             raise ValueError(f"{source.name} 缺字：{''.join(map(chr, sorted(missing)))}")
         options = subset.Options()
         options.hinting = False
-        options.layout_features = []
         subsetter = subset.Subsetter(options=options)
         subsetter.populate(text=text)
         subsetter.subset(font)
