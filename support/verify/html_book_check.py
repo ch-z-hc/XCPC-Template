@@ -107,7 +107,7 @@ def main():
         assert (site / unquote(parsed.path)).exists(), url
     assert "pdf-label" not in document
     assert "/guestbook/fonts.css" in document
-    assert 'aria-label="返回主站"' in document
+    assert 'class="home-link"' not in document
     assert "local(" not in (site / "assets/book.css").read_text()
     for url in book.resources:
         path = site / urlsplit(url).path

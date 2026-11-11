@@ -27,10 +27,9 @@
   .file:hover { color: #0066cc; }
   iframe { display: block; flex: 1; width: 100%; min-height: 0; border: 0; }
   @media (max-width: 640px) {
-    header { gap: 8px; padding: 0 12px; }
-    .repo span { display: none; }
+    header { grid-template-columns: auto minmax(0, 1fr); gap: 8px; padding: 0 12px; }
+    .repo { display: none; }
     .file { font-size: 10px; }
-    .repo img { width: 32px; height: auto; }
     nav a { padding: 11px 8px; }
   }
 </style>
@@ -38,7 +37,6 @@
 <body>
 <header>
   <a class="repo" href="https://chzhc.cn/" aria-label="返回主站">
-    <img src="/assets/logo.svg" alt="chzhc" width="43" height="30">
     <span>XCPC Template</span>
   </a>
   <nav aria-label="阅读方式">
