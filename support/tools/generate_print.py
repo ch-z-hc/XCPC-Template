@@ -44,8 +44,8 @@ CODE_GREEN, CODE_COMMENT = "#58715D", "#70757D"
 
 # 只维护目录名和顺序；正文来自对应文件。
 CHAPTERS = [
-    ("template", [
-        ("support/tools/contest_main.cpp", "template"),
+    ("比赛环境", [
+        ("support/tools/contest_main.cpp", "比赛主程序"),
         ("support/tools/linux_commands.txt", "Linux 编译与运行"),
         ("support/tools/stress/stress_linux.cpp", "Linux 对拍"),
         ("support/tools/stress/stress_windows.cpp", "Windows 对拍"),
