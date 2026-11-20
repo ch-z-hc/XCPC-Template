@@ -4,11 +4,10 @@
 
 using namespace std;
 
-// 重链剖分，输入为连通树；顶点、DFS 序均为 1-based，区间闭区间。
-// build 为 O(n)，lca 为 O(log n)，path 分成 O(log n) 段，空间 O(n)。
-// path 回调的段不保证路径方向，适合区间和、最值等与方向无关的操作。
-// 子树区间为 [in[u], out[u]]；递归深度最坏 O(n)。区间维护另接线段树。
-// path 包含两端和 LCA，下面示例维护点权；边权须额外排除 LCA 对应位置。
+// 顶点和 DFS 序都从 1 数。子树对应 [in[u], out[u]]，path 把树上路径拆成若干闭区间。
+// 每段都含两端，整条路径含 LCA。维护边权时要跳过 LCA 对应的位置。
+// 回调顺序不保证沿 u 到 v 的方向，适合求和、最值。建树 O(n)，每条路径 O(log n) 段。
+// lca 查询 O(log n)，空间 O(n)。输入须为连通树，长链 DFS 最深 n 层。
 
 struct HLD {
     int n = 0, tim = 0;
@@ -28,7 +27,9 @@ struct HLD {
     void add_edge(int u, int v) { g[u].push_back(v); g[v].push_back(u); }
 
     void dfs1(int u, int p) {
-        fa[u] = p; siz[u] = 1; son[u] = 0;
+        fa[u] = p;
+        siz[u] = 1;
+        son[u] = 0;
         for (int v : g[u]) if (v != p) {
             dep[v] = dep[u] + 1;
             dfs1(v, u);
@@ -38,7 +39,9 @@ struct HLD {
     }
 
     void dfs2(int u, int t) {
-        top[u] = t; in[u] = ++ tim; rev[tim] = u;
+        top[u] = t;
+        in[u] = ++ tim;
+        rev[tim] = u;
         if (son[u]) dfs2(son[u], t);
         for (int v : g[u])
             if (v != fa[u] && v != son[u]) dfs2(v, v);
@@ -69,8 +72,10 @@ struct HLD {
     }
 };
 
-// 用法：HLD hld(n); hld.add_edge(u, v); hld.build(root);
-// a 为 1-based 点权；先复制数据结构章的“线段树与树上二分”。
+// HLD hld(n);
+// for (auto [u, v] : edges) hld.add_edge(u, v);
+// hld.build(root);
+// 求路径点权和时，先复制「线段树与树上二分」，按 DFS 序建线段树。
 // V < ll > b(n + 1);
 // for (int u = 1; u <= n; ++ u) b[hld.in[u]] = a[u];
 // SegTree seg; seg.init(b); ll ans = 0;

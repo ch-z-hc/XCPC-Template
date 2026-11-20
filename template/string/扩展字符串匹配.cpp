@@ -4,9 +4,8 @@
 
 using namespace std;
 
-// Z 函数与扩展 KMP，字符串下标 0-based，时间和空间 O(n + m)。
-// get_z(s)[i] 为 s 与 s[i..] 的 LCP，z[0] = n。
-// exkmp(s, t)[i] 为 t 与 s[i..] 的 LCP；空模式串的结果全为 0。
+// get_z(s)[i] 是 s 与 s[i..] 的最长公共前缀长度，非空串的 z[0] 等于串长。
+// exkmp(s, t)[i] 比较 t 与 s[i..]，t 为空时各项均为 0。下标从 0 数，时间和空间 O(|s| + |t|)。
 
 V < int > get_z(const string &s) {
     int n = int(s.size());
@@ -32,4 +31,4 @@ V < int > exkmp(const string &s, const string &t) {
     return ans;
 }
 
-// 用法：auto z = get_z(s); auto match = exkmp(s, t);
+// auto z = get_z(s); auto match = exkmp(s, t);

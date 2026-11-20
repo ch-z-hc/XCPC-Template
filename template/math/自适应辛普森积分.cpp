@@ -4,15 +4,12 @@ typedef long double ld;
 
 using namespace std;
 
-// 自适应 Simpson 积分，适用于局部采样能解析的平滑函数。
-// eps > 0，max_dep >= 0；eps 是绝对误差估计，不是任意连续函数的严格保证。
-// 尖峰或高频振荡需按已知位置分段；达到深度上限仍返回当前近似值。
-// 采样值与积分近似须可用 double 表示；使用范围更宽的 long double 中间量。
-// 复杂度随函数与误差要求变化，最坏 O(2^max_dep)，递归空间 O(max_dep)。
+// 对 [l, r] 上的平滑函数积分，eps > 0 是绝对误差目标。已知有尖峰或高频振荡时，先手动分段。
+// max_dep >= 0，达到上限就返回当前近似值，误差可能超过 eps。采样值和结果须能用 double 表示。
+// 最坏时间 O(2^max_dep)，递归空间 O(max_dep)。
 
 template < class F >
-double simpson(F f, double l, double r, double eps = 1e-8,
-                        int max_dep = 20) {
+double simpson(F f, double l, double r, double eps = 1e-8, int max_dep = 20) {
     auto simpson = [&](double a, double b) {
         double mid = (ld(a) + b) / 2;
         return (ld(b) - a) * (f(a) + 4.L * f(mid) + f(b)) / 6;
@@ -38,4 +35,4 @@ double simpson(F f, double l, double r, double eps = 1e-8,
     return solve(solve, l, r, simpson(l, r), eps, max_dep);
 }
 
-// 用法：double ans = simpson([](double x) { return x * x; }, 0, 1);
+// double ans = simpson([](double x) { return x * x; }, 0, 1);

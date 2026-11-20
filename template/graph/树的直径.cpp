@@ -6,9 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 连通树的边权必须非负，顶点编号 1-based；两次遍历复杂度 O(n)。
-// 所有路径的距离累加须能用 ll 表示。
-// 使用递归 DFS，递归深度最坏 O(n)。
+// 输入编号 1..n 的非空连通树，边权必须非负。返回 {端点 u, 端点 v, 直径长度}。
+// 距离累加用 ll。两遍 DFS 共 O(n)，长链递归深度 O(n)。
 
 typedef V < V < pair < int, ll > > > Graph;
 
@@ -33,4 +32,4 @@ tuple < int, int, ll > tree_diameter(const Graph &g) {
     return {u, v, len};
 }
 
-// 用法：auto [u, v, len] = tree_diameter(g);
+// auto [u, v, len] = tree_diameter(g);

@@ -6,9 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 回文树，只接收小写字母；字符串对外 0-based，内部添加一个哨兵。
-// 建树 O(n)，空间 O(26n)；count() 返回各节点代表的回文串出现次数。
-// 0、1 为长度 0、-1 的虚根，其余节点对应不同的非空回文串。
+// 只接收小写字母。distinct() 是不同非空回文串的个数，count()[u] 是节点 u 的出现次数。
+// 0 和 1 是虚根，从节点 2 起才代表实际回文串。建树、统计各 O(n)，空间 O(26n)。
 
 struct PAM {
     struct Node {
@@ -68,4 +67,4 @@ struct PAM {
     }
 };
 
-// 用法：PAM pam(s); auto cnt = pam.count(); int tot = pam.distinct();
+// PAM pam(s); auto cnt = pam.count(); int tot = pam.distinct();

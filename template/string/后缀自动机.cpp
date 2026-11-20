@@ -6,10 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 小写字母后缀自动机；字符串和状态下标 0-based。
-// build、count 和 query 均为 O(n)，空间 O(n * 26)。
-// extend 记录原始出现次数，查询使用副本累加，允许重复查询。
-// count 返回各状态的出现次数；query 返回重复子串的最大（长度 * 出现次数）。
+// 只接收小写字母。build(s) 重建，extend(c) 在末尾追加一个字符。
+// count() 按状态返回出现次数。query() 在至少出现两次的子串中求「长度 × 出现次数」的最大值。
+// 可以重复查询。建树、统计各 O(n)，空间 O(26n)。
 struct SAM {
     struct Node {
         array < int, 26 > ch{};
@@ -85,6 +84,6 @@ struct SAM {
     }
 };
 
-// 用法：SAM sam;
+// SAM sam;
 // sam.build(s);
 // ll ans = sam.query();

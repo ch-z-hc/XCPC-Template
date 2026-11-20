@@ -4,13 +4,17 @@ typedef long long ll;
 
 using namespace std;
 
-// 求最小非负 x，使 a^x = b (mod mod)，无解返回 -1；约定 a^0 = 1。
-// bsgs 要求 gcd(a, mod) = 1；exbsgs 不要求互质。1 <= mod <= 2^31 - 1。
-// 时间与空间 O(sqrt(mod))，unordered_map 为期望复杂度。
+// 求满足 a^x 与 b 模 mod 同余的最小非负 x，无解返回 -1。约定 a^0 = 1。
+// a 与 mod 互质时可用 bsgs，一般情况用 exbsgs。1 <= mod <= INT_MAX。
+// 使用哈希表，期望时间和空间 O(sqrt(mod))。
 
 ll bsgs_inv(ll a, ll mod) {
     auto dfs = [&](auto &&self, ll a_, ll b, ll &x, ll &y) -> void {
-        if (! b) { x = 1; y = 0; return; }
+        if (! b) {
+            x = 1;
+            y = 0;
+            return;
+        }
         ll u, v;
         self(self, b, a_ % b, u, v);
         x = v; y = u - a_ / b * v;
@@ -47,11 +51,13 @@ ll exbsgs(ll a, ll b, ll mod) {
     for (ll g; (g = gcd(a, mod)) > 1;) {
         if (b == k) return cnt;
         if (b % g) return -1;
-        b /= g; mod /= g; cnt ++;
+        b /= g;
+        mod /= g;
+        cnt ++;
         k = k * (a / g) % mod;
     }
     ll ans = bsgs(a, b * bsgs_inv(k, mod) % mod, mod);
     return ans == -1 ? -1 : ans + cnt;
 }
 
-// 用法：ll x = exbsgs(a, b, mod);
+// ll x = exbsgs(a, b, mod);

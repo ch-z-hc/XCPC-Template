@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 边权仅 0 / 1；g[u] 存 {v, w}，顶点 1-based；不可达为 INT_MAX / 2。
-// 时间 O(n + m)，空间 O(n + m)，自环重边允许。
+// g[u] 存 {终点, 边权}，点编号 1..n，边权只能是 0 或 1。
+// bfs01(g, s) 返回从 s 到各点的距离，不可达为 INT_MAX / 2。时间和空间 O(n + m)。
 V < int > bfs01(const V < V < pair < int, int > > > &g, int s) {
     V < int > dis(g.size(), INT_MAX / 2), vis(g.size());
     deque < int > q;
@@ -23,4 +23,4 @@ V < int > bfs01(const V < V < pair < int, int > > > &g, int s) {
     return dis;
 }
 
-// 用法：auto dis = bfs01(g, s);
+// auto dis = bfs01(g, s);

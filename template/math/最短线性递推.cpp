@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 根据 0-based 序列前缀求最短线性递推式；s[n] = rec[0]s[n-1] + ...。
-// mod 必须为质数；BM 复杂度 O(n^2)，d 阶递推第 k 项复杂度 O(d^2 log k)。
-// 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
+// bm(s, mod) 求序列前缀的最短递推，rec[i] 是 s[n - 1 - i] 的系数。mod 须为质数且 <= 2^31。
+// kth(init, rec, k, mod) 求从 0 数的第 k 项，init 至少给前 d 项，d 是递推阶数。
+// 输入系数先化到 [0, mod)。n 项求递推 O(n² + n log mod)，求第 k 项 O(d² log(k + 2))。
 
 static ll bm_norm(ll x, ll mod) {
     x %= mod;
@@ -93,5 +93,5 @@ ll kth(const V < ll > &init, const V < ll > &rec,
     return ans;
 }
 
-// 用法：V < ll > rec = bm(s, mod);
+// V < ll > rec = bm(s, mod);
 // ll ans = kth(init, rec, k, mod);

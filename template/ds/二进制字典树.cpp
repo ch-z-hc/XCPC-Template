@@ -2,20 +2,25 @@
 
 #define V vector
 
+typedef unsigned long long ull;
+
 using namespace std;
 
-// 64 位无符号整数的 01 Trie，支持重数和删除；节点编号从 0 开始。
-// 单次操作 O(64)，空间 O(64 * 插入次数)，删除不回收节点。
-// max_xor(x, ans) 返回是否非空，成功时 ans 为集合元素与 x 的最大异或值。
+// 存 64 位无符号整数，可重复插入。erase(x) 只删一份，找不到 x 时返回 false。
+// max_xor(x, ans) 把最大异或值写入 ans，集合为空时返回 false。
+// 每次操作走 64 位，删除时保留节点。
 
 struct XorTrie {
-    struct Node { array < int, 2 > ch{}; int cnt = 0; };
+    struct Node {
+        array < int, 2 > ch{};
+        int cnt = 0;
+    };
     V < Node > tr;
 
     XorTrie() { init(); }
     void init() { tr.assign(1, {}); }
 
-    void insert(unsigned long long x) {
+    void insert(ull x) {
         int u = 0;
         tr[u].cnt ++;
         for (int i = 63; i >= 0; -- i) {
@@ -28,7 +33,7 @@ struct XorTrie {
         }
     }
 
-    bool erase(unsigned long long x) {
+    bool erase(ull x) {
         int u = 0;
         array < int, 65 > path{};
         if (! tr[u].cnt) return 0;
@@ -41,7 +46,7 @@ struct XorTrie {
         return 1;
     }
 
-    bool max_xor(unsigned long long x, unsigned long long &ans) {
+    bool max_xor(ull x, ull &ans) {
         if (! tr[0].cnt) return false;
         int u = 0;
         ans = 0;
@@ -54,5 +59,5 @@ struct XorTrie {
     }
 };
 
-// 用法：XorTrie trie; trie.insert(x); unsigned long long ans;
+// XorTrie trie; trie.insert(x); ull ans;
 // bool ok = trie.max_xor(y, ans);

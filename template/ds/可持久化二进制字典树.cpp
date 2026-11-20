@@ -2,23 +2,25 @@
 
 #define V vector
 
+typedef unsigned long long ull;
+
 using namespace std;
 
-// 64 位无符号整数的可持久化 01 Trie，支持重数；根 0 表示空版本。
-// insert(root, x) 返回插入后的新根，不修改旧版本；init 清空全部版本。
-// max_xor(left, right, x, ans) 将两个版本的多重集合差与 x 的最大异或值写入 ans。
-// 要求 left 是 right 的祖先版本，或其多重集合被 right 包含。
-// 空差集返回 false；仅返回 true 时 ans 有效。
-// 单次插入 / 查询 O(64)，每次插入新增 65 个节点，空间 O(64 * 插入次数)。
-// 前缀版本 root[i] 插入 a[i]，闭区间 [l, r] 用 root[l - 1]、root[r] 作差。
+// 存 64 位无符号整数，根 0 表示空集。insert 返回新根，init 清空所有版本。
+// max_xor(left, right, x, ans) 在 right 减去 left 的剩余元素中，求与 x 的最大异或值。
+// left 的每个值在 right 中至少要有相同份数。差集为空时返回 false。
+// 前缀版本用 root[l - 1] 和 root[r] 查 [l, r]。每次操作 O(64)，插入新建 65 个节点。
 struct PXorTrie {
-    struct Node { array < int, 2 > ch{}; int cnt = 0; };
+    struct Node {
+        array < int, 2 > ch{};
+        int cnt = 0;
+    };
     V < Node > tr;
 
     PXorTrie() { init(); }
     void init() { tr.assign(1, {}); }
 
-    int insert(int p, unsigned long long x) {
+    int insert(int p, ull x) {
         int root = int(tr.size());
         tr.push_back(tr[p]); tr[root].cnt ++;
         int u = root;
@@ -31,8 +33,7 @@ struct PXorTrie {
         return root;
     }
 
-    bool max_xor(int left, int right, unsigned long long x,
-                 unsigned long long &ans) {
+    bool max_xor(int left, int right, ull x, ull &ans) {
         if (tr[left].cnt == tr[right].cnt) return false;
         ans = 0;
         for (int i = 63; i >= 0; -- i) {
@@ -45,7 +46,7 @@ struct PXorTrie {
     }
 };
 
-// 用法：PXorTrie trie; V < int > root(n + 1);
+// PXorTrie trie; V < int > root(n + 1);
 // for (int i = 1; i <= n; ++ i) root[i] = trie.insert(root[i - 1], a[i]);
-// unsigned long long ans;
+// ull ans;
 // bool ok = trie.max_xor(root[l - 1], root[r], x, ans);

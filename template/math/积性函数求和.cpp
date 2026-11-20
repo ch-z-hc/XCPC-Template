@@ -6,12 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// Min_25 筛：积性函数 f，f(1) = 1，素数处 f(p) = c[0] + c[1] * p + c[2] * p^2。
-// init(n, mod) 后调用 sum(c, f)，回调返回 f(p^e)，须与 c 一致。
-// 0 <= n <= 10^12，2 <= mod <= INT_MAX，可为合数；回调 O(1)。
-// 固定次数下常用复杂度 O(n^(3/4) / log n)，空间 O(sqrt(n))。
-// 内部素数与整除分块表为 0-based；sum 可重复调用，init 清空全部状态。
-// pi() 返回不取模的 pi(n)，不是 sum({1,0,0}, ...) 的模值。
+// 求积性函数 f 在 1..n 的和，f(1) = 1，素数处须能写成 c[0] + c[1]p + c[2]p²。
+// sum(c, f) 的回调接收 p 和 e，返回 f(p^e)，e = 1 时须与 c 给出的值一致。
+// 0 <= n <= 10^12，2 <= mod <= INT_MAX。sum 的结果取模，pi() 返回素数个数的原值。
+// init 后可多次 sum。回调 O(1) 时，常用时间估计 O(n^(3/4) / log n)，空间 O(sqrt(n))。
 
 struct Min25 {
     ll n = 0, mod = 2;
@@ -28,7 +26,10 @@ struct Min25 {
         lim = int(sqrtl(n));
         while (1ll * (lim + 1) * (lim + 1) <= n) ++ lim;
         while (1ll * lim * lim > n) -- lim;
-        prime.clear(); w.clear(); cnt.clear(); g.clear();
+        prime.clear();
+        w.clear();
+        cnt.clear();
+        g.clear();
         small.assign(lim + 1, -1); large.assign(lim + 1, -1);
         V < bool > vis(lim + 1);
         for (int i = 2; i <= lim; ++ i) {
@@ -102,8 +103,5 @@ struct Min25 {
     }
 };
 
-// 用法：求 1..n 的约数个数之和；素数处为 2，素数幂处为 e + 1。
 // Min25 sieve; sieve.init(n, mod);
-// ll ans = sieve.sum({2, 0, 0}, [](ll, int e) -> ll {
-//     return e + 1;
-// });
+// ll ans = sieve.sum({2, 0, 0}, [](ll, int e) -> ll { return e + 1; }); // 约数个数之和

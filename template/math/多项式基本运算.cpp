@@ -3,17 +3,15 @@
 #define V vector
 
 typedef long long ll;
+typedef unsigned long long ull;
 
 using namespace std;
 
-// 形式幂级数：固定模数 998244353，系数 0-based，输入先归一化到 [0, mod)。
-// inv / ln / exp / pow 返回前 n 项；sqrt 将前 n 项写入 ans；n = 0 为空数组。
-// 常数项要求：inv 非零，ln 为 1，exp 为 0；exp 也接受空数组。
-// 长度 n <= 2^22，乘法结果长度 <= 2^23；时间 O(n log n)，空间 O(n)。
-// pow 支持任意非负 unsigned long long 指数，0^0 取 1。
-// sqrt 返回是否有解，成功时 ans 有效；首项非零时选较小的常数根。
-// divmod 返回商与余数，去掉末尾零；零多项式用空数组表示。
-// 除数必须非零；被除数、除数长度 <= 2^22，时间 O(n log n)。
+// 固定模 998244353。a[i] 是 x^i 的系数，先化到 [0, mod)。以下运算取前 n 项，n <= 2^22。
+// inv 要求常数项非零，ln 要求为 1，exp 要求为 0（也可传空数组）。pow 的指数非负，0^0 取 1。
+// sqrt 无解返回 false，有解时写入 ans，首个非零系数的根取较小者。n = 0 时结果为空。
+// divmod 返回 {商, 余数}，去掉高次零，零多项式用空数组表示。除数须非零，两端长度均不超过 2^22。
+// 乘法结果长度须 <= 2^23。上述运算时间 O(n log n)，空间 O(n)。
 
 struct FPS {
     static const int mod = 998244353;
@@ -112,15 +110,14 @@ struct FPS {
         return b;
     }
 
-    static V < int > pow(const V < int > &a,
-                        unsigned long long k, int n) {
+    static V < int > pow(const V < int > &a, ull k, int n) {
         if (! n) return {};
         assert(n <= (1 << 22));
         V < int > ans(n);
         if (! k) { ans[0] = 1; return ans; }
         int p = 0, m = min(n, int(a.size()));
         while (p < m && ! a[p]) p ++;
-        if (p == m || (p && k > (unsigned long long)((n - 1) / p)))
+        if (p == m || (p && k > ull((n - 1) / p)))
             return ans;
         int shift = int(p * k), len = n - shift;
         int iv = power(a[p], mod - 2);
@@ -203,9 +200,8 @@ struct FPS {
     }
 };
 const int FPS::mod;
-// 用法：V < int > a{1, 2, 3};
-// auto b = FPS::inv(a, 8), c = FPS::ln(a, 8);
-// auto d = FPS::exp(c, 8), e = FPS::mul(a, b);
-// auto f = FPS::pow(a, 10, 8);
-// V < int > g; bool ok = FPS::sqrt(a, 8, g); // 成功时使用 g。
-// auto [q, r] = FPS::divmod(a, V < int > {1, 1});
+
+// V < int > a{1, 2, 3};
+// auto inv = FPS::inv(a, 8); // 保留到 x^7
+// V < int > root; bool ok = FPS::sqrt(a, 8, root);
+// auto [q, r] = FPS::divmod(a, {1, 1});

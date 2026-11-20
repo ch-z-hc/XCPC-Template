@@ -4,9 +4,9 @@
 
 using namespace std;
 
-// Tarjan 强连通分量；顶点编号 1-based，bel[u] 为所属分量编号（从 1 开始）。
-// build 为 O(n + m)，空间 O(n + m)；递归深度最坏为 O(n)。
-// build 可重复调用，返回分量数；分量编号按出栈顺序，不是拓扑序。
+// 有向图顶点编号 1..n。build() 返回分量数，bel[u] 是点 u 所在分量的编号，从 1 数。
+// 若有跨分量边 u -> v，则 bel[u] > bel[v]。按编号从大到小就是缩点图的拓扑序。
+// 可重复 build。时间和空间 O(n + m)，长链的 DFS 最深 n 层。
 struct SCC {
     int n = 0, tim = 0, cnt = 0;
     V < V < int > > g;
@@ -61,7 +61,7 @@ struct SCC {
     }
 };
 
-// 用法：SCC scc(n);
+// SCC scc(n);
 // scc.add_edge(u, v);
 // int cnt = scc.build();
 // int id = scc.bel[u];

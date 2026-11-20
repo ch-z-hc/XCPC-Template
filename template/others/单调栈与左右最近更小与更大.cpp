@@ -6,9 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 1-based 数组 a，a[0] 不使用；返回左右最近的严格更小元素下标。
-// greater = true 时改为严格更大；不存在时 left = 0，right = n + 1。
-// 时间 O(n)，空间 O(n)；相等元素不算更小 / 更大。
+// 对 a[1..n] 找每个位置左右最近的严格更小元素，传 true 改找严格更大元素。
+// 返回下标，左边找不到记 0，右边找不到记 n + 1。相等的值跳过。时间和空间 O(n)。
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
                                               bool greater = false) {
     int n = int(a.size()) - 1;
@@ -29,4 +28,4 @@ pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
     return {left, right};
 }
 
-// 用法：auto [left, right] = monotonic_bounds(a);
+// auto [left, right] = monotonic_bounds(a);

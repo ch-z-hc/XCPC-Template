@@ -6,15 +6,14 @@ typedef long long ll;
 
 using namespace std;
 
-// 一般无向图最大权匹配，带权 Blossom；时间 O(n^3)，空间 O(n^2)。
-// 顶点 1-based；允许未匹配，不优先最大基数；自环、非正权忽略。
-// 重边保留最大权；solve 返回最大总权，match[u] 为匹配点，未匹配为 0。
-// 每次 solve 从空匹配重算，init 清空图。
-// 正边权 w <= LLONG_MAX / (8 * max(1, n))，保证对偶值和总权不溢出。
-// 参考 bqi343/cp-notebook 的 GeneralWeightedMatch.h，CC0-1.0。
-// github.com/bqi343/cp-notebook；保留收缩、展开和对偶调整的原算法。
+// 无向图顶点编号 1..n。solve() 从头求最大总权，可以留点不匹配。match[u] 为搭档，未匹配时为 0。
+// 自环和非正权边跳过，重边取最大权。正权须满足 w <= LLONG_MAX / (8 * max(1, n))。
+// 时间 O(n³)，空间 O(n²)。来源 github.com/bqi343/cp-notebook 的 GeneralWeightedMatch.h，CC0-1.0。
 struct WBlossom {
-    struct Edge { int u = 0, v = 0; ll w = 0; };
+    struct Edge {
+        int u = 0, v = 0;
+        ll w = 0;
+    };
     int n = 0, nx = 0;
     ll timer = 0;
     V < V < Edge > > g;
@@ -26,12 +25,16 @@ struct WBlossom {
     WBlossom(int n = 0) { init(n); }
 
     void init(int n_) {
-        n = n_; nx = n; timer = 0;
+        n = n_;
+        nx = n;
+        timer = 0;
         int m = 2 * n + 1;
         g.assign(m, V < Edge > (m));
         from.assign(m, V < int > (n + 1));
         flower.assign(m, {});
-        match.assign(m, 0); slack.assign(m, 0); base.assign(m, 0);
+        match.assign(m, 0);
+        slack.assign(m, 0);
+        base.assign(m, 0);
         fa.assign(m, 0); state.assign(m, -1);
         lab.assign(m, 0); seen.assign(m, 0);
         for (int u = 1; u <= n; ++ u)
@@ -147,7 +150,9 @@ struct WBlossom {
         }
         state[x] = 1; fa[x] = fa[b];
         for (int i = p + 1; i < int(flower[b].size()); ++ i) {
-            int u = flower[b][i]; state[u] = -1; set_slack(u);
+            int u = flower[b][i];
+            state[u] = -1;
+            set_slack(u);
         }
         base[b] = 0;
     }
@@ -155,12 +160,18 @@ struct WBlossom {
     bool found(Edge e) {
         int u = base[e.u], v = base[e.v];
         if (state[v] == -1) {
-            fa[v] = e.u; state[v] = 1; slack[v] = 0;
+            fa[v] = e.u;
+            state[v] = 1;
+            slack[v] = 0;
             int x = base[match[v]];
             state[x] = slack[x] = 0; push(x);
         } else if (state[v] == 0) {
             int anc = lca(u, v);
-            if (! anc) { augment(u, v); augment(v, u); return 1; }
+            if (! anc) {
+                augment(u, v);
+                augment(v, u);
+                return 1;
+            }
             contract(u, anc, v);
         }
         return 0;
@@ -237,5 +248,5 @@ struct WBlossom {
     }
 };
 
-// 用法：WBlossom blossom(n); blossom.add_edge(u, v, w);
-// ll ans = blossom.solve(); 匹配边取所有 u < blossom.match[u]。
+// WBlossom g(n); g.add_edge(u, v, w);
+// ll weight = g.solve(); // 枚举匹配边时只取 u < g.match[u]

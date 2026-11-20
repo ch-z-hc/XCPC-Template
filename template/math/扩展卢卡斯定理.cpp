@@ -6,12 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 扩展 Lucas：任意正 int 模数下的 C(n, k)，不要求模数为质数。
-// 0 <= n <= LLONG_MAX；k < 0 或 k > n 时返回 0，mod = 1 时返回 0。
-// 将 mod 分解为互质的质数幂 p^e，每个质数幂均需预处理完整阶乘表。
-// init 时间 O(sqrt(mod) + sum p^e)，空间 O(sum p^e)，必须能存下这些表。
-// choose 时间 O(omega(mod) * (log^2(n + 2) + log mod))。
-// 阶乘表为 0-based；内部乘法用 ll，mod <= INT_MAX 时不会溢出。
+// 求 C(n, k) 对任意正 int 模数的余数，n 为非负 ll。k 越界或 mod = 1 时返回 0。
+// init 给 mod 的每个质数幂 q 建长度 O(q) 的表，大质数模尤其要留意内存。
+// 建表 O(sqrt(mod) + Σq)，空间 O(Σq)。若有 t 个不同质因子，查询 O(t (log²(n + 2) + log mod))。
 
 struct ExLucas {
     struct Factor {
@@ -44,7 +41,10 @@ struct ExLucas {
         for (int p = 2; 1ll * p * p <= x; ++ p) {
             if (x % p) continue;
             int q = 1;
-            do { q *= p; x /= p; } while (x % p == 0);
+            do {
+                q *= p;
+                x /= p;
+            } while (x % p == 0);
             add(p, q);
         }
         if (x > 1) add(x, x);
@@ -79,4 +79,4 @@ struct ExLucas {
     }
 };
 
-// 用法：ExLucas c; c.init(1000); ll ans = c.choose(n, k);
+// ExLucas c; c.init(1000); ll ans = c.choose(n, k);

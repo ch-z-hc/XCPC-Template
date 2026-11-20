@@ -6,12 +6,14 @@ typedef long long ll;
 
 using namespace std;
 
-// 动态开点权值线段树，值域 [1, n]，1 <= n <= INT_MAX；根编号 0 表示空树。
-// add / query / kth / split 为 O(log n)；merge 与重叠节点数成正比。
-// 总空间 O(开点数)，不回收节点；计数始终非负，所有 sum 不溢出 ll。
-// merge / split 会消耗原树，不可持久化，也不能让两个根共享非空节点。
+// 统计值域 [1, n] 内各值的个数。0 是空根，计数须非负，总数要能放进 ll。
+// split(a, l, r) 从 a 中取走 [l, r] 并返回新根。merge(a, b) 把 b 并入 a，再清空 b。
+// 两棵树不能共用节点。合并耗时与重叠节点数有关，其余操作 O(log n)，节点不回收。
 struct MergeSegTree {
-    struct Node { int ls = 0, rs = 0; ll sum = 0; };
+    struct Node {
+        int ls = 0, rs = 0;
+        ll sum = 0;
+    };
     int n;
     V < Node > tr;
 
@@ -84,5 +86,5 @@ struct MergeSegTree {
     }
 };
 
-// 用法：MergeSegTree st(n); int a = 0; st.add(a, x, cnt);
+// MergeSegTree st(n); int a = 0; st.add(a, x, cnt);
 // int b = st.split(a, l, r); st.merge(a, b); ll sum = st.query(a, l, r);

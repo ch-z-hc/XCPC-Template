@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 离线动态连通性：顶点 1..n，操作按时间记录，时间线段树 + 可撤销 DSU。
-// add / erase 支持自环与重边；erase 必须存在，每次只删一份。
-// query(u, v) 返回答案编号；solve 返回各查询的 0 / 1，可重复求解。
-// q 次操作时间 O(q log q log n)，空间 O(n + q log q)；不含路径压缩。
+// 把加边、删边、询问按发生顺序记录，最后统一 solve。顶点编号 1..n，可加重边和自环。
+// erase 一次只删一份，边必须存在。query 返回答案下标，solve()[id] 为 1 表示当时连通。
+// 可重复求解。q 次操作耗时 O(q log q log n)，空间 O(n + q log q)。
 struct DynConn {
     struct Op { int type, u, v; };
     int n;
@@ -17,7 +16,11 @@ struct DynConn {
     V < V < pair < int, int > > > tr;
 
     DynConn(int n = 0) { init(n); }
-    void init(int n_) { n = n_; ops.clear(); ans.clear(); }
+    void init(int n_) {
+        n = n_;
+        ops.clear();
+        ans.clear();
+    }
     void add(int u, int v) { ops.push_back({0, min(u, v), max(u, v)}); }
     void erase(int u, int v) { ops.push_back({1, min(u, v), max(u, v)}); }
     int query(int u, int v) {
@@ -31,7 +34,9 @@ struct DynConn {
         u = find(u); v = find(v);
         if (u == v) return;
         if (siz[u] < siz[v]) swap(u, v);
-        stk.push_back({v, siz[u]}); fa[v] = u; siz[u] += siz[v];
+        stk.push_back({v, siz[u]});
+        fa[v] = u;
+        siz[u] += siz[v];
     }
     void rollback(int snap) {
         while (int(stk.size()) > snap) {
@@ -83,5 +88,5 @@ struct DynConn {
     }
 };
 
-// 用法：DynConn dc(n); dc.add(u, v); int id = dc.query(u, v);
+// DynConn dc(n); dc.add(u, v); int id = dc.query(u, v);
 // dc.erase(u, v); auto ans = dc.solve();

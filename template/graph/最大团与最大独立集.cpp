@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 一般无向图的精确最大团 / 最大独立集；顶点编号 1-based，自环忽略，重边合并。
-// 贪心染色给出上界，递归分支限界；最坏时间 O(2^n n^2)，空间 O(n^2)。
-// 适用于小规模图，实际耗时依赖图结构。
-// clique / indep 返回一个最优顶点集合，可重复调用；init 清空图。
+// 无向图顶点编号 1..n。clique()、indep() 分别返回一个最大团、一个最大独立集的顶点列表。
+// 自环跳过，重边只算一次。可重复求解，init 清空图。
+// 按染色上界剪枝，最坏 O(2^n n²)，空间 O(n²)，适合小图。
 struct MaxClique {
     int n = 0;
     bool rev = 0;
@@ -38,7 +37,12 @@ struct MaxClique {
             int c = 0;
             while (c < int(color.size())) {
                 bool ok = 1;
-                for (int v : color[c]) if (adjacent(u, v)) { ok = 0; break; }
+                for (int v : color[c]) {
+                    if (adjacent(u, v)) {
+                        ok = 0;
+                        break;
+                    }
+                }
                 if (ok) break;
                 c ++;
             }
@@ -47,18 +51,25 @@ struct MaxClique {
         }
         V < int > ord, bound;
         for (int c = 0; c < int(color.size()); ++ c)
-            for (int u : color[c]) { ord.push_back(u); bound.push_back(c + 1); }
+            for (int u : color[c]) {
+                ord.push_back(u);
+                bound.push_back(c + 1);
+            }
         for (int i = int(ord.size()) - 1; i >= 0; -- i) {
             if (int(cur.size()) + bound[i] <= int(ans.size())) return;
             int u = ord[i];
             V < int > next;
             for (int j = 0; j < i; ++ j) if (adjacent(u, ord[j])) next.push_back(ord[j]);
-            cur.push_back(u); dfs(next); cur.pop_back();
+            cur.push_back(u);
+            dfs(next);
+            cur.pop_back();
         }
     }
 
     V < int > solve(bool rev_) {
-        rev = rev_; cur.clear(); ans.clear();
+        rev = rev_;
+        cur.clear();
+        ans.clear();
         V < int > p(n); iota(p.begin(), p.end(), 1);
         dfs(p);
         return ans;
@@ -68,5 +79,5 @@ struct MaxClique {
     V < int > indep() { return solve(1); }
 };
 
-// 用法：MaxClique mc(n); mc.add_edge(u, v);
+// MaxClique mc(n); mc.add_edge(u, v);
 // V < int > clique = mc.clique(), iset = mc.indep();

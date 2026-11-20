@@ -4,13 +4,10 @@
 
 using namespace std;
 
-// Dancing Links 精确覆盖：选若干行，使每列恰好出现一次；列编号 1-based。
-// init(cols) 清空矩阵；add_row(id, columns) 要求行 id 唯一，列合法且不重复。
-// 空行无需选择；solve(rows) 返回是否有解，成功时 rows 为第一组行 id。
-// 0 列返回空解；仅返回 true 时 rows 有效。
-// solve 后恢复全部链，可重复求解或继续 add_row。
-// 构建 O(cols + 非零元数)，搜索最坏为指数级；空间 O(cols + 非零元数 + 行数)。
-// 递归层数不超过列数；选当前非零元最少的列分支。
+// 选若干行，使每列恰好被覆盖一次。列编号 1..cols，行 id 自定且须唯一，同一行内不能重复填列。
+// solve(rows) 找到第一组解就返回 true，rows 存所选行的 id。零列对应空解，失败时不要读 rows。
+// 求解后可再加行或重复求解，init 清空矩阵。建表 O(列数 + 非零元数)，另有每行的调用开销。
+// 搜索最坏指数时间，递归最深为列数，空间 O(列数 + 非零元数 + 行数)。
 struct DLX {
     struct Node { int l, r, u, d, col, row; };
     int cols = 0;
@@ -33,7 +30,9 @@ struct DLX {
         for (int c : columns) {
             int u = int(tr.size());
             tr.push_back({u, u, tr[c].u, c, c, id});
-            tr[tr[c].u].d = u; tr[c].u = u; siz[c] ++;
+            tr[tr[c].u].d = u;
+            tr[c].u = u;
+            siz[c] ++;
             if (! first) first = u;
             else {
                 tr[u].l = tr[first].l; tr[u].r = first;
@@ -86,6 +85,5 @@ struct DLX {
     }
 };
 
-// 用法：DLX dlx(cols); dlx.add_row(id, {c1, c2});
+// DLX dlx(cols); dlx.add_row(id, {c1, c2});
 // V < int > rows; bool ok = dlx.solve(rows);
-// 成功时 rows 是选中行的 id，不是行的插入次序。

@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 普通莫队；查询区间 [l, r] 和数组下标均为 1-based。
-// 使用前补全 add / del / answer 的定义及题目状态；add / del 接收数组下标。
-// answer(id) 保存答案，solve 前清空统计状态；块长约 n / sqrt(q)。
-// 排序 O(q log q)，区间移动 O(n sqrt(q) + q)，另乘单次维护复杂度；空间 O(q)。
+// 在 a[1..n] 上离线查询闭区间 [l, r]。add、del 接收数组下标，answer(id) 把当前答案存到 id。
+// 每次 solve 前清空自己的统计量。块长约 n / sqrt(q)，q 个查询排序 O(q log q)，
+// 移动 O(n sqrt(q) + q) 次，另用 O(q) 空间存查询。
 
 struct Mo {
     struct Query { int l, r, id; };
@@ -39,8 +38,6 @@ struct Mo {
     }
 };
 
-// 用法：统计不同值个数，a 的值先离散到 [1, m]。
-// Mo mo; mo.a = a; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
-// mo.ans.resize(qs.size()); mo.solve(n, qs); // 答案在 mo.ans。
-// qs 的类型为 V < Mo::Query >，每个查询的 id 为答案下标。
-// 重跑前清零 cnt 和 kinds。
+// Mo mo; mo.a = a; // 统计不同值个数，值已离散到 1..m
+// mo.cnt.assign(m + 1, 0); mo.kinds = 0;
+// mo.ans.resize(qs.size()); mo.solve(n, qs); // qs 中每项为 {l, r, 答案下标}

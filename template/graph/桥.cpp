@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 无向图桥（割边）；边编号从 1 开始。
-// 顶点编号 1-based；find 复杂度 O(n + m)，空间 O(n + m)。
+// 无向图顶点编号 1..n，给每条边分配唯一编号 1..m，重边也要分开编号。
+// find() 按编号递增返回所有桥。时间和空间 O(n + m)。
 
 struct Bridge {
     int n = 0, tim = 0;
@@ -49,6 +49,6 @@ struct Bridge {
     }
 };
 
-// 用法：Bridge bridge(n);
+// Bridge bridge(n);
 // bridge.add_edge(id, u, v);
 // V < int > ans = bridge.find();

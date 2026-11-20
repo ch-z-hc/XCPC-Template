@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// Lengauer-Tarjan 支配树；有向图，顶点编号 1-based，允许重边和自环。
-// build(root) 为 O((n + m) log n)，空间 O(n + m)，可重复调用或更换根。
-// idom[root] = root，不可达点的 idom 为 0；tree 为支配树的有向子边。
-// 支配关系只考虑从 root 出发的路径；递归深度最坏为 O(n)，深链需提高栈限制。
+// 给有向图加完边后调用 build(root)。idom[v] 是 v 的直接支配点，根指向自己，不可达点为 0。
+// 点编号 1..n，tree[u] 存支配树的儿子。可更换根重建。长链 DFS 最深 n 层。
+// 时间 O((n + m) log n)，空间 O(n + m)。
 struct Dominator {
     int n = 0, tim = 0;
     V < V < int > > g, pre, bucket, tree;
@@ -74,5 +73,5 @@ struct Dominator {
     }
 };
 
-// 用法：Dominator dt(n); dt.add_edge(u, v); dt.build(root);
-// dt.idom[v] 为 v 的直接支配点；dt.tree 为以 root 为根的支配树。
+// Dominator dt(n); dt.add_edge(u, v); dt.build(root);
+// int parent = dt.idom[v];

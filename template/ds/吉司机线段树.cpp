@@ -6,12 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 吉司机线段树：区间加、取 min / max、求和、最小值和最大值。
-// a[1..n]，闭区间 [l, r]；操作要求非空数组且下标有效。
-// 建树 O(n)，完整操作序列总摊还 O((n + q) log^2 n)，空间 O(n)。
-// 所有元素和截断值严格位于 (-INF, INF)，INF = 2^60。
-// 差值乘计数、区间和、累积加标记等中间运算均须不溢出 ll。
-// init 可重建，a[0] 为占位；init({0}) 可建立空结构。
+// 对 a[1..n] 的闭区间做加法、chmin（设上限）、chmax（设下限），并查和、最小值或最大值。
+// 操作时数组须非空。元素和截断值须严格在 (-2^60, 2^60) 内，区间和、标记及中间乘积不能溢出 ll。
+// 建树 O(n)，q 次操作总时间 O((n + q) log² n)，空间 O(n)。
 struct Beats {
     static const ll INF = 1LL << 60;
     struct Node {
@@ -41,7 +38,9 @@ struct Beats {
     void apply_add(int p, int len, ll x) {
         auto &u = t[p];
         u.sum += x * len;
-        u.max1 += x; u.min1 += x; u.add += x;
+        u.max1 += x;
+        u.min1 += x;
+        u.add += x;
         if (u.max2 != -INF) u.max2 += x;
         if (u.min2 != INF) u.min2 += x;
     }
@@ -167,7 +166,8 @@ struct Beats {
     ll query_max(int l, int r) { return query_max(1, 1, n, l, r); }
 };
 const ll Beats::INF;
-// 用法：Beats st; st.init({0, 3, 1, 4});
+
+// Beats st; st.init({0, 3, 1, 4});
 // st.add(1, 3, 2); st.chmin(1, 2, 4); st.chmax(2, 3, 5);
 // ll sum = st.query(1, 3); // 15
 // ll low = st.query_min(1, 3), high = st.query_max(1, 3); // 4, 6

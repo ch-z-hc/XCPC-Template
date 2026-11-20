@@ -6,13 +6,14 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制图论章的“最大流”中的 Dinic；无向非负容量图，顶点 1-based。
-// 总容量须放入 ll；支持重边、自环和不连通图，可重复 build。
-// t 为最小割树，路径最小边权等于两点最小割；query 同点约定返回 0。
-// build 调用 n - 1 次最大流，另有 O(n^2 + n log n) 工作；query 为 O(log n)。
-// 空间 O(n + m + n log n)，递归树遍历深度最坏 O(n)。
+// 先复制「最大流」的 Dinic。无向图编号 1..n，容量非负，总容量用 ll，可有重边、自环。
+// build 后 t 为割树，两点间路径上的最小边权就是它们的最小割。query(u, u) 约定返回 0。
+// 建树做 n - 1 次最大流，另需 O(n² + n log n)，可重复构建。查询 O(log n)，空间 O(m + n log n)。
 struct GomoryHu {
-    struct Edge { int u, v; ll cap; };
+    struct Edge {
+        int u, v;
+        ll cap;
+    };
     int n = 0, lg = 1;
     V < Edge > edges;
     V < V < pair < int, ll > > > t;
@@ -32,7 +33,9 @@ struct GomoryHu {
             low[j][u] = min(low[j - 1][u], low[j - 1][up[j - 1][u]]);
         }
         for (auto [v, w] : t[u]) if (v != p) {
-            dep[v] = dep[u] + 1; low[0][v] = w; dfs(v, u);
+            dep[v] = dep[u] + 1;
+            low[0][v] = w;
+            dfs(v, u);
         }
     }
 
@@ -59,7 +62,8 @@ struct GomoryHu {
         for (int u = 2; u <= n; ++ u) {
             t[u].push_back({fa[u], cut[u]}); t[fa[u]].push_back({u, cut[u]});
         }
-        lg = 1; while ((1ll << lg) <= max(1, n)) lg ++;
+        lg = 1;
+        while ((1ll << lg) <= max(1, n)) lg ++;
         up.assign(lg, V < int > (n + 1));
         low.assign(lg, V < ll > (n + 1, LLONG_MAX)); dep.assign(n + 1, 0);
         if (n) dfs(1, 0);
@@ -82,5 +86,5 @@ struct GomoryHu {
     }
 };
 
-// 用法：GomoryHu tree(n); tree.add_edge(u, v, cap); tree.build();
+// GomoryHu tree(n); tree.add_edge(u, v, cap); tree.build();
 // ll value = tree.query(s, t);

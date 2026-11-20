@@ -6,15 +6,16 @@ typedef long long ll;
 
 using namespace std;
 
-// 有向非负权图的前 k 短游走，顶点编号 1-based；允许重边、重复点和零权环。
-// 返回非递减长度，按边序列区分游走；不足 k 条时返回全部，s = t 时计入空游走。
-// 可以经过 t 后离开再返回；不是 k 短简单路径。所有有效长度和边权须小于 inf。
-// 反向 Dijkstra + 可持久化左偏堆维护偏离边；query 可重复调用。
-// 时间 O((n + m) log(n + m + 1) + k log(k + 1))。
-// 空间 O(m + n log(n + m + 1) + k)，递归仅用于对数深度的堆合并。
+// 非负权有向图，点编号 1..n。query 返回从 s 到 t 最短的 k 条游走长度，按非递减顺序排列。
+// 按边序列区分游走，可重复经过顶点和终点，零权环也计数。s == t 时含空游走，不足 k 条就返回全部。
+// 边权与有效长度均须小于 inf。可重复查询。时间 O((n + m) log(n + m + 1) + k log(k + 1))，
+// 空间 O(m + n log(n + m + 1) + k)。
 struct KWalk {
     static const ll inf = 1ll << 62;
-    struct Edge { int u, v; ll w; };
+    struct Edge {
+        int u, v;
+        ll w;
+    };
     struct Node {
         ll val = 0;
         int to = 0, l = 0, r = 0, dis = 0;
@@ -27,7 +28,9 @@ struct KWalk {
     KWalk(int n = 0) { init(n); }
 
     void init(int n_) {
-        n = n_; edges.clear(); tr.clear();
+        n = n_;
+        edges.clear();
+        tr.clear();
         g.assign(n + 1, {}); rg.assign(n + 1, {});
     }
 
@@ -98,5 +101,6 @@ struct KWalk {
     }
 };
 const ll KWalk::inf;
-// 用法：KWalk kw(n); kw.add_edge(u, v, w);
-// V < ll > ans = kw.query(s, t, k); // ans[0] 是最短长度。
+
+// KWalk g(n); g.add_edge(u, v, w);
+// auto lengths = g.query(s, t, k);

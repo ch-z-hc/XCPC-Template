@@ -6,13 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 上下界流；顶点编号 1..n，允许自环、重边，要求 0 <= lo <= hi。
-// 所有边的 hi 之和须 <= LLONG_MAX / 4；复杂度 O(n^2 m)，空间 O(n + m)。
-// solve() 求可行循环流；solve(s, t, mode) 要求 s != t。
-// mode 为 0 / 1 / -1 时分别求可行流 / 最大流 / 最小流，可重复调用。
-// 返回 {是否可行, 流量}；流量定义为 s 的净流出，允许负值。
-// 成功后 f[id] 为原边流量，id 从 0 开始；失败时 f 为空。
-// 同时添加两个方向的辅助边，故只存在负流量的可行解也不会漏掉。
+// 点编号 1..n，0 <= lo <= hi。可加重边和自环，所有 hi 之和不能超过 LLONG_MAX / 4。
+// solve() 求可行循环流。solve(s, t, mode) 要求 s != t，mode 取 0 求可行流，1 求最大流，-1 求最小流。
+// 返回 {是否可行, s 的净流出量}，流量可为负。成功后 f[id] 是原边流量，失败时 f 为空。
+// 可重复求解。时间 O(n²m)，空间 O(n + m)。
 struct LRFlow {
     struct Edge {
         int u, v;
@@ -86,7 +83,11 @@ struct LRFlow {
 
     LRFlow(int n = 0) { init(n); }
 
-    void init(int n_) { n = n_; edges.clear(); f.clear(); }
+    void init(int n_) {
+        n = n_;
+        edges.clear();
+        f.clear();
+    }
 
     int add_edge(int u, int v, ll lo, ll hi) {
         edges.push_back({u, v, lo, hi});
@@ -135,7 +136,5 @@ struct LRFlow {
     }
 };
 
-// 用法：LRFlow flow(n);
-// int id = flow.add_edge(u, v, lo, hi);
-// auto [ok, ans] = flow.solve(s, t, 1);
-// if (ok) { ll val = flow.f[id]; }
+// LRFlow g(n); int id = g.add_edge(u, v, lo, hi);
+// auto [ok, value] = g.solve(s, t, 1); // 有解时从 g.f[id] 取原边流量

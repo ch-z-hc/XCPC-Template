@@ -6,12 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 矩形 KM / Hungarian 最大权匹配；左右部编号均为 1-based，要求 n <= m。
-// 匹配所有左点，右点可不匹配；允许负权、缺边，重边保留最大权。
-// 复杂度 O(n^2 m)，空间 O(nm)；总权及求和过程须能用 ll 表示。
-// 权值不能为 LLONG_MIN；距离、势能及其运算绝对值须 < LLONG_MAX / 4。
-// solve 返回 {是否存在完备左匹配, 总权}；可重复调用。
-// 成功后 ml[u]、mr[v] 为匹配点，0 表示未匹配；失败时二者全部为 0。
+// 左侧 1..n 的每个点都要匹配到右侧 1..m 的不同点，要求 n <= m。
+// 只加允许匹配的边。权可为负，重边取最大权。solve 返回 {是否能匹配全部左点, 最大总权}。
+// 成功后 ml、mr 存两侧的搭档，0 表示未匹配。失败时两表清零，可再次求解。
+// 边权不能取 LLONG_MIN，总权及中间加法用 ll，距离、势能及其运算绝对值须小于 LLONG_MAX / 4。
+// 时间 O(n²m)，空间 O(nm)。
 struct KM {
     int n, m;
     V < V < ll > > w;
@@ -76,7 +75,6 @@ struct KM {
     }
 };
 
-// 用法：KM km(n, m);
+// KM km(n, m);
 // km.add_edge(u, v, w);
 // auto [ok, ans] = km.solve();
-// if (ok) { int v = km.ml[u]; }

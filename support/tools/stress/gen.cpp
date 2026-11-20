@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ./gen seed：n 为 1..10，数组元素为 1..100。
+// ./gen 42 用种子 42 生成一组数据；传相同种子可复现。
 int main(int argc, char** argv) {
     if (argc != 2) return 1;
     int seed = stoi(argv[1]);

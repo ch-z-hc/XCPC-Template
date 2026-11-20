@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// FWT：输入数组下标 0-based，长度必须是 2 的幂，元素应先对 mod 归一化。
-// 单次变换复杂度 O(n log n)，空间 O(1)；XOR 逆变换要求 mod 为奇质数且 n 在模数下可逆。
-// 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
+// 数组下标是位掩码，长度 n 须为 2 的幂。系数先化到 [0, mod)，1 < mod <= 2^31。
+// OR、AND 的逆变换分别用 ifwt_or、ifwt_and。XOR 逆变换传 true，模数须为奇质数。
+// 原地变换，时间 O(n log n)，额外空间 O(1)。
 
 static void fwt_check(const V < ll > &a) {
     assert(! a.empty() && ! (a.size() & (a.size() - 1)));
@@ -65,7 +65,7 @@ void fwt_xor(V < ll > &a, ll mod, bool inv = false) {
     }
 }
 
-// 用法：fwt_or(a, mod);
+// fwt_or(a, mod);
 // ifwt_or(a, mod); // 恢复原数组。
 // fwt_xor(a, mod);
 // fwt_xor(a, mod, 1);

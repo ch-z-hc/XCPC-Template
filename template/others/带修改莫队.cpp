@@ -4,12 +4,10 @@
 
 using namespace std;
 
-// 带修改莫队；数组 1-based，查询闭区间；按时间记录 modify / query。
-// 使用前补全 add / del / answer 的定义及题目状态。
-// add(value)、del(value) 维护当前区间，answer(id) 保存答案。
-// solve 不消耗操作记录；每次求解前清空统计状态。
-// 块长 B ≈ n^(2/3)，q 次查询、u 次修改：排序 O(q log q)。
-// 移动 O(q B + n^2 / B + u n^2 / B^2)，空间 O(n + q + u)。
+// 按时间顺序记录单点修改和闭区间查询，数组从 1 数。add 和 del 接收元素值，answer(id) 保存答案。
+// 每次 solve 前清空自己的统计量，操作记录可重复用。统计不同值时，初始值和修改值要一起离散化。
+// 块长 B 约为 n^(2/3)。q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
+// 空间 O(n + q + u)，另加题目的统计量。
 struct MoModify {
     struct Change { int p, before, after; };
     struct Query { int l, r, t, id; };
@@ -68,8 +66,6 @@ struct MoModify {
     }
 };
 
-// 用法：MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
-// 统计不同值个数；初始值和所有修改值一起离散到 [1, m]。
-// mo.cnt.assign(m + 1, 0); mo.kinds = 0; mo.ans.resize(mo.qs.size());
-// mo.solve(); // 第 id 个查询的答案为 mo.ans[id]。
-// 重跑前清零 cnt 和 kinds。
+// MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
+// mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 值已离散到 1..m
+// mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]

@@ -2,8 +2,8 @@
 
 using namespace std;
 
-// Booth 最小表示法，返回字典序最小循环移位的起点，字符串下标 0-based。
-// 多个相同最优旋转时返回最小起点；空串返回 0。时间 O(n)，额外空间 O(1)。
+// 返回字典序最小循环移位的起点，下标从 0 数。并列时取最小下标，空串返回 0。
+// 时间 O(n)，额外空间 O(1)。
 
 int min_rotation(const string &s) {
     int n = int(s.size()), i = 0, j = 1, k = 0;
@@ -22,4 +22,4 @@ int min_rotation(const string &s) {
     return n ? min(i, j) : 0;
 }
 
-// 用法：int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);
+// int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);

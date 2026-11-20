@@ -4,8 +4,9 @@
 
 using namespace std;
 
-// KMP 字符串匹配；返回所有匹配起点，字符串下标 0-based，支持重叠匹配。
-// 复杂度 O(s.size() + t.size())；额外空间 O(t.size())，另需存放匹配结果。
+// kmp(s, t) 在文本 s 中找模式串 t，按从左到右的顺序返回起点，下标从 0 数。
+// 匹配可重叠。t 为空时返回 0 到 s.size() 的所有位置。
+// 时间 O(|s| + |t|)，除答案外占 O(|t|) 空间。
 
 V < int > get_pi(const string &t) {
     V < int > pi(t.size());
@@ -37,4 +38,4 @@ V < int > kmp(const string &s, const string &t) {
     return ans;
 }
 
-// 用法：V < int > ans = kmp(s, t);
+// auto pos = kmp("ababa", "aba"); // {0, 2}

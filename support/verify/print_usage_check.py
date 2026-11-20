@@ -32,9 +32,13 @@ def main():
         assert not re.search(r"\b(?:tie|move)\s*\(", path.read_text(encoding="utf-8")), path
     print("PASS: contest snippets contain no tie or move calls", flush=True)
     for path in list((ROOT / "template").glob("*/*.cpp")) + [ROOT / "support/tools/contest_main.cpp"]:
-        assert not re.search(r"__u?int128|\b(?:i128|u128|print128)\b",
-                             path.read_text(encoding="utf-8")), path
-    print("PASS: contest snippets and starter contain no wide integer types", flush=True)
+        source = path.read_text(encoding="utf-8")
+        if path == ROOT / "template/geometry/三维凸包.cpp":
+            # Hull3D 的精确判向使用这一处类型声明。
+            source = re.sub(r"//[^\n]*", "", source)
+            source = source.replace("typedef __int128_t Int;", "", 1)
+        assert not re.search(r"__u?int128|\b(?:i128|u128|print128)\b", source), path
+    print("PASS: wide integer types checked, including the Hull3D predicate exception", flush=True)
     for path in list((ROOT / "template").glob("*/*.cpp")) + [ROOT / "support/tools/contest_main.cpp"]:
         assert not re.search(r"\bconstexpr\b", path.read_text(encoding="utf-8")), path
     print("PASS: contest snippets and starter contain no constexpr", flush=True)

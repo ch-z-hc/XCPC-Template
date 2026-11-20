@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 虚树，原树为连通无权树，顶点 1-based。build(root) 预处理 O(n log n)。
-// query(key) 接受关键点，可重复；返回虚树根，空集合返回 0。
-// nodes 包含关键点及必要 LCA；t[u] 保存 {子节点, 原树距离}，只保留本次结果。
-// 每次查询 O(k log k + k log n)，总空间 O(n log n)；DFS 递归深度 O(n)。
+// 先给编号 1..n 的无权连通树加边，再 build(root)。query(key) 返回虚树根，关键点可重复，空集返回 0。
+// nodes 是本次用到的关键点和 LCA，t[u] 存 {儿子, 原树距离}。下次 query 会先清空上次的节点。
+// 建表时间和空间 O(n log n)，k 个关键点的查询 O(k log k + k log n)，长链注意递归栈。
 
 struct VTree {
     int n = 0, lg = 1, tim = 0;
@@ -17,7 +16,9 @@ struct VTree {
 
     VTree(int n = 0) { init(n); }
     void init(int n_) {
-        n = n_; lg = 1; tim = 0;
+        n = n_;
+        lg = 1;
+        tim = 0;
         while ((1ll << lg) <= max(1, n)) lg ++;
         g.assign(n + 1, {}); t.assign(n + 1, {});
         fa.assign(lg, V < int > (n + 1));
@@ -39,7 +40,9 @@ struct VTree {
 
     void build(int root = 1) {
         for (int u : nodes) t[u].clear();
-        nodes.clear(); tim = 0; dep[root] = 0;
+        nodes.clear();
+        tim = 0;
+        dep[root] = 0;
         dfs(root, 0);
     }
 
@@ -73,5 +76,5 @@ struct VTree {
     }
 };
 
-// 用法：VTree tree(n); tree.add_edge(u, v); tree.build(root);
+// VTree tree(n); tree.add_edge(u, v); tree.build(root);
 // int rt = tree.query(key); // 从 rt 沿 tree.t 做虚树 DP。

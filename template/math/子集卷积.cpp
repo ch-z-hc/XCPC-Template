@@ -2,15 +2,14 @@
 
 #define V vector
 
+typedef long long ll;
+
 using namespace std;
 
-// 子集卷积：c[S] = sum(a[T] * b[S \ T])，T 为 S 的子集。
-// 数组按 0-based 位掩码编号，长度相同且为 2^n，0 <= n <= 20。
-// 1 <= mod <= INT_MAX，可为合数；系数允许为负，结果归一化。
-// 分层子集 zeta / Mobius 变换，时间 O(n^2 2^n)，空间 O(n 2^n)。
-// n = 20 时主要数组约占 180 MiB；不是 FWT 的 OR 卷积。
-V < int > subset_conv(const V < int > &a, const V < int > &b,
-                              int mod) {
+// 对 S 的每个子集 T，把 a[T] * b[S ^ T] 加到 c[S]。两个数组都用集合的位掩码作下标。
+// 数组等长，长度为 2^n，0 <= n <= 20。系数可为负，模数可取任意正 int。
+// 时间 O(n² 2^n)，空间 O(n 2^n)。n = 20 时主要数组约占 180 MiB。
+V < int > subset_conv(const V < int > &a, const V < int > &b, int mod) {
     int size = int(a.size()), n = __builtin_ctz(unsigned(size));
     V < int > cnt(size), ans(size), c(size);
     V < V < int > > f(n + 1, V < int > (size)), g = f;
@@ -25,7 +24,7 @@ V < int > subset_conv(const V < int > &a, const V < int > &b,
         for (int bit = 1; bit < size; bit <<= 1)
             for (int l = 0; l < size; l += bit * 2)
                 for (int i = 0; i < bit; ++ i) {
-                    long long x = row[l + bit + i];
+                    ll x = row[l + bit + i];
                     x += inverse ? -row[l + i] : row[l + i];
                     if (x < 0) x += mod;
                     if (x >= mod) x -= mod;
@@ -46,4 +45,4 @@ V < int > subset_conv(const V < int > &a, const V < int > &b,
     return ans;
 }
 
-// 用法：auto c = subset_conv(a, b, 998244353);
+// auto c = subset_conv(a, b, 998244353);

@@ -6,12 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// CDQ 三维偏序，输入为 0-based 点集，可重复，坐标为 ll。
-// 返回每个点被多少个其他点支配：三个坐标均 <= 当前点的坐标。
-// 重复点互相计数；时间 O(n log^2 n)，空间 O(n)，不修改输入。
+// cnt[i] 是除点 i 自身外，三个坐标都不大于它的点数。重合的点也互相计数。
+// 点和答案按输入顺序从 0 编号，坐标用 ll。时间 O(n log² n)，空间 O(n)。
 
 V < ll > dominance(const V < array < ll, 3 > > &a) {
-    struct Node { ll x, y, z; int cnt, id, p; ll ans; };
+    struct Node {
+        ll x, y, z;
+        int cnt, id, p;
+        ll ans;
+    };
     int n = int(a.size());
     V < int > ord(n), bel(n);
     iota(ord.begin(), ord.end(), 0);
@@ -62,4 +65,4 @@ V < ll > dominance(const V < array < ll, 3 > > &a) {
     return ans;
 }
 
-// 用法：auto cnt = dominance(points);
+// auto cnt = dominance(points);

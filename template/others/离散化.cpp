@@ -4,9 +4,8 @@
 
 using namespace std;
 
-// 返回 1-based 离散化编号；原数组不会被修改。
-// 输入和结果位置均为 0-based；复杂度 O(n log n)，空间 O(n)。
-// key 返回排序去重后的原值，编号 k 对应 key[k - 1]；key 不得与 a 同对象。
+// 返回每个 a[i] 的排名，排名从 1 数，相同值同排名。key 是从小到大去重后的原值表。
+// 编号 k 的原值是 key[k - 1]。key 和 a 须传不同数组。时间 O(n log n)，空间 O(n)。
 template < class T >
 V < int > discretize(const V < T > &a, V < T > &key) {
     key = a;
@@ -20,6 +19,5 @@ V < int > discretize(const V < T > &a, V < T > &key) {
     return id;
 }
 
-// 用法：V < int > a{30, 10, 30}, key;
-// V < int > id = discretize(a, key); // id = {2, 1, 2}，key = {10, 30}。
-// 原值为 key[id[i] - 1]，不同值个数为 int(key.size())。
+// V < int > a{30, 10, 30}, key;
+// auto id = discretize(a, key); // id = {2, 1, 2}，key = {10, 30}

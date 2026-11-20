@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 普通并查集；编号为 1..n，路径压缩配合按大小合并。
-// 初始化 O(n)，单次操作摊销 O(alpha(n))，空间 O(n)。
-// merge 返回是否成功合并；cnt 为连通块数，init 可重新初始化。
-// siz 仅对根有效，集合大小用 size(u) 查询。
+// 点编号 1..n。merge(u, v) 合并两个集合，原本就在同一集合时返回 false。
+// size(u) 是 u 所在集合的大小，cnt 是当前集合数。init(n) 重置为 n 个单点。
+// 初始化 O(n)，合并、查询均摊 O(α(n))。
 struct DSU {
     int cnt = 0;
     V < int > fa, siz;
@@ -40,7 +39,6 @@ struct DSU {
     int size(int u) { return siz[find(u)]; }
 };
 
-// 用法：DSU dsu(n);
-// dsu.merge(u, v);
-// bool op = dsu.same(u, v);
-// int cnt = dsu.size(u);
+// DSU dsu(n);
+// bool merged = dsu.merge(u, v);
+// int siz = dsu.size(u);

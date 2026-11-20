@@ -4,11 +4,9 @@
 
 using namespace std;
 
-// 极大周期子串 runs；先复制字符串章的“后缀数组”，输入任意字节字符串。
-// 返回 {period, l, r}，0-based 半开区间 [l, r)，period 是最小周期。
-// 每个区间长度 >= 2*period，且不能向任一侧扩展后仍保持该周期。
-// 两种字典序的 Lyndon 根 + LCP / LCS；时间、空间 O(n log n)，结果排序去重。
-// 参考 Bannai 等人的 runs 定理；不使用字符串哈希，无碰撞风险。
+// 先复制「后缀数组」。runs(s) 返回 {最小周期, l, r}，区间为 [l, r)，下标从 0 数。
+// 每段至少含两个周期，向左或向右再延长一个字符都会破坏该周期。
+// 输入可含任意字节，结果排序去重。基于 Bannai 等人的 runs 定理，时间和空间 O(n log n)。
 
 V < array < int, 3 > > runs(const string &s) {
     int n = int(s.size());
@@ -38,4 +36,4 @@ V < array < int, 3 > > runs(const string &s) {
     return ans;
 }
 
-// 用法：auto res = runs(s); // 依次读取 {period, l, r}。
+// auto res = runs(s); // 依次读取 {period, l, r}。

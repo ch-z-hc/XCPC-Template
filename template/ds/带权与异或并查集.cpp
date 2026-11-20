@@ -3,13 +3,14 @@
 #define V vector
 
 typedef long long ll;
+typedef unsigned long long ull;
 
 using namespace std;
 
-// 带权并查集，顶点 1-based；差值版 WDSU、异或版 XDSU。
-// merge(u, v, w) 添加 value[v] - value[u] = w 或 value[u] xor value[v] = w。
-// merge 返回约束是否相容；query(u, v, ans) 返回是否连通，连通时 ans 为上述关系。
-// 路径压缩 + 按大小合并，均摊 O(alpha(n))，空间 O(n)；差值运算须不溢出 ll。
+// 点编号 1..n。WDSU 的 merge(u, v, w) 约束 value[v] - value[u] = w。
+// XDSU 对应 value[u] ^ value[v] = w。merge 遇到矛盾返回 false。
+// query(u, v, ans) 连通时写入同方向的差值或异或值，否则返回 false。
+// 操作均摊 O(α(n))，空间 O(n)。差值运算用 ll，注意累加范围。
 
 struct WDSU {
     V < int > fa, siz;
@@ -33,9 +34,13 @@ struct WDSU {
         if (a == b) return dis[v] - dis[u] == w;
         ll d = w + dis[u] - dis[v];
         if (siz[a] < siz[b]) {
-            fa[a] = b; dis[a] = -d; siz[b] += siz[a];
+            fa[a] = b;
+            dis[a] = -d;
+            siz[b] += siz[a];
         } else {
-            fa[b] = a; dis[b] = d; siz[a] += siz[b];
+            fa[b] = a;
+            dis[b] = d;
+            siz[a] += siz[b];
         }
         return 1;
     }
@@ -49,7 +54,7 @@ struct WDSU {
 
 struct XDSU {
     V < int > fa, siz;
-    V < unsigned long long > dis;
+    V < ull > dis;
 
     XDSU(int n = 0) { init(n); }
     void init(int n) {
@@ -64,21 +69,23 @@ struct XDSU {
         return fa[u];
     }
 
-    bool merge(int u, int v, unsigned long long w) {
+    bool merge(int u, int v, ull w) {
         int a = find(u), b = find(v);
         if (a == b) return (dis[u] ^ dis[v]) == w;
-        unsigned long long d = dis[u] ^ dis[v] ^ w;
+        ull d = dis[u] ^ dis[v] ^ w;
         if (siz[a] < siz[b]) swap(a, b);
-        fa[b] = a; dis[b] = d; siz[a] += siz[b];
+        fa[b] = a;
+        dis[b] = d;
+        siz[a] += siz[b];
         return 1;
     }
 
-    bool query(int u, int v, unsigned long long &ans) {
+    bool query(int u, int v, ull &ans) {
         if (find(u) != find(v)) return false;
         ans = dis[u] ^ dis[v];
         return true;
     }
 };
 
-// 用法：WDSU dsu(n); bool ok = dsu.merge(u, v, w);
+// WDSU dsu(n); bool ok = dsu.merge(u, v, w);
 // ll d; bool connected = dsu.query(u, v, d);

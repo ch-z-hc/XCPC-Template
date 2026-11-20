@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 拉格朗日插值单点求值；x、y 使用 0-based 下标且长度相同，横坐标在 mod 意义下两两不同。
-// mod 必须为质数；复杂度 O(n^2)，额外空间 O(1)。
-// 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
+// 给 n 对采样值 x[i]、y[i]，求插值多项式在 at 处的值。两个数组从 0 数，长度相同。
+// mod 须为质数且 <= 2^31，各坐标先化到 [0, mod)，横坐标模 mod 两两不同。
+// 逐点求逆，时间 O(n² + n log mod)，额外空间 O(1)。
 
 static ll lagrange_pow(ll a, ll b, ll mod) {
     ll res = 1 % mod;
@@ -19,9 +19,7 @@ static ll lagrange_pow(ll a, ll b, ll mod) {
     return res;
 }
 
-ll lagrange(const V < ll > &x,
-                      const V < ll > &y,
-                      ll at, ll mod) {
+ll lagrange(const V < ll > &x, const V < ll > &y, ll at, ll mod) {
     int n = int(x.size());
     ll ans = 0;
     for (int i = 0; i < n; ++ i) {
@@ -36,4 +34,4 @@ ll lagrange(const V < ll > &x,
     return ans;
 }
 
-// 用法：ll ans = lagrange(x, y, at, mod);
+// ll ans = lagrange(x, y, at, mod);

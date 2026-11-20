@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// Kruskal 最小生成树；无向图顶点编号 1..n，允许负边权和重边。
-// 复杂度 O(m log m)，空间 O(n + m)。图不连通时返回最小生成森林且 ok 为 false。
-// 选边过程的权值累加须能用 ll 表示。
+// 无向图编号 1..n，边按 {u, v, id, w} 传入，允许负权和重边。ids 返回选中边的原 id。
+// sum 是总权，累加用 ll。图不连通时 ok 为 false，此时得到最小生成森林。
+// 时间 O(n + m log m)，空间 O(n + m)。
 
 struct Edge {
     int u, v, id;
@@ -48,6 +48,5 @@ MST kruskal(int n, V < Edge > edges) {
     return ans;
 }
 
-// 用法：V < Edge > edges;
-// auto ans = kruskal(n, edges);
-// ans.sum 为总权，ans.ids 为选边编号，ans.ok 表示图是否连通。
+// V < Edge > edges; edges.push_back({u, v, id, w});
+// auto mst = kruskal(n, edges);

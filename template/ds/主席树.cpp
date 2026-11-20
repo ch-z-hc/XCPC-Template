@@ -6,9 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 主席树：静态数组的区间第 k 小、区间 <= x 的元素个数。
-// 输入 a[1..n]，区间闭区间；k 从 1 开始且必须 <= r - l + 1。
-// 自动离散化，构建 O(n log n)，查询 O(log n)，空间 O(n log n)。
+// 用静态数组 a[1..n] 建树。在 [l, r] 内，kth 查第 k 小，count 统计不大于 x 的数。
+// k 从 1 数，不能超过区间长度。建树时间和空间 O(n log n)，查询 O(log n)。
 
 struct PST {
     struct Node { int ls = 0, rs = 0, sum = 0; };
@@ -68,4 +67,4 @@ struct PST {
     }
 };
 
-// 用法：PST tree; tree.build(a); ll x = tree.kth(l, r, k);
+// PST tree; tree.build(a); ll x = tree.kth(l, r, k);

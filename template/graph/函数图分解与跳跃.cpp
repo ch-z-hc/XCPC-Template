@@ -7,11 +7,10 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 函数图：每点恰有一条出边；to 为 1-based，to[0] 不使用。
-// build 递归处理反向树；预处理 O(64 n)，空间 O(64 n)，可重复构建。
-// jump(u, k) 支持整个 ull 范围，O(64)；dis(u, v) 不可达返回 -1。
-// cycles 为 0-based 环列表，沿出边顺序；bel 为环编号，pos 为环上位置。
-// 非环点 pos = -1；entry 为入环点，dep 为到环步数。
+// to[u] 是点 u 唯一的后继，点编号 1..n。jump(u, k) 沿出边走 k 步，k 可取任意 ull。
+// dis(u, v) 返回从 u 到 v 的步数，不可达为 -1。entry、dep 分别是入环点和到环的步数。
+// cycles 按出边顺序列环，bel 是从 0 开始的环号，pos 是环内下标，非环点为 -1。
+// build 可重建，反向树用递归。建表时间和空间 O(64n)，跳跃或查距离 O(64)。
 struct FuncGraph {
     int n = 0;
     V < V < int > > g, cycles;
@@ -20,7 +19,9 @@ struct FuncGraph {
 
     void dfs(int u) {
         for (int v : g[u]) if (pos[v] == -1) {
-            bel[v] = bel[u]; entry[v] = entry[u]; dep[v] = dep[u] + 1;
+            bel[v] = bel[u];
+            entry[v] = entry[u];
+            dep[v] = dep[u] + 1;
             dfs(v);
         }
     }
@@ -43,12 +44,15 @@ struct FuncGraph {
             int id = int(cycles.size()), v = u;
             V < int > ring;
             do {
-                bel[v] = id; pos[v] = int(ring.size()); entry[v] = v;
+                bel[v] = id;
+                pos[v] = int(ring.size());
+                entry[v] = v;
                 ring.push_back(v); v = to[v];
             } while (v != u);
             cycles.push_back(ring);
         }
-        for (auto &ring : cycles) for (int u : ring) dfs(u);
+        for (auto &ring : cycles)
+            for (int u : ring) dfs(u);
         for (int k = 1; k < 64; ++ k) {
             up[k].assign(n + 1, 0);
             for (int u = 1; u <= n; ++ u) up[k][u] = up[k - 1][up[k - 1][u]];
@@ -72,5 +76,5 @@ struct FuncGraph {
     }
 };
 
-// 用法：FuncGraph graph; graph.build({0, 2, 3, 2});
+// FuncGraph graph; graph.build({0, 2, 3, 2});
 // int v = graph.jump(1, 100); ll d = graph.dis(1, 3);

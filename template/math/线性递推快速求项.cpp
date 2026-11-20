@@ -6,12 +6,10 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 先复制数学章的“多项式求逆、对数、指数、幂、开根与除法”中的 FPS。
-// 固定模数 998244353，系数归一化，数组 0-based。
-// bostan_mori 求 [x^k] P(x)/Q(x)，要求 Q 非空且 Q[0] != 0；P 可为空。
-// 输入长度至多 2^22；D = max(|P|,|Q|)，O(D log D log(k+2)) 时间、O(D) 空间。
-// linear_kth 求 d 阶递推第 k 项：a[n] = sum(rec[i] * a[n-1-i])。
-// init 与 rec 长度同为 d，d < 2^22；d = 0 视作零序列，k 支持整个 ull 范围。
+// 先复制「多项式基本运算」的 FPS。固定模 998244353，系数先化到 [0, mod)，低次项在前。
+// bostan_mori(P, Q, k) 取 P/Q 的 x^k 系数。Q[0] 不能为 0，P 可为空，两者长度均不超过 2^22。
+// linear_kth 中 rec[i] 乘 a[n - 1 - i]。init 给前 d 项，与 rec 等长，d < 2^22，零阶视作零序列。
+// k 从 0 数，可取任意 ull。设 D 为多项式最大长度，时间 O(D log(D + 1) log(k + 2))，空间 O(D)。
 int bostan_mori(V < int > p, V < int > q, ull k) {
     assert(! q.empty() && q[0]);
     while (k && ! p.empty()) {
@@ -37,5 +35,5 @@ int linear_kth(const V < int > &init, const V < int > &rec, ull k) {
     return bostan_mori(p, q, k);
 }
 
-// 用法：int ans = linear_kth({0, 1}, {1, 1}, 1000000000000000000ull);
+// int ans = linear_kth({0, 1}, {1, 1}, 1000000000000000000ull);
 // int coef = bostan_mori({1}, {1, FPS::mod - 1}, k); // 恒为 1。

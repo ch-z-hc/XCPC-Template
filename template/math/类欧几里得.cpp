@@ -4,11 +4,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 类欧几里得：sum(i = 0..n - 1) floor((a * i + b) / m)。
-// n >= 0，m > 0；a、b 可以为负数，使用数学意义的下取整。
-// 参数、答案和所有中间量均须在 ll 范围内，尤其是 a * n + b。
-// 三角和先除后乘；负参数归一化产生的两部分答案也须分别放入 ll。
-// 时间 O(log m)，额外空间 O(1)；不取模。
+// floor_sum(n, m, a, b) 累加 i = 0..n - 1 时的 floor((a*i + b) / m)。
+// n >= 0，m > 0，a、b 可为负，除法向下取整。a*n+b、负数归一化时的各部分和及答案须能放进 ll。
+// 时间 O(log m)，额外空间 O(1)。
 
 ll floor_sum(ll n, ll m, ll a, ll b) {
     ll ans = 0;
@@ -41,6 +39,4 @@ ll floor_sum(ll n, ll m, ll a, ll b) {
     return ans;
 }
 
-// 用法：ll ans = floor_sum(4, 10, 6, 3); // ans = 3。
-// floor_sum(4, 10, -6, 3) = -4。
-// cout << ans << '\n';
+// ll ans = floor_sum(4, 10, -6, 3); // -4

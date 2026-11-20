@@ -6,16 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// 离线建坐标、在线单点加与矩形和；坐标为任意 ll，重复点允许。
-// build(points) 必须包含此后所有 add 的坐标，query 的坐标不受限制。
-// 预处理 O(n log^2 n)，操作 O(log^2 n)，空间 O(n log n)，累加不溢出 ll。
+// 把所有会修改的点传给 build，之后可在线单点加、查闭矩形和。查询端点可以任取。
+// 坐标和权值用 ll，累加不能溢出。建树 O(n log² n)，修改和查询 O(log² n)，空间 O(n log n)。
 struct Fenwick2D {
     V < ll > xs;
     V < V < ll > > ys, tr;
 
     void build(const V < pair < ll, ll > > &points) {
         xs.clear();
-        for (auto [x, y] : points) { (void)y; xs.push_back(x); }
+        for (auto &p : points) xs.push_back(p.first);
         sort(xs.begin(), xs.end()); xs.erase(unique(xs.begin(), xs.end()), xs.end());
         int n = int(xs.size());
         ys.assign(n + 1, {}); tr.assign(n + 1, {});
@@ -58,5 +57,5 @@ struct Fenwick2D {
     }
 };
 
-// 用法：Fenwick2D bit; bit.build(points); bit.add(x, y, v);
+// Fenwick2D bit; bit.build(points); bit.add(x, y, v);
 // ll ans = bit.query(x1, y1, x2, y2); // 闭矩形。

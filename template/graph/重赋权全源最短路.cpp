@@ -6,16 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// 有向图全源最短路，允许负权、自环和重边；顶点 1-based。
-// Bellman-Ford 检测全图负环，再以势能重标边权运行 n 次 Dijkstra。
-// 时间 O(nm + n(n + m) log n)，含结果矩阵的空间 O(n^2 + m)。
-// 要求 n * max|w| < inf / 4，保证负环检测、势能和重标距离安全。
-// 有限距离绝对值 < inf，不可达为 inf。
-// solve 遇负环返回 false，否则将距离矩阵写入 ans 并返回 true。
-// solve 不修改图，可重复调用。
+// 有向图顶点编号 1..n，允许负边、重边和自环。solve(dis) 遇到任意负环就返回 false。
+// 成功时 dis[u][v] 是最短距离，不可达为 inf。边权须满足 n * max|w| < inf / 4，可重复求解。
+// 时间 O(nm + n(n + m) log(n + m))，含答案矩阵的空间 O(n² + m)。
 struct Johnson {
     static const ll inf = 1ll << 62;
-    struct Edge { int u, v; ll w; };
+    struct Edge {
+        int u, v;
+        ll w;
+    };
     int n;
     V < Edge > e;
     V < V < pair < int, ll > > > g;
@@ -72,5 +71,6 @@ struct Johnson {
     }
 };
 const ll Johnson::inf;
-// 用法：Johnson g(n); g.add_edge(u, v, w);
-// V < V < ll > > dis; bool ok = g.solve(dis); // 成功时使用 dis[u][v]。
+
+// Johnson g(n); g.add_edge(u, v, w);
+// V < V < ll > > dis; bool ok = g.solve(dis);

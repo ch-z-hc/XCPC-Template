@@ -7,12 +7,12 @@
 
 typedef long long ll;
 
-const int mod = 1e9 + 7;
+const int mod = 1000000007; // 按题目修改
 
 using namespace std;
 
-template < class T > bool chkmin(T & a, const T & b) { return b < a ? a = b, 1 : 0; }
-template < class T > bool chkmax(T & a, const T & b) { return a < b ? a = b, 1 : 0; }
+template < class T > bool chkmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
+template < class T > bool chkmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
 template < class T > void add(T &x, T y) { x += y; if (x >= mod) x -= mod; }
 template < class T > void sub(T &x, T y) { x -= y; if (x < 0) x += mod; }
 
@@ -24,7 +24,7 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;
-    // cin >> t;
+    // cin >> t; // 多组数据时读入组数
     while (t --) solve();
     return 0;
 }

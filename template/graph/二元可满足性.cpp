@@ -4,9 +4,9 @@
 
 using namespace std;
 
-// 2-SAT，变量编号 1..n。add(u, x, v, y) 添加 (a[u] == x) 或 (a[v] == y)。
-// force(u, x) 固定变量；solve 返回是否有解，有解时 ans[1..n] 为 0/1 赋值。
-// 时间与空间 O(n + m)，允许重复 solve；Tarjan 递归深度最坏 O(n)。
+// 变量编号 1..n。add(u, x, v, y) 表示 a[u] == x 与 a[v] == y 至少成立一个。
+// force(u, x) 固定一个变量。solve() 成功后从 ans[1..n] 取 0/1 赋值，无解返回 false。
+// 可重复求解。时间和空间 O(n + m)，Tarjan 最深递归 n 层。
 
 struct SAT {
     int n = 0, tim = 0, cnt = 0;
@@ -59,4 +59,5 @@ struct SAT {
     }
 };
 
-// 用法：SAT sat(n); sat.add(u, 1, v, 0); if (sat.solve()) use(sat.ans);
+// SAT sat(n); sat.add(u, 1, v, 0);
+// bool ok = sat.solve(); // ok 为真时读取 sat.ans

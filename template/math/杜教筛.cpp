@@ -6,12 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 杜教筛：phi(n)、mu(n) 分别返回 1..n 的欧拉函数、莫比乌斯函数之和。
-// 0 <= n <= 4e9；phi、mu 均返回 ll，三角和先除后乘以避免溢出。
-// init(limit) 要求 1 <= limit < INT_MAX，且筛表能放入内存。
-// 线性筛 O(limit)，同时清空记忆化缓存。
-// 最大询问为 N 时，取 limit 约 N^(2/3)，总时间 O(N^(2/3))。
-// 空间 O(limit + N / limit)；多次询问可以共享缓存。
+// phi(n)、mu(n) 分别求 1..n 的欧拉函数和、莫比乌斯函数和。0 <= n <= 4×10^9，结果用 ll。
+// init(limit) 建线性筛并清空缓存，要求 1 <= limit < INT_MAX。之后可连续询问，共用缓存。
+// 最大询问为 N 时，limit 取约 N^(2/3)，时间 O(N^(2/3))，空间 O(limit + N / limit)。
 
 struct DuJiao {
     int limit;
@@ -73,5 +70,5 @@ struct DuJiao {
     }
 };
 
-// 用法：DuJiao d; d.init(5000000);
-// ll a = d.phi(n), b = d.mu(n); cout << a << ' ' << b << '\n';
+// DuJiao d; d.init(5000000);
+// ll phi_sum = d.phi(n), mu_sum = d.mu(n);

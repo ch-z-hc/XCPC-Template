@@ -6,17 +6,17 @@ typedef long long ll;
 
 using namespace std;
 
-// 上下界最小费用 b-flow；先复制图论章的“费用流：势能 Dijkstra”中的 MCMF。
-// 顶点 1-based，0 <= lo <= hi，允许自环、重边和有界负费用负环。
-// add_supply(u, b) 累加 u 的净流出需求；负数为需求，默认全 0 为循环流。
-// solve 返回 {是否可行, 最小费用}；成功后 f[id] 为原边流，失败时 f 为空。
-// 可重复 solve；init 清空图和需求。固定 s -> t 流量 k：s 加 k，t 加 -k。
-// sum(hi) + sum(abs(b))、sum(hi * abs(cost)) 均须 <= LLONG_MAX / 4。
-// 单点累计 supply 须能用 ll 表示；cost != LLONG_MIN。
-// 时间 O(nm + A m log n)，A 为增广次数；空间 O(n + m)。
-// 先饱和负费用边，初始残量费用非负；故不遗漏与需求无关的负环。
+// 先复制「势能最短路费用流」的 MCMF。点编号 1..n，每条边要求 0 <= lo <= hi。
+// add_supply(u, b) 给 u 增加 b 的净流出量。固定从 s 向 t 送 k，就分别加 k 和 -k。
+// 默认各点净流出为 0。支持有界负环、自环和重边。solve 可重算，init 清空边和供需。
+// solve 返回 {是否可行, 最小费用}，成功后用 f[id] 取原边流量，失败时 f 为空。
+// 容量上界之和加各点供需绝对值之和、各边 hi * abs(cost) 之和均不能超过 LLONG_MAX / 4。
+// 单点累计供需用 ll，cost 不能取 LLONG_MIN。增广 A 次耗时 O(nm + A m log n)，空间 O(n + m)。
 struct LRCostFlow {
-    struct Edge { int u, v; ll lo, hi, cost; };
+    struct Edge {
+        int u, v;
+        ll lo, hi, cost;
+    };
     int n = 0;
     V < Edge > edges;
     V < ll > supply, f;
@@ -24,7 +24,10 @@ struct LRCostFlow {
     LRCostFlow(int n = 0) { init(n); }
 
     void init(int n_) {
-        n = n_; edges.clear(); f.clear(); supply.assign(n + 1, 0);
+        n = n_;
+        edges.clear();
+        f.clear();
+        supply.assign(n + 1, 0);
     }
 
     int add_edge(int u, int v, ll lo, ll hi, ll cost) {
@@ -88,5 +91,6 @@ struct LRCostFlow {
     }
 };
 
-// 用法：LRCostFlow flow(n); int id = flow.add_edge(u, v, lo, hi, cost);
-// auto [ok, cost] = flow.solve(); if (ok) { ll x = flow.f[id]; }
+// LRCostFlow g(n); int id = g.add_edge(u, v, lo, hi, w);
+// g.add_supply(s, k); g.add_supply(t, -k);
+// auto [ok, cost] = g.solve(); // 有解时 g.f[id] 是这条边的流量

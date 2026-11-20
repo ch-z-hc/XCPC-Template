@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 点分树：静态连通树，边权非负（可为 0），顶点 1-based。
-// build 后初始点权为 0；modify 增加点权（可为负），query 求距离 <= r 的点权和。
-// build 可重复调用，保留边并清空点权；建树后不再加边。
-// build 为 O(n log^2 n)，修改和查询为 O(log^2 n)，空间 O(n log n)。
-// 距离、点权和及 ll 中间量须可表示；递归 DFS 最坏深度 O(n)。
+// 静态连通树编号 1..n，边权非负。加完边后 build，此时各点权为 0，重建也会清空点权。
+// modify(u, delta) 给点权加 delta，可为负。query(u, r) 求到 u 距离不超过 r 的点权和。
+// 建树 O(n log² n)，修改和查询 O(log² n)，空间 O(n log n)。距离和点权和用 ll，长链注意递归栈。
 
 struct CentroidTree {
     struct Fenwick {
@@ -35,7 +33,10 @@ struct CentroidTree {
         }
     };
 
-    struct Path { int u, branch; ll dis; };
+    struct Path {
+        int u, branch;
+        ll dis;
+    };
 
     int n = 0;
     V < V < pair < int, ll > > > g;
@@ -48,7 +49,11 @@ struct CentroidTree {
     CentroidTree(int n = 0) { init(n); }
     void init(int n_) {
         n = n_; g.assign(n + 1, {});
-        siz.clear(); vis.clear(); all.clear(); sub.clear(); path.clear();
+        siz.clear();
+        vis.clear();
+        all.clear();
+        sub.clear();
+        path.clear();
     }
 
     void add_edge(int u, int v, ll w = 1) {
@@ -92,7 +97,9 @@ struct CentroidTree {
 
     void build() {
         siz.assign(n + 1, 0); vis.assign(n + 1, 0);
-        all.assign(n + 1, {}); sub.assign(n + 1, {}); path.assign(n + 1, {});
+        all.assign(n + 1, {});
+        sub.assign(n + 1, {});
+        path.assign(n + 1, {});
         if (n) divide(1);
     }
 
@@ -113,5 +120,6 @@ struct CentroidTree {
     }
 };
 
-// 用法：CentroidTree tree(n); tree.add_edge(u, v, w); // 加入全部 n - 1 条边。
+// CentroidTree tree(n);
+// for (auto [u, v, w] : edges) tree.add_edge(u, v, w);
 // tree.build(); tree.modify(u, delta); ll ans = tree.query(u, radius);

@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Windows：gen.exe、sol.exe、bf.exe 同目录；逐 token 比较，无内置限时。
+// 在 gen.exe、sol.exe、bf.exe 所在目录运行。逐项比较输出，忽略空白差异。
+// 答案不同时打印 seed，可直接检查 in.txt、out.txt 和 ans.txt。卡住时需手动中止。
 bool run(string name, string args, int seed) {
     string cmd = name + ".exe " + args;
     if (system(cmd.c_str()) == 0) return true;

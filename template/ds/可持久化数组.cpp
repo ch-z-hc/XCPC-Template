@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 可持久化数组：从任意历史根单点赋值，查询任意历史根的单点值。
-// a[1..n]，a[0] 为占位，值可为任意 ll。
-// 建树 O(n)，单次修改、查询 O(log n)，每次修改新增 O(log n) 节点。
-// init 重置节点池，root 为初始根；调用者自行保存各版本的根。
-// init({0}) 可建立空数组；修改和查询要求非空且根、下标有效。
+// 用 a[1..n] 初始化，st.root 是初始根。modify 在指定版本上改一个值，返回新根。
+// 旧版本仍可查，也可从旧根另开分支。init 会清空所有版本，空数组不能修改或查询。
+// 建树 O(n)，单次修改或查询 O(log n)，每次修改新增 O(log n) 个节点。
 struct PArray {
     struct Node {
         int l = 0, r = 0;
@@ -65,8 +63,6 @@ struct PArray {
     ll query(int p, int pos) { return query(p, 1, n, pos); }
 };
 
-// 用法：PArray st; st.init({0, 3, 1, 4});
+// PArray st; st.init({0, 3, 1, 4});
 // int p = st.modify(st.root, 2, 9);
-// int q = st.modify(st.root, 1, 7); // 从初始版本另开分支
-// ll old = st.query(st.root, 2), now = st.query(p, 2); // 1, 9
-// ll other = st.query(q, 1); // 7，st.root 和已有版本均未改变
+// ll old = st.query(st.root, 2), now = st.query(p, 2); // 1 和 9

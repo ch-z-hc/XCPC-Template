@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 斯坦纳树：无向非负图，顶点 1-based，允许重边、自环和不连通图。
-// solve 返回连接全部终端的最小边权和，不恢复边集；不连通返回 -1。
-// 终端可重复，去重后 k <= 20，须能承受 O(2^k n) 内存；空集或单点返回 0。
-// 时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + n + m)。
-// 所有有限答案和距离须小于 inf = 2^62；solve 可重复调用且不修改图。
+// 在非负边权无向图中连接所有终端。顶点编号 1..n，solve 返回最小总边权，无法连通时返回 -1。
+// 终端可重复，空集或单点返回 0。去重后 k <= 20，还需能开下 2^k * n 个距离。
+// 有限距离和答案须小于 2^62。可重复求解。时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + m)。
 
 struct Steiner {
     static const ll inf = 1ll << 62;
@@ -62,5 +60,6 @@ struct Steiner {
     }
 };
 const ll Steiner::inf;
-// 用法：Steiner graph(n); graph.add_edge(u, v, w);
-// ll ans = graph.solve({1, 3, 5}); // ans != -1 时为最小总边权。
+
+// Steiner graph(n); graph.add_edge(u, v, w);
+// ll ans = graph.solve({1, 3, 5});

@@ -4,9 +4,8 @@
 
 using namespace std;
 
-// Duval 算法：将字符串分解为字典序不增的 Lyndon 串，O(n) 时间、O(n) 空间。
-// 字符按 unsigned char 比较；返回 0-based 分界点，块为 [pos[i], pos[i+1])。
-// 结果含首尾 0 和 n；空串返回 {0}，相等的因子分别保留。
+// 按字典序把字节串拆成若干不增的 Lyndon 串。返回分界点，第 i 段是 [pos[i], pos[i + 1])。
+// 相同因子分开保留，空串返回 {0}。字符按无符号字节比较，时间和空间 O(n)。
 
 V < int > duval(const string &s) {
     int n = int(s.size());
@@ -19,9 +18,12 @@ V < int > duval(const string &s) {
             ++ j;
         }
         int len = j - k;
-        while (i <= k) { i += len; pos.push_back(i); }
+        while (i <= k) {
+            i += len;
+            pos.push_back(i);
+        }
     }
     return pos;
 }
 
-// 用法：auto pos = duval(s);
+// auto pos = duval(s);

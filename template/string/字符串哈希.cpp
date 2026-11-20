@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 双模字符串哈希；字符串下标 0-based，query 使用闭区间。
-// 预处理 O(n)，子串哈希 O(1)，同串后缀 LCP 为 O(log n)，空间 O(n)。
-// 哈希不是严格判等，仍存在碰撞；不同对象采用同一组参数，可以比较。
+// query(l, r) 取 s[l..r] 的双模哈希，下标从 0 数。相同参数的哈希可以跨对象比较。
+// 比较子串时先比长度，再比哈希值，仍有碰撞的可能。lcp(u, v) 查同串两个后缀。
+// 建表时间和空间 O(n)，取哈希 O(1)，查 LCP O(log n)。
 
 struct Hash {
     static const ll mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
@@ -48,4 +48,6 @@ struct Hash {
     }
 };
 const ll Hash::mod1, Hash::mod2, Hash::base;
-// 用法：Hash h(s); bool same = h.query(l1, r1) == h.query(l2, r2);
+
+// Hash h(s);
+// bool same = r1 - l1 == r2 - l2 && h.query(l1, r1) == h.query(l2, r2);

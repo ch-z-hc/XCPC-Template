@@ -6,14 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// FHQ Treap：键值多重集 Treap，以及支持区间翻转、区间和的序列 SeqTreap。
-// 随机优先级，操作期望 O(log n)，最坏 O(n)；空间 O(插入次数)，删除不回收。
-// Treap 的 rank(x) = 小于 x 的数量 + 1，kth 从 1 开始；pre / suf 严格小于 / 大于。
-// kth / pre / suf 成功时将值写入 ans，返回 true，不存在时返回 false。
-// erase 只删一份，不存在时返回 false。
-// SeqTreap 下标 1-based，insert(pos, x) 在原 pos 前插入，末尾可用 size() + 1。
-// 序列操作位置、闭区间必须合法，所有区间和及中间加法须不溢出 ll。
-// init() 清空，可多次使用；键值支持 LLONG_MIN / LLONG_MAX。
+// Treap 存可重集。erase 只删一份，rank(x) 是小于 x 的个数加 1，kth 从 1 数。
+// pre、suf 查严格前驱、后继。erase、kth、pre、suf 找不到时返回 false。
+// SeqTreap 维护序列，位置从 1 数，区间两端都包含。insert(pos, x) 插在原 pos 前，
+// 追加时传 size() + 1。区间和用 ll。两种树都可用 init 清空，删除时保留节点。
+// 每次操作期望 O(log n)，最坏 O(n)，空间随插入次数增长。
 
 struct Treap {
     struct Node {
@@ -139,7 +136,9 @@ struct SeqTreap {
     }
     void push(int u) {
         if (! tr[u].rev) return;
-        apply(tr[u].ls); apply(tr[u].rs); tr[u].rev = 0;
+        apply(tr[u].ls);
+        apply(tr[u].rs);
+        tr[u].rev = 0;
     }
 
     void split(int u, int k, int &a, int &b) {
@@ -157,10 +156,14 @@ struct SeqTreap {
     int merge(int a, int b) {
         if (! a || ! b) return a | b;
         if (tr[a].pri > tr[b].pri) {
-            push(a); tr[a].rs = merge(tr[a].rs, b); pull(a);
+            push(a);
+            tr[a].rs = merge(tr[a].rs, b);
+            pull(a);
             return a;
         }
-        push(b); tr[b].ls = merge(a, tr[b].ls); pull(b);
+        push(b);
+        tr[b].ls = merge(a, tr[b].ls);
+        pull(b);
         return b;
     }
 
@@ -198,7 +201,7 @@ struct SeqTreap {
     ll at(int pos) { return query(pos, pos); }
 };
 
-// 用法：Treap t; t.insert(3); t.insert(3); t.erase(3);
-// ll x; bool ok = t.kth(1, x); // 成功时使用 x。
+// Treap t; t.insert(3); t.insert(3); t.erase(3);
+// ll x; bool ok = t.kth(1, x); // x = 3
 // SeqTreap s; s.insert(1, 2); s.insert(2, 5); s.reverse(1, 2);
 // ll sum = s.query(1, 2), val = s.at(1);

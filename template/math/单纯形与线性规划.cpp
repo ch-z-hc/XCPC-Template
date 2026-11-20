@@ -6,15 +6,17 @@ typedef long double ld;
 
 using namespace std;
 
-// 两阶段单纯形：最大化 c*x，约束 A*x <= b 且 x >= 0，矩阵 0-based。
-// solve(A, b, c) 返回 {status, value, x}：0 无解 / 1 最优 / 2 无界。
-// 输入尺寸须匹配，允许零个约束或变量；无解时 x 为空，无界时 x 为可行解。
-// 单次换基 O(nm)，最坏指数时间，空间 O(nm)；不保证病态输入的数值稳定性。
-// eps 为绝对容差，必要时先缩放；采用 Bland 规则减少退化循环风险。
-// 参考 Stanford / KACTL Simplex，MIT；原许可见参考资料。
+// 求 max c·x，约束为 Ax <= b、x >= 0。矩阵从 0 编号，行数与 b 相同，列数与 c 相同。
+// status 为 0 表示无解，1 表示找到最优解，2 表示无界。无界时 x 仍是一组可行解。
+// eps 是绝对容差，系数量级相差大时先缩放。每次换基 O(nm)，最坏指数时间，空间 O(nm + n + m)。
+// 来源 Stanford / KACTL Simplex，MIT 许可见参考资料。
 
 struct Simplex {
-    struct Result { int status; ld value; V < ld > x; };
+    struct Result {
+        int status;
+        ld value;
+        V < ld > x;
+    };
     int n = 0, m = 0;
     ld eps = 1e-12L;
     V < int > nbas, bas;
@@ -60,7 +62,9 @@ struct Simplex {
         bas.resize(m); nbas.resize(n + 1);
         for (int i = 0; i < m; ++ i) {
             for (int j = 0; j < n; ++ j) a[i][j] = A[i][j];
-            bas[i] = n + i; a[i][n] = -1; a[i][n + 1] = b[i];
+            bas[i] = n + i;
+            a[i][n] = -1;
+            a[i][n + 1] = b[i];
         }
         for (int j = 0; j < n; ++ j) nbas[j] = j, a[m][j] = -c[j];
         nbas[n] = -1; a[m + 1][n] = 1;
@@ -88,5 +92,5 @@ struct Simplex {
     }
 };
 
-// 用法：Simplex lp; auto ans = lp.solve(A, b, c);
+// Simplex lp; auto ans = lp.solve(A, b, c);
 // if (ans.status == 1) { ld optimum = ans.value; }

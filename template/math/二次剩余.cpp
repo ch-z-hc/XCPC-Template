@@ -4,10 +4,8 @@ typedef long long ll;
 
 using namespace std;
 
-// Cipolla：求 x * x = a (mod p)，p 必须是质数。
-// 2 <= p <= 2147483647，a 可为负数；返回较小的非负根。
-// 无解返回 -1；调用前自行保证 p 为质数。
-// 随机选取二次非剩余，期望时间 O(log p)，额外空间 O(1)。
+// 求 x² 与 a 模 p 同余的根，p 必须是 [2, INT_MAX] 内的质数，a 可以为负。
+// 返回较小的非负根，无解返回 -1。期望时间 O(log p)，额外空间 O(1)。
 
 ll sqrt_mod(ll a, ll p) {
     a %= p;
@@ -41,5 +39,4 @@ ll sqrt_mod(ll a, ll p) {
     return min(ans.first, p - ans.first);
 }
 
-// 用法：auto x = sqrt_mod(10, 13); // x = 6。
-// sqrt_mod(3, 7) 返回 -1；使用前先判断 x != -1。
+// ll x = sqrt_mod(10, 13); // 6

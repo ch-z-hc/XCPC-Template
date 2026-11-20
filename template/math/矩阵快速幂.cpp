@@ -6,10 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 模矩阵乘法与快速幂；矩阵非空、下标 0-based，乘法维度须匹配，快速幂底数须为方阵。
-// n 阶方阵乘法 O(n^3)，k 次幂 O(n^3 log k)，结果元素对 mod 取模。
-// 快速幂的指数须非负，指数为 0 时返回单位矩阵。
-// 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
+// 矩阵从 0 编号，不能为空。相乘时前者列数等于后者行数，求幂时底数必须是方阵。
+// 元素先化到 [0, mod)，1 < mod <= 2^31。指数 k 非负，0 次幂返回单位矩阵。
+// n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))，空间 O(n²)。
 
 typedef V < V < ll > > Matrix;
 
@@ -34,5 +33,5 @@ Matrix matrix_pow(Matrix a, ll b, ll mod) {
     return res;
 }
 
-// 用法：Matrix c = matrix_mul(a, b, mod);
+// Matrix c = matrix_mul(a, b, mod);
 // Matrix p = matrix_pow(a, k, mod);

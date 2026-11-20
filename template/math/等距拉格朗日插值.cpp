@@ -6,10 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制数学章的“组合数”；已知次数 < n 的多项式在 0..n-1 的值。
-// y 为 0-based，系数先归一化；mod 为质数，n < mod <= 2^31。
-// build 为 O(n + log mod)，query 为 O(n)，空间 O(n)，支持重复 build。
-// query 接受有符号 ll 横坐标；空采样视作零多项式。
+// 先复制「组合数」。y[i] 是多项式在 i 处的值，i 从 0 数，次数须小于采样点数 n。
+// y 先化到 [0, mod)，mod 为质数且 n < mod <= 2^31。query 可传负坐标，空表按零多项式处理。
+// 建表 O(n + log mod)，每次求值 O(n)，空间 O(n)。
 struct LagrangeEq {
     Comb comb;
     V < ll > y;
@@ -40,5 +39,5 @@ struct LagrangeEq {
     }
 };
 
-// 用法：LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
+// LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
 // ll ans = poly.query(10); // 100。

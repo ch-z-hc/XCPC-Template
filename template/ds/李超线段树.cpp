@@ -7,16 +7,13 @@ typedef long long ll;
 
 using namespace std;
 
-// 密集整数区间上的最大值 Li Chao Tree；查询横坐标必须位于 [L, R]。
-// add_line 为 O(log X)，add_seg 为 O(log^2 X)，query 为 O(log X)。
-// X = R - L + 1，按整段坐标开约 4X 个 int。
-// 空间 O(X + q)，q 为插入次数；X <= (INT_MAX - 4) / 4 且须能存下数组。
-// add_line / add_seg 接收整数，使用有理数精确比较，同值取较早加入的编号。
-// ll 中间量不能溢出：端点差、a * x + c 及其与另一条线的 d 的乘积。
-// 线段端点在树外时也须满足此限制。
-// 充分范围：所有横坐标在 [0, 40000]，|k|、|b|、|y| <= 10^9。
-// 浮点参数用 add_line_real / add_seg_real；混用后不保证整数精确判等。
-// query 返回浮点近似值；整数 DP 仅插入 add_line，并用 query_int 精确取值。
+// 在整数区间 [L, R] 上求最大值。query_id 返回最优线的插入编号，同值取最早，空时为 0。
+// 整数用 add_line 或 add_seg，浮点用带 _real 的接口。传给整数接口的小数会被截断。
+// 只插整数直线时用 query_int 取精确值。线段插值可能是分数，query 返回近似值。
+// 整数比较用 ll 交叉相乘，须保证端点差、a*x+c 及其乘另一分母都不溢出，含区间外端点。
+// 一组安全范围是横坐标在 [0, 40000]，斜率、截距和端点纵坐标绝对值不超过 10^9。
+// 设 X = R - L + 1，树开约 4X 个 int，X <= (INT_MAX - 4) / 4。
+// 插直线、查询 O(log X)，插线段 O(log² X)。整棵树含 q 条线占 O(X + q) 空间。
 
 struct LiChao {
     struct Line {
@@ -41,7 +38,7 @@ struct LiChao {
     void init(int l, int r) {
         L = l;
         R = r;
-        long long n = max(0ll, 1ll * R - L + 1);
+        ll n = max(0ll, 1ll * R - L + 1);
         assert(n <= (INT_MAX - 4) / 4);
         tr.assign(4 * n + 4, 0);
         line.assign(1, Line{});
@@ -52,14 +49,16 @@ struct LiChao {
         line.assign(1, Line{});
     }
 
-    int add_line(long long k, long long b) {
+    int add_line(ll k, ll b) {
         int id = new_line(k, b);
-        line[id].a = k; line[id].c = b; line[id].d = 1;
+        line[id].a = k;
+        line[id].c = b;
+        line[id].d = 1;
         if (L <= R) insert(1, L, R, id);
         return id;
     }
 
-    int add_seg(int x0, long long y0, int x1, long long y1) {
+    int add_seg(int x0, ll y0, int x1, ll y1) {
         if (x0 > x1) {
             swap(x0, x1);
             swap(y0, y1);
@@ -171,11 +170,5 @@ struct LiChao {
     }
 };
 
-// 用法（整数直线）：LiChao tr(1, 10000); long long k = 3, b = -2;
-// tr.add_line(k, b); ll ans;
-// if (tr.query_int(2, ans)) cout << ans << '\n';
-// 整数端点线段：tr.add_seg(1, 2, 5, 7); int id = tr.query_id(3);
-// 线段插值可能为分数，近似值用 ld y = tr.query(3)，不能套 query_int。
-// 浮点直线另建树：LiChao real(1, 10000);
-// real.add_line_real(0.5L, 0.0L); ld y = real.query(2); // y = 1。
-// add_line 接收整数；浮点斜率误传入时会被截断。
+// LiChao tr(1, 10000); tr.add_line(3, -2);
+// ll ans; bool ok = tr.query_int(2, ans); // ans = 4

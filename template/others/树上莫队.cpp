@@ -4,11 +4,9 @@
 
 using namespace std;
 
-// 树上莫队：静态树、路径上的点统计；顶点 1-based，边必须组成一棵树。
-// build(root) 递归构造双倍欧拉序及 LCA，之后 query(u, v) 返回答案编号。
-// 使用前补全 add(u) / del(u) / answer(id) 的定义及题目状态。
-// solve() 前清空统计状态；add / del 接收顶点，新增边后重建。
-// 预处理 O(n log n)，q 次查询 O(q log q + n sqrt(q) + q)，空间 O(n log n + q)。
+// 树的顶点编号 1..n。先加完边并 build(root)，再用 query(u, v) 记录路径询问，返回答案下标。
+// add、del 接收顶点，answer(id) 保存答案。每次 solve 前清空统计量，重新 build 会清空询问。
+// 建表 O(n log n)。q 次询问排序 O(q log q)，移动 O(n sqrt(q) + q) 次，空间 O(n log n + q)。
 struct MoTree {
     struct Query { int l, r, extra, id; };
     int n, lg, timer;
@@ -27,7 +25,9 @@ struct MoTree {
 
     MoTree(int n = 0) { init(n); }
     void init(int n_) {
-        n = n_; g.assign(n + 1, {}); qs.clear();
+        n = n_;
+        g.assign(n + 1, {});
+        qs.clear();
     }
     void add_edge(int u, int v) { g[u].push_back(v); g[v].push_back(u); }
     void dfs(int u, int fa) {
@@ -38,10 +38,13 @@ struct MoTree {
         out[u] = ++ timer; ord[timer] = u;
     }
     void build(int root = 1) {
-        lg = 1; while ((1ll << lg) <= n) lg ++;
+        lg = 1;
+        while ((1ll << lg) <= n) lg ++;
         up.assign(lg, V < int > (n + 1));
         in.assign(n + 1, 0); out = dep = in;
-        ord.assign(2 * n + 1, 0); timer = 0; qs.clear();
+        ord.assign(2 * n + 1, 0);
+        timer = 0;
+        qs.clear();
         if (n) dfs(root, 0);
     }
     int lca(int u, int v) {
@@ -68,7 +71,11 @@ struct MoTree {
             return (a.l / B & 1) ? a.r > b.r : a.r < b.r;
         });
         V < int > vis(n + 1);
-        auto toggle = [&](int u) { if (vis[u]) del(u); else add(u); vis[u] ^= 1; };
+        auto toggle = [&](int u) {
+            if (vis[u]) del(u);
+            else add(u);
+            vis[u] ^= 1;
+        };
         int l = 1, r = 0;
         for (auto q : queries) {
             while (l > q.l) toggle(ord[-- l]);
@@ -82,8 +89,8 @@ struct MoTree {
     }
 };
 
-// 用法：MoTree mo(n); mo.add_edge(u, v); mo.build(); int id = mo.query(u, v);
-// 统计路径上不同颜色数；color 按顶点 1-based，颜色离散到 [1, m]。
-// mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
-// mo.ans.resize(mo.qs.size()); mo.solve(); // 答案为 mo.ans[id]。
-// 重跑 solve 前清零 cnt 和 kinds；build 会清空已记录的查询。
+// MoTree mo(n);
+// for (auto [u, v] : edges) mo.add_edge(u, v);
+// mo.build(); int id = mo.query(u, v);
+// mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 颜色已离散到 1..m
+// mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]

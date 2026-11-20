@@ -4,9 +4,8 @@
 
 using namespace std;
 
-// 最长上升子序列及方案恢复；a 为 1-based，a[0] 不使用。
-// strict 为真时严格递增，否则非递减；返回一组原下标，长度即最优长度。
-// 时间 O(n log n)，空间 O(n)。
+// lis(a) 在 a[1..n] 中找一条最长严格递增子序列，传 false 改为非递减。
+// 返回一组原数组下标，结果的大小就是最优长度。时间 O(n log n)，空间 O(n)。
 template < class T >
 V < int > lis(const V < T > &a, bool strict = true) {
     V < T > tail;
@@ -24,4 +23,4 @@ V < int > lis(const V < T > &a, bool strict = true) {
     return ans;
 }
 
-// 用法：auto ids = lis(a); auto nondecreasing = lis(a, false);
+// auto ids = lis(a); auto nondecreasing = lis(a, false);

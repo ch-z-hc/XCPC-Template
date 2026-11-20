@@ -2,13 +2,13 @@
 
 #define V vector
 
+typedef unsigned long long ull;
+
 using namespace std;
 
-// bitset LCS 长度；字符串下标 0-based，支持任意 byte（按 unsigned char 索引）。
-// O(|s| ceil(|t| / 64) + 256 ceil(|t| / 64)) 时间，后者为预处理。
-// 空间 O(256 ceil(|t| / 64))；只返回长度，不恢复具体公共子序列。
+// 求两个字节串的 LCS 长度。第二个串按 64 位分块，可把较短的串放在第二个参数。
+// 每块 64 位，设 B = max(1, ceil(|t| / 64))。时间 O((|s| + 256)B)，空间 O(256B)。
 int bitset_lcs(const string &s, const string &t) {
-    using ull = unsigned long long;
     int n = int(t.size()), m = (n + 63) / 64;
     V < V < ull > > mask(256, V < ull > (m));
     for (int i = 0; i < n; ++ i) mask[(unsigned char)t[i]][i >> 6] |= 1ULL << (i & 63);
@@ -28,4 +28,4 @@ int bitset_lcs(const string &s, const string &t) {
     return ans;
 }
 
-// 用法：int ans = bitset_lcs(s, t);
+// int ans = bitset_lcs(s, t);

@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 滑动窗口最值；数组下标 0-based，要求 1 <= k <= a.size()。
-// 复杂度 O(n)，空间 O(k)。
+// 对每个长度为 k 的窗口取最小值或最大值。下标从 0 数，ans[i] 对应 a[i..i + k - 1]。
+// 要求 1 <= k <= a.size()。耗时 O(n)，除结果外占 O(k) 空间。
 
 template < class T >
 V < T > window_min(const V < T > &a, int k) {
@@ -33,4 +33,4 @@ V < T > window_max(const V < T > &a, int k) {
     return ans;
 }
 
-// 用法：auto ans = window_min(a, k);
+// auto ans = window_min(a, k);

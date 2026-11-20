@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 分治优化一层 DP：cur[i] = min_{0 <= j < i}(prev[j] + cost(j + 1, i))。
-// prev[0..n]，区间为 1-based 闭区间；要求最左最优决策单调不减。
-// prev 必须已经全部算出；不能直接用于依赖当前层 f[j] 的顺序递推。
-// 不可达值为 inf；所有有限转移不溢出 ll 且 < inf，不满足单调性不能使用。
-// cost 为 O(1) 时一层 O(n log n)，空间 O(n)。
+// dc_dp 用已算好的上一层 prev 求新一层：cur[i] = min(prev[j] + cost(j + 1, i))，0 <= j < i。
+// 要求最左最优决策随 i 不减。不可达填 inf，有限转移须小于 inf 且能放进 ll。
+// cost 接收闭区间 [l, r]。若求一次费用是 O(1)，一层耗时 O(n log n)，空间 O(n)。
 template < class Cost >
 V < ll > dc_dp(const V < ll > &prev, Cost cost, ll inf = (1ll << 62)) {
     int n = int(prev.size()) - 1;
@@ -69,7 +67,7 @@ V < ll > binary_stack_dp(int n, Cost cost, ll base = 0) {
     return f;
 }
 
-// 用法：cost(l, r) = (sum[r] - sum[l - 1])^2，要求原数组非负。
+// 例：段费用取区间和的平方，原数组须非负。
 // auto cost = [&](int l, int r) { ll s = sum[r] - sum[l - 1]; return s * s; };
 // V < ll > prev(n + 1, 1ll << 62); prev[0] = 0;
 // for (int t = 1; t <= k; ++ t) prev = dc_dp(prev, cost); // 恰好 k 段

@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 二维双模哈希：输入为等宽字符串矩阵，支持任意字节，坐标 0-based。
-// query(x1, y1, x2, y2) 查询闭矩形；空矩形返回 {0,0}。
-// build 为 O(nm)，query 为 O(1)，空间 O(nm)，支持空矩阵与重复 build。
-// 固定两个质数模数与行列基数；跨对象可比较，但必须同时核对矩形尺寸。
-// 哈希有碰撞风险，不是严格判等；所有非空查询坐标必须合法。
+// 每行须等长。query(x1, y1, x2, y2) 取闭矩形的双模哈希，行列都从 0 数。
+// 空矩形返回 {0, 0}。比较两个矩形时先比尺寸，再比哈希值，仍有碰撞的可能。
+// 建表时间和空间 O(nm)，查询 O(1)。
 struct Hash2D {
     struct Table {
         static const ll bx = 911382323, by = 972663749;
@@ -25,11 +23,13 @@ struct Hash2D {
             x.assign(n + 1, 1); y.assign(m + 1, 1);
             for (int i = 1; i <= n; ++ i) x[i] = x[i - 1] * bx % mod;
             for (int j = 1; j <= m; ++ j) y[j] = y[j - 1] * by % mod;
-            for (int i = 0; i < n; ++ i) for (int j = 0; j < m; ++ j) {
-                ll v = (unsigned char)a[i][j] + 1;
-                v += h[i][j + 1] * bx % mod + h[i + 1][j] * by % mod;
-                v -= h[i][j] * bx % mod * by % mod;
-                h[i + 1][j + 1] = (v % mod + mod) % mod;
+            for (int i = 0; i < n; ++ i) {
+                for (int j = 0; j < m; ++ j) {
+                    ll v = (unsigned char)a[i][j] + 1;
+                    v += h[i][j + 1] * bx % mod + h[i + 1][j] * by % mod;
+                    v -= h[i][j] * bx % mod * by % mod;
+                    h[i + 1][j + 1] = (v % mod + mod) % mod;
+                }
             }
         }
 
@@ -54,5 +54,6 @@ struct Hash2D {
     }
 };
 const ll Hash2D::Table::bx, Hash2D::Table::by;
-// 用法：Hash2D hash; hash.build({"abc", "def"});
+
+// Hash2D hash; hash.build({"abc", "def"});
 // auto value = hash.query(0, 1, 1, 2);

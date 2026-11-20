@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 朱刘算法，求以 root 为根、边从根向外的最小树形图。
-// 顶点编号 1-based，允许负权、重边与自环。
-// solve 无解返回 false，否则将最小权写入 ans 并返回 true。
-// 时间 O(n(n + m))，有解时为 O(nm)；空间 O(n + m)。
-// 所有权值减法及答案累加须在 ll 范围内；solve 不修改原图。
+// 从 root 向外连出一棵覆盖所有点的有向树。顶点编号 1..n，可有负边、重边、自环。
+// solve(root, ans) 有解时将最小总权写入 ans，无解返回 false。可在同一张图上再求。
+// 边权相减和总权累加用 ll。时间 O(n(n + m))，空间 O(n + m)。
 struct DMST {
     struct Edge {
         int u, v;
@@ -66,5 +64,5 @@ struct DMST {
     }
 };
 
-// 用法：DMST mst(n); mst.add_edge(u, v, w);
-// ll ans; bool ok = mst.solve(root, ans); // 成功时使用 ans。
+// DMST mst(n); mst.add_edge(u, v, w);
+// ll ans; bool ok = mst.solve(root, ans);

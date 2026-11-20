@@ -4,11 +4,9 @@
 
 using namespace std;
 
-// DSU on Tree：离线处理每个子树的统计问题。
-// 使用前补全 add / del / query 的定义及题目状态；顶点编号 1-based。
-// add 与 del 必须互为逆操作，query(u) 调用时状态恰为 u 的子树。
-// build 前清空统计状态，结束后所有点均已删除，可重复 build。
-// 复杂度 O(n log n * T_update + n * T_answer)，空间 O(n)；递归深度最坏为 O(n)。
+// 树上顶点编号 1..n。按题意补全 add(u)、del(u)、query(u)，前两个操作须互为逆操作。
+// 执行 query(u) 时，当前恰好保留 u 的整棵子树。build 前清空统计量，结束时所有点已移除。
+// 最多 O(n log n) 次增删、n 次查询，空间 O(n)，长链递归深度 O(n)。
 
 struct DSUOnTree {
     int n = 0;
@@ -81,8 +79,8 @@ struct DSUOnTree {
     }
 };
 
-// 用法：DSUOnTree dsu(n);
-// dsu.add_edge(u, v);
-// 统计子树内不同颜色数，颜色离散到 [1, m]。
+// DSUOnTree dsu(n);
+// for (auto [u, v] : edges) dsu.add_edge(u, v);
+// color[u] 已离散到 1..m。
 // dsu.color = color; dsu.cnt.assign(m + 1, 0); dsu.kinds = 0;
 // dsu.ans.resize(n + 1); dsu.build(1); // 顶点 u 的答案为 dsu.ans[u]。

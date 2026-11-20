@@ -4,11 +4,8 @@
 
 using namespace std;
 
-// 无向图边双连通分量（删除所有桥后得到的连通分量）。
-// 顶点编号 1-based，支持重边；build 复杂度 O(n + m)，空间 O(n + m)。
-// bcc 保存每个边双中的顶点和非桥边（边编号从 0 开始）。
-// bel[u] 为顶点 u 的边双编号（从 1 开始），is_bridge 按边编号从 0 开始。
-// 求桥和分量染色均使用递归 DFS，递归深度最坏 O(n)。
+// 无向图顶点编号 1..n，可有重边。build 后 bel[u] 是删去所有桥后 u 所在的分量，从 1 编号。
+// bcc 存各分量的点和非桥边，is_bridge 按原边顺序从 0 编号。时间和空间 O(n + m)，长链注意递归栈。
 
 struct EBCC {
     struct Block {
@@ -91,7 +88,7 @@ struct EBCC {
     }
 };
 
-// 用法：EBCC ebcc(n);
+// EBCC ebcc(n);
 // ebcc.add_edge(u, v);
 // ebcc.build();
 // int id = ebcc.bel[u];

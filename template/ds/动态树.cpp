@@ -6,12 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// 动态森林：顶点 1..n，点权、连边 / 删边、路径和；不维护子树信息。
-// init(a)，a[0] 占位；link / cut 返回是否成功；query 要求两点连通。
-// 单次操作均摊 O(log n)，空间 O(n)，所有 sum 不溢出 ll。
-// Splay 的祖先标记用递归下传；深链验证时提高栈限制。
+// 维护森林的点权。用 a[1..n] 初始化，modify(u, v) 把点权改为 v。
+// link 在成环时失败，cut 只能删已有的边。先确认两点连通，再用 query 求路径点权和。
+// 每次操作均摊 O(log n)，路径和用 ll。标记递归下传，长链要留足栈空间。
 struct LCT {
-    struct Node { int ch[2]{}, fa = 0; bool rev = false; ll val = 0, sum = 0; };
+    struct Node {
+        int ch[2]{}, fa = 0;
+        bool rev = false;
+        ll val = 0, sum = 0;
+    };
     V < Node > tr;
 
     void init(const V < ll > &a) {
@@ -26,20 +29,29 @@ struct LCT {
         tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum;
     }
     void reverse(int x) {
-        if (x) swap(tr[x].ch[0], tr[x].ch[1]), tr[x].rev ^= 1;
+        if (! x) return;
+        swap(tr[x].ch[0], tr[x].ch[1]);
+        tr[x].rev ^= 1;
     }
     void push(int x) {
         if (tr[x].rev) {
-            reverse(tr[x].ch[0]); reverse(tr[x].ch[1]); tr[x].rev = false;
+            reverse(tr[x].ch[0]);
+            reverse(tr[x].ch[1]);
+            tr[x].rev = false;
         }
     }
-    void down(int x) { if (! root(x)) down(tr[x].fa); push(x); }
+    void down(int x) {
+        if (! root(x)) down(tr[x].fa);
+        push(x);
+    }
 
     void rotate(int x) {
         int y = tr[x].fa, z = tr[y].fa, d = tr[y].ch[1] == x;
         int b = tr[x].ch[d ^ 1];
         if (! root(y)) tr[z].ch[tr[z].ch[1] == y] = x;
-        tr[x].fa = z; tr[x].ch[d ^ 1] = y; tr[y].fa = x;
+        tr[x].fa = z;
+        tr[x].ch[d ^ 1] = y;
+        tr[y].fa = x;
         tr[y].ch[d] = b;
         if (b) tr[b].fa = y;
         pull(y); pull(x);
@@ -64,7 +76,10 @@ struct LCT {
     void make_root(int x) { access(x); reverse(x); }
     int find_root(int x) {
         access(x); push(x);
-        while (tr[x].ch[0]) x = tr[x].ch[0], push(x);
+        while (tr[x].ch[0]) {
+            x = tr[x].ch[0];
+            push(x);
+        }
         splay(x);
         return x;
     }
@@ -81,9 +96,18 @@ struct LCT {
         tr[v].ch[0] = tr[u].fa = 0; pull(v);
         return true;
     }
-    void modify(int u, ll val) { access(u); tr[u].val = val; pull(u); }
-    ll query(int u, int v) { make_root(u); access(v); return tr[v].sum; }
+    void modify(int u, ll val) {
+        access(u);
+        tr[u].val = val;
+        pull(u);
+    }
+    ll query(int u, int v) {
+        make_root(u);
+        access(v);
+        return tr[v].sum;
+    }
 };
 
-// 用法：LCT tree; tree.init(a); tree.link(u, v); tree.modify(u, value);
-// if (tree.same(u, v)) ll_sum = tree.query(u, v); tree.cut(u, v);
+// LCT tree; tree.init(a);
+// tree.link(u, v); tree.modify(u, value);
+// if (tree.same(u, v)) cout << tree.query(u, v) << '\n';

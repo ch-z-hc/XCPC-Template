@@ -6,8 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// NTT：固定模数 998244353，数组下标 0-based，长度必须是 2 的幂且不超过 2^23。
-// 输入系数应先归一化到 [0, NTT_MOD)；复杂度 O(n log n)，空间 O(1)。
+// 模 998244353，系数从常数项开始放，先化到 [0, NTT_MOD)。
+// multiply 自动补长，结果长度不能超过 2^23。直接调 ntt 时，数组长度须为 2 的幂且不超过 2^23。
+// 设变换长度为 n，时间 O(n log n)。ntt 原地变换，multiply 另用 O(n) 空间。
 
 const ll NTT_MOD = 998244353;
 const ll NTT_ROOT = 3;
@@ -58,4 +59,4 @@ V < ll > multiply(V < ll > a, V < ll > b) {
     return a;
 }
 
-// 用法：V < ll > c = multiply(a, b);
+// V < ll > c = multiply(a, b);

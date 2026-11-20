@@ -1,38 +1,39 @@
 #include <bits/stdc++.h>
 
-typedef long long ll;
+typedef unsigned long long ull;
 
 using namespace std;
 
-// 64 位线性基；p 下标对应 bit 0..62，默认处理非负 ll。
-// 单次插入、表示判断和最大异或查询均为 O(63)，空间 O(63)。
+// 只处理低 63 位，要求 0 <= x < 2^63。insert(x) 返回 x 能否扩充线性基。
+// contains(x) 判断 x 能否由已有数异或得到，max_xor(x) 求从 x 出发能得到的最大值。
+// 这三种操作各 O(63)，空间 O(63)。clear() 清空线性基。
 
 struct Basis {
-    array < unsigned long long, 63 > p{};
+    array < ull, 63 > p{};
 
     void clear() { p.fill(0); }
-    bool insert(unsigned long long x) {
+    bool insert(ull x) {
         for (int i = 62; i >= 0; -- i) if (x >> i & 1ULL) {
             if (p[i]) x ^= p[i];
             else { p[i] = x; return true; }
         }
         return false;
     }
-    bool contains(unsigned long long x) {
+    bool contains(ull x) {
         for (int i = 62; i >= 0; -- i) if (x >> i & 1ULL) {
             if (! p[i]) return false;
             x ^= p[i];
         }
         return true;
     }
-    unsigned long long max_xor(unsigned long long x = 0) {
+    ull max_xor(ull x = 0) {
         for (int i = 62; i >= 0; -- i) x = max(x, x ^ p[i]);
         return x;
     }
 
     // 不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
     // 无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
-    bool kth(unsigned long long k, unsigned long long &ans) {
+    bool kth(ull k, ull &ans) {
         auto a = p;
         int n = 0;
         for (int i = 0; i < 63; ++ i) if (a[i]) {
@@ -42,11 +43,14 @@ struct Basis {
         if (k >= (1ULL << n)) return false;
         ans = 0;
         for (int i = 0, j = 0; i < 63; ++ i)
-            if (a[i]) { if (k >> j & 1ULL) ans ^= a[i]; j ++; }
+            if (a[i]) {
+                if (k >> j & 1ULL) ans ^= a[i];
+                j ++;
+            }
         return true;
     }
 };
 
-// 用法：Basis base;
+// Basis base;
 // base.insert(x);
 // auto ans = base.max_xor();

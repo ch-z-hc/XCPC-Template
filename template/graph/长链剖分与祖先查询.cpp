@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 长链剖分第 k 级祖先；输入为连通树，顶点 1-based，dep[root] = 1。
-// build 为 O(n log n)，query 为 O(1)，空间 O(n log n)；k >= 0。
-// k = 0 返回自身，越过根返回 0；可重复 build 更换根。
-// 长链按子树最大深度选择，不是按 siz；递归深度最坏 O(n)。
+// 给编号 1..n 的连通树加完边后 build(root)，根深度为 1，可换根重建。
+// query(u, k) 返回向上走 k 步的祖先，k 须非负。走 0 步返回 u，越过根返回 0。
+// 建表时间和空间 O(n log n)，查询 O(1)，长链注意递归栈。
 struct KthAncestor {
     int n = 0, lg = 1;
     V < V < int > > g, up, above, below;
@@ -22,7 +21,9 @@ struct KthAncestor {
     void add_edge(int u, int v) { g[u].push_back(v); g[v].push_back(u); }
 
     void dfs(int u, int p) {
-        up[0][u] = p; dep[u] = dep[p] + 1; len[u] = 1;
+        up[0][u] = p;
+        dep[u] = dep[p] + 1;
+        len[u] = 1;
         for (int j = 1; j < lg; ++ j) up[j][u] = up[j - 1][up[j - 1][u]];
         for (int v : g[u]) if (v != p) {
             dfs(v, u);
@@ -62,5 +63,5 @@ struct KthAncestor {
     }
 };
 
-// 用法：KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
+// KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
 // int p = tree.query(u, k);

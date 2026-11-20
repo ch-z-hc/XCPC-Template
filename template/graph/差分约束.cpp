@@ -6,10 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 差分约束：add(u, v, w) 表示 x[u] - x[v] <= w。
-// 变量编号 1-based；Bellman-Ford 复杂度 O(nm)，空间 O(n + m)。
-// 所有松弛中的 dis[v] + w 均须能用 ll 表示，包括判负环前的松弛。
-// 全 0 初始化等价于从超级源点连向所有变量。
+// add(u, v, w) 加入 x[u] - x[v] <= w，变量编号 1..n。
+// solve(dis) 有解时把一组可行赋值写入 dis，无解返回 false。
+// 松弛时的 dis[v] + w 要能放进 ll，包括判负环的那一轮。时间 O(nm)，空间 O(n + m)。
 
 struct Diff {
     int n = 0;
@@ -37,7 +36,7 @@ struct Diff {
     }
 };
 
-// 用法：Diff dc(n);
+// Diff dc(n);
 // dc.add(u, v, w);
 // V < ll > dis;
-// bool op = dc.solve(dis);
+// bool ok = dc.solve(dis);

@@ -6,8 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// Lucas 定理，模数 p 必须是质数；预处理 O(p)，空间 O(p)。
-// n、k 为非负 ll；查询 O(log_p(n))。仅适合 p 较小、能存下阶乘表的情况。
+// 先用小质数 p 建阶乘表，再求大 n 的 C(n, k) mod p。n、k 用非负 ll。
+// 建表时间和空间 O(p)，查询 O(log_p(n + 1))。选用前先看 p 大小能否开表。
 
 struct Lucas {
     int p = 2;
@@ -38,4 +38,4 @@ struct Lucas {
     }
 };
 
-// 用法：Lucas comb; comb.init(p); ll ans = comb.choose(n, k);
+// Lucas comb; comb.init(p); ll ans = comb.choose(n, k);

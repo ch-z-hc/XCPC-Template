@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// AC 自动机；仅处理小写字母，模式串非空，模式编号和状态编号均为 0-based。
-// build 为 O(状态数 * 26)，匹配为 O(文本长度 + 状态数 + 模式数)；空间 O(状态数 * 26)。
-// 新增模式串后须重新 build；可重复构建。
+// 模式串和文本都用小写字母，模式串须非空。先插入全部模式串，再 build，之后可查多个文本。
+// insert 返回从 0 开始的编号。query(s)[id] 是该模式串在 s 中的出现次数。再插串要重新 build。
+// 设有 S 个节点、p 个模式串，建表 O(26S)，查询 O(|s| + S + p)，空间 O(26S + p)。
 struct AC {
     struct Node {
         array < int, 26 > ch{}, go{};
@@ -79,7 +79,6 @@ struct AC {
     }
 };
 
-// 用法：AC ac;
-// ac.insert("aba");
+// AC ac; int id = ac.insert("aba");
 // ac.build();
-// V < ll > cnt = ac.query(s);
+// auto cnt = ac.query("ababa"); // cnt[id] = 2

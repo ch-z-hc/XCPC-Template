@@ -30,11 +30,17 @@ def main():
         for top in (TOP, TOP - 200):
             verify(entry.source.expandtabs(4), entry.path, top)
     fenwick = next(e for e in load_entries() if e.path == "template/ds/树状数组.cpp")
-    plan, spans, breaks = verify(fenwick.source, fenwick.path)
-    comment = fenwick.source.splitlines().index(next(line for line in fenwick.source.splitlines()
-                                                   if "原数组各项非负" in line))
+    _, spans, breaks = verify(fenwick.source, fenwick.path)
+    lines = fenwick.source.splitlines()
+    start = lines.index("    int kth(ll k) {")
+    end = lines.index("    }", start + 1) + 1
+    comment = start
+    while comment and lines[comment - 1].lstrip().startswith("//"):
+        comment -= 1
+    assert comment < start
     assert breaks == [comment], breaks
-    assert (52, 61, True) in spans  # kth 的声明和函数体必须同页。
+    assert (start, end, True) in spans
+    assert (comment, end, False) in spans
     source = '\n' * 12 + '''template <class T>
 // { 不能作为函数体的开始。
 T f(T x) {

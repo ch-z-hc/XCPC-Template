@@ -4,8 +4,7 @@
 
 using namespace std;
 
-// 线性筛质数；筛数组下标 0..n，返回 V 使用 0-based 存储。
-// 复杂度 O(n)，空间 O(n)。
+// primes(n) 返回不超过 n 的所有质数，按从小到大排列。时间和空间 O(n)。
 
 V < int > primes(int n) {
     V < int > prime, lp(n + 1);
@@ -19,4 +18,4 @@ V < int > primes(int n) {
     return prime;
 }
 
-// 用法：V < int > prime = primes(n);
+// V < int > prime = primes(n);

@@ -6,15 +6,17 @@ typedef long long ll;
 
 using namespace std;
 
-// 扩欧要求 a、b 非负，返回 gcd(a, b)，使 ax + by = gcd(a, b)。
-// inv 要求 mod > 0，无逆元时返回 -1。
-// crt 合并 x = r[i] (mod m[i])，模数不必互质。
-// m[i] 必须为正；crt 无解或合并后的 lcm 超出 ll 范围时返回 false。
-// 成功时 ans、mod 为最小非负解和 lcm；空方程组为 0、1。
-// 每次扩欧 O(log M)，CRT 共 O(k log M)，额外空间 O(log M)。
+// exgcd 对非负 a、b 求 gcd 及满足 ax + by = gcd 的系数。inv 要求模数为正，无逆元返回 -1。
+// crt 合并同余式 x = r[i] (mod m[i])。模数须为正，可以不互质。无解或最小公倍数超出 ll 时返回 false。
+// 成功时 ans 是最小非负解，mod 是合并后的模数。空方程组返回 ans = 0、mod = 1。
+// k 个方程耗时 O(k log M)，其中 M 是运算中最大模数，递归空间 O(log M)。
 
 ll exgcd(ll a, ll b, ll &x, ll &y) {
-    if (! b) { x = 1; y = 0; return a; }
+    if (! b) {
+        x = 1;
+        y = 0;
+        return a;
+    }
     ll u, v, g = exgcd(b, a % b, u, v);
     x = v; y = u - (a / b) * v;
     return g;
@@ -48,10 +50,12 @@ bool crt(const V < ll > &r, const V < ll > &m, ll &ans, ll &mod) {
         if (a < 0) a += q;
         if (b < 0) b += q;
         if (mod > LLONG_MAX / q) return false;
-        ll k = crt_mul(a, b, q); ans += mod * k; mod *= q;
+        ll k = crt_mul(a, b, q);
+        ans += mod * k;
+        mod *= q;
     }
     return true;
 }
 
-// 用法：ll ans, mod; bool ok = crt({2, 3}, {3, 5}, ans, mod);
-// 仅在 ok 为 true 时使用输出；此例 ans = 8，mod = 15。
+// ll ans, mod;
+// bool ok = crt({2, 3}, {3, 5}, ans, mod); // ans = 8，mod = 15

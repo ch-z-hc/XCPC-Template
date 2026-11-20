@@ -5,14 +5,10 @@
 using namespace std;
 typedef long long ll;
 
-// 静态二维 KD-tree；点和查询坐标绝对值均不超过 1e9。
-// 平方距离最多 8e18，使用 ll。
-// build(ps) 接收 {x, y}，原下标 0-based，重复点分别保留，可重复 build。
-// nearest(x, y, ans, exclude = -1) 返回是否找到点，成功时 ans = {平方距离, 原下标}。
-// 等距取较小下标；exclude 只排除指定原下标，默认可返回自身。
-// query(lx, ly, rx, ry) 统计闭矩形内点数，非法矩形返回 0。
-// 建树平均 O(n log n)，空间 O(n)，递归深度 O(log n)。
-// 两种查询最坏均 O(n)。
+// 坐标绝对值不超过 10^9。build 按输入顺序从 0 编号，重合的点各算一个。
+// nearest 找到点时把 {平方距离, 原下标} 写入 ans，等距取下标小的点。找不到返回 false。
+// 查某个点的邻居时，把它的下标传给 exclude，否则可能找到自己。
+// query 统计闭矩形内的点数，空矩形返回 0。建树期望 O(n log n)，查询最坏 O(n)。
 
 struct KDTree {
     struct Node {
@@ -39,7 +35,9 @@ struct KDTree {
         tr[mid].l = build(l, mid - 1, dep + 1);
         tr[mid].r = build(mid + 1, r, dep + 1);
         Node &u = tr[mid];
-        u.lx = u.rx = u.x; u.ly = u.ry = u.y; u.siz = 1;
+        u.lx = u.rx = u.x;
+        u.ly = u.ry = u.y;
+        u.siz = 1;
         for (int v : {u.l, u.r}) if (v != -1) {
             u.lx = min(u.lx, tr[v].lx); u.rx = max(u.rx, tr[v].rx);
             u.ly = min(u.ly, tr[v].ly); u.ry = max(u.ry, tr[v].ry);
@@ -51,7 +49,9 @@ struct KDTree {
     void build(const V < pair < ll, ll > > &ps) {
         tr.assign(ps.size(), {});
         for (int i = 0; i < (int)ps.size(); ++ i) {
-            tr[i].x = ps[i].first; tr[i].y = ps[i].second; tr[i].id = i;
+            tr[i].x = ps[i].first;
+            tr[i].y = ps[i].second;
+            tr[i].id = i;
         }
         root = build(0, (int)ps.size() - 1, 0);
     }
@@ -98,6 +98,6 @@ struct KDTree {
     }
 };
 
-// 用法：KDTree kd; kd.build(ps); pair < ll, int > ans;
-// bool ok = kd.nearest(x, y, ans); // 成功时使用 ans。
-// int cnt = kd.query(lx, ly, rx, ry);
+// KDTree kd; kd.build(ps);
+// pair < ll, int > ans;
+// bool ok = kd.nearest(ps[i].first, ps[i].second, ans, i);

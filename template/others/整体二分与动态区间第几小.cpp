@@ -6,11 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 整体二分：带单点修改的区间第 k 小。数组 1-based，查询为闭区间。
-// init(a) 后按时间顺序记录 modify / query，再 solve() 离线求解。
-// query 返回从 0 开始的答案编号；k 必须在 [1, r - l + 1] 内。
-// 时间 O((n + q) log V log n)，空间 O(n + q)，V 为出现过的不同值数。
-// solve 不消耗记录，允许重复求解；init 清空之前全部记录。
+// 在 a[1..n] 上按发生顺序记录单点修改和查询。query(l, r, k) 问闭区间第 k 小，k 从 1 数。
+// query 返回答案下标，调用 solve 后用这个下标取值。可重复 solve，init 会清空记录。
+// 设 V 为出现过的不同值数，q 为操作数，时间 O((n + q) log V log n)，空间 O(n + q)。
 
 struct KthOffline {
     struct Event {
@@ -25,8 +23,12 @@ struct KthOffline {
     V < int > bit;
 
     void init(const V < ll > &input) {
-        a = input; n = int(a.size()) - 1; cnt = 0;
-        log.clear(); val.clear(); ans.clear();
+        a = input;
+        n = int(a.size()) - 1;
+        cnt = 0;
+        log.clear();
+        val.clear();
+        ans.clear();
         for (int i = 1; i <= n; ++ i) {
             log.push_back({0, i, 0, 0, 1, 0, 0, a[i]});
             val.push_back(a[i]);
@@ -99,5 +101,5 @@ struct KthOffline {
     }
 };
 
-// 用法：KthOffline solver; solver.init(a); solver.modify(p, x);
+// KthOffline solver; solver.init(a); solver.modify(p, x);
 // int id = solver.query(l, r, k); auto ans = solver.solve(); // 答案为 ans[id]。

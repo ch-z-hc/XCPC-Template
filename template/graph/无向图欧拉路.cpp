@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// 无向图欧拉路。edges 按输入顺序编号，返回顶点序列；不存在时返回空。
-// n >= 1，顶点编号 1-based；无边时返回 {1}。
-// 复杂度 O(n + m)，空间 O(n + m)。
-// 递归 Hierholzer，递归深度最坏 O(m)。
+// 无向图顶点编号 1..n，n >= 1。每条边在 edges 中放一次。
+// 返回经过每条边恰好一次的顶点序列，无解返回空数组，无边返回 {1}。
+// 时间和空间 O(n + m)，递归最深 O(m)。
 
 V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     V < V < pair < int, int > > > g(n + 1);
@@ -44,4 +43,4 @@ V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// 用法：V < int > path = euler_u(n, edges);
+// V < int > path = euler_u(n, edges);

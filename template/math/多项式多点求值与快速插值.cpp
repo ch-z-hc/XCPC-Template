@@ -4,12 +4,10 @@
 
 using namespace std;
 
-// 先复制数学章的“多项式求逆、对数、指数、幂、开根与除法”中的 FPS。
-// 固定模数 998244353，系数与采样点均为 0-based。
-// build 保存采样点；eval 返回每点函数值，允许重复点。
-// interp 要求采样点模意义下互异，返回次数 < n 的多项式，恰好 n 项。
-// 输入系数、横纵坐标先归一化；点数与输入多项式长度均不超过 2^20。
-// 时间 O((n + m) log^2(n + m))，空间 O(n log n + m)，支持空数组与重复 build。
+// 先复制「多项式基本运算」的 FPS。模 998244353，点坐标和系数均先化到 [0, mod)，低次项在前。
+// build(x) 记录 n 个点。eval(a) 按输入顺序求值，点可重复。interp(y) 要求横坐标模 mod 两两不同。
+// 插值返回恰好 n 个系数。点数 n、系数个数 m 均不超过 2^20，可传空数组，也可重新 build。
+// 时间 O((n + m) log²(n + m))，空间 O(n log n + m)。
 struct Multipoint {
     static const int mod = 998244353;
     int n = 0;
@@ -80,5 +78,6 @@ struct Multipoint {
     }
 };
 const int Multipoint::mod;
-// 用法：Multipoint poly; poly.build(x);
+
+// Multipoint poly; poly.build(x);
 // auto y = poly.eval(a); auto f = poly.interp(y);

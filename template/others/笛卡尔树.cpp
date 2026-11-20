@@ -6,8 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 建立小根笛卡尔树；数组和节点编号均为 1-based。
-// build 复杂度 O(n)，空间 O(n)；相等值不会弹出较早节点。
+// 用 a[1..n] 建小根笛卡尔树，节点编号就是数组下标。相等时下标较小的点更靠近根。
+// tree.root 是根。建树时间和空间 O(n)。
 
 struct Cartesian {
     int root = 0;
@@ -30,5 +30,5 @@ struct Cartesian {
     }
 };
 
-// 用法：Cartesian tree;
+// Cartesian tree;
 // tree.build(a); // a[0] 为占位，tree.root 为根。

@@ -4,12 +4,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 整数区间集合，使用 ll 半开区间 [l, r)，允许负坐标；l >= r 视为空。
-// s 中区间互不相交、互不相邻；insert 合并，erase 切开，clear 可复用。
-// contains 判断点是否覆盖，mex(x) 返回 >= x 的最小未覆盖整数。
-// insert / erase 为 O((k + 1) log m)，k 为触及区间数、m 为区间数。
-// contains / mex 为 O(log m)，空间 O(m)。
-// 不做端点 +/- 1，支持 LLONG_MIN / MAX 端点，但半开区间不能覆盖 LLONG_MAX。
+// insert、erase 处理整数半开区间 [l, r)，l >= r 时跳过。端点用 ll，可为负。
+// contains(x) 判断 x 是否已覆盖，mex(x) 找从 x 起第一个未覆盖的整数。
+// 半开区间始终覆盖不到 LLONG_MAX。设现有 m 段，一次修改涉及 k 段，
+// 修改 O((k + 1) log m)，查询 O(log m)，空间 O(m)。
 struct IntervalSet {
     set < pair < ll, ll > > s;
 
@@ -50,5 +48,5 @@ struct IntervalSet {
     }
 };
 
-// 用法：IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
+// IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
 // bool covered = seg.contains(1); ll x = seg.mex(1); // 2。

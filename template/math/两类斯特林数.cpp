@@ -6,12 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制数学章的“NTT 与多项式乘法”。
-// 第一类为无符号斯特林数，第二类为集合划分数。
-// stirling1 / stirling2 返回 [0..n][0..n]，要求 n >= 0、1 <= mod <= 2^31。
-// 递推表 O(n^2) 时间、空间，模数可为合数；s(0,0) = S(0,0) = 1 % mod。
-// stirling2_row 返回 S(n,0..n)，固定模数 998244353。
-// 卷积版 O(n log n) 时间、O(n) 空间，要求 0 <= n < 2^22；0^0 取 1。
+// 先复制「快速数论变换与多项式乘法」。stirling1、stirling2 分别求无符号第一类、第二类斯特林数。
+// 两者返回 0..n 的整张表，n >= 0，1 <= mod <= 2^31，可用合数模。时间和空间 O(n²)。
+// 只求第二类第 n 行可用 stirling2_row，固定模 998244353，要求 n < 2^22。耗时 O(n log n)，空间 O(n)。
 V < V < ll > > stirling1(int n, ll mod) {
     V < V < ll > > s(n + 1, V < ll > (n + 1));
     s[0][0] = 1 % mod;
@@ -43,5 +40,5 @@ V < ll > stirling2_row(int n) {
     return a;
 }
 
-// 用法：auto s = stirling1(n, mod); auto t = stirling2(n, mod);
+// auto s = stirling1(n, mod); auto t = stirling2(n, mod);
 // auto row = stirling2_row(n);

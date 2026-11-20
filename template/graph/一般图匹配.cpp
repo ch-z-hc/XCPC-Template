@@ -4,10 +4,8 @@
 
 using namespace std;
 
-// Edmonds 带花树，求一般无向图最大匹配；顶点编号 1-based。
-// 时间 O(n^3)，空间 O(n^2)；邻接矩阵自动合并重边，自环忽略。
-// solve 返回匹配边数；match[u] 为匹配点，未匹配为 0。
-// 每次 solve 从空匹配重新计算；init 清空图。
+// 无向图顶点编号 1..n。solve() 从空匹配开始，返回最多能选多少条边。
+// match[u] 是 u 的搭档，0 表示未匹配。自环跳过，重边只算一次。时间 O(n³)，空间 O(n²)。
 struct Blossom {
     int n = 0;
     V < V < char > > g;
@@ -20,7 +18,9 @@ struct Blossom {
         g.assign(n + 1, V < char > (n + 1));
         match.assign(n + 1, 0);
         fa.resize(n + 1); base.resize(n + 1);
-        vis.resize(n + 1); used.resize(n + 1); flower.resize(n + 1);
+        vis.resize(n + 1);
+        used.resize(n + 1);
+        flower.resize(n + 1);
     }
 
     void add_edge(int u, int v) {
@@ -90,5 +90,5 @@ struct Blossom {
     }
 };
 
-// 用法：Blossom blossom(n); blossom.add_edge(u, v);
-// int ans = blossom.solve(); 匹配边可取所有 u < blossom.match[u]。
+// Blossom g(n); g.add_edge(u, v);
+// int cnt = g.solve(); // 枚举匹配边时只取 u < g.match[u]

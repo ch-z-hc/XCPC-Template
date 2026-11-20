@@ -6,10 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 点分治：统计距离 <= k 的无序点对，不包含同一个点组成的点对。
-// 连通树，顶点 1-based，边权非负；距离与答案须能用 ll 表示。
-// 每次 query 为 O(n log^2 n)，空间 O(n)，可以重复调用。
-// 找重心、收集距离和分治均递归；收集距离时递归深度最坏 O(n)。
+// 在编号 1..n 的连通树中，统计距离不超过 k 的无序点对。两点须不同，边权须非负。
+// 可对同一棵树多次 query。距离和答案用 ll。每次 O(n log² n)，空间 O(n)，长链注意递归栈。
 
 struct Centroid {
     int n = 0;
@@ -20,7 +18,9 @@ struct Centroid {
     Centroid(int n = 0) { init(n); }
     void init(int n_) {
         n = n_;
-        g.assign(n + 1, {}); siz.assign(n + 1, 0); vis.assign(n + 1, 0);
+        g.assign(n + 1, {});
+        siz.assign(n + 1, 0);
+        vis.assign(n + 1, 0);
     }
 
     void add_edge(int u, int v, ll w = 1) {
@@ -81,4 +81,4 @@ struct Centroid {
     }
 };
 
-// 用法：Centroid tree(n); tree.add_edge(u, v, w); ll ans = tree.query(k);
+// Centroid tree(n); tree.add_edge(u, v, w); ll ans = tree.query(k);

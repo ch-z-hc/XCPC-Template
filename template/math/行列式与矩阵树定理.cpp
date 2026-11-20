@@ -6,13 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 模行列式与矩阵树定理：mod 为质数，2 <= mod <= INT_MAX。
-// det 接收 0-based 方阵，空矩阵的行列式为 1；输入可为负数。
-// 时间 O(n^3 + n log mod)，空间 O(n^2)，不修改原矩阵。
-// matrix_tree 顶点 1-based，边为 (u, v, w)，允许重边，忽略自环。
-// 默认无向；directed = true 时计算从 root 向外的有向生成树。
-// 每棵树的贡献为边权乘积；边权为重数时即为生成树数量。
-// n >= 1；单点图返回 1。建矩阵额外时间 O(m)。
+// det 对从 0 编号的方阵求行列式，允许负元素，空矩阵返回 1。模数须为 [2, INT_MAX] 内的质数。
+// matrix_tree 的顶点编号 1..n，每条边传 {u, v, w}。可有重边，自环跳过，单点图返回 1。
+// 默认求无向生成树。传 directed = true 时求从 root 向外的树。每棵树贡献边权乘积。
+// 耗时 O(n³ + n log mod)，建矩阵另需 O(m)，空间 O(n²)。
 
 ll det(V < V < ll > > a, ll mod) {
     assert(2 <= mod && mod <= INT_MAX);
@@ -64,5 +61,5 @@ ll matrix_tree(int n, const V < tuple < int, int, ll > > &edges,
     return det(a, mod);
 }
 
-// 用法：det({{1, 2}, {3, 4}}, 998244353);
+// det({{1, 2}, {3, 4}}, 998244353);
 // matrix_tree(3, {{1, 2, 1}, {2, 3, 1}, {1, 3, 1}}, 998244353);

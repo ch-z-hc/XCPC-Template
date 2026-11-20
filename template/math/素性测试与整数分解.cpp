@@ -6,11 +6,9 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// Miller-Rabin + Pollard-Rho：支持整个 unsigned long long 范围。
-// is_prime 为确定性判素，O(log n) 次模乘；factor 返回升序质因子，保留重数。
-// 分解为随机算法，找到最小质因子 p 的期望代价约 O(sqrt(p)) 次模运算。
-// 倍增模乘每次 O(log n)，大半素数分解较慢，需按题目时限判断。
-// factor(n) 在 n < 2 时返回空；递归深度 O(log n)，无跨调用状态。
+// 支持整个 ull 范围。is_prime 确定性判素，factor 返回升序质因子，重复因子保留，n < 2 时返回空。
+// 判素需 O(log n) 次模乘。Pollard-Rho 找最小质因子 p 期望约 O(sqrt(p)) 次模运算。
+// 这里一次倍增模乘要 O(log n)，两个大质数的乘积可能分解较慢。递归深度 O(log n)。
 
 ull rho_mul(ull a, ull b, ull mod) {
     a %= mod;
@@ -92,5 +90,5 @@ V < ull > factor(ull n) {
     return ans;
 }
 
-// 用法：bool op = is_prime(n);
+// bool prime = is_prime(n);
 // V < ull > p = factor(n);

@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 输入必须为树；顶点编号 1-based，默认以 1 为根，fa 为递归用的父节点。
-// 每个节点排序子树哈希，复杂度 O(sum(deg(u) log deg(u)))，递归空间 O(n)。
+// 给编号 1..n 的树指定根（默认 1）。儿子顺序不影响结果，同构的有根树得到相同哈希值。
+// 哈希相同仍可能碰撞。耗时 O(n + Σ deg(u) log(deg(u) + 1))，递归及临时数组共 O(n) 空间。
 
 static uint64_t hash_mix(uint64_t x) {
     x += 0x9e3779b97f4a7c15ULL;
@@ -24,5 +24,4 @@ uint64_t tree_hash(const V < V < int > > &g, int u = 1, int fa = 0) {
     return h;
 }
 
-// 用法：uint64_t h = tree_hash(g, root);
-// 这是随机化哈希，存在极小概率碰撞；需要严格判定时应使用同构算法。
+// uint64_t h = tree_hash(g, root);

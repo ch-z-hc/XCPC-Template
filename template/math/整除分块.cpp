@@ -6,8 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 对非负 ll 整数 n，返回 n / l 相同的所有最大区间 [l, r]；结果下标 0-based。
-// n = 0 返回空集；时间与空间 O(sqrt(n))，须确保区间数组能放入内存。
+// 从 1 到 n，列出所有 n / i 取值相同的极大闭区间 [l, r]。
+// n 为非负 ll，n = 0 返回空数组。时间和空间 O(sqrt(n))，全部区间都存入结果。
 
 V < pair < ll, ll > > div_blocks(ll n) {
     V < pair < ll, ll > > ans;
@@ -20,4 +20,4 @@ V < pair < ll, ll > > div_blocks(ll n) {
     return ans;
 }
 
-// 用法：for (auto [l, r] : div_blocks(n)) { /* n / l 在区间内相同。 */ }
+// auto blocks = div_blocks(5); // [1, 1]、[2, 2]、[3, 5]

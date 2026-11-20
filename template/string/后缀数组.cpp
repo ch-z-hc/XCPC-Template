@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// 后缀数组；字符串下标 0-based。build 复杂度 O(n log n)，lcp 查询 O(1)，空间 O(n log n)。
-// sa 按字典序保存后缀起点，rk[i] 是后缀 s[i..] 的排名。
+// sa[i] 是字典序第 i 个后缀的起点，rk 与 sa 互逆，下标和排名都从 0 数。
+// lcp(u, v) 查两个起点对应后缀的最长公共前缀长度。建表时间和空间 O(n log n)，查询 O(1)。
 
 struct SA {
     string s;
@@ -88,5 +88,5 @@ struct SA {
     }
 };
 
-// 用法：SA sa(s);
+// SA sa(s);
 // int len = sa.lcp(x, y);

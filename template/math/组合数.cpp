@@ -6,9 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-// 质数模数下的组合数，要求 0 <= n < mod；表下标范围 0..n。
-// 预处理 O(n)，查询 O(1)，空间 O(n)。
-// 要求 1 < mod <= 2^31，输入模数值归一化到 [0, mod)，乘加计算不得溢出 ll。
+// 要查 C(n, k)，先用最大 n 建表。要求 0 <= n < mod，mod 是不超过 2^31 的质数。
+// choose 遇到 k 越界或 n 超出表长都返回 0。建表 O(n + log mod)，查询 O(1)，空间 O(n)。
 
 struct Comb {
     ll mod = 1;
@@ -36,6 +35,6 @@ struct Comb {
     }
 };
 
-// 用法：Comb comb;
+// Comb comb;
 // comb.init(n, mod);
 // ll ans = comb.choose(n, k);

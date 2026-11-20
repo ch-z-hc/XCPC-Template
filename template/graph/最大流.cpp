@@ -6,9 +6,9 @@ typedef long long ll;
 
 using namespace std;
 
-// Dinic 最大流；顶点编号 1-based，容量非负。
-// 一般图复杂度 O(n^2 m)，空间 O(n + m)；要求容量及流量计算不溢出 ll。
-// flow 修改残量网络，再次调用只返回新增流量；init 清空图。
+// 点编号 1..n，add_edge(u, v, cap) 加一条容量非负的有向边。
+// flow(s, t) 会修改残量，再调用只返回新增流量。要从头算需 init 后重新加边。
+// 容量和总流量用 ll。一般图时间 O(n²m)，空间 O(n + m)。
 struct Dinic {
     struct Edge {
         int to, rev;
@@ -74,6 +74,6 @@ struct Dinic {
     }
 };
 
-// 用法：Dinic dinic(n);
+// Dinic dinic(n);
 // dinic.add_edge(u, v, cap);
 // ll ans = dinic.flow(s, t);

@@ -4,10 +4,9 @@
 
 using namespace std;
 
-// Hopcroft-Karp 二分图最大匹配；左右部编号均为 1-based，允许重边。
-// 边数为 E，复杂度 O(n + m + E sqrt(n + m))，空间 O(n + m + E)。
-// BFS 构建最短增广路分层，DFS 递归增广；深链须留足栈空间。
-// solve 返回匹配数，可重复调用；ml[u]、mr[v] 为匹配点，0 表示未匹配。
+// 左点编号 1..n，右点编号 1..m，可加重边。solve 返回最大匹配边数，可重复求解。
+// ml[u]、mr[v] 是两侧的搭档，0 表示未匹配。增广用递归，长链要留足栈。
+// E 条边的时间 O(n + m + E sqrt(n + m))，空间 O(n + m + E)。
 struct HK {
     int n, m;
     V < V < int > > g;
@@ -87,6 +86,6 @@ struct HK {
     }
 };
 
-// 用法：HK hk(n, m);
+// HK hk(n, m);
 // hk.add_edge(u, v);
 // int ans = hk.solve();

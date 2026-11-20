@@ -6,14 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// Kruskal 重构森林：原顶点 1..n，合并节点从 n + 1 开始，权值可为负。
-// build 默认按边权递增，query 求路径最大边权的最小值；递减时反之。
-// query(u, v, ans) 连通返回 true 并写入 ans，不连通返回 false。
-// 同点约定 ans = 0；lca 不连通返回 0。
-// build 时间 O(m log m + n log n)，空间 O(m + n log n)，query 为 O(log n)。
-// 可重复 build / 更换排序方向；t 为有根森林子节点，递归深度最坏 O(n)。
+// 原顶点编号 1..n，新节点从 n + 1 编号。build 默认按边权递增，可换方向重建。
+// 递增时 query 求所有 u 到 v 路径中「最大边权的最小值」，递减时求「最小边权的最大值」。
+// query 连通时把答案写入 ans，同点取 0。两点不连通时 query 返回 false，lca 返回 0。
+// 建树 O(m log m + n log n)，空间 O(m + n log n)，查询 O(log n)。长链注意递归栈。
 struct KruskalTree {
-    struct Edge { int u, v; ll w; };
+    struct Edge {
+        int u, v;
+        ll w;
+    };
     int n = 0, tot = 0, lg = 1;
     V < Edge > edges;
     V < V < int > > t, up;
@@ -21,14 +22,21 @@ struct KruskalTree {
     V < ll > weight;
 
     KruskalTree(int n = 0) { init(n); }
-    void init(int n_) { n = n_; edges.clear(); tot = 0; }
+    void init(int n_) {
+        n = n_;
+        edges.clear();
+        tot = 0;
+    }
     void add_edge(int u, int v, ll w) { edges.push_back({u, v, w}); }
     int find(int u) { return fa[u] == u ? u : fa[u] = find(fa[u]); }
 
     void dfs(int u, int p, int root) {
         up[0][u] = p; bel[u] = root;
         for (int j = 1; j < lg; ++ j) up[j][u] = up[j - 1][up[j - 1][u]];
-        for (int v : t[u]) { dep[v] = dep[u] + 1; dfs(v, u, root); }
+        for (int v : t[u]) {
+            dep[v] = dep[u] + 1;
+            dfs(v, u, root);
+        }
     }
 
     void build(bool rev = false) {
@@ -42,12 +50,15 @@ struct KruskalTree {
         for (auto [u, v, w] : e) {
             u = find(u); v = find(v);
             if (u == v) continue;
-            ++ tot; t[tot] = {u, v}; weight[tot] = w;
+            ++ tot;
+            t[tot] = {u, v};
+            weight[tot] = w;
             fa[u] = fa[v] = tot;
         }
         roots.clear();
         for (int u = 1; u <= tot; ++ u) if (fa[u] == u) roots.push_back(u);
-        lg = 1; while ((1ll << lg) <= max(1, tot)) lg ++;
+        lg = 1;
+        while ((1ll << lg) <= max(1, tot)) lg ++;
         up.assign(lg, V < int > (tot + 1));
         dep.assign(tot + 1, 0); bel.assign(tot + 1, 0);
         for (int root : roots) dfs(root, 0, root);
@@ -72,6 +83,5 @@ struct KruskalTree {
     }
 };
 
-// 用法：KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
+// KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
 // ll ans; bool ok = tree.query(u, v, ans);
-// tree.t、tree.weight 可用于额外的树上统计。
