@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// get_z(s)[i] 是 s 与 s[i..] 的最长公共前缀长度，非空串的 z[0] 等于串长。
-// exkmp(s, t)[i] 比较 t 与 s[i..]，t 为空时各项均为 0。下标从 0 数，时间和空间 O(|s| + |t|)。
+/*
+get_z(s)[i] 是 s 与 s[i..] 的最长公共前缀长度，非空串的 z[0] 等于串长。
+exkmp(s, t)[i] 比较 t 与 s[i..]，t 为空时各项均为 0。下标从 0 数，时间和空间 O(|s| + |t|)。
+*/
 
 V < int > get_z(const string &s) {
     int n = int(s.size());

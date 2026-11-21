@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 无向图编号 1..n，边按 {u, v, id, w} 传入，允许负权和重边。ids 返回选中边的原 id。
-// sum 是总权，累加用 ll。图不连通时 ok 为 false，此时得到最小生成森林。
-// 时间 O(n + m log m)，空间 O(n + m)。
+/*
+无向图编号 1..n，边按 {u, v, id, w} 传入，允许负权和重边。ids 返回选中边的原 id。
+sum 是总权，累加用 ll。图不连通时 ok 为 false，此时得到最小生成森林。
+时间 O(n + m log m)，空间 O(n + m)。
+*/
 
 struct Edge {
     int u, v, id;
@@ -48,5 +50,7 @@ MST kruskal(int n, V < Edge > edges) {
     return ans;
 }
 
-// V < Edge > edges; edges.push_back({u, v, id, w});
-// auto mst = kruskal(n, edges);
+/*
+V < Edge > edges; edges.push_back({u, v, id, w});
+auto mst = kruskal(n, edges);
+*/

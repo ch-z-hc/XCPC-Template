@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 用于两人轮流行动、不能行动者输的无环公平游戏。状态编号 1..n，g[u] 存一步能到的状态。
-// grundy(g, sg) 求每个状态的 SG 值，终止状态为 0。有环时返回 false，此时不能使用 sg。
-// 独立子游戏的 SG 值异或后非零，先手就能赢。时间和空间 O(n + m)，长链注意递归栈。
+/*
+用于两人轮流行动、不能行动者输的无环公平游戏。状态编号 1..n，g[u] 存一步能到的状态。
+grundy(g, sg) 求每个状态的 SG 值，终止状态为 0。有环时返回 false，此时不能使用 sg。
+独立子游戏的 SG 值异或后非零，先手就能赢。时间和空间 O(n + m)，长链注意递归栈。
+*/
 bool grundy(const V < V < int > > &g, V < int > &sg) {
     int n = int(g.size()) - 1;
     V < int > color(n + 1, 0);
@@ -25,5 +27,7 @@ bool grundy(const V < V < int > > &g, V < int > &sg) {
     return true;
 }
 
-// V < int > sg;
-// bool ok = grundy(g, sg); // 若 ok 为真，sg[u] ^ sg[v] 非零表示先手胜
+/*
+V < int > sg;
+bool ok = grundy(g, sg); // 若 ok 为真，sg[u] ^ sg[v] 非零表示先手胜
+*/

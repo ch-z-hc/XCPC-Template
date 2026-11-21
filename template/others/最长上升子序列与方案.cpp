@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// lis(a) 在 a[1..n] 中找一条最长严格递增子序列，传 false 改为非递减。
-// 返回一组原数组下标，结果的大小就是最优长度。时间 O(n log n)，空间 O(n)。
+/*
+lis(a) 在 a[1..n] 中找一条最长严格递增子序列，传 false 改为非递减。
+返回一组原数组下标，结果的大小就是最优长度。时间 O(n log n)，空间 O(n)。
+*/
 template < class T >
 V < int > lis(const V < T > &a, bool strict = true) {
     V < T > tail;

@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 有向图顶点编号 1..n。build() 返回分量数，bel[u] 是点 u 所在分量的编号，从 1 数。
-// 若有跨分量边 u -> v，则 bel[u] > bel[v]。按编号从大到小就是缩点图的拓扑序。
-// 可重复 build。时间和空间 O(n + m)，长链的 DFS 最深 n 层。
+/*
+有向图顶点编号 1..n。build() 返回分量数，bel[u] 是点 u 所在分量的编号，从 1 数。
+若有跨分量边 u -> v，则 bel[u] > bel[v]。按编号从大到小就是缩点图的拓扑序。
+可重复 build。时间和空间 O(n + m)，长链的 DFS 最深 n 层。
+*/
 struct SCC {
     int n = 0, tim = 0, cnt = 0;
     V < V < int > > g;
@@ -61,7 +63,9 @@ struct SCC {
     }
 };
 
-// SCC scc(n);
-// scc.add_edge(u, v);
-// int cnt = scc.build();
-// int id = scc.bel[u];
+/*
+SCC scc(n);
+scc.add_edge(u, v);
+int cnt = scc.build();
+int id = scc.bel[u];
+*/

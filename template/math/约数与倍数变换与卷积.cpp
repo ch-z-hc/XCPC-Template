@@ -6,10 +6,12 @@ typedef long long ll;
 
 using namespace std;
 
-// 输入用 a[1..n]，a[0] 填 0，系数先化到 [0, mod)，1 <= mod <= 2^31，可为合数。
-// divisor_zeta 把 a[x] 改为 x 所有约数的值之和；multiple_zeta 对 x 的倍数求和。传 true 做逆变换。
-// gcd_conv、lcm_conv 要求两数组等长，按 gcd 或 lcm 累加乘积，只保留下标 <= n 的项。
-// 每次 O(n log n)。变换原地进行，卷积另用 O(n) 空间。
+/*
+输入用 a[1..n]，a[0] 填 0，系数先化到 [0, mod)，1 <= mod <= 2^31，可为合数。
+divisor_zeta 把 a[x] 改为 x 所有约数的值之和；multiple_zeta 对 x 的倍数求和。传 true 做逆变换。
+gcd_conv、lcm_conv 要求两数组等长，按 gcd 或 lcm 累加乘积，只保留下标 <= n 的项。
+每次 O(n log n)。变换原地进行，卷积另用 O(n) 空间。
+*/
 void divisor_zeta(V < ll > &a, ll mod, bool inverse = false) {
     int n = int(a.size()) - 1;
     for (int k = 1; k <= n; ++ k) {
@@ -46,5 +48,7 @@ V < ll > lcm_conv(V < ll > a, V < ll > b, ll mod) {
     return a;
 }
 
-// divisor_zeta(a, mod); divisor_zeta(a, mod, true); // 恢复 a。
-// auto c = gcd_conv(a, b, mod); auto d = lcm_conv(a, b, mod);
+/*
+divisor_zeta(a, mod); divisor_zeta(a, mod, true); // 恢复 a。
+auto c = gcd_conv(a, b, mod); auto d = lcm_conv(a, b, mod);
+*/

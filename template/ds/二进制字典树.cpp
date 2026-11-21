@@ -6,9 +6,11 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 存 64 位无符号整数，可重复插入。erase(x) 只删一份，找不到 x 时返回 false。
-// max_xor(x, ans) 把最大异或值写入 ans，集合为空时返回 false。
-// 每次操作走 64 位，删除时保留节点。
+/*
+存 64 位无符号整数，可重复插入。erase(x) 只删一份，找不到 x 时返回 false。
+max_xor(x, ans) 把最大异或值写入 ans，集合为空时返回 false。
+每次操作走 64 位，删除时保留节点。
+*/
 
 struct XorTrie {
     struct Node {
@@ -59,5 +61,7 @@ struct XorTrie {
     }
 };
 
-// XorTrie trie; trie.insert(x); ull ans;
-// bool ok = trie.max_xor(y, ans);
+/*
+XorTrie trie; trie.insert(x); ull ans;
+bool ok = trie.max_xor(y, ans);
+*/

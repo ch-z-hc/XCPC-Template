@@ -4,9 +4,11 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 只处理低 63 位，要求 0 <= x < 2^63。insert(x) 返回 x 能否扩充线性基。
-// contains(x) 判断 x 能否由已有数异或得到，max_xor(x) 求从 x 出发能得到的最大值。
-// 这三种操作各 O(63)，空间 O(63)。clear() 清空线性基。
+/*
+只处理低 63 位，要求 0 <= x < 2^63。insert(x) 返回 x 能否扩充线性基。
+contains(x) 判断 x 能否由已有数异或得到，max_xor(x) 求从 x 出发能得到的最大值。
+这三种操作各 O(63)，空间 O(63)。clear() 清空线性基。
+*/
 
 struct Basis {
     array < ull, 63 > p{};
@@ -31,8 +33,10 @@ struct Basis {
         return x;
     }
 
-    // 不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
-    // 无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
+    /*
+    不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
+    无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
+    */
     bool kth(ull k, ull &ans) {
         auto a = p;
         int n = 0;
@@ -51,6 +55,8 @@ struct Basis {
     }
 };
 
-// Basis base;
-// base.insert(x);
-// auto ans = base.max_xor();
+/*
+Basis base;
+base.insert(x);
+auto ans = base.max_xor();
+*/

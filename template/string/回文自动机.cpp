@@ -6,8 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 只接收小写字母。distinct() 是不同非空回文串的个数，count()[u] 是节点 u 的出现次数。
-// 0 和 1 是虚根，从节点 2 起才代表实际回文串。建树、统计各 O(n)，空间 O(26n)。
+/*
+只接收小写字母。distinct() 是不同非空回文串的个数，count()[u] 是节点 u 的出现次数。
+0 和 1 是虚根，从节点 2 起才代表实际回文串。建树、统计各 O(n)，空间 O(26n)。
+*/
 
 struct PAM {
     struct Node {

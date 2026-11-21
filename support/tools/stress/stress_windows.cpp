@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 在 gen.exe、sol.exe、bf.exe 所在目录运行。逐项比较输出，忽略空白差异。
-// 答案不同时打印 seed，可直接检查 in.txt、out.txt 和 ans.txt。卡住时需手动中止。
+/*
+在 gen.exe、sol.exe、bf.exe 所在目录运行。逐项比较输出，忽略空白差异，不设超时。
+答案不同时打印 seed，可直接检查 in.txt、out.txt 和 ans.txt。
+*/
 bool run(string name, string args, int seed) {
     string cmd = name + ".exe " + args;
     if (system(cmd.c_str()) == 0) return true;

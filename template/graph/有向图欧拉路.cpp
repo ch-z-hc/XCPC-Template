@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 有向图顶点编号 1..n，n >= 1。edges 中的 (u, v) 表示 u -> v。
-// 返回经过每条边恰好一次的顶点序列，无解返回空数组，无边返回 {1}。
-// 时间和空间 O(n + m)，递归最深 O(m)。
+/*
+有向图顶点编号 1..n，n >= 1。edges 中的 (u, v) 表示 u -> v。
+返回经过每条边恰好一次的顶点序列，无解返回空数组，无边返回 {1}。
+时间和空间 O(n + m)，递归最深 O(m)。
+*/
 
 V < int > euler_d(int n, const V < pair < int, int > > &edges) {
     V < V < int > > g(n + 1);

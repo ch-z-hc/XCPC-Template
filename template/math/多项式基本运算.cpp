@@ -7,11 +7,13 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 固定模 998244353。a[i] 是 x^i 的系数，先化到 [0, mod)。以下运算取前 n 项，n <= 2^22。
-// inv 要求常数项非零，ln 要求为 1，exp 要求为 0（也可传空数组）。pow 的指数非负，0^0 取 1。
-// sqrt 无解返回 false，有解时写入 ans，首个非零系数的根取较小者。n = 0 时结果为空。
-// divmod 返回 {商, 余数}，去掉高次零，零多项式用空数组表示。除数须非零，两端长度均不超过 2^22。
-// 乘法结果长度须 <= 2^23。上述运算时间 O(n log n)，空间 O(n)。
+/*
+固定模 998244353。a[i] 是 x^i 的系数，先化到 [0, mod)。以下运算取前 n 项，n <= 2^22。
+inv 要求常数项非零，ln 要求为 1，exp 要求为 0（也可传空数组）。pow 的指数非负，0^0 取 1。
+sqrt 无解返回 false，有解时写入 ans，首个非零系数的根取较小者。n = 0 时结果为空。
+divmod 返回 {商, 余数}，去掉高次零，零多项式用空数组表示。除数须非零，两端长度均不超过 2^22。
+乘法结果长度须 <= 2^23。上述运算时间 O(n log n)，空间 O(n)。
+*/
 
 struct FPS {
     static const int mod = 998244353;
@@ -201,7 +203,9 @@ struct FPS {
 };
 const int FPS::mod;
 
-// V < int > a{1, 2, 3};
-// auto inv = FPS::inv(a, 8); // 保留到 x^7
-// V < int > root; bool ok = FPS::sqrt(a, 8, root);
-// auto [q, r] = FPS::divmod(a, {1, 1});
+/*
+V < int > a{1, 2, 3};
+auto inv = FPS::inv(a, 8); // 保留到 x^7
+V < int > root; bool ok = FPS::sqrt(a, 8, root);
+auto [q, r] = FPS::divmod(a, {1, 1});
+*/

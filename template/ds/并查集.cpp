@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 点编号 1..n。merge(u, v) 合并两个集合，原本就在同一集合时返回 false。
-// size(u) 是 u 所在集合的大小，cnt 是当前集合数。init(n) 重置为 n 个单点。
-// 初始化 O(n)，合并、查询均摊 O(α(n))。
+/*
+点编号 1..n。merge(u, v) 合并两个集合，原本就在同一集合时返回 false。
+size(u) 是 u 所在集合的大小，cnt 是当前集合数。init(n) 重置为 n 个单点。
+初始化 O(n)，合并、查询均摊 O(α(n))。
+*/
 struct DSU {
     int cnt = 0;
     V < int > fa, siz;
@@ -39,6 +41,8 @@ struct DSU {
     int size(int u) { return siz[find(u)]; }
 };
 
-// DSU dsu(n);
-// bool merged = dsu.merge(u, v);
-// int siz = dsu.size(u);
+/*
+DSU dsu(n);
+bool merged = dsu.merge(u, v);
+int siz = dsu.size(u);
+*/

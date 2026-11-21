@@ -4,10 +4,12 @@ typedef long long ll;
 
 using namespace std;
 
-// insert、erase 处理整数半开区间 [l, r)，l >= r 时跳过。端点用 ll，可为负。
-// contains(x) 判断 x 是否已覆盖，mex(x) 找从 x 起第一个未覆盖的整数。
-// 半开区间始终覆盖不到 LLONG_MAX。设现有 m 段，一次修改涉及 k 段，
-// 修改 O((k + 1) log m)，查询 O(log m)，空间 O(m)。
+/*
+insert、erase 处理整数半开区间 [l, r)，l >= r 时跳过。端点用 ll，可为负。
+contains(x) 判断 x 是否已覆盖，mex(x) 找从 x 起第一个未覆盖的整数。
+半开区间始终覆盖不到 LLONG_MAX。设现有 m 段，一次修改涉及 k 段，
+修改 O((k + 1) log m)，查询 O(log m)，空间 O(m)。
+*/
 struct IntervalSet {
     set < pair < ll, ll > > s;
 
@@ -48,5 +50,7 @@ struct IntervalSet {
     }
 };
 
-// IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
-// bool covered = seg.contains(1); ll x = seg.mex(1); // 2。
+/*
+IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
+bool covered = seg.contains(1); ll x = seg.mex(1); // 2。
+*/

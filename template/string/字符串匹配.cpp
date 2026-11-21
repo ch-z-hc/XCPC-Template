@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// kmp(s, t) 在文本 s 中找模式串 t，按从左到右的顺序返回起点，下标从 0 数。
-// 匹配可重叠。t 为空时返回 0 到 s.size() 的所有位置。
-// 时间 O(|s| + |t|)，除答案外占 O(|t|) 空间。
+/*
+kmp(s, t) 在文本 s 中找模式串 t，按从左到右的顺序返回起点，下标从 0 数。
+匹配可重叠。t 为空时返回 0 到 s.size() 的所有位置。
+时间 O(|s| + |t|)，除答案外占 O(|t|) 空间。
+*/
 
 V < int > get_pi(const string &t) {
     V < int > pi(t.size());

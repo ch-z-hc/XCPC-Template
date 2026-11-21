@@ -6,10 +6,12 @@ typedef long long ll;
 
 using namespace std;
 
-// 点编号 1..n，容量非负。可以有负费用边，要求残量网络没有负环。
-// flow(s, t) 返回 {本次新增流量, 对应费用}，会修改残量。要从头算需 init 后重新加边。
-// 边费不能取 LLONG_MIN。势能调整、路径费乘流量和累计费用等中间结果都须能放进 ll。
-// 初始 SPFA 最坏 O(nm)，之后 A 次增广 O(A m log n)，空间 O(n + m)。
+/*
+点编号 1..n，容量非负。可以有负费用边，要求残量网络没有负环。
+flow(s, t) 返回 {本次新增流量, 对应费用}，会修改残量。要从头算需 init 后重新加边。
+边费不能取 LLONG_MIN。势能调整、路径费乘流量和累计费用等中间结果都须能放进 ll。
+初始 SPFA 最坏 O(nm)，之后 A 次增广 O(A m log n)，空间 O(n + m)。
+*/
 
 struct MCMF {
     struct Edge {
@@ -106,6 +108,8 @@ struct MCMF {
     }
 };
 
-// MCMF mcf(n);
-// mcf.add_edge(u, v, cap, cost);
-// auto [flow, cost] = mcf.flow(s, t);
+/*
+MCMF mcf(n);
+mcf.add_edge(u, v, cap, cost);
+auto [flow, cost] = mcf.flow(s, t);
+*/

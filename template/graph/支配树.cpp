@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 给有向图加完边后调用 build(root)。idom[v] 是 v 的直接支配点，根指向自己，不可达点为 0。
-// 点编号 1..n，tree[u] 存支配树的儿子。可更换根重建。长链 DFS 最深 n 层。
-// 时间 O((n + m) log n)，空间 O(n + m)。
+/*
+给有向图加完边后调用 build(root)。idom[v] 是 v 的直接支配点，根指向自己，不可达点为 0。
+点编号 1..n，tree[u] 存支配树的儿子。可更换根重建。长链 DFS 最深 n 层。
+时间 O((n + m) log n)，空间 O(n + m)。
+*/
 struct Dominator {
     int n = 0, tim = 0;
     V < V < int > > g, pre, bucket, tree;
@@ -73,5 +75,7 @@ struct Dominator {
     }
 };
 
-// Dominator dt(n); dt.add_edge(u, v); dt.build(root);
-// int parent = dt.idom[v];
+/*
+Dominator dt(n); dt.add_edge(u, v); dt.build(root);
+int parent = dt.idom[v];
+*/

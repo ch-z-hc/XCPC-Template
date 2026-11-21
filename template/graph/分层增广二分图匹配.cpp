@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 左点编号 1..n，右点编号 1..m，可加重边。solve 返回最大匹配边数，可重复求解。
-// ml[u]、mr[v] 是两侧的搭档，0 表示未匹配。增广用递归，长链要留足栈。
-// E 条边的时间 O(n + m + E sqrt(n + m))，空间 O(n + m + E)。
+/*
+左点编号 1..n，右点编号 1..m，可加重边。solve 返回最大匹配边数，可重复求解。
+ml[u]、mr[v] 是两侧的搭档，0 表示未匹配。增广用递归，长链要留足栈。
+E 条边的时间 O(n + m + E sqrt(n + m))，空间 O(n + m + E)。
+*/
 struct HK {
     int n, m;
     V < V < int > > g;
@@ -67,8 +69,10 @@ struct HK {
         return ans;
     }
 
-    // 先 solve；O(n + m + E) 返回最小点覆盖 {左部顶点, 右部顶点}。
-    // 两侧未被覆盖的顶点组成最大独立集。修改图后须重新 solve。
+    /*
+    先 solve；O(n + m + E) 返回最小点覆盖 {左部顶点, 右部顶点}。
+    两侧未被覆盖的顶点组成最大独立集。修改图后须重新 solve。
+    */
     pair < V < int >, V < int > > cover() {
         V < int > a(n + 1), b(m + 1), left, right;
         queue < int > q;
@@ -86,6 +90,8 @@ struct HK {
     }
 };
 
-// HK hk(n, m);
-// hk.add_edge(u, v);
-// int ans = hk.solve();
+/*
+HK hk(n, m);
+hk.add_edge(u, v);
+int ans = hk.solve();
+*/

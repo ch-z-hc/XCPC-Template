@@ -7,12 +7,14 @@ typedef long double ld;
 
 using namespace std;
 
-// 增广矩阵从 0 编号，显式传变量数 m，最后一列（下标 m）是常数。允许 0 行或 0 个变量。
-// 返回 0 表示无解，1 表示唯一解，2 表示多解。有解时 x 给出一组解，自由变量取 0。
-// 实数版用绝对容差 eps > 0，系数量级悬殊时先缩放。模数版允许负系数，p 须为质数且 <= 2^31。
-// 异或版每行用 bitset < N >，只填前 m + 1 位，m < N。第 m 位放方程右侧。
-// 设 r = min(n, m)。实数版耗时 O(nmr)，模数版另加 O(r log p)，空间均为 O(nm)。
-// 异或版耗时 O(nm + nr ceil(N/w))，空间 O(n ceil(N/w))，w 是机器字长。
+/*
+增广矩阵从 0 编号，显式传变量数 m，最后一列（下标 m）是常数。允许 0 行或 0 个变量。
+返回 0 表示无解，1 表示唯一解，2 表示多解。有解时 x 给出一组解，自由变量取 0。
+实数版用绝对容差 eps > 0，系数量级悬殊时先缩放。模数版允许负系数，p 须为质数且 <= 2^31。
+异或版每行用 bitset < N >，只填前 m + 1 位，m < N。第 m 位放方程右侧。
+设 r = min(n, m)。实数版耗时 O(nmr)，模数版另加 O(r log p)，空间均为 O(nm)。
+异或版耗时 O(nm + nr ceil(N/w))，空间 O(n ceil(N/w))，w 是机器字长。
+*/
 
 int gauss(V < V < ld > > a, int m, V < ld > &x, ld eps = 1e-12L) {
     int n = int(a.size()), r = 0;
@@ -96,7 +98,9 @@ int gauss_xor(V < bitset < N > > a, int m, V < int > &x) {
     return r == m ? 1 : 2;
 }
 
-// V < ld > x; int status = gauss(a, m, x);
-// V < ll > y; int mod_status = gauss_mod(b, m, p, y);
-// V < bitset < 3 > > c{3, 6}; // x0 ^ x1 = 0，x1 = 1
-// V < int > z; int xor_status = gauss_xor(c, 2, z); // 唯一解 {1, 1}
+/*
+V < ld > x; int status = gauss(a, m, x);
+V < ll > y; int mod_status = gauss_mod(b, m, p, y);
+V < bitset < 3 > > c{3, 6}; // x0 ^ x1 = 0，x1 = 1
+V < int > z; int xor_status = gauss_xor(c, 2, z); // 唯一解 {1, 1}
+*/

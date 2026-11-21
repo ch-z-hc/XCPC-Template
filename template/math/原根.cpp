@@ -6,9 +6,11 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-// 先复制「素性测试与整数分解」中的 factor、rho_pow 及其依赖。输入 p 须为质数，支持整个 ull 范围。
-// 返回最小原根 g，p = 2 时返回 1。先分解 p - 1，再依次试 g。
-// 若 p - 1 有 t 个不同质因子，枚举耗时 O(g t log² p)，额外空间 O(log p)。
+/*
+先复制「素性测试与整数分解」中的 factor、rho_pow 及其依赖。输入 p 须为质数，支持整个 ull 范围。
+返回最小原根 g，p = 2 时返回 1。先分解 p - 1，再依次试 g。
+若 p - 1 有 t 个不同质因子，枚举耗时 O(g t log² p)，额外空间 O(log p)。
+*/
 V < ull > factor(ull n);
 ull rho_pow(ull a, ull b, ull mod);
 

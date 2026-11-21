@@ -6,10 +6,12 @@ typedef long double ld;
 
 using namespace std;
 
-// 求 max c·x，约束为 Ax <= b、x >= 0。矩阵从 0 编号，行数与 b 相同，列数与 c 相同。
-// status 为 0 表示无解，1 表示找到最优解，2 表示无界。无界时 x 仍是一组可行解。
-// eps 是绝对容差，系数量级相差大时先缩放。每次换基 O(nm)，最坏指数时间，空间 O(nm + n + m)。
-// 来源 Stanford / KACTL Simplex，MIT 许可见参考资料。
+/*
+求 max c·x，约束为 Ax <= b、x >= 0。矩阵从 0 编号，行数与 b 相同，列数与 c 相同。
+status 为 0 表示无解，1 表示找到最优解，2 表示无界。无界时 x 仍是一组可行解。
+eps 是绝对容差，系数量级相差大时先缩放。每次换基 O(nm)，最坏指数时间，空间 O(nm + n + m)。
+来源 Stanford / KACTL Simplex，MIT 许可见参考资料。
+*/
 
 struct Simplex {
     struct Result {
@@ -92,5 +94,7 @@ struct Simplex {
     }
 };
 
-// Simplex lp; auto ans = lp.solve(A, b, c);
-// if (ans.status == 1) { ld optimum = ans.value; }
+/*
+Simplex lp; auto ans = lp.solve(A, b, c);
+if (ans.status == 1) { ld optimum = ans.value; }
+*/

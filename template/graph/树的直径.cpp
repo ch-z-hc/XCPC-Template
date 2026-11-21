@@ -6,8 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 输入编号 1..n 的非空连通树，边权必须非负。返回 {端点 u, 端点 v, 直径长度}。
-// 距离累加用 ll。两遍 DFS 共 O(n)，长链递归深度 O(n)。
+/*
+输入编号 1..n 的非空连通树，边权必须非负。返回 {端点 u, 端点 v, 直径长度}。
+距离累加用 ll。两遍 DFS 共 O(n)，长链递归深度 O(n)。
+*/
 
 typedef V < V < pair < int, ll > > > Graph;
 

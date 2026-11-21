@@ -4,10 +4,12 @@
 
 using namespace std;
 
-// 按时间顺序记录单点修改和闭区间查询，数组从 1 数。add 和 del 接收元素值，answer(id) 保存答案。
-// 每次 solve 前清空自己的统计量，操作记录可重复用。统计不同值时，初始值和修改值要一起离散化。
-// 块长 B 约为 n^(2/3)。q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
-// 空间 O(n + q + u)，另加题目的统计量。
+/*
+按时间顺序记录单点修改和闭区间查询，数组从 1 数。add 和 del 接收元素值，answer(id) 保存答案。
+每次 solve 前清空自己的统计量，操作记录可重复用。统计不同值时，初始值和修改值要一起离散化。
+块长 B 约为 n^(2/3)。q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
+空间 O(n + q + u)，另加题目的统计量。
+*/
 struct MoModify {
     struct Change { int p, before, after; };
     struct Query { int l, r, t, id; };
@@ -16,11 +18,13 @@ struct MoModify {
     V < Change > changes;
     V < Query > qs;
 
-    // 示例维护：用以下成员替换下方 3 个函数声明。
-    // V < int > cnt, ans; int kinds = 0;
-    // void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
-    // void del(int x) { if (-- cnt[x] == 0) -- kinds; }
-    // void answer(int id) { ans[id] = kinds; }
+    /*
+    // 区间不同值个数
+    V < int > cnt, ans; int kinds = 0;
+    void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
+    void del(int x) { if (-- cnt[x] == 0) -- kinds; }
+    void answer(int id) { ans[id] = kinds; }
+    */
     void add(int x);
     void del(int x);
     void answer(int id);
@@ -66,6 +70,8 @@ struct MoModify {
     }
 };
 
-// MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
-// mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 值已离散到 1..m
-// mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]
+/*
+MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
+mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 值已离散到 1..m
+mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]
+*/

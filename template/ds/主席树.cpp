@@ -6,8 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 用静态数组 a[1..n] 建树。在 [l, r] 内，kth 查第 k 小，count 统计不大于 x 的数。
-// k 从 1 数，不能超过区间长度。建树时间和空间 O(n log n)，查询 O(log n)。
+/*
+用静态数组 a[1..n] 建树。在 [l, r] 内，kth 查第 k 小，count 统计不大于 x 的数。
+k 从 1 数，不能超过区间长度。建树时间和空间 O(n log n)，查询 O(log n)。
+*/
 
 struct PST {
     struct Node { int ls = 0, rs = 0, sum = 0; };

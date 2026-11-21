@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 给编号 1..n 的连通树加完边后 build(root)，根深度为 1，可换根重建。
-// query(u, k) 返回向上走 k 步的祖先，k 须非负。走 0 步返回 u，越过根返回 0。
-// 建表时间和空间 O(n log n)，查询 O(1)，长链注意递归栈。
+/*
+给编号 1..n 的连通树加完边后 build(root)，根深度为 1，可换根重建。
+query(u, k) 返回向上走 k 步的祖先，k 须非负。走 0 步返回 u，越过根返回 0。
+建表时间和空间 O(n log n)，查询 O(1)，长链注意递归栈。
+*/
 struct KthAncestor {
     int n = 0, lg = 1;
     V < V < int > > g, up, above, below;
@@ -63,5 +65,7 @@ struct KthAncestor {
     }
 };
 
-// KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
-// int p = tree.query(u, k);
+/*
+KthAncestor tree(n); tree.add_edge(u, v); tree.build(root);
+int p = tree.query(u, k);
+*/

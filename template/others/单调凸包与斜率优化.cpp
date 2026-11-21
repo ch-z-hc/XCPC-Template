@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 按斜率不增的顺序加入直线 kx + b，按 x 不减的顺序查询最小值。可以取等号，先加线再查。
-// 差值、叉积和 kx + b 用 ll。|k|、|b|、|x| 都不超过 10^9 时安全，做 DP 时也要检查截距。
-// 增线、查询均摊 O(1)，空间 O(插入总数)。
+/*
+按斜率不增的顺序加入直线 kx + b，按 x 不减的顺序查询最小值。可以取等号，先加线再查。
+差值、叉积和 kx + b 用 ll。|k|、|b|、|x| 都不超过 10^9 时安全，做 DP 时也要检查截距。
+增线、查询均摊 O(1)，空间 O(插入总数)。
+*/
 struct CHT {
     struct Line {
         ll k, b;
@@ -41,5 +43,7 @@ struct CHT {
     }
 };
 
-// CHT hull; hull.add(k, b);
-// ll ans = hull.query(x);
+/*
+CHT hull; hull.add(k, b);
+ll ans = hull.query(x);
+*/

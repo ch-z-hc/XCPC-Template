@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// build(n) 同时筛出 1..n 的质数、最小质因子 lp、欧拉函数 phi 和莫比乌斯函数 mu。
-// phi[1] = mu[1] = 1。建表时间和空间 O(n)。
+/*
+build(n) 同时筛出 1..n 的质数、最小质因子 lp、欧拉函数 phi 和莫比乌斯函数 mu。
+phi[1] = mu[1] = 1。建表时间和空间 O(n)。
+*/
 
 struct Sieve {
     V < int > prime, lp, phi, mu;
@@ -28,5 +30,7 @@ struct Sieve {
     }
 };
 
-// Sieve sieve;
-// sieve.build(n); // sieve.phi[i]、sieve.mu[i] 分别为 phi(i)、mu(i)。
+/*
+Sieve sieve;
+sieve.build(n);
+*/

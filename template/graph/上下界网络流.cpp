@@ -6,10 +6,12 @@ typedef long long ll;
 
 using namespace std;
 
-// 点编号 1..n，0 <= lo <= hi。可加重边和自环，所有 hi 之和不能超过 LLONG_MAX / 4。
-// solve() 求可行循环流。solve(s, t, mode) 要求 s != t，mode 取 0 求可行流，1 求最大流，-1 求最小流。
-// 返回 {是否可行, s 的净流出量}，流量可为负。成功后 f[id] 是原边流量，失败时 f 为空。
-// 可重复求解。时间 O(n²m)，空间 O(n + m)。
+/*
+点编号 1..n，0 <= lo <= hi。可加重边和自环，所有 hi 之和不能超过 LLONG_MAX / 4。
+solve() 求可行循环流。solve(s, t, mode) 要求 s != t，mode 取 0 求可行流，1 求最大流，-1 求最小流。
+返回 {是否可行, s 的净流出量}，流量可为负。成功后 f[id] 是原边流量，失败时 f 为空。
+可重复求解。时间 O(n²m)，空间 O(n + m)。
+*/
 struct LRFlow {
     struct Edge {
         int u, v;
@@ -136,5 +138,7 @@ struct LRFlow {
     }
 };
 
-// LRFlow g(n); int id = g.add_edge(u, v, lo, hi);
-// auto [ok, value] = g.solve(s, t, 1); // 有解时从 g.f[id] 取原边流量
+/*
+LRFlow g(n); int id = g.add_edge(u, v, lo, hi);
+auto [ok, value] = g.solve(s, t, 1); // 有解时从 g.f[id] 取原边流量
+*/

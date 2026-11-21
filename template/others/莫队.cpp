@@ -4,18 +4,22 @@
 
 using namespace std;
 
-// 在 a[1..n] 上离线查询闭区间 [l, r]。add、del 接收数组下标，answer(id) 把当前答案存到 id。
-// 每次 solve 前清空自己的统计量。块长约 n / sqrt(q)，q 个查询排序 O(q log q)，
-// 移动 O(n sqrt(q) + q) 次，另用 O(q) 空间存查询。
+/*
+在 a[1..n] 上离线查询闭区间 [l, r]。add、del 接收数组下标，answer(id) 把当前答案存到 id。
+每次 solve 前清空自己的统计量。块长约 n / sqrt(q)，q 个查询排序 O(q log q)，
+移动 O(n sqrt(q) + q) 次，另用 O(q) 空间存查询。
+*/
 
 struct Mo {
     struct Query { int l, r, id; };
 
-    // 示例维护：用以下成员替换下方 3 个函数声明。
-    // V < int > a, cnt, ans; int kinds = 0;
-    // void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
-    // void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
-    // void answer(int id) { ans[id] = kinds; }
+    /*
+    // 区间不同值个数
+    V < int > a, cnt, ans; int kinds = 0;
+    void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
+    void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
+    void answer(int id) { ans[id] = kinds; }
+    */
     void add(int p);
     void del(int p);
     void answer(int id);
@@ -38,6 +42,8 @@ struct Mo {
     }
 };
 
-// Mo mo; mo.a = a; // 统计不同值个数，值已离散到 1..m
-// mo.cnt.assign(m + 1, 0); mo.kinds = 0;
-// mo.ans.resize(qs.size()); mo.solve(n, qs); // qs 中每项为 {l, r, 答案下标}
+/*
+Mo mo; mo.a = a; // 统计不同值个数，值已离散到 1..m
+mo.cnt.assign(m + 1, 0); mo.kinds = 0;
+mo.ans.resize(qs.size()); mo.solve(n, qs); // qs 中每项为 {l, r, 答案下标}
+*/

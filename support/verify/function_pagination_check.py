@@ -34,10 +34,8 @@ def main():
     lines = fenwick.source.splitlines()
     start = lines.index("    int kth(ll k) {")
     end = lines.index("    }", start + 1) + 1
-    comment = start
-    while comment and lines[comment - 1].lstrip().startswith("//"):
-        comment -= 1
-    assert comment < start
+    assert lines[start - 1].strip() == "*/"
+    comment = max(i for i in range(start) if lines[i].strip() == "/*")
     assert breaks == [comment], breaks
     assert (start, end, True) in spans
     assert (comment, end, False) in spans

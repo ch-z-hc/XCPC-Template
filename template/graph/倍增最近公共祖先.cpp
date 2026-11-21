@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// 给编号 1..n 的连通树加完边后调用 build(root)，换根时重新 build。根深度为 0。
-// 建表时间和空间 O(n log n)，lca 查询 O(log n)。长链的 DFS 最深 n 层。
+/*
+给编号 1..n 的连通树加完边后调用 build(root)，换根时重新 build。根深度为 0。
+建表时间和空间 O(n log n)，lca 查询 O(log n)。长链的 DFS 最深 n 层。
+*/
 struct LCA {
     int n = 0, lg = 1;
     V < V < int > > g, fa;
@@ -54,7 +56,9 @@ struct LCA {
     }
 };
 
-// LCA tree(n);
-// tree.add_edge(u, v);
-// tree.build(root);
-// int p = tree.lca(u, v);
+/*
+LCA tree(n);
+tree.add_edge(u, v);
+tree.build(root);
+int p = tree.lca(u, v);
+*/

@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 在非负边权无向图中连接所有终端。顶点编号 1..n，solve 返回最小总边权，无法连通时返回 -1。
-// 终端可重复，空集或单点返回 0。去重后 k <= 20，还需能开下 2^k * n 个距离。
-// 有限距离和答案须小于 2^62。可重复求解。时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + m)。
+/*
+在非负边权无向图中连接所有终端。顶点编号 1..n，solve 返回最小总边权，无法连通时返回 -1。
+终端可重复，空集或单点返回 0。去重后 k <= 20，还需能开下 2^k * n 个距离。
+有限距离和答案须小于 2^62。可重复求解。时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + m)。
+*/
 
 struct Steiner {
     static const ll inf = 1ll << 62;
@@ -61,5 +63,7 @@ struct Steiner {
 };
 const ll Steiner::inf;
 
-// Steiner graph(n); graph.add_edge(u, v, w);
-// ll ans = graph.solve({1, 3, 5});
+/*
+Steiner graph(n); graph.add_edge(u, v, w);
+ll ans = graph.solve({1, 3, 5});
+*/

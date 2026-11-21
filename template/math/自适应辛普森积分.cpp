@@ -4,9 +4,11 @@ typedef long double ld;
 
 using namespace std;
 
-// 对 [l, r] 上的平滑函数积分，eps > 0 是绝对误差目标。已知有尖峰或高频振荡时，先手动分段。
-// max_dep >= 0，达到上限就返回当前近似值，误差可能超过 eps。采样值和结果须能用 double 表示。
-// 最坏时间 O(2^max_dep)，递归空间 O(max_dep)。
+/*
+对 [l, r] 上的平滑函数积分，eps > 0 是绝对误差目标。已知有尖峰或高频振荡时，先手动分段。
+max_dep >= 0，达到上限就返回当前近似值，误差可能超过 eps。采样值和结果须能用 double 表示。
+最坏时间 O(2^max_dep)，递归空间 O(max_dep)。
+*/
 
 template < class F >
 double simpson(F f, double l, double r, double eps = 1e-8, int max_dep = 20) {

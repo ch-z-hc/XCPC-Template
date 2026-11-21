@@ -4,8 +4,10 @@ typedef long double ld;
 
 using namespace std;
 
-// 在 [l, r] 内找单峰函数的极值位置，要求 l <= r。极值两侧须严格单调，中途出现平台可能舍掉答案。
-// 返回近似位置，函数值需再算一次。迭代 times 轮，额外空间 O(1)。
+/*
+在 [l, r] 内找单峰函数的极值位置，要求 l <= r。极值两侧须严格单调，中途出现平台可能舍掉答案。
+返回近似位置，函数值需再算一次。迭代 times 轮，额外空间 O(1)。
+*/
 
 template < class F >
 ld ternary_min(F f, ld l, ld r, int times = 200) {

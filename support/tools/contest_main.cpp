@@ -7,7 +7,7 @@
 
 typedef long long ll;
 
-const int mod = 1000000007; // 按题目修改
+const int mod = 1000000007;
 
 using namespace std;
 
@@ -24,7 +24,7 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;
-    // cin >> t; // 多组数据时读入组数
+    // cin >> t;
     while (t --) solve();
     return 0;
 }

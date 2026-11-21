@@ -4,10 +4,12 @@
 
 using namespace std;
 
-// 选若干行，使每列恰好被覆盖一次。列编号 1..cols，行 id 自定且须唯一，同一行内不能重复填列。
-// solve(rows) 找到第一组解就返回 true，rows 存所选行的 id。零列对应空解，失败时不要读 rows。
-// 求解后可再加行或重复求解，init 清空矩阵。建表 O(列数 + 非零元数)，另有每行的调用开销。
-// 搜索最坏指数时间，递归最深为列数，空间 O(列数 + 非零元数 + 行数)。
+/*
+选若干行，使每列恰好被覆盖一次。列编号 1..cols，行 id 自定且须唯一，同一行内不能重复填列。
+solve(rows) 找到第一组解就返回 true，rows 存所选行的 id。零列对应空解，失败时不要读 rows。
+求解后可再加行或重复求解，init 清空矩阵。建表 O(列数 + 非零元数)，另有每行的调用开销。
+搜索最坏指数时间，递归最深为列数，空间 O(列数 + 非零元数 + 行数)。
+*/
 struct DLX {
     struct Node { int l, r, u, d, col, row; };
     int cols = 0;
@@ -85,5 +87,7 @@ struct DLX {
     }
 };
 
-// DLX dlx(cols); dlx.add_row(id, {c1, c2});
-// V < int > rows; bool ok = dlx.solve(rows);
+/*
+DLX dlx(cols); dlx.add_row(id, {c1, c2});
+V < int > rows; bool ok = dlx.solve(rows);
+*/

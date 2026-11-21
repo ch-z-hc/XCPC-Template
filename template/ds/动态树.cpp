@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 维护森林的点权。用 a[1..n] 初始化，modify(u, v) 把点权改为 v。
-// link 在成环时失败，cut 只能删已有的边。先确认两点连通，再用 query 求路径点权和。
-// 每次操作均摊 O(log n)，路径和用 ll。标记递归下传，长链要留足栈空间。
+/*
+维护森林的点权。用 a[1..n] 初始化，modify(u, v) 把点权改为 v。
+link 在成环时失败，cut 只能删已有的边。先确认两点连通，再用 query 求路径点权和。
+每次操作均摊 O(log n)，路径和用 ll。标记递归下传，长链要留足栈空间。
+*/
 struct LCT {
     struct Node {
         int ch[2]{}, fa = 0;
@@ -108,6 +110,8 @@ struct LCT {
     }
 };
 
-// LCT tree; tree.init(a);
-// tree.link(u, v); tree.modify(u, value);
-// if (tree.same(u, v)) cout << tree.query(u, v) << '\n';
+/*
+LCT tree; tree.init(a);
+tree.link(u, v); tree.modify(u, value);
+if (tree.same(u, v)) cout << tree.query(u, v) << '\n';
+*/

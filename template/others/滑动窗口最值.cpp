@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// 对每个长度为 k 的窗口取最小值或最大值。下标从 0 数，ans[i] 对应 a[i..i + k - 1]。
-// 要求 1 <= k <= a.size()。耗时 O(n)，除结果外占 O(k) 空间。
+/*
+对每个长度为 k 的窗口取最小值或最大值。下标从 0 数，ans[i] 对应 a[i..i + k - 1]。
+要求 1 <= k <= a.size()。耗时 O(n)，除结果外占 O(k) 空间。
+*/
 
 template < class T >
 V < T > window_min(const V < T > &a, int k) {

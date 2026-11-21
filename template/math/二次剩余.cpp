@@ -4,8 +4,10 @@ typedef long long ll;
 
 using namespace std;
 
-// 求 x² 与 a 模 p 同余的根，p 必须是 [2, INT_MAX] 内的质数，a 可以为负。
-// 返回较小的非负根，无解返回 -1。期望时间 O(log p)，额外空间 O(1)。
+/*
+求 x² 与 a 模 p 同余的根，p 必须是 [2, INT_MAX] 内的质数，a 可以为负。
+返回较小的非负根，无解返回 -1。期望时间 O(log p)，额外空间 O(1)。
+*/
 
 ll sqrt_mod(ll a, ll p) {
     a %= p;

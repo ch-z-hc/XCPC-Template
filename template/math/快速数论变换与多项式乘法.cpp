@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 模 998244353，系数从常数项开始放，先化到 [0, NTT_MOD)。
-// multiply 自动补长，结果长度不能超过 2^23。直接调 ntt 时，数组长度须为 2 的幂且不超过 2^23。
-// 设变换长度为 n，时间 O(n log n)。ntt 原地变换，multiply 另用 O(n) 空间。
+/*
+模 998244353，系数从常数项开始放，先化到 [0, NTT_MOD)。
+multiply 自动补长，结果长度不能超过 2^23。直接调 ntt 时，数组长度须为 2 的幂且不超过 2^23。
+设变换长度为 n，时间 O(n log n)。ntt 原地变换，multiply 另用 O(n) 空间。
+*/
 
 const ll NTT_MOD = 998244353;
 const ll NTT_ROOT = 3;

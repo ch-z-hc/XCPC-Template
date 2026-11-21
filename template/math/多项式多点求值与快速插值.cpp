@@ -4,10 +4,12 @@
 
 using namespace std;
 
-// 先复制「多项式基本运算」的 FPS。模 998244353，点坐标和系数均先化到 [0, mod)，低次项在前。
-// build(x) 记录 n 个点。eval(a) 按输入顺序求值，点可重复。interp(y) 要求横坐标模 mod 两两不同。
-// 插值返回恰好 n 个系数。点数 n、系数个数 m 均不超过 2^20，可传空数组，也可重新 build。
-// 时间 O((n + m) log²(n + m))，空间 O(n log n + m)。
+/*
+先复制「多项式基本运算」的 FPS。模 998244353，点坐标和系数均先化到 [0, mod)，低次项在前。
+build(x) 记录 n 个点。eval(a) 按输入顺序求值，点可重复。interp(y) 要求横坐标模 mod 两两不同。
+插值返回恰好 n 个系数。点数 n、系数个数 m 均不超过 2^20，可传空数组，也可重新 build。
+时间 O((n + m) log²(n + m))，空间 O(n log n + m)。
+*/
 struct Multipoint {
     static const int mod = 998244353;
     int n = 0;
@@ -79,5 +81,7 @@ struct Multipoint {
 };
 const int Multipoint::mod;
 
-// Multipoint poly; poly.build(x);
-// auto y = poly.eval(a); auto f = poly.interp(y);
+/*
+Multipoint poly; poly.build(x);
+auto y = poly.eval(a); auto f = poly.interp(y);
+*/

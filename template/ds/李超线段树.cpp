@@ -7,13 +7,15 @@ typedef long long ll;
 
 using namespace std;
 
-// 在整数区间 [L, R] 上求最大值。query_id 返回最优线的插入编号，同值取最早，空时为 0。
-// 整数用 add_line 或 add_seg，浮点用带 _real 的接口。传给整数接口的小数会被截断。
-// 只插整数直线时用 query_int 取精确值。线段插值可能是分数，query 返回近似值。
-// 整数比较用 ll 交叉相乘，须保证端点差、a*x+c 及其乘另一分母都不溢出，含区间外端点。
-// 一组安全范围是横坐标在 [0, 40000]，斜率、截距和端点纵坐标绝对值不超过 10^9。
-// 设 X = R - L + 1，树开约 4X 个 int，X <= (INT_MAX - 4) / 4。
-// 插直线、查询 O(log X)，插线段 O(log² X)。整棵树含 q 条线占 O(X + q) 空间。
+/*
+在整数区间 [L, R] 上求最大值。query_id 返回最优线的插入编号，同值取最早，空时为 0。
+整数用 add_line 或 add_seg，浮点用带 _real 的接口。传给整数接口的小数会被截断。
+只插整数直线时用 query_int 取精确值。线段插值可能是分数，query 返回近似值。
+整数比较用 ll 交叉相乘，须保证端点差、a*x+c 及其乘另一分母都不溢出，含区间外端点。
+一组安全范围是横坐标在 [0, 40000]，斜率、截距和端点纵坐标绝对值不超过 10^9。
+设 X = R - L + 1，树开约 4X 个 int，X <= (INT_MAX - 4) / 4。
+插直线、查询 O(log X)，插线段 O(log² X)。整棵树含 q 条线占 O(X + q) 空间。
+*/
 
 struct LiChao {
     struct Line {
@@ -170,5 +172,7 @@ struct LiChao {
     }
 };
 
-// LiChao tr(1, 10000); tr.add_line(3, -2);
-// ll ans; bool ok = tr.query_int(2, ans); // ans = 4
+/*
+LiChao tr(1, 10000); tr.add_line(3, -2);
+ll ans; bool ok = tr.query_int(2, ans); // ans = 4
+*/

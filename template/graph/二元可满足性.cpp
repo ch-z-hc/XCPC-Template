@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 变量编号 1..n。add(u, x, v, y) 表示 a[u] == x 与 a[v] == y 至少成立一个。
-// force(u, x) 固定一个变量。solve() 成功后从 ans[1..n] 取 0/1 赋值，无解返回 false。
-// 可重复求解。时间和空间 O(n + m)，Tarjan 最深递归 n 层。
+/*
+变量编号 1..n。add(u, x, v, y) 表示 a[u] == x 与 a[v] == y 至少成立一个。
+force(u, x) 固定一个变量。solve() 成功后从 ans[1..n] 取 0/1 赋值，无解返回 false。
+可重复求解。时间和空间 O(n + m)，Tarjan 最深递归 n 层。
+*/
 
 struct SAT {
     int n = 0, tim = 0, cnt = 0;
@@ -59,5 +61,7 @@ struct SAT {
     }
 };
 
-// SAT sat(n); sat.add(u, 1, v, 0);
-// bool ok = sat.solve(); // ok 为真时读取 sat.ans
+/*
+SAT sat(n); sat.add(u, 1, v, 0);
+bool ok = sat.solve();
+*/

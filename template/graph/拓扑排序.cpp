@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// 有向图顶点编号 1..n。topo(g, ans) 将拓扑序写入 ans，有环时返回 false。
-// 时间 O(n + m)，额外空间 O(n)。
+/*
+有向图顶点编号 1..n。topo(g, ans) 将拓扑序写入 ans，有环时返回 false。
+时间 O(n + m)，额外空间 O(n)。
+*/
 
 bool topo(const V < V < int > > &g, V < int > &ans) {
     int n = int(g.size()) - 1;
@@ -26,5 +28,7 @@ bool topo(const V < V < int > > &g, V < int > &ans) {
     return int(ans.size()) == n;
 }
 
-// V < int > order;
-// bool acyclic = topo(g, order);
+/*
+V < int > order;
+bool acyclic = topo(g, order);
+*/

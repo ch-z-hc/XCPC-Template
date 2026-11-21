@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 无向图顶点编号 1..n。clique()、indep() 分别返回一个最大团、一个最大独立集的顶点列表。
-// 自环跳过，重边只算一次。可重复求解，init 清空图。
-// 按染色上界剪枝，最坏 O(2^n n²)，空间 O(n²)，适合小图。
+/*
+无向图顶点编号 1..n。clique()、indep() 分别返回一个最大团、一个最大独立集的顶点列表。
+自环跳过，重边只算一次。可重复求解，init 清空图。
+按染色上界剪枝，最坏 O(2^n n²)，空间 O(n²)，适合小图。
+*/
 struct MaxClique {
     int n = 0;
     bool rev = 0;
@@ -79,5 +81,7 @@ struct MaxClique {
     V < int > indep() { return solve(1); }
 };
 
-// MaxClique mc(n); mc.add_edge(u, v);
-// V < int > clique = mc.clique(), iset = mc.indep();
+/*
+MaxClique mc(n); mc.add_edge(u, v);
+V < int > clique = mc.clique(), iset = mc.indep();
+*/

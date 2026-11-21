@@ -10,12 +10,13 @@ OUT = ROOT / "build/print-usage"
 
 def run_example(path, body):
     source = (ROOT / path).read_text(encoding="utf-8")
-    block = source.split("    // 示例维护：", 1)[1].split("    void add", 1)[0]
-    members = "\n".join(line.replace("    // ", "    ", 1)
-                        for line in block.splitlines() if line.startswith("    // "))
     pattern = r"    void add\(int \w+\);\n    void del\(int \w+\);\n    void (?:answer|query)\(int \w+\);"
-    source, count = re.subn(pattern, lambda _: members, source)
-    assert count == 1, path
+    declarations, = re.finditer(pattern, source)
+    before = source[:declarations.start()]
+    assert before.endswith("    */\n"), path
+    prefix, opening, members = before.removesuffix("    */\n").rpartition("    /*\n")
+    assert opening, path
+    source = prefix + members.rstrip("\n") + source[declarations.end():]
     generated = OUT / Path(path).name
     generated.write_text(source + "\nint main() {\n" + body + "\n}\n", encoding="utf-8")
     executable = generated.with_suffix("")

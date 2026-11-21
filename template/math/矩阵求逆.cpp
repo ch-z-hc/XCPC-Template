@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 输入从 0 编号的方阵，元素可为负，mod 须为 [2, INT_MAX] 内的质数。
-// matrix_inv(a, mod, b) 可逆时把逆矩阵写入 b，否则返回 false。空矩阵可逆。
-// 时间 O(n³ + n log mod)，空间 O(n²)。
+/*
+输入从 0 编号的方阵，元素可为负，mod 须为 [2, INT_MAX] 内的质数。
+matrix_inv(a, mod, b) 可逆时把逆矩阵写入 b，否则返回 false。空矩阵可逆。
+时间 O(n³ + n log mod)，空间 O(n²)。
+*/
 bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
     int n = int(a.size());
     b.assign(n, V < ll > (n));

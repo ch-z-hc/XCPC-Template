@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 先复制「快速数论变换与多项式乘法」。stirling1、stirling2 分别求无符号第一类、第二类斯特林数。
-// 两者返回 0..n 的整张表，n >= 0，1 <= mod <= 2^31，可用合数模。时间和空间 O(n²)。
-// 只求第二类第 n 行可用 stirling2_row，固定模 998244353，要求 n < 2^22。耗时 O(n log n)，空间 O(n)。
+/*
+先复制「快速数论变换与多项式乘法」。stirling1、stirling2 分别求无符号第一类、第二类斯特林数。
+两者返回 0..n 的整张表，n >= 0，1 <= mod <= 2^31，可用合数模。时间和空间 O(n²)。
+只求第二类第 n 行可用 stirling2_row，固定模 998244353，要求 n < 2^22。耗时 O(n log n)，空间 O(n)。
+*/
 V < V < ll > > stirling1(int n, ll mod) {
     V < V < ll > > s(n + 1, V < ll > (n + 1));
     s[0][0] = 1 % mod;
@@ -40,5 +42,7 @@ V < ll > stirling2_row(int n) {
     return a;
 }
 
-// auto s = stirling1(n, mod); auto t = stirling2(n, mod);
-// auto row = stirling2_row(n);
+/*
+auto s = stirling1(n, mod); auto t = stirling2(n, mod);
+auto row = stirling2_row(n);
+*/

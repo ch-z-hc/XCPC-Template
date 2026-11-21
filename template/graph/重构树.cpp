@@ -6,10 +6,12 @@ typedef long long ll;
 
 using namespace std;
 
-// 原顶点编号 1..n，新节点从 n + 1 编号。build 默认按边权递增，可换方向重建。
-// 递增时 query 求所有 u 到 v 路径中「最大边权的最小值」，递减时求「最小边权的最大值」。
-// query 连通时把答案写入 ans，同点取 0。两点不连通时 query 返回 false，lca 返回 0。
-// 建树 O(m log m + n log n)，空间 O(m + n log n)，查询 O(log n)。长链注意递归栈。
+/*
+原顶点编号 1..n，新节点从 n + 1 编号。build 默认按边权递增，可换方向重建。
+递增时 query 求所有 u 到 v 路径中「最大边权的最小值」，递减时求「最小边权的最大值」。
+query 连通时把答案写入 ans，同点取 0。两点不连通时 query 返回 false，lca 返回 0。
+建树 O(m log m + n log n)，空间 O(m + n log n)，查询 O(log n)。长链注意递归栈。
+*/
 struct KruskalTree {
     struct Edge {
         int u, v;
@@ -83,5 +85,7 @@ struct KruskalTree {
     }
 };
 
-// KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
-// ll ans; bool ok = tree.query(u, v, ans);
+/*
+KruskalTree tree(n); tree.add_edge(u, v, w); tree.build();
+ll ans; bool ok = tree.query(u, v, ans);
+*/

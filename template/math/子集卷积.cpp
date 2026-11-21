@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 对 S 的每个子集 T，把 a[T] * b[S ^ T] 加到 c[S]。两个数组都用集合的位掩码作下标。
-// 数组等长，长度为 2^n，0 <= n <= 20。系数可为负，模数可取任意正 int。
-// 时间 O(n² 2^n)，空间 O(n 2^n)。n = 20 时主要数组约占 180 MiB。
+/*
+对 S 的每个子集 T，把 a[T] * b[S ^ T] 加到 c[S]。两个数组都用集合的位掩码作下标。
+数组等长，长度为 2^n，0 <= n <= 20。系数可为负，模数可取任意正 int。
+时间 O(n² 2^n)，空间 O(n 2^n)。n = 20 时主要数组约占 180 MiB。
+*/
 V < int > subset_conv(const V < int > &a, const V < int > &b, int mod) {
     int size = int(a.size()), n = __builtin_ctz(unsigned(size));
     V < int > cnt(size), ans(size), c(size);

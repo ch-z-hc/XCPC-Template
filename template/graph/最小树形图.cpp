@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 从 root 向外连出一棵覆盖所有点的有向树。顶点编号 1..n，可有负边、重边、自环。
-// solve(root, ans) 有解时将最小总权写入 ans，无解返回 false。可在同一张图上再求。
-// 边权相减和总权累加用 ll。时间 O(n(n + m))，空间 O(n + m)。
+/*
+从 root 向外连出一棵覆盖所有点的有向树。顶点编号 1..n，可有负边、重边、自环。
+solve(root, ans) 有解时将最小总权写入 ans，无解返回 false。可在同一张图上再求。
+边权相减和总权累加用 ll。时间 O(n(n + m))，空间 O(n + m)。
+*/
 struct DMST {
     struct Edge {
         int u, v;
@@ -64,5 +66,7 @@ struct DMST {
     }
 };
 
-// DMST mst(n); mst.add_edge(u, v, w);
-// ll ans; bool ok = mst.solve(root, ans);
+/*
+DMST mst(n); mst.add_edge(u, v, w);
+ll ans; bool ok = mst.solve(root, ans);
+*/

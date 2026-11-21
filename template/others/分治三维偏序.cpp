@@ -6,8 +6,10 @@ typedef long long ll;
 
 using namespace std;
 
-// cnt[i] 是除点 i 自身外，三个坐标都不大于它的点数。重合的点也互相计数。
-// 点和答案按输入顺序从 0 编号，坐标用 ll。时间 O(n log² n)，空间 O(n)。
+/*
+cnt[i] 是除点 i 自身外，三个坐标都不大于它的点数。重合的点也互相计数。
+点和答案按输入顺序从 0 编号，坐标用 ll。时间 O(n log² n)，空间 O(n)。
+*/
 
 V < ll > dominance(const V < array < ll, 3 > > &a) {
     struct Node {

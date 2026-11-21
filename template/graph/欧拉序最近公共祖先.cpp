@@ -4,8 +4,10 @@
 
 using namespace std;
 
-// 给编号 1..n 的连通树加完边后调用 build(root)，lca(u, v) 返回最近公共祖先。
-// 欧拉序的位置从 0 数。预处理时间和空间 O(n log n)，查询 O(1)，长链 DFS 最深 n 层。
+/*
+给编号 1..n 的连通树加完边后调用 build(root)，lca(u, v) 返回最近公共祖先。
+欧拉序的位置从 0 数。预处理时间和空间 O(n log n)，查询 O(1)，长链 DFS 最深 n 层。
+*/
 
 struct EulerLCA {
     int n = 0;
@@ -67,7 +69,9 @@ struct EulerLCA {
     }
 };
 
-// EulerLCA lca(n);
-// lca.add_edge(u, v);
-// lca.build(root);
-// int p = lca.lca(u, v);
+/*
+EulerLCA lca(n);
+lca.add_edge(u, v);
+lca.build(root);
+int p = lca.lca(u, v);
+*/

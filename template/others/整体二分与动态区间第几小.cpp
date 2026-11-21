@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 在 a[1..n] 上按发生顺序记录单点修改和查询。query(l, r, k) 问闭区间第 k 小，k 从 1 数。
-// query 返回答案下标，调用 solve 后用这个下标取值。可重复 solve，init 会清空记录。
-// 设 V 为出现过的不同值数，q 为操作数，时间 O((n + q) log V log n)，空间 O(n + q)。
+/*
+在 a[1..n] 上按发生顺序记录单点修改和查询。query(l, r, k) 问闭区间第 k 小，k 从 1 数。
+query 返回答案下标，调用 solve 后用这个下标取值。可重复 solve，init 会清空记录。
+设 V 为出现过的不同值数，q 为操作数，时间 O((n + q) log V log n)，空间 O(n + q)。
+*/
 
 struct KthOffline {
     struct Event {
@@ -101,5 +103,7 @@ struct KthOffline {
     }
 };
 
-// KthOffline solver; solver.init(a); solver.modify(p, x);
-// int id = solver.query(l, r, k); auto ans = solver.solve(); // 答案为 ans[id]。
+/*
+KthOffline solver; solver.init(a); solver.modify(p, x);
+int id = solver.query(l, r, k); auto ans = solver.solve(); // 答案为 ans[id]。
+*/

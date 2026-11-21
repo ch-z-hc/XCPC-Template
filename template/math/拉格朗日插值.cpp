@@ -6,9 +6,11 @@ typedef long long ll;
 
 using namespace std;
 
-// 给 n 对采样值 x[i]、y[i]，求插值多项式在 at 处的值。两个数组从 0 数，长度相同。
-// mod 须为质数且 <= 2^31，各坐标先化到 [0, mod)，横坐标模 mod 两两不同。
-// 逐点求逆，时间 O(n² + n log mod)，额外空间 O(1)。
+/*
+给 n 对采样值 x[i]、y[i]，求插值多项式在 at 处的值。两个数组从 0 数，长度相同。
+mod 须为质数且 <= 2^31，各坐标先化到 [0, mod)，横坐标模 mod 两两不同。
+逐点求逆，时间 O(n² + n log mod)，额外空间 O(1)。
+*/
 
 static ll lagrange_pow(ll a, ll b, ll mod) {
     ll res = 1 % mod;

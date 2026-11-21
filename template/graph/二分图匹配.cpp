@@ -4,9 +4,11 @@
 
 using namespace std;
 
-// 左右两侧分别编号 1..n 和 1..m，add_edge(u, v) 从左点 u 连到右点 v。
-// solve() 返回最大匹配边数，ml、mr 存两侧的搭档，0 表示未匹配。
-// 设有 E 条边，时间 O(nE + n + m)，空间 O(n + m + E)。
+/*
+左右两侧分别编号 1..n 和 1..m，add_edge(u, v) 从左点 u 连到右点 v。
+solve() 返回最大匹配边数，ml、mr 存两侧的搭档，0 表示未匹配。
+设有 E 条边，时间 O(nE + n + m)，空间 O(n + m + E)。
+*/
 
 struct Kuhn {
     int n = 0, m = 0;
@@ -47,6 +49,8 @@ struct Kuhn {
     }
 };
 
-// Kuhn match(n, m);
-// match.add_edge(u, v);
-// int ans = match.solve();
+/*
+Kuhn match(n, m);
+match.add_edge(u, v);
+int ans = match.solve();
+*/

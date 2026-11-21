@@ -6,10 +6,12 @@ typedef long long ll;
 
 using namespace std;
 
-// exgcd 对非负 a、b 求 gcd 及满足 ax + by = gcd 的系数。inv 要求模数为正，无逆元返回 -1。
-// crt 合并同余式 x = r[i] (mod m[i])。模数须为正，可以不互质。无解或最小公倍数超出 ll 时返回 false。
-// 成功时 ans 是最小非负解，mod 是合并后的模数。空方程组返回 ans = 0、mod = 1。
-// k 个方程耗时 O(k log M)，其中 M 是运算中最大模数，递归空间 O(log M)。
+/*
+exgcd 对非负 a、b 求 gcd 及满足 ax + by = gcd 的系数。inv 要求模数为正，无逆元返回 -1。
+crt 合并同余式 x = r[i] (mod m[i])。模数须为正，可以不互质。无解或最小公倍数超出 ll 时返回 false。
+成功时 ans 是最小非负解，mod 是合并后的模数。空方程组返回 ans = 0、mod = 1。
+k 个方程耗时 O(k log M)，其中 M 是运算中最大模数，递归空间 O(log M)。
+*/
 
 ll exgcd(ll a, ll b, ll &x, ll &y) {
     if (! b) {
@@ -57,5 +59,7 @@ bool crt(const V < ll > &r, const V < ll > &m, ll &ans, ll &mod) {
     return true;
 }
 
-// ll ans, mod;
-// bool ok = crt({2, 3}, {3, 5}, ans, mod); // ans = 8，mod = 15
+/*
+ll ans, mod;
+bool ok = crt({2, 3}, {3, 5}, ans, mod); // ans = 8，mod = 15
+*/
