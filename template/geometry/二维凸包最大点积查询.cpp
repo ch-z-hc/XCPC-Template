@@ -6,13 +6,15 @@ typedef long long ll;
 
 using namespace std;
 
-// 独立整点凸包，使用 HullQuery::P；build 支持空集、重复和共线点。
-// 建凸包 O(n log n)，query / contains 为 O(log n)，空间 O(n)。
-// query(a, b, ans) 求 max(a * x + b * y)；方向任意，空集返回 0，ans 不可用。
-// contains 返回 0 外部 / 1 边界 / 2 内部。
-// h 为 0-based 严格逆时针凸包，不重复首点；退化为点 / 线时保留 1 / 2 点。
-// 点坐标、包含查询坐标及 a、b 的绝对值 <= 1e9，保证 ll 不溢出。
-// 扩大范围须保证坐标差、叉积中间量和点积均放入 ll。
+/*
+独立整点凸包，使用 HullQuery::P；build 支持空集、重复和共线点。
+建凸包 O(n log n)，query / contains 为 O(log n)，空间 O(n)。
+query(a, b, ans) 求 max(a * x + b * y)；方向任意，空集返回 0，ans 不可用。
+contains 返回 0 外部 / 1 边界 / 2 内部。
+h 为 0-based 严格逆时针凸包，不重复首点；退化为点 / 线时保留 1 / 2 点。
+点坐标、包含查询坐标及 a、b 的绝对值 <= 1e9，保证 ll 不溢出。
+扩大范围须保证坐标差、叉积中间量和点积均放入 ll。
+*/
 
 struct HullQuery {
     struct P {
@@ -89,6 +91,8 @@ struct HullQuery {
     }
 };
 
-// HullQuery hull; hull.build({{0, 0}, {2, 0}, {0, 3}}); ll ans;
-// if (hull.query(1, 2, ans)) cout << ans << '\n'; // 6
-// hull.contains({0, 1}); // 1，边界。
+/*
+HullQuery hull; hull.build({{0, 0}, {2, 0}, {0, 3}}); ll ans;
+if (hull.query(1, 2, ans)) cout << ans << '\n'; // 6
+hull.contains({0, 1}); // 1，边界。
+*/

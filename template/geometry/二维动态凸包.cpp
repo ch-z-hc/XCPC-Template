@@ -4,15 +4,17 @@
 
 using namespace std;
 
-// 先复制“二维凸包最大点积查询”；整数范围与 HullQuery 相同。
-// 在线分块：add(p) 返回 0-based 插入编号，重复点分别保留。
-// erase(id) 按编号删除；非法编号或重复删除返回 0。
-// query(a, b, ans) 求最大点积；空集返回 0，ans 不可用。
-// init(B) 清空状态和编号；B > 0，通常取预计操作数的平方根。
-// Q 为累计插入次数（含已删除点），更新摊还 O(B log(B + 1))，空间 O(Q)。
-// query 为 O(ceil(Q / B) * log(B + 1))。
-// snapshot / contains 重建全局凸包，O(Q log(Q + 1))。
-// 连续包含查询可复用 snapshot，再以 O(log Q) 调用其 contains。
+/*
+先复制“二维凸包最大点积查询”；整数范围与 HullQuery 相同。
+在线分块：add(p) 返回 0-based 插入编号，重复点分别保留。
+erase(id) 按编号删除；非法编号或重复删除返回 0。
+query(a, b, ans) 求最大点积；空集返回 0，ans 不可用。
+init(B) 清空状态和编号；B > 0，通常取预计操作数的平方根。
+Q 为累计插入次数（含已删除点），更新摊还 O(B log(B + 1))，空间 O(Q)。
+query 为 O(ceil(Q / B) * log(B + 1))。
+snapshot / contains 重建全局凸包，O(Q log(Q + 1))。
+连续包含查询可复用 snapshot，再以 O(log Q) 调用其 contains。
+*/
 
 struct DynamicHull {
     typedef HullQuery::P P;
@@ -76,7 +78,9 @@ struct DynamicHull {
     }
 };
 
-// DynamicHull hull; int id = hull.add({2, 3}); hull.add({-1, 4});
-// ll ans; if (hull.query(1, 1, ans)) cout << ans << '\n'; // 5
-// hull.erase(id); // 再查询为 3；重复删除返回 0。
-// auto now = hull.snapshot(); // now.h 为当前逆时针凸包顶点。
+/*
+DynamicHull hull; int id = hull.add({2, 3}); hull.add({-1, 4});
+ll ans; if (hull.query(1, 1, ans)) cout << ans << '\n'; // 5
+hull.erase(id); // 再查询为 3；重复删除返回 0。
+auto now = hull.snapshot(); // now.h 为当前逆时针凸包顶点。
+*/

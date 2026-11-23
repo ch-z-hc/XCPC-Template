@@ -5,8 +5,10 @@
 
 using namespace std;
 
-// 先复制本章的“点与向量”；直线端点不能重合，isLL 要求两线不平行。
-// 以下交点、相交判断、投影和距离均 O(1)，无模数。
+/*
+先复制本章的“点与向量”；直线端点不能重合，isLL 要求两线不平行。
+以下交点、相交判断、投影和距离均 O(1)，无模数。
+*/
 
 bool checkPll(P p1, P p2, P q1, P q2) {
     // 判断平行
@@ -26,13 +28,17 @@ bool intersect(db l1, db r1, db l2, db r2) {
     return cmp(r1, l2) >= 0 && cmp(r2, l1) >= 0;
 }
 
-// 严格相交：不在边界交叉
-// 不严格相交：可以在边界交叉
+/*
+严格相交：不在边界交叉
+不严格相交：可以在边界交叉
+*/
 
 bool isSS(P p1, P p2, P q1, P q2) {
-    // 线段是否 不严格 相交
-    // 1 : SS
-    // 0 : unSS
+    /*
+    线段是否 不严格 相交
+    1 : SS
+    0 : unSS
+    */
     return intersect(p1.x, p2.x, q1.x, q2.x) &&
            intersect(p1.y, p2.y, q1.y, q2.y) &&
            crossop(p1, p2, q1) * crossop(p1, p2, q2) <= 0 &&
@@ -40,24 +46,30 @@ bool isSS(P p1, P p2, P q1, P q2) {
 }
 
 bool isSS_strict(P p1, P p2, P q1, P q2) {
-    // 线段是否 严格 相交
-    // 1 : SS
-    // 0 : unSS
+    /*
+    线段是否 严格 相交
+    1 : SS
+    0 : unSS
+    */
     return crossop(p1, p2, q1) * crossop(p1, p2, q2) < 0 &&
            crossop(q1, q2, p1) * crossop(q1, q2, p2) < 0;
 }
 
 bool isLS(P p1, P p2, P q1, P q2) {
-    // 直线 p1p2 是否 和线段 q1q2 不严格 相交
-    // 1 : LS
-    // 0 : unLS
+    /*
+    直线 p1p2 是否 和线段 q1q2 不严格 相交
+    1 : LS
+    0 : unLS
+    */
     return crossop(p1, p2, q1) * crossop(p1, p2, q2) <= 0;
 }
 
 bool isLS_strict(P p1, P p2, P q1, P q2) {
-    // 直线 p1p2 是否 严格 穿过线段 q1q2
-    // 1 : LS
-    // 0 : unLS
+    /*
+    直线 p1p2 是否 严格 穿过线段 q1q2
+    1 : LS
+    0 : unLS
+    */
     return crossop(p1, p2, q1) * crossop(p1, p2, q2) < 0;
 }
 

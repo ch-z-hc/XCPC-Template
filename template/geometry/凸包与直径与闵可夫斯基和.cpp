@@ -5,11 +5,13 @@
 
 using namespace std;
 
-// 先复制本章的“点与向量”；MincowskySum 还需“多边形”的 area。
-// 凸包 O(n log n)，直径 O(n)，闵可夫斯基和 O(n + m)。
-// 结果 0-based；直径要求凸包顶点按边界顺序，直径与闵可夫斯基和允许两种方向。
-// 直径的相邻顶点不得重复，末尾不重复首点；允许空集、单点与线段。
-// checkConvexHull 为 O(n)，只判断简单多边形的逆时针凸性，不检测自交。
+/*
+先复制本章的“点与向量”；MincowskySum 还需“多边形”的 area。
+凸包 O(n log n)，直径 O(n)，闵可夫斯基和 O(n + m)。
+结果 0-based；直径要求凸包顶点按边界顺序，直径与闵可夫斯基和允许两种方向。
+直径的相邻顶点不得重复，末尾不重复首点；允许空集、单点与线段。
+checkConvexHull 为 O(n)，只判断简单多边形的逆时针凸性，不检测自交。
+*/
 
 V < P > convexHull(V < P > ps) {
     // 求凸包
@@ -53,9 +55,11 @@ V < P > convexHullNonStrict(V < P > ps) {
 }
 
 bool checkConvexHull(V < P > p) {
-    // 输入须为简单多边形；判断是否为逆时针凸多边形，允许共线边界点。
-    // 注意：不可通过再跑一次凸包判断点数是否相同
-    // 因为点数相同 不能代表是凸包的连接方式
+    /*
+    输入须为简单多边形；判断是否为逆时针凸多边形，允许共线边界点。
+    注意：不可通过再跑一次凸包判断点数是否相同
+    因为点数相同 不能代表是凸包的连接方式
+    */
     int n = p.size();
     for (int i = 0; i < n; ++ i) {
         int pre = i - 1;
@@ -92,8 +96,10 @@ db convexDiameter(V < P > ps) {
 }
 
 V < P > MincowskySum(V < P > p, V < P > q) {
-    // p, q 为两个凸包，顺 / 逆时针均可，O(n + m) 求闵可夫斯基和
-    // 任一输入为空集时，和集也为空。
+    /*
+    p, q 为两个凸包，顺 / 逆时针均可，O(n + m) 求闵可夫斯基和
+    任一输入为空集时，和集也为空。
+    */
     if (p.empty() || q.empty()) return {};
     auto normalize = [](V < P > & ps) {
         if (area(ps) < 0) reverse(ps.begin(), ps.end());

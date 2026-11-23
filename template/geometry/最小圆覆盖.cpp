@@ -5,9 +5,11 @@
 
 using namespace std;
 
-// 先复制本章的“点与向量”“直线与线段”“圆”。
-// 随机增量最小圆覆盖，期望 O(n)，最坏 O(n^3)，额外空间 O(n)。
-// 空点集返回原点半径 0 的圆；允许重复点和共线点。
+/*
+先复制本章的“点与向量”“直线与线段”“圆”。
+随机增量最小圆覆盖，期望 O(n)，最坏 O(n^3)，额外空间 O(n)。
+空点集返回原点半径 0 的圆；允许重复点和共线点。
+*/
 Circle min_circle(V < P > a) {
     mt19937 rng(unsigned(chrono::steady_clock::now().time_since_epoch().count()));
     shuffle(a.begin(), a.end(), rng);

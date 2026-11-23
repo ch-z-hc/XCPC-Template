@@ -5,11 +5,13 @@
 
 using namespace std;
 
-// 先复制本章的“点与向量”“直线与线段”。
-// 简单多边形按边界顺序给点，0-based。
-// area、contain、convexCut 时间 O(n)；convexCut 要求输入为凸多边形。
-// 浮点采用 EPS；area 是有向面积，逆时针为正，切割保留直线左侧。
-// area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。
+/*
+先复制本章的“点与向量”“直线与线段”。
+简单多边形按边界顺序给点，0-based。
+area、contain、convexCut 时间 O(n)；convexCut 要求输入为凸多边形。
+浮点采用 EPS；area 是有向面积，逆时针为正，切割保留直线左侧。
+area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。
+*/
 
 db area(V < P > ps) {
     // 求多边形面积（逆时针顺序给出点 -> 面积为正）
@@ -21,9 +23,11 @@ db area(V < P > ps) {
 }
 
 int contain(V < P > ps, P p) {
-    // 0 : outside
-    // 1 : on_seg
-    // 2 : inside
+    /*
+    0 : outside
+    1 : on_seg
+    2 : inside
+    */
 
     // ps 是多边形，判断 p 在多边形 内部 / 线段上 / 外部
     int n = ps.size(), ret = 0;
