@@ -41,7 +41,6 @@ struct P {
     db dot(P p) { return x * p.x + y * p.y; }
     db det(P p) { return x * p.y - y * p.x; }
 
-    int quadY() const { return x > 0 || (x == 0 && y >= 0); }
     int quadX() const { return y > 0 || (y == 0 && x >= 0); }
 
     P rot90() { return P(-y, x); }
@@ -71,11 +70,17 @@ bool polar_cmpX(P a, P b) {
     return a.det(b) > 0;
 }
 
-bool polar_cmpY(P a, P b) {
-    // 极角排序 Y 轴负半轴（不包含）开始逆时针转
-    bool za = a.x == 0 && a.y == 0, zb = b.x == 0 && b.y == 0;
-    if (za || zb) return za && ! zb;
-    if (a.quadY() != b.quadY())
-        return a.quadY() > b.quadY();
-    return a.det(b) > 0;
+/*
+从非零方向 dir 逆时针排序，同向向量默认最先，include 为 false 时最后。
+零向量始终在所有方向之前，同一方向不按长度区分。
+*/
+auto polar_cmp(P dir, bool include = true) {
+    auto part = [=](P p) -> int {
+        if (p.x == 0 && p.y == 0) return -1;
+        return include ? polar_cmpX(p, dir) : ! polar_cmpX(dir, p);
+    };
+    return [=](P a, P b) {
+        int x = part(a), y = part(b);
+        return x != y ? x < y : polar_cmpX(a, b);
+    };
 }

@@ -84,11 +84,33 @@ int main() {
             {0.75L * EPS, 1}, {1.5L * EPS, 1}, {-EPS, 1}, {EPS, -1}};
         check_order(directions, [](P a, P b) { return a < b; });
         check_order(directions, polar_cmpX);
-        check_order(directions, polar_cmpY);
+        for (P dir : directions) if (dir.x != 0 || dir.y != 0) {
+            check_order(directions, polar_cmp(dir));
+            check_order(directions, polar_cmp(dir, false));
+        }
 
         std::vector<P> first{{0, 0}, {1, 3}, {3, 2}}, second{{0, 0}, {5, 0}, {4, -2}};
         check_same_points(convexHull(MincowskySum(first, second)),
                           {{0, 0}, {4, -2}, {7, 0}, {8, 2}, {6, 3}, {1, 3}});
+    }
+    {
+        V < P > points{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0},
+                       {-1, -1}, {0, -1}, {1, -1}, {2, 2}, {0, 0}};
+        for (int x = -2; x <= 2; ++ x) for (int y = -2; y <= 2; ++ y) {
+            if (x == 0 && y == 0) continue;
+            P dir(x, y);
+            for (bool include : {true, false}) {
+                auto angle = [&](P p) {
+                    if (p.x == 0 && p.y == 0) return -1.L;
+                    db a = atan2l(dir.det(p), dir.dot(p));
+                    if (a < 0 || (a == 0 && ! include)) a += 2 * acosl(-1);
+                    return a;
+                };
+                auto less = polar_cmp(dir, include);
+                for (P a : points) for (P b : points)
+                    assert(less(a, b) == (angle(a) < angle(b)));
+            }
+        }
     }
     {
         std::vector<P> points{{0, 0}, {1, 0}, {2, 0}, {1, 0}};

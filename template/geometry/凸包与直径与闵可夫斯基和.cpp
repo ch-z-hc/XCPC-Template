@@ -109,7 +109,9 @@ V < P > MincowskySum(V < P > p, V < P > q) {
     p[p.size() - 1] = p0 - p[p.size() - 1];
     q[q.size() - 1] = q0 - q[q.size() - 1];
     qs.resize(p.size() + q.size() + 1);
-    merge(p.begin(), p.end(), q.begin(), q.end(), qs.begin() + 1, polar_cmpY);
+    // 从最左下顶点出发，竖直向下的边在最后。
+    merge(p.begin(), p.end(), q.begin(), q.end(),
+          qs.begin() + 1, polar_cmp({0, -1}, false));
     for (int i = 1; i < (int)qs.size(); ++ i)
         qs[i] = qs[i] + qs[i - 1];
     qs.pop_back();
