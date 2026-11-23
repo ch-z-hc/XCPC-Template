@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
-from generate_html import code_html, entry_id, load_entries
+from generate_html import code_html, entry_cards, entry_id, load_entries
 
 
 def main():
@@ -45,7 +45,7 @@ def main():
         page.goto(args.url)
         page.evaluate("document.fonts.ready")
         actual = page.locator(".entry code").all_text_contents()
-        assert actual == [entry.source for entry in expected]
+        assert actual == [source for entry in expected for _, source, _ in entry_cards(entry)]
         assert page.evaluate('document.fonts.check(\'14px "Maple Mono Web"\')')
         code = page.locator('.entry:not([hidden]) code')
         assert code.evaluate("el => [el, ...el.querySelectorAll('span')].every(node => getComputedStyle(node).fontStyle === 'normal')")
@@ -81,9 +81,10 @@ def main():
             page.evaluate("id => location.hash = id", entry_id(entry))
             article = page.locator(f'[data-path="{path}"]')
             expect(article).to_be_visible()
-            article.locator(".copy-button").click()
-            expect(page.locator("#copy-status")).to_have_text(f"已复制：{entry.title}")
-            assert page.evaluate("navigator.clipboard.readText()") == entry.source
+            for index, (_, source, _) in enumerate(entry_cards(entry)):
+                article.locator(".copy-button").nth(index).click()
+                expect(page.locator("#copy-status")).to_have_text(f"已复制：{entry.title}")
+                assert page.evaluate("navigator.clipboard.readText()") == source
         for platform in ("linux", "windows"):
             page.evaluate("id => location.hash = id", f"support-tools-stress-stress_{platform}")
             expect(page).to_have_url(re.compile(r"#support-tools-stress-pai$"))

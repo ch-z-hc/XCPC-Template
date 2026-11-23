@@ -32,8 +32,10 @@
   function filter() {
     const query = search.value.trim().toLowerCase();
     if (query && !searchable) {
-      searchable = entries.map(entry =>
-        `${entry.dataset.number} ${entry.dataset.title} ${entry.dataset.path} ${entry.querySelector("code").textContent}`.toLowerCase());
+      searchable = entries.map(entry => {
+        const code = [...entry.querySelectorAll(".filename, code")].map(node => node.textContent).join(" ");
+        return `${entry.dataset.number} ${entry.dataset.title} ${entry.dataset.path} ${code}`.toLowerCase();
+      });
     }
     let count = 0;
     links.forEach((link, index) => {
@@ -102,7 +104,7 @@
     const button = event.target.closest(".copy-button");
     if (!button) return;
     const entry = button.closest(".entry");
-    const code = entry.querySelector("code");
+    const code = button.closest(".code-card").querySelector("code");
     button.disabled = true;
     try {
       try {

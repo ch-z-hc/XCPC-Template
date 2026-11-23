@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "support/tools"))
-from generate_html import COLORS, code_html, entry_id, load_entries
+from generate_html import COLORS, code_html, entry_cards, entry_id, load_entries
 from fontTools.ttLib import TTFont
 
 
@@ -27,10 +27,11 @@ class BookParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "article":
-            self.current = {**attrs, "source": ""}
+            self.current = {**attrs, "sources": []}
             self.entries.append(self.current)
         if tag == "code":
             self.in_code = True
+            self.current["sources"].append("")
         if tag == "span" and self.in_code:
             classes = attrs.get("class", "").split()
             assert set(classes) <= set(COLORS) | {"t-bold"}, classes
@@ -50,7 +51,7 @@ class BookParser(HTMLParser):
 
     def handle_data(self, text):
         if self.in_code:
-            self.current["source"] += text
+            self.current["sources"][-1] += text
 
 
 def main():
@@ -62,7 +63,8 @@ def main():
     book = BookParser()
     book.feed(document)
     expected = load_entries()
-    assert len(book.entries) == len(book.links) == book.copies == len(expected)
+    assert len(book.entries) == len(book.links) == len(expected)
+    assert book.copies == sum(len(entry_cards(item)) for item in expected)
     assert len({entry["id"] for entry in book.entries}) == len(expected)
     for entry, link, original in zip(book.entries, book.links, expected):
         assert entry["id"] == link["data-entry"] == entry_id(original)
@@ -70,14 +72,14 @@ def main():
         assert entry["data-path"] == original.path
         assert entry["data-title"] == original.title
         assert entry["data-number"] == original.number
-        assert entry["source"] == original.source, original.path
+        assert entry["sources"] == [source for _, source, _ in entry_cards(original)], original.path
         assert entry["data-sha256"] == hashlib.sha256(original.source.encode()).hexdigest()
     sample = '\n\t// 中文 <>&\nconst char *s = "</code><script>alert(1)</script>";\n'
     escaped = code_html(sample, "sample.cpp")
     assert "<script>" not in escaped and "</code>" not in escaped
     probe = BookParser()
     probe.feed(f'<article><pre><code>{escaped}</code></pre></article>')
-    assert probe.entries[0]["source"] == sample
+    assert probe.entries[0]["sources"] == [sample]
     style_sample = '// 中文 f()\nnamespace demo { template < class T > long long f(T x) { return g<T>(x); } }\n'
     styled = code_html(style_sample, "sample.cpp")
     assert '<span class="t-type t-bold">demo</span>' in styled

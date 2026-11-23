@@ -10,7 +10,7 @@ g++ -std=c++17 -O2 sol.cpp -o sol
 g++ -std=c++17 -O2 bf.cpp -o bf
 ```
 
-三份程序编译成功后，复制 [pai.sh](pai.sh) 中的一行命令，粘到当前 Bash 终端运行。Windows 使用 MinGW g++，Git Bash 能直接运行生成的 `.exe`。
+编译成功后，在[对拍条目](https://chzhc.cn/xcpc/#support-tools-stress-pai)复制当前终端对应的一行。Windows 的 PowerShell 命令调用默认安装位置的 Git Bash，运行 MinGW 生成的 `.exe`。Linux、WSL 和已打开的 Git Bash 都可以直接用 Bash 那一行。
 
 每组开始前显示编号，从 1 开始。输出一致时继续，发现差异时 `diff` 显示暴力答案（`<`）和正解输出（`>`）并停止。用 `cat in` 看反例，修正并重新编译后用 `./sol < in` 重跑这组数据，再开始下一轮对拍。
 

@@ -124,7 +124,7 @@ python support/tools/prepare_oeis.py
 
 ## 对拍工具
 
-网页和打印册收录 `support/tools/stress/pai.sh` 与随机生成器 `gen.cpp`。在题目目录编译生成器 `gen`、正解 `sol` 和暴力 `bf` 后，把对拍条目中的一行命令粘到 Linux / WSL 的 Bash 或 Windows 的 Git Bash 中运行。
+网页和打印册收录 `support/tools/stress/pai.sh` 与随机生成器 `gen.cpp`。在题目目录编译生成器 `gen`、正解 `sol` 和暴力 `bf` 后，从网页复制对应的一行到 Windows PowerShell 或 Linux Bash 中运行。Windows 行通过 Git Bash 执行同一份对拍脚本。
 
 每轮先显示从 1 开始的组号，再运行 `./gen >in` 生成输入，用 `diff -Z ans out` 按行比较，忽略行尾空白。遇到差异或程序异常退出时停止，当前输入保存在 `in`。编译和反例复现见[对拍说明](tools/stress/README.md)。
 

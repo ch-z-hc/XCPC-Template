@@ -76,6 +76,7 @@ main { margin: var(--top) max(0px, calc((100vw - 1280px)/2)) 0 calc(max(0px, (10
 h1 { margin: 0 0 28px; font-size: 28px; line-height: 1.5; text-decoration: underline dashed var(--secondary) 2px; text-underline-offset: 9px; font-weight: 600; overflow-wrap: anywhere; }
 h1:focus { outline: none; }
 .code-card { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.code-card + .code-card { margin-top: 12px; }
 .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 14px; background: #fafafa; border-bottom: 1px solid #e8e8eb; }
 .filename { display: flex; align-items: center; gap: 9px; min-width: 0; font-size: 12px; color: #5f636b; overflow-wrap: anywhere; }
 .code-icon { font: 13px/1 "Maple Mono Web", monospace; color: #8b8f96; flex: none; }

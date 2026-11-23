@@ -14,7 +14,7 @@ from urllib.parse import quote
 from fontTools import subset
 from fontTools.ttLib import TTFont
 from pygments import lex
-from pygments.lexers import BashLexer, CppLexer
+from pygments.lexers import BashLexer, CppLexer, PowerShellLexer
 from pygments.token import Token
 from tree_sitter import Language, Parser
 import tree_sitter_cpp
@@ -73,10 +73,9 @@ def name_styles(source, path):
 
 
 def code_html(source, path):
-    cpp = path.endswith(".cpp")
     styles, macros = name_styles(source, path)
     parts, offset = [], 0
-    lexer = CppLexer if cpp else BashLexer
+    lexer = {".cpp": CppLexer, ".ps1": PowerShellLexer}.get(Path(path).suffix, BashLexer)
     for token, value in lex(source, lexer(stripnl=False, ensurenl=False)):
         color = ""
         if token in Token.Comment.PreprocFile or token in Token.String:
@@ -98,6 +97,27 @@ def code_html(source, path):
         offset += len(value)
     assert offset == len(source)
     return "".join(parts)
+
+
+def entry_cards(entry):
+    if entry.path == "support/tools/stress/pai.sh":
+        command = entry.source.rstrip("\n").replace("'", "''")
+        windows = rf"""& "$env:ProgramFiles\Git\bin\bash.exe" -c '{command}'""" + "\n"
+        return [("Windows · PowerShell", windows, "pai.ps1"),
+                ("Linux · Bash", entry.source, entry.path)]
+    return [(Path(entry.path).name, entry.source, entry.path)]
+
+
+def code_card(label, source, path, title):
+    if label != Path(path).name:
+        title = f"{title}（{label}）"
+    label, title = html.escape(label), html.escape(title)
+    return (f'<div class="code-card"><div class="card-header">'
+            f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>{label}</span>'
+            f'<button class="copy-button" type="button" aria-label="复制代码：{title}">'
+            f'{COPY_ICON}<span class="copy-text">复制</span></button></div>'
+            f'<pre tabindex="0" aria-label="源码：{title}"><code>{code_html(source, path)}</code></pre>'
+            f'</div>')
 
 
 def build_font(source, license_path, target, text, filename="maple-mono-nf-cn.woff2",
@@ -159,18 +179,14 @@ def main():
             f'{" hidden" if index else ""}>'
             f'<p class="chapter-label">{label(entry.number.split(".")[0] + " · " + entry.chapter)}</p>'
             f'<h1 tabindex="-1">{label(entry.number + " " + entry.title)}</h1>'
-            f'<div class="code-card"><div class="card-header">'
-            f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>'
-            f'{label(Path(entry.path).name)}</span>'
-            f'<button class="copy-button" type="button" aria-label="复制代码：{title}">'
-            f'{COPY_ICON}<span class="copy-text">{label("复制")}</span></button></div>'
-            f'<pre tabindex="0" aria-label="源码：{title}"><code>{code_html(entry.source, entry.path)}</code></pre>'
-            f'</div></article>')
+            + "".join(code_card(*card, entry.title) for card in entry_cards(entry))
+            + '</article>')
+    code_text = "".join(source for entry in entries for _, source, _ in entry_cards(entry))
     build_font(args.code_font, args.font_license, assets,
-               "".join(e.source for e in entries) + "".join(e.title for e in entries)
+               code_text + "".join(e.title for e in entries)
                + (PAGES / "index.html").read_text() + (PAGES / "book.js").read_text())
     build_font(args.code_bold_font, args.font_license, assets,
-               "".join(e.source for e in entries), "maple-mono-nf-cn-bold.woff2")
+               code_text, "maple-mono-nf-cn-bold.woff2")
     document = (PAGES / "index.html").read_text()
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     for marker, value in {"<!-- TOC -->": "\n".join(toc),
