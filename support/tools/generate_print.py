@@ -47,8 +47,7 @@ CHAPTERS = [
     ("比赛环境", [
         ("support/tools/contest_main.cpp", "比赛主程序"),
         ("support/tools/linux_commands.txt", "Linux 编译与运行"),
-        ("support/tools/stress/stress_linux.cpp", "Linux 对拍"),
-        ("support/tools/stress/stress_windows.cpp", "Windows 对拍"),
+        ("support/tools/stress/pai.sh", "对拍"),
         ("support/tools/stress/gen.cpp", "随机数据生成器"),
     ]),
     ("数据结构", [

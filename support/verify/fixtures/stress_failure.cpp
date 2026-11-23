@@ -14,7 +14,7 @@ int main(int, char** argv) {
         return 0;
     }
     if (string(mode) == "remove_output") {
-        remove("out.txt");
+        remove("out");
         return 0;
     }
     if (string(mode) == "crash") {

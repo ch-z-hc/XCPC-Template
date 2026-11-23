@@ -58,6 +58,10 @@
     }
     let id;
     try { id = decodeURIComponent(location.hash.slice(1)); } catch { id = ""; }
+    if (id === "support-tools-stress-stress_linux" || id === "support-tools-stress-stress_windows") {
+      id = "support-tools-stress-pai";
+      history.replaceState(history.state, "", "#" + id);
+    }
     const next = byId.get(id) || byId.get(entries[0].id);
     if (current) {
       current.entry.hidden = true;

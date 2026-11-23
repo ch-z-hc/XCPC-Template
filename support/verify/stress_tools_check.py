@@ -20,120 +20,90 @@ stress = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(stress)
 
 
-def check_cpp():
+def check_contest():
     base = ROOT / "support/tools/stress"
-    runner_name = "stress_windows" if os.name == "nt" else "stress_linux"
-    source = (base / f"{runner_name}.cpp").read_text(encoding="utf-8")
-    suffix = ".exe" if os.name == "nt" else ""
     flags = ["g++", "-std=c++17", "-O2", "-Wall", "-Wextra", "-pedantic"]
-    for name in ("gen", "sol", "bf", "stress", "stress_linux", "stress_windows"):
-        subprocess.run([*flags, "-fsyntax-only", str(base / f"{name}.cpp")], check=True)
-    with tempfile.TemporaryDirectory(prefix="cpp-stress-") as name:
-        work = Path(name)
-        program = lambda name: work / (name + suffix)
+    suffix = ".exe" if os.name == "nt" else ""
+    with tempfile.TemporaryDirectory(prefix="contest-stress-") as directory:
+        work = Path(directory)
+        shutil.copyfile(base / "pai.sh", work / "pai.sh")
+
+        def program(name):
+            return work / (name + suffix)
 
         def compile_file(source, target):
             subprocess.run([*flags, str(source), "-o", str(program(target))], check=True)
 
-        def runner(first, last):
-            # 只限制测试副本的轮数，正式程序仍从 1 开始持续运行。
-            marker = "int i = 1; ;"
-            assert source.count(marker) == 1
-            (work / "stress.cpp").write_text(
-                source.replace(marker, f"int i = {first}; i <= {last};"), encoding="utf-8")
-            compile_file(work / "stress.cpp", "stress")
+        # 在下一轮让生成器返回 42，原样运行比赛脚本也能测试连续通过的轮次。
+        gen = work / "gen"
+        gen.write_bytes(b'#!/bin/sh\necho "$1" >> seeds\n'
+                        b'if [ "$1" -gt "$STRESS_ROUNDS" ]; then exit 42; fi\n'
+                        b'exec ./case_gen "$1"\n')
+        gen.chmod(0o755)
 
-        def execute(mode=None, left=None, right=None):
-            env = dict(os.environ)
-            if mode is not None:
-                env["STRESS_FIXTURE"] = mode
-            if left is not None:
-                env["STRESS_SOL_OUTPUT"] = left
-            if right is not None:
-                env["STRESS_BF_OUTPUT"] = right
-            return subprocess.run([str(program("stress"))], cwd=work, env=env,
-                                  capture_output=True, text=True, encoding="utf-8",
-                                  errors="replace", timeout=60)
+        def execute(rounds=1, **env):
+            (work / "seeds").write_text("")
+            return subprocess.run(["bash", "pai.sh"], cwd=work,
+                                  env={**os.environ, "STRESS_ROUNDS": str(rounds), **env},
+                                  capture_output=True, text=True, errors="replace", timeout=60)
 
-        def restore():
-            for target in ("gen", "bf", "sol"):
-                shutil.copy2(work / f"{target}.ok", program(target))
+        def check_rounds(rounds):
+            result = execute(rounds)
+            assert result.returncode == 42 and result.stdout == "", result
+            assert list(map(int, (work / "seeds").read_text().split())) == list(range(1, rounds + 2))
 
-        for target in ("gen", "bf", "sol"):
-            compile_file(base / f"{target}.cpp", target)
-            shutil.copy2(program(target), work / f"{target}.ok")
-        runner(1, 200)
-        result = execute()
-        assert result.returncode == 0 and result.stdout.splitlines() == ["AC 100", "AC 200"], result
+        for source, target in (("gen", "case_gen"), ("sol", "sol"), ("bf", "bf")):
+            compile_file(base / f"{source}.cpp", target)
+        check_rounds(200)
         for seed in (1, 123, 200, 347):
-            data = subprocess.check_output([str(program("gen")), str(seed)])
-            assert data == subprocess.check_output([str(program("gen")), str(seed)])
+            data = subprocess.check_output([str(program("case_gen")), str(seed)])
+            assert data == subprocess.check_output([str(program("case_gen")), str(seed)])
             values = list(map(int, data.split()))
             assert 1 <= values[0] <= 10 and len(values) == values[0] + 1
             assert all(1 <= x <= 100 for x in values[1:])
-        assert (work / "in.txt").read_bytes() == subprocess.check_output([str(program("gen")), "200"])
-        print("PASS: C++ example, 200 rounds, AC cadence and deterministic valid seeds", flush=True)
+        print("PASS: pai.sh, 200 rounds and deterministic valid seeds", flush=True)
 
-        runner(347, 366)
         for case in stress.CASES:
             folder = base if case == "max_subarray" else base / "cases" / case
-            for original, target in (("generator", "gen"), ("brute", "bf"), ("standard", "sol")):
-                compile_file(folder / f"{original}.cpp", target)
-            result = execute()
-            assert result.returncode == 0 and result.stdout == "", result
-            assert (work / "in.txt").read_bytes() == subprocess.check_output([str(program("gen")), "366"])
-            print(f"PASS: C++ runner, {case}, 20 rounds", flush=True)
+            for source, target in (("generator", "case_gen"), ("brute", "bf"), ("standard", "sol")):
+                compile_file(folder / f"{source}.cpp", target)
+            check_rounds(20)
+            print(f"PASS: pai.sh, {case}, 20 rounds", flush=True)
 
-        runner(347, 347)
-        restore()
-        # 故意改测试副本的 sol.cpp，正式示例不受影响。
+        compile_file(base / "gen.cpp", "case_gen")
+        compile_file(base / "bf.cpp", "bf")
         (work / "sol.cpp").write_text(
-            (base / "sol.cpp").read_text(encoding="utf-8").replace(
-                "cout << ans", "cout << ans + 1"), encoding="utf-8")
+            (base / "sol.cpp").read_text(encoding="utf-8").replace("cout << ans", "cout << ans + 1"),
+            encoding="utf-8")
         compile_file(work / "sol.cpp", "sol")
         result = execute()
-        assert result.returncode == 1 and result.stdout == "WA seed=347\n", result
-        assert (work / "in.txt").read_bytes() == subprocess.check_output([str(program("gen")), "347"])
-        assert int((work / "out.txt").read_text()) == int((work / "ans.txt").read_text()) + 1
-        print("PASS: modified sol.cpp detects WA, saved seed 347 reproduces input", flush=True)
+        assert result.returncode == 1 and result.stdout, result
+        assert (work / "in").read_bytes() == subprocess.check_output([str(program("case_gen")), "1"])
+        assert int((work / "out").read_text()) == int((work / "ans").read_text()) + 1
 
         compile_file(ROOT / "support/verify/fixtures/stress_failure.cpp", "fixture")
-        # 固定另一侧的答案，覆盖空白差异、两侧多余 token、空输出和精确比较。
-        restore()
-        shutil.copyfile(program("fixture"), program("sol"))
-        shutil.copyfile(program("fixture"), program("bf"))
-        for left, right, same in (("1 2\n", " 1\n\n2 \t", True),
-                                  ("", " \n", True), ("", "1", False),
-                                  ("1", "", False), ("1 2", "1", False),
-                                  ("1", "1 2", False), ("1", "1.0", False)):
-            result = execute("tokens", left, right)
-            assert result.returncode == (0 if same else 1), (left, right, result)
-            assert result.stdout == ("" if same else "WA seed=347\n"), result
-        print("PASS: whitespace, empty outputs, extra tokens on either side and exact tokens", flush=True)
-
-        for role in ("sol", "bf", "gen"):
-            restore()
+        for role in ("sol", "bf"):
             shutil.copyfile(program("fixture"), program(role))
-            result = execute("crash")
-            assert result.returncode == 2 and f"RE {role} seed=347" in result.stderr, result
-            assert "AC" not in result.stdout and "fixture stderr" in result.stderr, result
-            output = {"gen": "in.txt", "sol": "out.txt", "bf": "ans.txt"}[role]
+        for left, right, same in (("1 2\n", "1 2 \t\n", True), ("", "", True),
+                                  ("1 2\n", "1\n2\n", False), ("1 2", "12", False),
+                                  ("", "1", False), ("1", "", False), ("1", "1.0", False)):
+            result = execute(STRESS_FIXTURE="tokens", STRESS_SOL_OUTPUT=left, STRESS_BF_OUTPUT=right)
+            assert result.returncode == (42 if same else 1), (left, right, result)
+
+        for source, role, output in (("gen", "case_gen", "in"), ("sol", "sol", "out"), ("bf", "bf", "ans")):
+            shutil.copyfile(program("fixture"), program(role))
+            result = execute(STRESS_FIXTURE="crash")
+            assert result.returncode == 7 and "fixture stderr" in result.stderr, result
             assert (work / output).read_bytes() == b"partial"
-            print(f"PASS: {role} nonzero exit, partial output retained", flush=True)
-        restore()
-        program("sol").unlink()
-        result = execute()
-        assert result.returncode == 2 and "RE sol seed=347" in result.stderr, result
-        restore()
+            compile_file(base / f"{source}.cpp", role)
         shutil.copyfile(program("fixture"), program("bf"))
-        result = execute("remove_output")
-        assert result.returncode == 2 and "RE open out.txt seed=347" in result.stderr, result
-        restore()
-        (work / "in.txt").unlink()
-        (work / "in.txt").mkdir()
-        result = execute()
-        assert result.returncode == 2 and "RE gen seed=347" in result.stderr, result
-        print("PASS: missing executable, output open failure and redirection failure", flush=True)
+        assert execute(STRESS_FIXTURE="remove_output").returncode == 2
+        program("sol").unlink()
+        assert execute().returncode == 127
+        (work / "in").unlink()
+        (work / "in").mkdir()
+        assert execute().returncode != 0
+        print("PASS: retained counterexample, line comparison, crashes and file errors", flush=True)
 
 
 def main():
@@ -184,7 +154,7 @@ def main():
         elif mode == "crash":
             assert data["programs"][role]["returncode"] == 7
     if sys.platform.startswith("linux"):
-        check_cpp()
+        check_contest()
         shell = ROOT / "support/tools/stress/run.sh"
         result = subprocess.run(["bash", str(shell)], cwd=ROOT,
                                 env={**os.environ, "TESTS": "20"}, capture_output=True, text=True,
@@ -207,7 +177,7 @@ def main():
 
 
 if __name__ == "__main__":
-    if sys.argv[1:] == ["--cpp-only"]:
-        check_cpp()
+    if sys.argv[1:] in (["--contest-only"], ["--cpp-only"]):
+        check_contest()
     else:
         main()

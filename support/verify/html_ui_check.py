@@ -75,7 +75,8 @@ def main():
                             ("number", "rgb(209, 154, 102)"), ("string", "rgb(152, 195, 121)")):
             expect(code.locator(f".t-{role}").first).to_have_css("color", color)
         for path in ("support/tools/contest_main.cpp", "template/ds/树状数组.cpp",
-                     "template/geometry/点与向量.cpp", "support/tools/linux_commands.txt"):
+                     "template/geometry/点与向量.cpp", "support/tools/linux_commands.txt",
+                     "support/tools/stress/pai.sh"):
             entry = next(item for item in expected if item.path == path)
             page.evaluate("id => location.hash = id", entry_id(entry))
             article = page.locator(f'[data-path="{path}"]')
@@ -83,6 +84,10 @@ def main():
             article.locator(".copy-button").click()
             expect(page.locator("#copy-status")).to_have_text(f"已复制：{entry.title}")
             assert page.evaluate("navigator.clipboard.readText()") == entry.source
+        for platform in ("linux", "windows"):
+            page.evaluate("id => location.hash = id", f"support-tools-stress-stress_{platform}")
+            expect(page).to_have_url(re.compile(r"#support-tools-stress-pai$"))
+            expect(page.locator('.entry:not([hidden])')).to_have_attribute("data-path", "support/tools/stress/pai.sh")
         page.keyboard.press("/")
         expect(page.locator("#search")).to_be_focused()
         page.locator("#search").fill("Fenwick")

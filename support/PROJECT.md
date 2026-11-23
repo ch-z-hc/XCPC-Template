@@ -124,19 +124,9 @@ python support/tools/prepare_oeis.py
 
 ## 对拍工具
 
-`support/tools/stress/` 提供 `gen.cpp`、`sol.cpp`、`bf.cpp`、`stress.cpp`。打印册分别收录 Linux 对拍、Windows 对拍和随机生成器；`sol.cpp`、`bf.cpp` 两份占位示例不印入册。按平台将 `stress_linux.cpp` 或 `stress_windows.cpp` 复制为 `stress.cpp`，也可直接使用自动区分平台的通用版。复制到专用题目目录，Linux 下运行：
+网页和打印册收录 `support/tools/stress/pai.sh` 与随机生成器 `gen.cpp`。在题目目录编译生成器 `gen`、正解 `sol` 和暴力 `bf` 后，用 Linux / WSL 的 Bash 或 Windows 的 Git Bash 运行 `bash pai.sh`。
 
-```text
-g++ -std=c++17 -O2 gen.cpp -o gen
-g++ -std=c++17 -O2 sol.cpp -o sol
-g++ -std=c++17 -O2 bf.cpp -o bf
-g++ -std=c++17 -O2 stress.cpp -o stress
-./stress
-```
-
-对拍只依赖 C++17 和系统重定向，不需要 Python、`diff` 或 `fc`。程序以轮数为种子，依次运行生成器、待测程序和暴力，自己逐 token 比较，忽略空白和换行差异。每 100 轮输出一次 `AC`；答案不同输出 `WA seed=...`，运行或文件错误输出 `RE` 后停止，保留 `in.txt`、`out.txt`、`ans.txt`。再次运行会覆盖文件；没有内置限时，浮点与多解题需要修改比较逻辑。
-
-Windows 使用 MinGW g++，输出文件名加 `.exe`，PowerShell 运行 `.\stress.exe`。编译、种子复现和限制见 [对拍说明](tools/stress/README.md)。原有 6 组题型示例和 Python / Bash 工具保留，不是这套纯 C++ 对拍的依赖。
+脚本依次用正整数作种子，以 `diff -Z ans out` 按行比较，忽略行尾空白。遇到差异或程序异常退出时停止，当前输入保存在 `in`。编译和反例复现见[对拍说明](tools/stress/README.md)。
 
 ## 回归验证
 
