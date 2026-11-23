@@ -227,7 +227,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/ds/线段树与树上二分.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
 | `template/geometry/点与向量.cpp` | `P`、`db`、`EPS`、`sign`、`cmp`、`rad`；正 X 轴极角序 `polar_cmpX`，任意非零射线起排用 `sort(v.begin(), v.end(), polar_cmp(dir))` |
 | `template/geometry/直线与线段.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
-| `template/geometry/多边形.cpp` | `area`、`contain`、`convexCut` |
+| `template/geometry/多边形.cpp` | `area`、`convexCut`；一般简单多边形用 `contain(ps, p)`，O(n)；有序严格凸多边形用 `containConvex(ps, p)`，O(log n) |
 | `template/geometry/凸包与直径与闵可夫斯基和.cpp` | `convexHull`、`convexHullNonStrict`、`checkConvexHull`（简单多边形的逆时针凸性）、`convexDiameter`（顺逆时针均可）、`MincowskySum` |
 | `template/geometry/嵌套凸多边形切线.cpp` | `NestedHull::build(p, q)`；`left / right` 两侧切点，`l / r` 展开合法弦区间，依赖 `点与向量.cpp`，旋转卡壳 O(n + m) |
 | `template/graph/二分图匹配.cpp` | `Kuhn::add_edge`、`solve` |

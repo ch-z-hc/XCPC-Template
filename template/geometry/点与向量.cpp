@@ -21,7 +21,7 @@ struct P {
     P(db _x, db _y) : x(_x), y(_y) {}
 
     P operator +(P p) { return {x + p.x, y + p.y}; }
-    P operator -(P p) { return {x - p.x, y - p.y}; }
+    P operator -(P p) const { return {x - p.x, y - p.y}; }
     P operator *(db d) { return {x * d, y * d}; }
     P operator /(db d) { return {x / d, y / d}; }
 

@@ -269,6 +269,18 @@ void check_convex_query() {
     assert(cq.query({1, 0}) == 0);
     cq.build({{0, 0}, {2, 0}, {1, 0}, {2, 0}});
     assert(cq.query({1, 0}) == 1 && cq.query({3, 0}) == 0);
+    V < P > square{{0, 0}, {4, 0}, {4, 4}, {0, 4}};
+    for (int dir = 0; dir < 2; ++ dir) {
+        for (int i = 0; i < 4; ++ i) {
+            rotate(square.begin(), square.begin() + 1, square.end());
+            assert(containConvex(square, {2, 2}) == 2); // 扇区公共对角线
+            assert(containConvex(square, {4, 4}) == 1);
+            assert(containConvex(square, {0, 2}) == 1);
+            assert(containConvex(square, {6, 0}) == 0);
+            assert(containConvex(square, {6, 6}) == 0);
+        }
+        reverse(square.begin(), square.end());
+    }
     for (int t = 0; t < 2000; ++ t) {
         int n = rnd(0, 40);
         V < P > a;
@@ -282,9 +294,13 @@ void check_convex_query() {
         auto hull = cq.a;
         for (int repeat = 0; repeat < 2; ++ repeat) {
             if (repeat) cq.build(a);
+            if (! hull.empty())
+                rotate(hull.begin(), hull.begin() + rnd(0, int(hull.size()) - 1), hull.end());
+            if (repeat) reverse(hull.begin(), hull.end());
             for (int q = 0; q < 40; ++ q) {
                 P p(rnd(-30, 30) / 2.0L, rnd(-30, 30) / 2.0L);
-                assert(cq.query(p) == contain(hull, p));
+                int state = contain(hull, p);
+                assert(cq.query(p) == state && containConvex(hull, p) == state);
             }
             for (int i = 0; i < int(hull.size()); ++ i) {
                 assert(cq.query(hull[i]) == 1);

@@ -38,6 +38,31 @@ int contain(V < P > ps, P p) {
     return ret * 2;
 }
 
+/*
+严格凸多边形按顺 / 逆时针给点，末尾不重复首点；也允许空集、单点和线段。
+单次 O(log n)，返回 0 外部 / 1 边界 / 2 内部。
+*/
+int containConvex(const V < P > &ps, P p) {
+    int n = ps.size();
+    if (! n) return 0;
+    if (n == 1) return ps[0] == p;
+    if (n == 2) return onSeg(ps[0], ps[1], p);
+
+    P o = ps[0];
+    int l = 1, r = n - 1;
+    if (cross(o, ps[l], ps[r]) < 0) swap(l, r);
+    if (onSeg(o, ps[l], p) || onSeg(o, ps[r], p)) return 1;
+    if (cross(o, ps[l], p) <= 0 || cross(o, ps[r], p) >= 0) return 0;
+
+    // 按叉积符号二分扇区，内部对角线属于相邻扇区的公共边。
+    while (abs(r - l) > 1) {
+        int mid = l + (r - l) / 2;
+        if (cross(o, ps[mid], p) >= 0) l = mid;
+        else r = mid;
+    }
+    return crossop(ps[l], ps[r], p) + 1;
+}
+
 V < P > convexCut(V<P> ps, P q1, P q2) {
     // 直线切割凸包，返回直线左边凸包的点
     V < P > qs;
