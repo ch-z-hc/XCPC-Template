@@ -26,7 +26,8 @@ def check_contest():
     suffix = ".exe" if os.name == "nt" else ""
     with tempfile.TemporaryDirectory(prefix="contest-stress-") as directory:
         work = Path(directory)
-        shutil.copyfile(base / "pai.sh", work / "pai.sh")
+        command = (base / "pai.sh").read_text(encoding="utf-8")
+        assert len(command.splitlines()) == 1
 
         def program(name):
             return work / (name + suffix)
@@ -45,13 +46,14 @@ def check_contest():
 
         def execute(rounds=1, **env):
             (work / "round").write_bytes(b"0\n")
-            return subprocess.run(["bash", "pai.sh"], cwd=work,
+            return subprocess.run(["bash", "-c", command], cwd=work,
                                   env={**os.environ, "STRESS_ROUNDS": str(rounds), **env},
                                   capture_output=True, text=True, errors="replace", timeout=60)
 
         def check_rounds(rounds, seeded=False):
             result = execute(rounds, STRESS_SEEDED="1" if seeded else "0")
-            assert result.returncode == 42 and result.stdout == "", result
+            assert result.returncode == 42, result
+            assert result.stdout.splitlines() == [str(i) for i in range(1, rounds + 2)], result
             assert int((work / "round").read_text()) == rounds + 1
 
         for source, target in (("gen", "case_gen"), ("sol", "sol"), ("bf", "bf")):
@@ -79,7 +81,7 @@ def check_contest():
             encoding="utf-8")
         compile_file(work / "sol.cpp", "sol")
         result = execute()
-        assert result.returncode == 1 and result.stdout, result
+        assert result.returncode == 1 and result.stdout.splitlines()[0] == "1", result
         data = (work / "in").read_bytes()
         for target, output in (("sol", "out"), ("bf", "ans")):
             assert subprocess.check_output([str(program(target))], input=data) == (work / output).read_bytes()
