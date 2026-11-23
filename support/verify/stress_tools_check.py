@@ -36,38 +36,40 @@ def check_contest():
 
         # 在下一轮让生成器返回 42，原样运行比赛脚本也能测试连续通过的轮次。
         gen = work / "gen"
-        gen.write_bytes(b'#!/bin/sh\necho "$1" >> seeds\n'
-                        b'if [ "$1" -gt "$STRESS_ROUNDS" ]; then exit 42; fi\n'
-                        b'exec ./case_gen "$1"\n')
+        gen.write_bytes(b'#!/bin/sh\n[ "$#" -eq 0 ] || exit 1\n'
+                        b'read i < round\ni=$((i+1))\necho "$i" > round\n'
+                        b'if [ "$i" -gt "$STRESS_ROUNDS" ]; then exit 42; fi\n'
+                        b'if [ "$STRESS_SEEDED" = 1 ]; then set -- "$i"; fi\n'
+                        b'exec ./case_gen "$@"\n')
         gen.chmod(0o755)
 
         def execute(rounds=1, **env):
-            (work / "seeds").write_text("")
+            (work / "round").write_bytes(b"0\n")
             return subprocess.run(["bash", "pai.sh"], cwd=work,
                                   env={**os.environ, "STRESS_ROUNDS": str(rounds), **env},
                                   capture_output=True, text=True, errors="replace", timeout=60)
 
-        def check_rounds(rounds):
-            result = execute(rounds)
+        def check_rounds(rounds, seeded=False):
+            result = execute(rounds, STRESS_SEEDED="1" if seeded else "0")
             assert result.returncode == 42 and result.stdout == "", result
-            assert list(map(int, (work / "seeds").read_text().split())) == list(range(1, rounds + 2))
+            assert int((work / "round").read_text()) == rounds + 1
 
         for source, target in (("gen", "case_gen"), ("sol", "sol"), ("bf", "bf")):
             compile_file(base / f"{source}.cpp", target)
         check_rounds(200)
-        for seed in (1, 123, 200, 347):
-            data = subprocess.check_output([str(program("case_gen")), str(seed)])
-            assert data == subprocess.check_output([str(program("case_gen")), str(seed)])
+        samples = {subprocess.check_output([str(program("case_gen"))]) for _ in range(20)}
+        assert len(samples) > 1
+        for data in samples:
             values = list(map(int, data.split()))
             assert 1 <= values[0] <= 10 and len(values) == values[0] + 1
             assert all(1 <= x <= 100 for x in values[1:])
-        print("PASS: pai.sh, 200 rounds and deterministic valid seeds", flush=True)
+        print("PASS: pai.sh, 200 rounds and varied valid inputs without arguments", flush=True)
 
         for case in stress.CASES:
             folder = base if case == "max_subarray" else base / "cases" / case
             for source, target in (("generator", "case_gen"), ("brute", "bf"), ("standard", "sol")):
                 compile_file(folder / f"{source}.cpp", target)
-            check_rounds(20)
+            check_rounds(20, seeded=True)
             print(f"PASS: pai.sh, {case}, 20 rounds", flush=True)
 
         compile_file(base / "gen.cpp", "case_gen")
@@ -78,7 +80,9 @@ def check_contest():
         compile_file(work / "sol.cpp", "sol")
         result = execute()
         assert result.returncode == 1 and result.stdout, result
-        assert (work / "in").read_bytes() == subprocess.check_output([str(program("case_gen")), "1"])
+        data = (work / "in").read_bytes()
+        for target, output in (("sol", "out"), ("bf", "ans")):
+            assert subprocess.check_output([str(program(target))], input=data) == (work / output).read_bytes()
         assert int((work / "out").read_text()) == int((work / "ans").read_text()) + 1
 
         compile_file(ROOT / "support/verify/fixtures/stress_failure.cpp", "fixture")

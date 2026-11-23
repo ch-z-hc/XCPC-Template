@@ -2,8 +2,8 @@
 # g++ -std=c++17 -O2 gen.cpp -o gen   # sol、bf 同理
 
 set -e
-for ((i=1; ; i++)); do
-    ./gen "$i" > in
+while true; do
+    ./gen > in
     ./sol < in > out
     ./bf < in > ans
     diff -Z ans out
