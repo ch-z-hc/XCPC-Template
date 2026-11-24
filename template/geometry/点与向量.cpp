@@ -84,3 +84,15 @@ auto polar_cmp(P dir, bool include = true) {
         return x != y ? x < y : polar_cmpX(a, b);
     };
 }
+
+/*
+用法：
+sort(v.begin(), v.end(), polar_cmp(dir));        // 从 dir 开始，逆时针排序
+sort(v.begin(), v.end(), polar_cmp(dir, false)); // 与 dir 同向的向量排在最后
+
+// 按从 o 出发、经过 q 的射线给点集 ps 排序，o 与 q 不重合
+auto by_angle = polar_cmp(q - o);
+sort(ps.begin(), ps.end(), [&](P a, P b) {
+    return by_angle(a - o, b - o);
+});
+*/
