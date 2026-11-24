@@ -63,6 +63,13 @@ def main():
     book = BookParser()
     book.feed(document)
     expected = load_entries()
+    catalog = json.loads((site / "assets/sources.json").read_text())
+    assert f'<meta name="source-revision" content="{catalog["revision"]}">' in document
+    assert catalog["entries"] == [dict(id=entry_id(e), path=e.path, title=e.title, number=e.number,
+                                       chapter=e.chapter, source=e.source) for e in expected]
+    edit_paths = [unquote(urlsplit(url).path) for url in book.resources
+                  if url.startswith("https://private.chzhc.cn/xcpc/edit/")]
+    assert edit_paths == ["/xcpc/edit/" + entry_id(e) for e in expected]
     assert len(book.entries) == len(book.links) == len(expected)
     assert book.copies == sum(len(entry_cards(item)) for item in expected)
     assert len({entry["id"] for entry in book.entries}) == len(expected)

@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import html
 from itertools import groupby
+import json
 import re
 import shutil
 import subprocess
@@ -108,12 +109,17 @@ def entry_cards(entry):
     return [(Path(entry.path).name, entry.source, entry.path)]
 
 
-def code_card(label, source, path, title):
+def code_card(label, source, path, title, edit_id):
     if label != Path(path).name:
         title = f"{title}（{label}）"
     label, title = html.escape(label), html.escape(title)
+    edit = ""
+    if edit_id:
+        edit = (f'<a class="edit-link" href="https://private.chzhc.cn/xcpc/edit/{quote(edit_id, safe="")}" '
+                f'aria-label="编辑：{title}" rel="nofollow">编辑</a>')
     return (f'<div class="code-card"><div class="card-header">'
             f'<span class="filename"><span class="code-icon" aria-hidden="true">&lt;/&gt;</span>{label}</span>'
+            f'{edit}'
             f'<button class="copy-button" type="button" aria-label="复制代码：{title}">'
             f'{COPY_ICON}<span class="copy-text">复制</span></button></div>'
             f'<pre tabindex="0" aria-label="源码：{title}"><code>{code_html(source, path)}</code></pre>'
@@ -179,7 +185,8 @@ def main():
             f'{" hidden" if index else ""}>'
             f'<p class="chapter-label">{label(entry.number.split(".")[0] + " · " + entry.chapter)}</p>'
             f'<h1 tabindex="-1">{label(entry.number + " " + entry.title)}</h1>'
-            + "".join(code_card(*card, entry.title) for card in entry_cards(entry))
+            + "".join(code_card(*card, entry.title, key if card[2] == entry.path else None)
+                      for card in entry_cards(entry))
             + '</article>')
     code_text = "".join(source for entry in entries for _, source, _ in entry_cards(entry))
     build_font(args.code_font, args.font_license, assets,
@@ -189,6 +196,11 @@ def main():
                code_text, "maple-mono-nf-cn-bold.woff2")
     document = (PAGES / "index.html").read_text()
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    catalog = [dict(id=entry_id(e), path=e.path, title=e.title, number=e.number,
+                    chapter=e.chapter, source=e.source) for e in entries]
+    (assets / "sources.json").write_text(
+        json.dumps({"revision": revision, "entries": catalog}, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
     for marker, value in {"<!-- TOC -->": "\n".join(toc),
                           "<!-- ENTRIES -->": "\n".join(articles),
                           "{{COUNT}}": label(f"{len(entries)} 个条目"), "{{REVISION}}": revision}.items():

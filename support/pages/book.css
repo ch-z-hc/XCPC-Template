@@ -80,6 +80,8 @@ h1:focus { outline: none; }
 .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 14px; background: #fafafa; border-bottom: 1px solid #e8e8eb; }
 .filename { display: flex; align-items: center; gap: 9px; min-width: 0; font-size: 12px; color: #5f636b; overflow-wrap: anywhere; }
 .code-icon { font: 13px/1 "Maple Mono Web", monospace; color: #8b8f96; flex: none; }
+.edit-link { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--accent); font-size: 13px; flex: none; }
+.edit-link:hover { text-decoration: underline; }
 .copy-button { border: 1px solid #dadce1; border-radius: 5px; padding: 5px 9px; background: #fff; color: #646b73; display: inline-flex; align-items: center; gap: 5px; font-size: 13px; min-height: 40px; min-width: 76px; justify-content: center; flex: none; }
 .copy-button > svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 1.5; fill: none; }
 .copy-button:hover { color: #3c5870; border-color: #9baab7; }
@@ -127,7 +129,7 @@ pre::selection, code::selection, code span::selection { background: #67769660; }
   code { font-size: 13px; line-height: 1.8; }
 }
 @media print {
-  .topbar, .sidebar, .backdrop, .copy-button { display: none !important; }
+  .topbar, .sidebar, .backdrop, .copy-button, .edit-link { display: none !important; }
   body, main { background: white; margin: 0; padding: 0; }
   .paper { box-shadow: none; padding: 0; }
   pre { overflow: visible; }

@@ -166,6 +166,7 @@ def main():
         expect(page.locator(".file")).to_have_text("oeis-2up.pdf")
         page.locator('nav a[href="./"]').click()
         expect(page.locator(".entry:not([hidden])")).to_have_count(1)
+        context.close()
         for width in (320, 390, 768):
             mobile = browser.new_context(viewport={"width": width, "height": 844},
                                          is_mobile=True, has_touch=True,
@@ -188,6 +189,9 @@ def main():
             expect(tab.locator(".menu-button")).to_have_attribute("aria-expanded", "false")
             article = tab.locator('.entry:not([hidden])')
             expect(article).to_have_attribute("data-path", "template/ds/树状数组.cpp")
+            edit = article.get_by_role("link", name="编辑：树状数组")
+            expect(edit).to_be_visible()
+            assert edit.bounding_box()["x"] + edit.bounding_box()["width"] <= width
             assert not tab.locator("#reader").evaluate("el => el.inert")
             assert tab.evaluate("document.documentElement.scrollWidth <= innerWidth")
             if width < 500:
@@ -207,7 +211,7 @@ def main():
             print(f"PASS: {width}px mobile", flush=True)
         no_js = browser.new_context(java_script_enabled=False, viewport={"width": 1280, "height": 900})
         tab = no_js.new_page()
-        tab.goto(args.url)
+        tab.goto(args.url, wait_until="domcontentloaded", timeout=120000)
         assert tab.locator(".entry:visible").count() == len(expected)
         no_js.close()
         assert not errors, errors

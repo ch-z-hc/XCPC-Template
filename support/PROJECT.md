@@ -3,6 +3,7 @@
 ## 在线阅读与下载
 
 - [HTML 在线阅读](https://chzhc.cn/xcpc/)：目录搜索、单篇阅读与一键复制代码。
+- 源码卡片上的「编辑」打开私密对照编辑器。每份修改可单独提交待审，公开阅读页使用已发布的源码。编辑器从同次构建的 `assets/sources.json` 取得原版。
 - [PDF 在线阅读](https://chzhc.cn/xcpc/pdf.html)：算法模板册和 OEIS 2 合 1 打印版。
 - PDF 下载：[算法模板册](https://chzhc.cn/xcpc/template.pdf)、[OEIS 2 合 1 打印版](https://chzhc.cn/xcpc/oeis-2up.pdf)。
 
