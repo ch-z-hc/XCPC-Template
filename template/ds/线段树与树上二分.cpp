@@ -17,8 +17,8 @@ struct SegTree {
     V < ll > sum, mx, lazy;
 
     void pull(int p) {
-        sum[p] = sum[p << 1] + sum[p << 1 | 1];
-        mx[p] = max(mx[p << 1], mx[p << 1 | 1]);
+        sum[p] = sum[p * 2] + sum[p * 2 + 1];
+        mx[p] = max(mx[p * 2], mx[p * 2 + 1]);
     }
 
     void apply(int p, int l, int r, ll v) {
@@ -29,17 +29,20 @@ struct SegTree {
 
     void push(int p, int l, int r) {
         if (! lazy[p] || l == r) return;
-        int mid = (l + r) >> 1;
-        apply(p << 1, l, mid, lazy[p]);
-        apply(p << 1 | 1, mid + 1, r, lazy[p]);
+        int mid = (l + r) / 2;
+        apply(p * 2, l, mid, lazy[p]);
+        apply(p * 2 + 1, mid + 1, r, lazy[p]);
         lazy[p] = 0;
     }
 
     void build(int p, int l, int r, const V < ll > &a) {
-        if (l == r) { sum[p] = mx[p] = a[l]; return; }
-        int mid = (l + r) >> 1;
-        build(p << 1, l, mid, a);
-        build(p << 1 | 1, mid + 1, r, a);
+        if (l == r) {
+            sum[p] = mx[p] = a[l];
+            return;
+        }
+        int mid = (l + r) / 2;
+        build(p * 2, l, mid, a);
+        build(p * 2 + 1, mid + 1, r, a);
         pull(p);
     }
 
@@ -49,18 +52,21 @@ struct SegTree {
             init(b); return;
         }
         n = int(a.size()) - 1;
-        sum.assign(4 * n + 5, 0);
-        mx.assign(4 * n + 5, 0);
-        lazy.assign(4 * n + 5, 0);
+        sum.assign(n * 4 + 5, 0);
+        mx.assign(n * 4 + 5, 0);
+        lazy.assign(n * 4 + 5, 0);
         if (n > 0) build(1, 1, n, a);
     }
 
     void modify(int p, int l, int r, int x, int y, ll v) {
-        if (x <= l && r <= y) { apply(p, l, r, v); return; }
+        if (x <= l && r <= y) {
+            apply(p, l, r, v);
+            return;
+        }
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        if (x <= mid) modify(p << 1, l, mid, x, y, v);
-        if (y > mid) modify(p << 1 | 1, mid + 1, r, x, y, v);
+        int mid = (l + r) / 2;
+        if (x <= mid) modify(p * 2, l, mid, x, y, v);
+        if (y > mid) modify(p * 2 + 1, mid + 1, r, x, y, v);
         pull(p);
     }
 
@@ -71,10 +77,10 @@ struct SegTree {
     ll query(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return sum[p];
         push(p, l, r);
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         ll ans = 0;
-        if (x <= mid) ans += query(p << 1, l, mid, x, y);
-        if (y > mid) ans += query(p << 1 | 1, mid + 1, r, x, y);
+        if (x <= mid) ans += query(p * 2, l, mid, x, y);
+        if (y > mid) ans += query(p * 2 + 1, mid + 1, r, x, y);
         return ans;
     }
 
@@ -86,9 +92,9 @@ struct SegTree {
         if (r < x || y < l || mx[p] < v) return -1;
         if (l == r) return l;
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        int ans = first_ge(p << 1, l, mid, x, y, v);
-        return ans != -1 ? ans : first_ge(p << 1 | 1, mid + 1, r, x, y, v);
+        int mid = (l + r) / 2;
+        int ans = first_ge(p * 2, l, mid, x, y, v);
+        return ans != -1 ? ans : first_ge(p * 2 + 1, mid + 1, r, x, y, v);
     }
 
     int first_ge(int l, int r, ll v) {
@@ -99,9 +105,9 @@ struct SegTree {
         if (r < x || y < l || mx[p] < v) return -1;
         if (l == r) return l;
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        int ans = last_ge(p << 1 | 1, mid + 1, r, x, y, v);
-        return ans != -1 ? ans : last_ge(p << 1, l, mid, x, y, v);
+        int mid = (l + r) / 2;
+        int ans = last_ge(p * 2 + 1, mid + 1, r, x, y, v);
+        return ans != -1 ? ans : last_ge(p * 2, l, mid, x, y, v);
     }
 
     int last_ge(int l, int r, ll v) {
@@ -113,9 +119,15 @@ struct SegTree {
         int p = 1, l = 1, r = n;
         while (l < r) {
             push(p, l, r);
-            int mid = (l + r) >> 1;
-            if (k <= sum[p << 1]) p <<= 1, r = mid;
-            else k -= sum[p << 1], p = p << 1 | 1, l = mid + 1;
+            int mid = (l + r) / 2;
+            if (k <= sum[p * 2]) {
+                p *= 2;
+                r = mid;
+            } else {
+                k -= sum[p * 2];
+                p = p * 2 + 1;
+                l = mid + 1;
+            }
         }
         return l;
     }

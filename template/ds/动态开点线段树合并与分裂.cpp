@@ -26,7 +26,10 @@ struct MergeSegTree {
 
     int add(int p, int l, int r, int x, ll v) {
         if (! p) p = node();
-        if (l == r) { tr[p].sum += v; return p; }
+        if (l == r) {
+            tr[p].sum += v;
+            return p;
+        }
         int mid = l + (r - l) / 2;
         if (x <= mid) tr[p].ls = add(tr[p].ls, l, mid, x, v);
         else tr[p].rs = add(tr[p].rs, mid + 1, r, x, v);
@@ -58,8 +61,12 @@ struct MergeSegTree {
     }
 
     int merge(int u, int v, int l, int r) {
-        if (! u || ! v) return u | v;
-        if (l == r) { tr[u].sum += tr[v].sum; return u; }
+        if (! u) return v;
+        if (! v) return u;
+        if (l == r) {
+            tr[u].sum += tr[v].sum;
+            return u;
+        }
         int mid = l + (r - l) / 2;
         tr[u].ls = merge(tr[u].ls, tr[v].ls, l, mid);
         tr[u].rs = merge(tr[u].rs, tr[v].rs, mid + 1, r);

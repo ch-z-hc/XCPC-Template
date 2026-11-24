@@ -21,7 +21,7 @@ struct PST {
         int u = int(tr.size());
         tr.push_back(tr[p]); tr[u].sum ++;
         if (l == r) return u;
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         if (x <= mid) tr[u].ls = insert(tr[p].ls, l, mid, x);
         else tr[u].rs = insert(tr[p].rs, mid + 1, r, x);
         return u;
@@ -45,7 +45,8 @@ struct PST {
 
     int kth(int u, int v, int l, int r, int k) {
         if (l == r) return l;
-        int mid = (l + r) >> 1, cnt = tr[tr[v].ls].sum - tr[tr[u].ls].sum;
+        int mid = (l + r) / 2;
+        int cnt = tr[tr[v].ls].sum - tr[tr[u].ls].sum;
         if (k <= cnt) return kth(tr[u].ls, tr[v].ls, l, mid, k);
         return kth(tr[u].rs, tr[v].rs, mid + 1, r, k - cnt);
     }
@@ -56,7 +57,7 @@ struct PST {
 
     int count(int u, int v, int l, int r, int x) {
         if (r <= x) return tr[v].sum - tr[u].sum;
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         int ans = count(tr[u].ls, tr[v].ls, l, mid, x);
         if (x > mid) ans += count(tr[u].rs, tr[v].rs, mid + 1, r, x);
         return ans;

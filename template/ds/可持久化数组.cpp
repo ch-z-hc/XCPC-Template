@@ -22,10 +22,13 @@ struct PArray {
     int build(int l, int r, const V < ll > &a) {
         int p = int(t.size());
         t.push_back(Node());
-        if (l == r) { t[p].val = a[l]; return p; }
-        int mid = (l + r) >> 1;
-        int x = build(l, mid, a), y = build(mid + 1, r, a);
-        t[p].l = x; t[p].r = y;
+        if (l == r) {
+            t[p].val = a[l];
+            return p;
+        }
+        int mid = (l + r) / 2;
+        t[p].l = build(l, mid, a);
+        t[p].r = build(mid + 1, r, a);
         return p;
     }
 
@@ -39,21 +42,19 @@ struct PArray {
         int q = int(t.size());
         Node u = t[p];
         t.push_back(u);
-        if (l == r) { t[q].val = value; return q; }
-        int mid = (l + r) >> 1;
-        if (pos <= mid) {
-            int x = modify(t[p].l, l, mid, pos, value);
-            t[q].l = x;
-        } else {
-            int x = modify(t[p].r, mid + 1, r, pos, value);
-            t[q].r = x;
+        if (l == r) {
+            t[q].val = value;
+            return q;
         }
+        int mid = (l + r) / 2;
+        if (pos <= mid) t[q].l = modify(t[p].l, l, mid, pos, value);
+        else t[q].r = modify(t[p].r, mid + 1, r, pos, value);
         return q;
     }
 
     ll query(int p, int l, int r, int pos) {
         if (l == r) return t[p].val;
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         if (pos <= mid) return query(t[p].l, l, mid, pos);
         return query(t[p].r, mid + 1, r, pos);
     }

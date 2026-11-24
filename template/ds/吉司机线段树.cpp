@@ -23,7 +23,7 @@ struct Beats {
 
     void pull(int p) {
         auto &u = t[p];
-        auto &a = t[p << 1]; auto &b = t[p << 1 | 1];
+        auto &a = t[p * 2]; auto &b = t[p * 2 + 1];
         u.sum = a.sum + b.sum;
         u.max1 = max(a.max1, b.max1);
         u.cntmax = (a.max1 == u.max1 ? a.cntmax : 0)
@@ -67,13 +67,13 @@ struct Beats {
 
     void push(int p, int l, int r) {
         if (l == r) return;
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         if (t[p].add) {
-            apply_add(p << 1, mid - l + 1, t[p].add);
-            apply_add(p << 1 | 1, r - mid, t[p].add);
+            apply_add(p * 2, mid - l + 1, t[p].add);
+            apply_add(p * 2 + 1, r - mid, t[p].add);
             t[p].add = 0;
         }
-        for (int v : {p << 1, p << 1 | 1}) {
+        for (int v : {p * 2, p * 2 + 1}) {
             if (t[v].max1 > t[p].max1) apply_min(v, t[p].max1);
             if (t[v].min1 < t[p].min1) apply_max(v, t[p].min1);
         }
@@ -85,78 +85,83 @@ struct Beats {
             t[p].cntmin = t[p].cntmax = 1;
             return;
         }
-        int mid = (l + r) >> 1;
-        build(p << 1, l, mid, a);
-        build(p << 1 | 1, mid + 1, r, a);
+        int mid = (l + r) / 2;
+        build(p * 2, l, mid, a);
+        build(p * 2 + 1, mid + 1, r, a);
         pull(p);
     }
 
     void init(const V < ll > &a) {
         n = int(a.size()) - 1;
-        t.assign(4 * n + 5, Node());
+        t.assign(n * 4 + 5, Node());
         if (n) build(1, 1, n, a);
     }
 
     void add(int p, int l, int r, int x, int y, ll v) {
-        if (x <= l && r <= y) { apply_add(p, r - l + 1, v); return; }
+        if (x <= l && r <= y) {
+            apply_add(p, r - l + 1, v);
+            return;
+        }
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        if (x <= mid) add(p << 1, l, mid, x, y, v);
-        if (y > mid) add(p << 1 | 1, mid + 1, r, x, y, v);
+        int mid = (l + r) / 2;
+        if (x <= mid) add(p * 2, l, mid, x, y, v);
+        if (y > mid) add(p * 2 + 1, mid + 1, r, x, y, v);
         pull(p);
     }
 
     void chmin(int p, int l, int r, int x, int y, ll v) {
         if (t[p].max1 <= v) return;
         if (x <= l && r <= y && t[p].max2 < v) {
-            apply_min(p, v); return;
+            apply_min(p, v);
+            return;
         }
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        if (x <= mid) chmin(p << 1, l, mid, x, y, v);
-        if (y > mid) chmin(p << 1 | 1, mid + 1, r, x, y, v);
+        int mid = (l + r) / 2;
+        if (x <= mid) chmin(p * 2, l, mid, x, y, v);
+        if (y > mid) chmin(p * 2 + 1, mid + 1, r, x, y, v);
         pull(p);
     }
 
     void chmax(int p, int l, int r, int x, int y, ll v) {
         if (t[p].min1 >= v) return;
         if (x <= l && r <= y && t[p].min2 > v) {
-            apply_max(p, v); return;
+            apply_max(p, v);
+            return;
         }
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        if (x <= mid) chmax(p << 1, l, mid, x, y, v);
-        if (y > mid) chmax(p << 1 | 1, mid + 1, r, x, y, v);
+        int mid = (l + r) / 2;
+        if (x <= mid) chmax(p * 2, l, mid, x, y, v);
+        if (y > mid) chmax(p * 2 + 1, mid + 1, r, x, y, v);
         pull(p);
     }
 
     ll query(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].sum;
         push(p, l, r);
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         ll ans = 0;
-        if (x <= mid) ans += query(p << 1, l, mid, x, y);
-        if (y > mid) ans += query(p << 1 | 1, mid + 1, r, x, y);
+        if (x <= mid) ans += query(p * 2, l, mid, x, y);
+        if (y > mid) ans += query(p * 2 + 1, mid + 1, r, x, y);
         return ans;
     }
 
     ll query_min(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].min1;
         push(p, l, r);
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         ll ans = INF;
-        if (x <= mid) ans = min(ans, query_min(p << 1, l, mid, x, y));
-        if (y > mid) ans = min(ans, query_min(p << 1 | 1, mid + 1, r, x, y));
+        if (x <= mid) ans = min(ans, query_min(p * 2, l, mid, x, y));
+        if (y > mid) ans = min(ans, query_min(p * 2 + 1, mid + 1, r, x, y));
         return ans;
     }
 
     ll query_max(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].max1;
         push(p, l, r);
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         ll ans = -INF;
-        if (x <= mid) ans = max(ans, query_max(p << 1, l, mid, x, y));
-        if (y > mid) ans = max(ans, query_max(p << 1 | 1, mid + 1, r, x, y));
+        if (x <= mid) ans = max(ans, query_max(p * 2, l, mid, x, y));
+        if (y > mid) ans = max(ans, query_max(p * 2 + 1, mid + 1, r, x, y));
         return ans;
     }
 

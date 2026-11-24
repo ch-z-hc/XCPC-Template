@@ -17,7 +17,7 @@ struct AffineSeg {
     V < ll > sum, mul, add;
 
     ll norm(ll x) { x %= mod; return x < 0 ? x + mod : x; }
-    void pull(int p) { sum[p] = (sum[p << 1] + sum[p << 1 | 1]) % mod; }
+    void pull(int p) { sum[p] = (sum[p * 2] + sum[p * 2 + 1]) % mod; }
 
     void apply(int p, int l, int r, ll a, ll b) {
         sum[p] = (sum[p] * a + (r - l + 1ll) * b) % mod;
@@ -26,16 +26,20 @@ struct AffineSeg {
     }
 
     void push(int p, int l, int r) {
-        int mid = (l + r) >> 1;
-        apply(p << 1, l, mid, mul[p], add[p]);
-        apply(p << 1 | 1, mid + 1, r, mul[p], add[p]);
+        int mid = (l + r) / 2;
+        apply(p * 2, l, mid, mul[p], add[p]);
+        apply(p * 2 + 1, mid + 1, r, mul[p], add[p]);
         mul[p] = 1 % mod; add[p] = 0;
     }
 
     void build(int p, int l, int r, const V < ll > &a) {
-        if (l == r) { sum[p] = norm(a[l]); return; }
-        int mid = (l + r) >> 1;
-        build(p << 1, l, mid, a); build(p << 1 | 1, mid + 1, r, a);
+        if (l == r) {
+            sum[p] = norm(a[l]);
+            return;
+        }
+        int mid = (l + r) / 2;
+        build(p * 2, l, mid, a);
+        build(p * 2 + 1, mid + 1, r, a);
         pull(p);
     }
 
@@ -45,17 +49,20 @@ struct AffineSeg {
             init(b, mod_); return;
         }
         mod = mod_; n = max(0, int(a.size()) - 1);
-        sum.assign(4 * n + 5, 0); add = sum;
-        mul.assign(4 * n + 5, 1 % mod);
+        sum.assign(n * 4 + 5, 0); add = sum;
+        mul.assign(n * 4 + 5, 1 % mod);
         if (n) build(1, 1, n, a);
     }
 
     void modify(int p, int l, int r, int x, int y, ll a, ll b) {
-        if (x <= l && r <= y) { apply(p, l, r, a, b); return; }
+        if (x <= l && r <= y) {
+            apply(p, l, r, a, b);
+            return;
+        }
         push(p, l, r);
-        int mid = (l + r) >> 1;
-        if (x <= mid) modify(p << 1, l, mid, x, y, a, b);
-        if (y > mid) modify(p << 1 | 1, mid + 1, r, x, y, a, b);
+        int mid = (l + r) / 2;
+        if (x <= mid) modify(p * 2, l, mid, x, y, a, b);
+        if (y > mid) modify(p * 2 + 1, mid + 1, r, x, y, a, b);
         pull(p);
     }
 
@@ -66,10 +73,10 @@ struct AffineSeg {
     ll query(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return sum[p];
         push(p, l, r);
-        int mid = (l + r) >> 1;
+        int mid = (l + r) / 2;
         ll ans = 0;
-        if (x <= mid) ans += query(p << 1, l, mid, x, y);
-        if (y > mid) ans += query(p << 1 | 1, mid + 1, r, x, y);
+        if (x <= mid) ans += query(p * 2, l, mid, x, y);
+        if (y > mid) ans += query(p * 2 + 1, mid + 1, r, x, y);
         return ans % mod;
     }
 

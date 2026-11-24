@@ -49,10 +49,13 @@ struct DynConn {
 
     void insert(int p, int l, int r, int x, int y, pair < int, int > edge) {
         if (x > r || y < l) return;
-        if (x <= l && r <= y) { tr[p].push_back(edge); return; }
-        int mid = (l + r) >> 1;
-        insert(p << 1, l, mid, x, y, edge);
-        insert(p << 1 | 1, mid + 1, r, x, y, edge);
+        if (x <= l && r <= y) {
+            tr[p].push_back(edge);
+            return;
+        }
+        int mid = (l + r) / 2;
+        insert(p * 2, l, mid, x, y, edge);
+        insert(p * 2 + 1, mid + 1, r, x, y, edge);
     }
 
     void dfs(int p, int l, int r, int &id) {
@@ -61,15 +64,16 @@ struct DynConn {
         if (l == r) {
             if (ops[l].type == 2) ans[id ++] = find(ops[l].u) == find(ops[l].v);
         } else {
-            int mid = (l + r) >> 1;
-            dfs(p << 1, l, mid, id); dfs(p << 1 | 1, mid + 1, r, id);
+            int mid = (l + r) / 2;
+            dfs(p * 2, l, mid, id);
+            dfs(p * 2 + 1, mid + 1, r, id);
         }
         rollback(snap);
     }
 
     V < int > solve() {
         int q = int(ops.size());
-        tr.assign(4 * q + 5, {});
+        tr.assign(q * 4 + 5, {});
         map < pair < int, int >, V < int > > active;
         for (int i = 0; i < q; ++ i) {
             auto [type, u, v] = ops[i];

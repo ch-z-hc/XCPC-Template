@@ -42,7 +42,7 @@ struct LiChao {
         R = r;
         ll n = max(0ll, 1ll * R - L + 1);
         assert(n <= (INT_MAX - 4) / 4);
-        tr.assign(4 * n + 4, 0);
+        tr.assign(n * 4 + 4, 0);
         line.assign(1, Line{});
     }
 

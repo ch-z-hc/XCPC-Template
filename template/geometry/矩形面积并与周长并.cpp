@@ -24,7 +24,7 @@ struct RectUnion {
         } else if (l == r) {
             tr[p].len = tr[p].cnt = 0; tr[p].left = tr[p].right = false;
         } else {
-            auto a = tr[p << 1], b = tr[p << 1 | 1];
+            auto a = tr[p * 2], b = tr[p * 2 + 1];
             tr[p].len = a.len + b.len; tr[p].cnt = a.cnt + b.cnt - (a.right && b.left);
             tr[p].left = a.left; tr[p].right = b.right;
         }
@@ -32,9 +32,9 @@ struct RectUnion {
     void modify(int p, int l, int r, int x, int y, int d) {
         if (x <= l && r <= y) tr[p].cover += d;
         else {
-            int mid = (l + r) >> 1;
-            if (x <= mid) modify(p << 1, l, mid, x, y, d);
-            if (y > mid) modify(p << 1 | 1, mid + 1, r, x, y, d);
+            int mid = (l + r) / 2;
+            if (x <= mid) modify(p * 2, l, mid, x, y, d);
+            if (y > mid) modify(p * 2 + 1, mid + 1, r, x, y, d);
         }
         pull(p, l, r);
     }
@@ -53,7 +53,7 @@ struct RectUnion {
             return a.x != b.x ? a.x < b.x : a.d > b.d;
         });
         int n = int(ys.size()) - 1;
-        tr.assign(4 * n + 5, {});
+        tr.assign(n * 4 + 5, {});
         ll area = 0, perimeter = 0, last = events[0].x;
         for (auto [x, y1, y2, d] : events) {
             area += tr[1].len * (x - last);
