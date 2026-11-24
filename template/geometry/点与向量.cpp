@@ -86,12 +86,10 @@ auto polar_cmp(P dir, bool include = true) {
 }
 
 /*
-用法：
-sort(v.begin(), v.end(), polar_cmp(dir));        // 从 dir 开始，逆时针排序
-sort(v.begin(), v.end(), polar_cmp(dir, false)); // 与 dir 同向的向量排在最后
-
-// 按从 o 出发、经过 q 的射线给点集 ps 排序，o 与 q 不重合
-auto by_angle = polar_cmp(q - o);
+用法：从射线 o -> q 开始，绕 o 逆时针排序，o 与 q 不重合。
+与 o 重合的点始终排在最前。其余点按下面两种规则任选其一：
+auto by_angle = polar_cmp(q - o, true);      // 起始射线上的点最先，true 可省略
+// auto by_angle = polar_cmp(q - o, false);  // 起始射线上的点最后
 sort(ps.begin(), ps.end(), [&](P a, P b) {
     return by_angle(a - o, b - o);
 });
