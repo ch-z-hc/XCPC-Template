@@ -17,7 +17,7 @@
 | `template/ds/可持久化二进制字典树.cpp` | [P4735 最大异或和](https://www.luogu.com.cn/problem/P4735) | 应用；保存前缀异或值的历史根，将询问转为两个前缀版本之差；不是任意两棵无关树的差。 |
 | `template/ds/二维最近邻.cpp` | [CGAL Spatial Searching](https://doc.cgal.org/latest/Spatial_searching/index.html) | 算法参考；静态二维最近邻与矩形计数，随机数据对照直接枚举，不声称在线通过。 |
 | `template/ds/并查集.cpp` | [Unionfind](https://judge.yosupo.jp/problem/unionfind) | 直接；题目 0-based，模板 1-based。 |
-| `template/ds/树状数组.cpp` | [Point Add Range Sum](https://judge.yosupo.jp/problem/point_add_range_sum)、[P3374 树状数组 1](https://www.luogu.com.cn/problem/P3374) | 直接；`kth` 另外要求所有元素非负。 |
+| `template/ds/树状数组.cpp` | [Point Add Range Sum](https://judge.yosupo.jp/problem/point_add_range_sum)、[P3374 树状数组 1](https://www.luogu.com.cn/problem/P3374) | 直接；单点加与区间和。 |
 | `template/ds/二维树状数组.cpp` | [Point Add Rectangle Sum](https://judge.yosupo.jp/problem/point_add_rectangle_sum) | 直接；须预先收集所有更新坐标，题面半开矩形转闭矩形。 |
 | `template/ds/无旋平衡树.cpp` | [P3369 普通平衡树](https://www.luogu.com.cn/problem/P3369)、[Range Reverse Range Sum](https://judge.yosupo.jp/problem/range_reverse_range_sum) | 分别对应 `Treap` 与 `SeqTreap`；删除只删一份，区间下标需转换。 |
 | `template/ds/动态树.cpp` | [Dynamic Tree Vertex Add Path Sum](https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum) | 直接；题目点权增量需转为 `modify` 的新点权。 |

@@ -185,7 +185,6 @@ int main() {
         assert(graph.solve({1, 2, 3}) == 6 && graph.solve({}) == 0);
     }
     {
-        Fenwick bit(3); bit.add(2, 1); assert(bit.kth(1) == 2);
         AffineSeg seg; seg.init({0, 1, 2}, 7);
         seg.modify(1, 2, 2, 1); assert(seg.query(1, 2) == 1);
         V < int > q; assert(FPS::sqrt({1, 2, 1}, 3, q) && q[1] == 1);

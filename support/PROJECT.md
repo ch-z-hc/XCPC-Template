@@ -223,7 +223,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/math/矩阵求逆.cpp` | `matrix_inv(a, mod, b)`；写入逆矩阵，不可逆返回 `false` |
 | `template/math/原根.cpp` | `primitive_root`；质数模数，依赖 `素性测试与整数分解.cpp` |
 | `template/ds/并查集.cpp` | `DSU::init`、`find`、`merge`、`same`、`size`，`cnt` 为连通块数 |
-| `template/ds/树状数组.cpp` | `Fenwick::init`、`add`、`query`、`kth`；`kth` 要求原数组非负 |
+| `template/ds/树状数组.cpp` | `Fenwick::init`、`add`、`query`；单点加、前缀和与区间和 |
 | `template/ds/可撤销并查集.cpp` | `RollbackDSU::merge`、`snapshot`、`rollback` |
 | `template/ds/线段树与树上二分.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
 | `template/geometry/点与向量.cpp` | `P`、`db`、`EPS`、`sign`、`cmp`、`rad`；正 X 轴极角序 `polar_cmpX`，任意非零射线起排用 `sort(v.begin(), v.end(), polar_cmp(dir))` |

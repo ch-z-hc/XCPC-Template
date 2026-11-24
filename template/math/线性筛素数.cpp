@@ -4,8 +4,6 @@
 
 using namespace std;
 
-// primes(n) 返回不超过 n 的所有质数，按从小到大排列。时间和空间 O(n)。
-
 V < int > primes(int n) {
     V < int > prime, lp(n + 1);
     for (int i = 2; i <= n; ++ i) {

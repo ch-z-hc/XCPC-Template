@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from generate_print import (CODE_W, MIN_CODE_SIZE, TOP, code_boundaries,
+from generate_print import (CODE_W, MAX_CODE_SIZE, MIN_CODE_SIZE, TOP, code_boundaries,
                             load_entries, page_capacity, plan_code, split_rows)
 
 
@@ -29,13 +29,14 @@ def main():
     for entry in load_entries():
         for top in (TOP, TOP - 200):
             verify(entry.source.expandtabs(4), entry.path, top)
-    fenwick = next(e for e in load_entries() if e.path == "template/ds/树状数组.cpp")
-    _, spans, breaks = verify(fenwick.source, fenwick.path)
-    lines = fenwick.source.splitlines()
-    start = lines.index("    int kth(ll k) {")
-    end = lines.index("    }", start + 1) + 1
-    assert lines[start - 1].strip() == "*/"
-    comment = max(i for i in range(start) if lines[i].strip() == "/*")
+    # 页尾正好能放下三行注释时，注释仍须跟随下一页的成员函数。
+    comment = page_capacity(TOP, MAX_CODE_SIZE, title=True) - 3
+    source = ("struct Example {\n" + "".join(f"    int x{i};\n" for i in range(comment - 1))
+              + "    /*\n    函数说明。\n    */\n    void f() {\n" + "        step();\n" * 12
+              + "    }\n};\n")
+    _, spans, breaks = verify(source, "comment.cpp")
+    lines = source.splitlines()
+    start, end = lines.index("    void f() {"), lines.index("    }") + 1
     assert breaks == [comment], breaks
     assert (start, end, True) in spans
     assert (comment, end, False) in spans

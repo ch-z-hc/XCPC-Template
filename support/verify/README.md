@@ -59,7 +59,7 @@ bash support/verify/run_linux.sh
 
 | 验证程序 | 内容 |
 | --- | --- |
-| `extra_ds_random.cpp` | 树状数组第 k 小、仿射线段树、二维树状数组、动态开点合并分裂、离线动态连通性、LCT 各 2200 组；矩形面积与周长并 2500 组 |
+| `extra_ds_random.cpp` | 树状数组前缀和、仿射线段树、二维树状数组、动态开点合并分裂、离线动态连通性、LCT 各 2200 组；矩形面积与周长并 2500 组 |
 | `extra_graph_random.cpp` | 最小树形图、一般图匹配、Johnson、Floyd、全局最小割、0-1 BFS、HK 点覆盖，各 2000 轮 |
 | `extra_math_random.cpp` | 有符号类欧几里得、二次剩余、杜教筛、扩展 Lucas、行列式 / 矩阵树、FPS 幂 / 开根 / 除法、线性基第 k 小，各至少 2500 轮或查询 |
 | `extra_offline_random.cpp` | 两种莫队、分治 DP、多重背包、位集 LCS、最近点对、凸多边形查询，各 2000 轮 |

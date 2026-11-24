@@ -17,29 +17,21 @@ void check_fenwick() {
     for (int tc = 0; tc < 2200; ++ tc) {
         int n = rnd(0, 35);
         V < ll > a(n + 1);
-        for (int i = 1; i <= n; ++ i) a[i] = rnd(0, 20);
+        for (int i = 1; i <= n; ++ i) a[i] = rnd(-20, 20);
         bit.init(a);
         for (int step = 0; step < 40; ++ step) {
             if (n) {
                 int x = rnd(1, n);
-                ll v = rnd(-int(a[x]), 20);
+                ll v = rnd(-20, 20);
                 a[x] += v; bit.add(x, v);
             }
-            ll sum = accumulate(a.begin(), a.end(), 0ll);
-            ll k = rnd(-3, int(sum) + 3), pre = 0;
-            int ans = n + 1;
-            for (int i = 1; i <= n; ++ i) {
-                pre += a[i];
-                if (pre >= k) { ans = i; break; }
-            }
-            assert(bit.kth(k) == ans);
-            assert(bit.query(n) == sum);
+            int r = rnd(0, n);
+            assert(bit.query(r) == accumulate(a.begin() + 1, a.begin() + r + 1, 0ll));
         }
         bit.init(n);
-        assert(bit.query(n) == 0 && bit.kth(1) == n + 1);
-        assert(bit.kth(0) == 1 && bit.kth(-3) == 1);
+        assert(bit.query(n) == 0);
     }
-    cout << "Fenwick kth: 2200 cases OK\n";
+    cout << "Fenwick prefix sums: 2200 cases OK\n";
 }
 
 void check_affine() {

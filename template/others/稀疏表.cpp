@@ -6,11 +6,6 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-用静态数组 a[1..n] 建表，query(l, r) 返回闭区间最大值。
-建表时间和空间 O(n log n)，查询 O(1)。改动数组后要重新 build。
-*/
-
 struct ST {
     V < V < ll > > st;
     V < int > lg;
