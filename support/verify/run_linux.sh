@@ -14,6 +14,8 @@ for source in template/*/*.cpp support/tools/contest_main.cpp support/tools/stre
         includes=(-include template/math/组合数.cpp)
     elif [[ "$source" == template/math/两类斯特林数.cpp ]]; then
         includes=(-include template/math/快速数论变换与多项式乘法.cpp)
+    elif [[ "$source" == template/ds/线段树分治.cpp ]]; then
+        includes=(-include template/ds/可撤销并查集.cpp)
     elif [[ "$source" == template/graph/最小割树.cpp ]]; then
         includes=(-include template/graph/最大流.cpp)
     elif [[ "$source" == template/graph/上下界最小费用流.cpp ]]; then

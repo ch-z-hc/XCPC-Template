@@ -3,6 +3,7 @@
 #include "../../template/ds/仿射线段树.cpp"
 #include "../../template/ds/二维树状数组.cpp"
 #include "../../template/ds/动态开点线段树合并与分裂.cpp"
+#include "../../template/ds/可撤销并查集.cpp"
 #include "../../template/ds/线段树分治.cpp"
 #include "../../template/graph/离线动态连通性.cpp"
 #include "../../template/ds/动态树.cpp"
@@ -186,37 +187,37 @@ bool connected(const V < V < int > > &g, int s, int t) {
 }
 
 void check_seg_divide() {
-    struct State {
-        V < int > active;
-        V < V < int > > ans;
-        int snapshot() { return int(active.size()); }
-        void apply(int id) { active.push_back(id); }
-        void answer(int t) {
-            assert(t == int(ans.size()));
-            ans.push_back(active);
-            sort(ans.back().begin(), ans.back().end());
-        }
-        void rollback(int snap) { active.resize(snap); }
-    };
-    SegDivide < State > st;
     for (int tc = 0; tc < 500; ++ tc) {
-        int n = rnd(0, 20);
-        st.init(n);
-        State s;
-        s.active = {-1};
-        V < V < int > > want(n + 1, {-1});
-        want[0].clear();
-        st.add(1, 0, 0);
-        for (int i = 0; n && i < 30; ++ i) {
-            int l = rnd(1, n), r = rnd(l, n), id = rnd(0, 8);
-            st.add(l, r, id);
-            for (int t = l; t <= r; ++ t) want[t].push_back(id);
+        int n = rnd(2, 8), times = rnd(0, 20);
+        init(n, times);
+        assert(edge.empty() && dsu.snapshot() == 0);
+        V < V < int > > base(n + 1, V < int > (n + 1));
+        if (tc & 1) {
+            dsu.merge(1, 2);
+            base[1][2] = base[2][1] = 1;
         }
-        for (auto &ids : want) sort(ids.begin(), ids.end());
+        int snap = dsu.snapshot();
+        V < V < V < int > > > g(times + 1, base);
+        add(1, 0, 0);
+        for (int id = 0; times && id < 15; ++ id) {
+            int u = rnd(1, n), v = rnd(1, n);
+            int l = rnd(1, times), d = rnd(l, times + 1);
+            edge.push_back({u, v});
+            add(l, d - 1, id);
+            for (int t = l; t < d; ++ t) g[t][u][v] = g[t][v][u] = 1;
+        }
+        V < int > want(times + 1);
+        for (int t = 1; t <= times; ++ t) if (rnd(0, 3)) {
+            int u = rnd(1, n), v = rnd(1, n);
+            ask[t] = {u, v};
+            want[t] = connected(g[t], u, v);
+        }
         for (int rep = 0; rep < 2; ++ rep) {
-            s.ans.assign(1, {});
-            st.solve(s);
-            assert(s.ans == want && s.active == V < int > {-1});
+            dfs(1, 1, times);
+            assert(ans == want && dsu.snapshot() == snap);
+            for (int u = 1; u <= n; ++ u)
+                for (int v = 1; v <= n; ++ v)
+                    assert((dsu.find(u) == dsu.find(v)) == connected(base, u, v));
         }
     }
     cout << "SegDivide: 500 cases OK\n";

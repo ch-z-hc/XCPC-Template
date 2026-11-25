@@ -226,7 +226,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/ds/树状数组.cpp` | `Fenwick::init`、`add`、`query`；单点加、前缀和与区间和 |
 | `template/ds/可撤销并查集.cpp` | `RollbackDSU::merge`、`snapshot`、`rollback` |
 | `template/ds/线段树与树上二分.cpp` | `SegTree::init`、`modify`、`query`、`first_ge`、`last_ge`、`kth`；`kth` 要求所有元素非负 |
-| `template/ds/线段树分治.cpp` | `SegDivide<State>::init(n)`、`add(l, r, id)`、`solve(s)`。操作在闭区间内生效，按时刻记录答案并回滚状态 |
+| `template/ds/线段树分治.cpp` | `init(n, q)`、`add(l, r, id)`、`dfs(1, 1, q)`。全局 `edge` 存边，`ask[t]` 存询问，`ans[t]` 存答案。示例依赖 `可撤销并查集.cpp` |
 | `template/geometry/点与向量.cpp` | `P`、`db`、`EPS`、`sign`、`cmp`、`rad`；正 X 轴极角序 `polar_cmpX`，任意非零射线起排用 `sort(v.begin(), v.end(), polar_cmp(dir))` |
 | `template/geometry/直线与线段.cpp` | `Line`、`isLL`、`isSS`、`isLS`、`onSeg`、`proj`、`reflect`、`nearest`、`disSS` 等 |
 | `template/geometry/多边形.cpp` | `area`、`convexCut`；一般简单多边形用 `contain(ps, p)`，O(n)；有序严格凸多边形用 `containConvex(ps, p)`，O(log n) |
