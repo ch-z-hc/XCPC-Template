@@ -5,8 +5,8 @@ typedef long double ld;
 using namespace std;
 
 /*
-在 [l, r] 内找单峰函数的极值位置，要求 l <= r。极值两侧须严格单调，中途出现平台可能舍掉答案。
-返回近似位置，函数值需再算一次。迭代 times 轮，额外空间 O(1)。
+在 [l, r] 上找单峰函数的极值位置，极值两侧须严格单调，中途不能有平台。
+迭代 times 轮，耗时 O(times) 次函数求值，返回近似位置。
 */
 
 template < class F >
@@ -27,4 +27,7 @@ ld ternary_max(F f, ld l, ld r, int times = 200) {
     return l + (r / 2 - l / 2);
 }
 
-// ld x = ternary_min([](ld x) { return x * x; }, -10, 10);
+/*
+ld lo = ternary_min([](ld x) { return x * x; }, -10, 10);
+ld hi = ternary_max([](ld x) { return -x * x; }, -10, 10);
+*/

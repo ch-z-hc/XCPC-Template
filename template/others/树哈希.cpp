@@ -5,8 +5,8 @@
 using namespace std;
 
 /*
-给编号 1..n 的树指定根（默认 1）。儿子顺序不影响结果，同构的有根树得到相同哈希值。
-哈希相同仍可能碰撞。耗时 O(n + Σ deg(u) log(deg(u) + 1))，递归及临时数组共 O(n) 空间。
+有根无序树哈希，儿子顺序不影响结果，相同哈希可能碰撞。点从 1 编号。
+时间 O(n + Σ deg(u) log(deg(u) + 1))。
 */
 
 static uint64_t hash_mix(uint64_t x) {

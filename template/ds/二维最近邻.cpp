@@ -6,10 +6,8 @@ using namespace std;
 typedef long long ll;
 
 /*
-坐标绝对值不超过 10^9。build 按输入顺序从 0 编号，重合的点各算一个。
-nearest 找到点时把 {平方距离, 原下标} 写入 ans，等距取下标小的点。找不到返回 false。
-查某个点的邻居时，把它的下标传给 exclude，否则可能找到自己。
-query 统计闭矩形内的点数，空矩形返回 0。建树期望 O(n log n)，查询最坏 O(n)。
+静态点集的最近邻和闭矩形计数。坐标绝对值 <= 10^9，点按输入顺序从 0 编号。
+建树期望 O(n log n)，查询最坏 O(n)。等距取编号较小者。
 */
 
 struct KDTree {
@@ -101,7 +99,8 @@ struct KDTree {
 };
 
 /*
-KDTree kd; kd.build(ps);
+KDTree kd; kd.build({{0, 0}, {2, 1}});
 pair < ll, int > ans;
-bool ok = kd.nearest(ps[i].first, ps[i].second, ans, i);
+if (kd.nearest(0, 0, ans, 0)) cout << ans.first << ' ' << ans.second; // 排除点 0，得 5、1
+int cnt = kd.query(0, 0, 1, 1); // 闭矩形内有 1 个点
 */

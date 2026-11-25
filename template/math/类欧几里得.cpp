@@ -5,9 +5,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-floor_sum(n, m, a, b) 累加 i = 0..n - 1 时的 floor((a*i + b) / m)。
-n >= 0，m > 0，a、b 可为负，除法向下取整。a*n+b、负数归一化时的各部分和及答案须能放进 ll。
-时间 O(log m)，额外空间 O(1)。
+求 i 从 0 到 n - 1 的 floor((a*i + b) / m) 之和，O(log m)。n >= 0，m > 0，a、b 可负。
+a*n+b、负数归一化的部分和及答案均须放入 ll。
 */
 
 ll floor_sum(ll n, ll m, ll a, ll b) {

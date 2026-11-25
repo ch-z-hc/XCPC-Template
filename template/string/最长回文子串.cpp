@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-query(l, r) 判断 s[l..r] 是否回文，下标从 0 数。longest() 返回 {起点, 长度}。
-odd[i] 是含中心 i 的半径，even[i] 的中心在 i - 1 和 i 之间。建表 O(n)，查询区间 O(1)。
-*/
+// 回文半径及区间回文判断，0-based。预处理 O(n)，区间查询 O(1)，遍历找最长回文 O(n)。
 
 struct Manacher {
     string s;
@@ -66,6 +63,6 @@ struct Manacher {
 };
 
 /*
-Manacher man(s);
-bool pal = man.query(l, r);
+Manacher man; man.build("abba");
+bool pal = man.query(0, 3); auto [start, len] = man.longest(); // true、{0, 4}
 */

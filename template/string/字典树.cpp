@@ -4,10 +4,8 @@
 
 using namespace std;
 
-/*
-只接收小写字母，可以插入空串和重复串。count 数完全相同的串，prefix 数以它开头的串。
-两种计数都含重复项，clear() 清空整棵树。每次操作 O(串长)，每个节点存 26 个儿子。
-*/
+// 小写字母串的前缀和整串计数，均含重复项，允许空串。插入和查询 O(串长)。
+
 struct Trie {
     struct Node {
         array < int, 26 > ch{};
@@ -56,7 +54,7 @@ struct Trie {
 };
 
 /*
-Trie trie;
-trie.insert("aba");
-int cnt = trie.prefix("ab");
+Trie trie; trie.insert("aba"); int node = trie.find("ab"); // 前缀节点，不存在为 -1
+int pre = trie.prefix("ab"), exact = trie.count("ab");      // 1、0
+trie.clear();
 */

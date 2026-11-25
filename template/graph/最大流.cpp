@@ -7,15 +7,12 @@ typedef long long ll;
 using namespace std;
 
 /*
-点编号 1..n，add_edge(u, v, cap) 加一条容量非负的有向边。
-flow(s, t) 会修改残量，再调用只返回新增流量。要从头算需 init 后重新加边。
-容量和总流量用 ll。一般图时间 O(n²m)，空间 O(n + m)。
+有向图最大流，容量非负，总流量须放入 ll。重复增广沿用残量。
+一般图 O(n²m)，二分图匹配建成的单位网络 O(m√n)，一般单位容量图 O(m√m)。
 */
+
 struct Dinic {
-    struct Edge {
-        int to, rev;
-        ll cap;
-    };
+    struct Edge { int to, rev; ll cap; };
 
     int n = 0;
     V < V < Edge > > g;
@@ -38,9 +35,8 @@ struct Dinic {
 
     bool bfs(int s, int t) {
         fill(dep.begin(), dep.end(), -1);
-        queue < int > q;
+        queue < int > q; q.push(s);
         dep[s] = 0;
-        q.push(s);
         while (! q.empty()) {
             int u = q.front(); q.pop();
             for (auto &e : g[u]) if (e.cap && dep[e.to] == -1) {
@@ -77,7 +73,7 @@ struct Dinic {
 };
 
 /*
-Dinic dinic(n);
-dinic.add_edge(u, v, cap);
-ll ans = dinic.flow(s, t);
+Dinic dinic; dinic.init(3); dinic.add_edge(1, 2, 4); dinic.add_edge(2, 3, 3);
+ll ans = dinic.flow(1, 3);   // 3
+dinic.add_edge(2, 3, 2); ll extra = dinic.flow(1, 3); // 仅返回新增的 1
 */

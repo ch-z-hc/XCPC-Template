@@ -6,11 +6,9 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”；MincowskySum 还需“多边形”的 area。
-凸包 O(n log n)，直径 O(n)，闵可夫斯基和 O(n + m)。
-结果 0-based；直径要求凸包顶点按边界顺序，直径与闵可夫斯基和允许两种方向。
-直径的相邻顶点不得重复，末尾不重复首点；允许空集、单点与线段。
-checkConvexHull 为 O(n)，只判断简单多边形的逆时针凸性，不检测自交。
+先复制「点与向量」，闵可夫斯基和还需「多边形」的 area。
+建凸包 O(n log n)，判凸和直径 O(n)，闵可夫斯基和 O(n + m)。
+直径与闵可夫斯基和接受顺、逆时针凸包，相邻顶点不重复，末尾不重复首点。
 */
 
 V < P > convexHull(V < P > ps) {
@@ -123,3 +121,11 @@ V < P > MincowskySum(V < P > p, V < P > q) {
     qs.pop_back();
     return qs;
 }
+
+/*
+V < P > ps{{0, 0}, {1, 0}, {2, 0}, {0, 2}};
+auto h = convexHull(ps), border = convexHullNonStrict(ps); // 后者保留边上的共线点
+bool ccw = checkConvexHull(h); // 输入须为简单多边形，判断逆时针凸性
+db diameter = convexDiameter(h);
+auto sum = MincowskySum(h, h);
+*/

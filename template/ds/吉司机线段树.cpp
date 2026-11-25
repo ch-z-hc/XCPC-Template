@@ -7,10 +7,11 @@ typedef long long ll;
 using namespace std;
 
 /*
-对 a[1..n] 的闭区间做加法、chmin（设上限）、chmax（设下限），并查和、最小值或最大值。
-操作时数组须非空。元素和截断值须严格在 (-2^60, 2^60) 内，区间和、标记及中间乘积不能溢出 ll。
-建树 O(n)，q 次操作总时间 O((n + q) log² n)，空间 O(n)。
+区间加、取上限或下限，查询和与最值。a[1..n] 非空。
+元素和截断值须在 (-2^60, 2^60) 内，区间和、标记及中间乘积须放入 ll。
+建树 O(n)，q 次操作总时间 O((n + q) log² n)。
 */
+
 struct Beats {
     static const ll INF = 1LL << 60;
     struct Node {

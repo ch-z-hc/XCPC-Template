@@ -2,10 +2,7 @@
 
 using namespace std;
 
-/*
-返回字典序最小循环移位的起点，下标从 0 数。并列时取最小下标，空串返回 0。
-时间 O(n)，额外空间 O(1)。
-*/
+// 返回字典序最小循环移位的起点，O(n)。下标从 0 数，并列取最小下标，空串返回 0。
 
 int min_rotation(const string &s) {
     int n = int(s.size()), i = 0, j = 1, k = 0;

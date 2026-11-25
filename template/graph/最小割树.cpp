@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-先复制「最大流」的 Dinic。无向图编号 1..n，容量非负，总容量用 ll，可有重边、自环。
-build 后 t 为割树，两点间路径上的最小边权就是它们的最小割。query(u, u) 约定返回 0。
-建树做 n - 1 次最大流，另需 O(n² + n log n)，可重复构建。查询 O(log n)，空间 O(m + n log n)。
+先复制「最大流」的 Dinic。无向图容量非负，总容量须放入 ll，允许重边、自环。
+建树做 n - 1 次最大流，另需 O(n² + n log n)。两点最小割查询 O(log n)，同点取 0。
 */
+
 struct GomoryHu {
     struct Edge {
         int u, v;
@@ -89,6 +89,6 @@ struct GomoryHu {
 };
 
 /*
-GomoryHu tree(n); tree.add_edge(u, v, cap); tree.build();
+GomoryHu tree; tree.init(n); tree.add_edge(u, v, cap); tree.build();
 ll value = tree.query(s, t);
 */

@@ -5,10 +5,10 @@
 using namespace std;
 
 /*
-左点编号 1..n，右点编号 1..m，可加重边。solve 返回最大匹配边数，可重复求解。
-ml[u]、mr[v] 是两侧的搭档，0 表示未匹配。增广用递归，长链要留足栈。
-E 条边的时间 O(n + m + E sqrt(n + m))，空间 O(n + m + E)。
+求二分图最大匹配和最小点覆盖。两侧分别编号 1..n、1..m，允许重边。
+E 条边的匹配耗时 O(n + m + E sqrt(n + m))。求点覆盖前须先求最大匹配。
 */
+
 struct HK {
     int n, m;
     V < V < int > > g;
@@ -91,7 +91,7 @@ struct HK {
 };
 
 /*
-HK hk(n, m);
-hk.add_edge(u, v);
-int ans = hk.solve();
+HK hk; hk.init(3, 2); hk.add_edge(1, 2);
+int cnt = hk.solve(); // ml、mr 为两侧搭档，未匹配为 0
+auto [left, right] = hk.cover(); // 最小点覆盖在两侧选中的顶点
 */

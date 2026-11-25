@@ -5,9 +5,8 @@
 using namespace std;
 
 /*
-先复制「后缀数组」。runs(s) 返回 {最小周期, l, r}，区间为 [l, r)，下标从 0 数。
-每段至少含两个周期，向左或向右再延长一个字符都会破坏该周期。
-输入可含任意字节，结果排序去重。基于 Bannai 等人的 runs 定理，时间和空间 O(n log n)。
+先复制「后缀数组」。枚举至少含两个周期且不能左右延长的极大周期子串，时间 O(n log n)。
+输入可含任意字节。基于 Bannai 等人的 runs 定理。
 */
 
 V < array < int, 3 > > runs(const string &s) {
@@ -38,4 +37,4 @@ V < array < int, 3 > > runs(const string &s) {
     return ans;
 }
 
-// auto res = runs(s);
+// auto res = runs("ababab"); // 每项为 {最小周期, l, r}，0-based 半开区间，已排序去重

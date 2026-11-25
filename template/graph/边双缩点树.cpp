@@ -5,10 +5,10 @@
 using namespace std;
 
 /*
-先用 EBCC::build 求完整边双分解。bel[u] 是点 u 所在分量（1..cnt），edges 是从 0 编号的原边表。
-返回桥森林的邻接表，每项为 {相邻分量, 原桥编号}。孤立分量保留，允许重边和自环。
-时间 O(n + m)，结果占 O(cnt + 桥数) 空间。
+由完整的边双分量构造桥森林，O(n + m)。bel[u] 从 1 编号，原边按输入顺序从 0 编号。
+邻接表保留原桥编号和孤立分量，允许重边、自环。
 */
+
 V < V < pair < int, int > > > bridge_tree(int cnt, const V < int > &bel,
                                           const V < pair < int, int > > &edges) {
     V < V < pair < int, int > > > tree(cnt + 1);

@@ -7,12 +7,7 @@ typedef unsigned long long ull;
 
 using namespace std;
 
-/*
-点编号 1..n。WDSU 的 merge(u, v, w) 约束 value[v] - value[u] = w。
-XDSU 对应 value[u] ^ value[v] = w。merge 遇到矛盾返回 false。
-query(u, v, ans) 连通时写入同方向的差值或异或值，否则返回 false。
-操作均摊 O(α(n))，空间 O(n)。差值运算用 ll，注意累加范围。
-*/
+// 维护点对的差值或异或约束，操作均摊 O(α(n))。差值累加须放入 ll。
 
 struct WDSU {
     V < int > fa, siz;
@@ -90,6 +85,10 @@ struct XDSU {
 };
 
 /*
-WDSU dsu(n); bool ok = dsu.merge(u, v, w);
-ll d; bool connected = dsu.query(u, v, d);
+WDSU d; d.init(3); bool ok = d.merge(1, 2, 7); // value[2] - value[1] = 7，矛盾时失败
+ll w; if (d.query(1, 2, w)) cout << w;        // 不连通时失败
+int root = d.find(1);
+XDSU x; x.init(3); x.merge(1, 2, 5);         // value[1] ^ value[2] = 5
+ull v; if (x.query(1, 2, v)) cout << v;
+int xr = x.find(1);
 */

@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-每次加入一种物品，体积 w > 0，价值 v 可为负，最多选 cnt 件。原地更新 dp[0..容量]。
-要求恰好装满时，初始 dp[0] = 0，其余填 neg。只限制总体积时，初始全填 0。
-neg 表示不可达，其余中间量须能放进 ll。每种物品耗时 O(容量)，额外空间 O(容量 / w + 1)。
+原地加入一种限量物品，w > 0，价值可负，每种 O(容量)。
+恰好装满时除 dp[0] 外初始化为 neg；只限制总体积时全填 0。中间量须放入 ll。
 */
+
 void bounded_knapsack(V < ll > &dp, int w, ll v, int cnt,
                       ll neg = -(1ll << 62)) {
     int n = int(dp.size()) - 1;

@@ -7,11 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-对 a[1..n] 做区间加、查区间和，区间含两端。空区间的和为 0，累加用 ll。
-first_ge、last_ge 找 [l, r] 内第一个、最后一个值 >= v 的位置，找不到返回 -1。
-kth(k) 找前缀和首次达到 k 的位置。所有元素须非负，k 越界返回 -1。
-建树 O(n)，单次修改或查询 O(log n)，空间 O(n)。
+区间加、区间和、区间内按值搜索，a[1..n]，和须放入 ll。按前缀和找第 k 项须保证各项非负。
+建树 O(n)，单次修改和查询 O(log n)。
 */
+
 struct SegTree {
     int n = 0;
     V < ll > sum, mx, lazy;
@@ -134,6 +133,8 @@ struct SegTree {
 };
 
 /*
-SegTree st; st.init(a); st.modify(l, r, v); ll ans = st.query(l, r);
-int first = st.first_ge(l, r, v), last = st.last_ge(l, r, v), id = st.kth(k);
+SegTree st; st.init({0, 2, 1, 5}); st.modify(1, 2, 1);
+ll sum = st.query(1, 3); // 10
+int l = st.first_ge(1, 3, 3), r = st.last_ge(1, 3, 3); // 首、末个 >= 3 的位置
+int p = st.kth(4); // 前缀和首次达到 4 的位置。三种搜索失败均为 -1
 */

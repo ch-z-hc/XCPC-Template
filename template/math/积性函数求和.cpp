@@ -7,10 +7,9 @@ typedef long long ll;
 using namespace std;
 
 /*
-求积性函数 f 在 1..n 的和，f(1) = 1，素数处须能写成 c[0] + c[1]p + c[2]p²。
-sum(c, f) 的回调接收 p 和 e，返回 f(p^e)，e = 1 时须与 c 给出的值一致。
-0 <= n <= 10^12，2 <= mod <= INT_MAX。sum 的结果取模，pi() 返回素数个数的原值。
-init 后可多次 sum。回调 O(1) 时，常用时间估计 O(n^(3/4) / log n)，空间 O(sqrt(n))。
+求积性函数 f 的前缀和，f(1) = 1，f(p) 须为 c[0] + c[1]p + c[2]p²。
+0 <= n <= 10^12，2 <= mod <= INT_MAX。
+素数幂回调 O(1) 时，常用时间估计 O(n^(3/4) / log n)，空间 O(sqrt(n))。
 */
 
 struct Min25 {
@@ -106,6 +105,6 @@ struct Min25 {
 };
 
 /*
-Min25 sieve; sieve.init(n, mod);
-ll ans = sieve.sum({2, 0, 0}, [](ll, int e) -> ll { return e + 1; }); // 约数个数之和
+Min25 sieve; sieve.init(100, 1000000007); ll primes = sieve.pi(); // 素数个数原值
+ll sum = sieve.sum({2, 0, 0}, [](ll, int e) -> ll { return e + 1; }); // 约数个数和取模
 */

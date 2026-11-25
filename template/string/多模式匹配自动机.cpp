@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-模式串和文本都用小写字母，模式串须非空。先插入全部模式串，再 build，之后可查多个文本。
-insert 返回从 0 开始的编号。query(s)[id] 是该模式串在 s 中的出现次数。再插串要重新 build。
-设有 S 个节点、p 个模式串，建表 O(26S)，查询 O(|s| + S + p)，空间 O(26S + p)。
+小写字母多模式匹配，模式非空，先插入再建表，追加模式后须重建。
+S 个节点、p 个模式串，建表 O(26S)，单次文本查询 O(|s| + S + p)。
 */
+
 struct AC {
     struct Node {
         array < int, 26 > ch{}, go{};
@@ -82,7 +82,7 @@ struct AC {
 };
 
 /*
-AC ac; int id = ac.insert("aba");
-ac.build();
-auto cnt = ac.query("ababa"); // cnt[id] = 2
+AC ac; int id = ac.insert("aba"); ac.build();
+auto cnt = ac.query("ababa"); // 按插入编号取次数，cnt[id] = 2
+ac.clear();
 */

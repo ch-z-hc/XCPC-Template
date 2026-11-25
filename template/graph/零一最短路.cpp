@@ -4,10 +4,8 @@
 
 using namespace std;
 
-/*
-g[u] 存 {终点, 边权}，点编号 1..n，边权只能是 0 或 1。
-bfs01(g, s) 返回从 s 到各点的距离，不可达为 INT_MAX / 2。时间和空间 O(n + m)。
-*/
+// 边权只能是 0 或 1 的单源最短路，O(n + m)。邻接表按 {终点, 边权} 存储，不可达记 INT_MAX / 2。
+
 V < int > bfs01(const V < V < pair < int, int > > > &g, int s) {
     V < int > dis(g.size(), INT_MAX / 2), vis(g.size());
     deque < int > q;

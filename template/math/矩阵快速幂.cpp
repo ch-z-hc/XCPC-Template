@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-矩阵从 0 编号，不能为空。相乘时前者列数等于后者行数，求幂时底数必须是方阵。
-元素先化到 [0, mod)，1 < mod <= 2^31。指数 k 非负，0 次幂返回单位矩阵。
-n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))，空间 O(n²)。
+矩阵乘法要求维数相容，快速幂要求非空方阵、指数非负。元素先取模，1 < mod <= 2^31。
+n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
 */
 
 typedef V < V < ll > > Matrix;

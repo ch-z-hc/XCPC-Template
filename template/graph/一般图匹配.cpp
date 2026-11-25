@@ -4,10 +4,8 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n。solve() 从空匹配开始，返回最多能选多少条边。
-match[u] 是 u 的搭档，0 表示未匹配。自环跳过，重边只算一次。时间 O(n³)，空间 O(n²)。
-*/
+// 无向图最大基数匹配，O(n³)。自环跳过，重边只算一次。
+
 struct Blossom {
     int n = 0;
     V < V < char > > g;
@@ -93,6 +91,6 @@ struct Blossom {
 };
 
 /*
-Blossom g(n); g.add_edge(u, v);
+Blossom g; g.init(n); g.add_edge(u, v);
 int cnt = g.solve(); // 枚举匹配边时只取 u < g.match[u]
 */

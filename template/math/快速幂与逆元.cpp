@@ -7,11 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-pow_mod(a, b, mod) 支持负底数，指数非负，1 <= mod <= INT_MAX，耗时 O(log(b + 1))。
-下面两个逆元函数要求 mod 是质数。linear_inverse(n, mod) 求 1..n 的逆元，须有 n < mod。
-batch_inverse(a, mod) 按原顺序返回每项的逆元，各项都不能是 mod 的倍数。
-线性求逆耗时 O(n)，批量求逆 O(n + log mod)，空间均为 O(n)。
+模幂 O(log(b + 1))，b 非负，1 <= mod <= INT_MAX。
+求逆元须用质数模。连续求逆要求 n < mod，O(n)；批量求逆要求每项模 mod 非零，O(n + log mod)。
 */
+
 ll pow_mod(ll a, unsigned long long b, ll mod) {
     a %= mod;
     if (a < 0) a += mod;
@@ -48,6 +47,7 @@ V < ll > batch_inverse(const V < ll > &a, ll mod) {
 }
 
 /*
-ll x = pow_mod(a, b, mod);
-auto inv = linear_inverse(n, mod); auto values = batch_inverse(a, mod);
+ll x = pow_mod(-2, 3, 7);
+auto inv = linear_inverse(4, 7);       // inv[i] 为 i 的逆元，1 <= i <= 4
+auto vals = batch_inverse({2, -3}, 7); // 按输入顺序
 */

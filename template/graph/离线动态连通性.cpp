@@ -5,10 +5,10 @@
 using namespace std;
 
 /*
-把加边、删边、询问按发生顺序记录，最后统一 solve。顶点编号 1..n，可加重边和自环。
-erase 一次只删一份，边必须存在。query 返回答案下标，solve()[id] 为 1 表示当时连通。
-可重复求解。q 次操作耗时 O(q log q log n)，空间 O(n + q log q)。
+按时间顺序加边、删边和询问连通性。允许重边、自环，每次删除一条已存在的边。
+q 次操作共 O(q log q log n)，时间线上的区间副本使空间达到 O(n + q log q)。
 */
+
 struct DynConn {
     struct Op { int type, u, v; };
     int n;
@@ -95,6 +95,6 @@ struct DynConn {
 };
 
 /*
-DynConn dc(n); dc.add(u, v); int id = dc.query(u, v);
+DynConn dc; dc.init(n); dc.add(u, v); int id = dc.query(u, v);
 dc.erase(u, v); auto ans = dc.solve();
 */

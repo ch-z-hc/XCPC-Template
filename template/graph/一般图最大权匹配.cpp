@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-无向图顶点编号 1..n。solve() 从头求最大总权，可以留点不匹配。match[u] 为搭档，未匹配时为 0。
-自环和非正权边跳过，重边取最大权。正权须满足 w <= LLONG_MAX / (8 * max(1, n))。
-时间 O(n³)，空间 O(n²)。来源 github.com/bqi343/cp-notebook 的 GeneralWeightedMatch.h，CC0-1.0。
+一般图最大权匹配，允许顶点未匹配。跳过自环及非正权边，重边取最大权。
+O(n³)，要求 w <= LLONG_MAX / (8 * max(1, n))。来源为 bqi343/cp-notebook，CC0-1.0。
 */
+
 struct WBlossom {
     struct Edge {
         int u = 0, v = 0;
@@ -251,6 +251,6 @@ struct WBlossom {
 };
 
 /*
-WBlossom g(n); g.add_edge(u, v, w);
+WBlossom g; g.init(n); g.add_edge(u, v, w);
 ll weight = g.solve(); // 枚举匹配边时只取 u < g.match[u]
 */

@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n，每条边加一次。find() 返回所有割点的编号，按从小到大排列。
-图可以不连通。时间和空间 O(n + m)。
-*/
+// 求无向图全部割点，O(n + m)。允许不连通，每条边只加一次，结果按点号递增。
 
 struct CutVertex {
     int n = 0, tim = 0;
@@ -50,7 +47,7 @@ struct CutVertex {
 };
 
 /*
-CutVertex cut(n);
+CutVertex cut; cut.init(n);
 cut.add_edge(u, v);
 V < int > ans = cut.find();
 */

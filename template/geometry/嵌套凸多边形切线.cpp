@@ -5,19 +5,11 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”，复用 P、db 和 cross。
-p、q 均为严格逆时针凸多边形，至少 3 点，无共线相邻边、无首尾重复。
-q 必须严格位于 p 内部；不检查前提，不接收无序点集。
-直接比较叉积；坐标差与叉积须在 db 的精度 / 数值范围内。
-旋转卡壳 O(n + m) 时间与空间（输入按值传入）；build 可重复调用。
-left[i] / right[i] 为 q 的 0-based 切点，范围 [0, m)。
-q 在 p[i] -> q[left[i]] 左侧，在 p[i] -> q[right[i]] 右侧，均含边界。
-切线贴合 q 的一条边时，取该边逆时针方向的后一个端点。
-l、r 长度为 2n，存展开下标，不取模：r[i+n] = r[i] + n，l 同理。
-对 0 <= i < n：i < r[i] < l[i] < i+n。
-i < j <= r[i] 时 q 全在 i -> j 左侧；l[i] <= j < i+n 时全在右侧。
-其余弦穿过 q 内部；相切合法。访问点用 p[j % n]，区间比较不能取模。
+先复制「点与向量」。对外多边形各顶点求内多边形切点及不穿过其内部的弦，O(n + m)。
+两多边形均严格凸、逆时针、至少 3 点，末尾不重复首点，内多边形严格在外多边形内部。
+直接比较叉积，坐标差和中间乘积须在 db 的精度范围内。
 */
+
 struct NestedHull {
     V < int > left, right, l, r;
 
@@ -60,3 +52,13 @@ struct NestedHull {
         }
     }
 };
+
+/*
+V < P > p{{0, 0}, {6, 0}, {6, 6}, {0, 6}}, q{{2, 2}, {4, 2}, {3, 4}};
+NestedHull hull; hull.build(p, q);
+int i = 0, n = p.size();
+P a = q[hull.left[i]], b = q[hull.right[i]]; // q 在 p[i] -> a 左侧、p[i] -> b 右侧
+// 贴边切点取逆时针后端点。弦 i -> j 用展开下标判断，仅在取点时对 n 取模。
+for (int j = i + 1; j <= hull.r[i]; ++ j) cout << p[j % n]; // q 全在弦左侧，含边界
+for (int j = hull.l[i]; j < i + n; ++ j) cout << p[j % n]; // q 全在弦右侧，含边界
+*/

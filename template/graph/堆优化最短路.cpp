@@ -8,11 +8,8 @@ using namespace std;
 
 typedef V < V < pair < int, ll > > > Graph;
 
-/*
-从 s 出发求最短路。点编号 1..n，g[u] 存 {终点, 边权}，所有边权须非负。
-不可达点的 dis 为 inf。有限距离须小于 inf，松弛时 d + w 不能溢出 ll。
-二叉堆可保存重复项，时间 O((n + m) log(n + m))，空间 O(n + m)。
-*/
+// 非负边权单源最短路，O((n + m) log(n + m))。不可达记 inf，有限距离 < inf，松弛和须放入 ll。
+
 V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     int n = int(g.size()) - 1;
     V < ll > dis(n + 1, inf);

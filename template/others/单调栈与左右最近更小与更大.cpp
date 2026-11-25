@@ -6,10 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-对 a[1..n] 找每个位置左右最近的严格更小元素，传 true 改找严格更大元素。
-返回下标，左边找不到记 0，右边找不到记 n + 1。相等的值跳过。时间和空间 O(n)。
-*/
+// 求 a[1..n] 各点左右最近的严格更小或更大元素，O(n)。左、右无解分别记 0、n + 1。
+
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
                                               bool greater = false) {
     int n = int(a.size()) - 1;
@@ -30,4 +28,7 @@ pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
     return {left, right};
 }
 
-// auto [left, right] = monotonic_bounds(a);
+/*
+V < ll > a{0, 3, 1, 2};
+auto [l, r] = monotonic_bounds(a); auto greater = monotonic_bounds(a, true);
+*/

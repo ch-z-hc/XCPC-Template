@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-bm(s, mod) 求序列前缀的最短递推，rec[i] 是 s[n - 1 - i] 的系数。mod 须为质数且 <= 2^31。
-kth(init, rec, k, mod) 求从 0 数的第 k 项，init 至少给前 d 项，d 是递推阶数。
-输入系数先化到 [0, mod)。n 项求递推 O(n² + n log mod)，求第 k 项 O(d² log(k + 2))。
+质数模下求序列前缀的最短递推及第 k 项，mod <= 2^31，输入系数先取模。
+n 项求递推 O(n² + n log mod)，d 阶递推求第 k 项 O(d² log(k + 2))。
 */
 
 static ll bm_norm(ll x, ll mod) {
@@ -96,6 +95,6 @@ ll kth(const V < ll > &init, const V < ll > &rec,
 }
 
 /*
-V < ll > rec = bm(s, mod);
-ll ans = kth(init, rec, k, mod);
+V < ll > s{0, 1, 1, 2, 3, 5}; auto rec = bm(s, 17); // rec[i] 乘前第 i + 1 项
+ll ans = kth({0, 1}, rec, 7, 17); // k 从 0 数，初值至少给前 d 项
 */

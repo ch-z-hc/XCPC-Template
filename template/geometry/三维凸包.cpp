@@ -6,21 +6,10 @@
 using namespace std;
 
 /*
-独立三维片段；p 与外向三角面 faces 使用原输入的 0-based 编号。
-build(ps, eps, integer, seed) 可重复调用；默认保留浮点接口。
-随机增量 + 冲突图，期望 O(n log n)；并非仅打乱后扫描所有面。
-成品凸包空间 O(n)，工作冲突表最坏 O(n²)，不承诺最坏线性内存。
-dim 为 -1 / 0 / 1 / 2 / 3：空 / 点 / 线 / 面 / 体。
-dim < 3 时 faces 为空，area / volume 为 0，不计算平面凸包面积。
-支持重复点与共面面片，不扰动输入；eps 是距离容差，默认 1e-9。
-浮点模式只适合有限坐标、尺度适中、非零距离明显大于容差与舍入误差的数据。
-integer = 1 使用 __int128 精确判向，忽略 eps；P3 仍保存原输入。
-浮点过滤仅在符号超过舍入误差界时返回，否则精确计算；不要用 -ffast-math。
-此模式要求 long double 至少 64 位有效二进制位，坐标为 |值| <= 1e18 的整数，
-三轴坐标跨度 Rx、Ry、Rz 满足 Rx * Ry * Rz <= 1e35，避免整数溢出。
-面积、体积仍是浮点近似；整数缓存 ip 不供调用方修改。
-若退化边界触发 fallback，改用 O(n² log n) 的朴素算法，快速界不再适用。
-期望界针对随机排列；seed 可传 random_device{}()，默认固定种子便于复现。
+求三维凸包的外向三角面、表面积和体积。随机增量期望 O(n log n)，冲突表最坏占 O(n²) 空间。
+退化边界可能触发 O(n² log n) 回退。面积、体积各遍历一次面表；共面及更低维时均为 0。
+浮点模式用距离容差，要求坐标有限且非零距离可分辨。整数模式要求 |坐标| <= 1e18，
+三轴跨度之积 <= 1e35，long double 有效位至少 64 位，禁用 -ffast-math。
 */
 
 struct P3 {
@@ -261,3 +250,16 @@ struct Hull3D {
         return fabsl(ans);
     }
 };
+
+/*
+V < P3 > ps{{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+Hull3D hull; hull.build(ps);             // 浮点坐标，默认距离容差 1e-9
+hull.build(ps, 0, true, 42);            // 整数坐标精确判向，最后一项为随机种子
+db surface = hull.area(), volume = hull.volume();
+if (hull.dim == 3) {
+    auto f = hull.faces[0]; P3 normal = hull.normal(f); // f.a、f.b、f.c 为原点集下标
+    P3 edge = ps[f.b] - ps[f.a]; db len = edge.abs();
+    P3 cross_product = edge.det(normal); db dot_product = edge.dot(normal);
+    P3 mid = (ps[f.a] + ps[f.b]) / 2; db z = (mid * 2).at(2);
+}
+*/

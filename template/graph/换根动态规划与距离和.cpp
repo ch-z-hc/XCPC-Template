@@ -6,10 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-返回 sum[u]，即点 u 到树上所有点的距离之和。输入是编号 1..n 的连通树，边权可为负。
-距离、乘积和累加结果用 ll。两遍 DFS 共 O(n)，长链递归深度 O(n)。
-*/
+// 求树上每个点到所有点的距离和，O(n)。输入为 1-based 连通树，可有负边权，距离及乘积须放入 ll。
 
 typedef V < V < pair < int, ll > > > Graph;
 

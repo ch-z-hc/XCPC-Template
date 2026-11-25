@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-统计值域 [1, n] 内各值的个数。0 是空根，计数须非负，总数要能放进 ll。
-split(a, l, r) 从 a 中取走 [l, r] 并返回新根。merge(a, b) 把 b 并入 a，再清空 b。
-两棵树不能共用节点。合并耗时与重叠节点数有关，其余操作 O(log n)，节点不回收。
+维护值域 [1, n] 的多重集，根 0 表示空集。计数非负，总数须放入 ll。
+合并的两棵树不能共用节点。合并耗时与重叠节点数成正比，其余操作 O(log n)，节点不回收。
 */
+
 struct MergeSegTree {
     struct Node {
         int ls = 0, rs = 0;
@@ -96,6 +96,9 @@ struct MergeSegTree {
 };
 
 /*
-MergeSegTree st(n); int a = 0; st.add(a, x, cnt);
-int b = st.split(a, l, r); st.merge(a, b); ll sum = st.query(a, l, r);
+MergeSegTree st; st.init(10); int a = 0;
+st.add(a, 3, 2); st.add(a, 6, 1);
+int b = st.split(a, 2, 4); // 从 a 取走 [2, 4]
+ll cnt = st.query(b, 1, 5); int x = st.kth(b, 2);
+st.merge(a, b); // 并入 a，b 清零
 */

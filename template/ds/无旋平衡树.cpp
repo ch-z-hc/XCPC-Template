@@ -7,11 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-Treap 存可重集。erase 只删一份，rank(x) 是小于 x 的个数加 1，kth 从 1 数。
-pre、suf 查严格前驱、后继。erase、kth、pre、suf 找不到时返回 false。
-SeqTreap 维护序列，位置从 1 数，区间两端都包含。insert(pos, x) 插在原 pos 前，
-追加时传 size() + 1。区间和用 ll。两种树都可用 init 清空，删除时保留节点。
-每次操作期望 O(log n)，最坏 O(n)，空间随插入次数增长。
+Treap 维护可重集，SeqTreap 维护可翻转序列。排名、位置从 1 数，序列区间闭合，和须放入 ll。
+操作期望 O(log n)，最坏 O(n)。删除不回收节点，空间随累计插入次数增长。
 */
 
 struct Treap {
@@ -204,8 +201,13 @@ struct SeqTreap {
 };
 
 /*
-Treap t; t.insert(3); t.insert(3); t.erase(3);
-ll x; bool ok = t.kth(1, x); // x = 3
-SeqTreap s; s.insert(1, 2); s.insert(2, 5); s.reverse(1, 2);
-ll sum = s.query(1, 2), val = s.at(1);
+Treap t; t.insert(3); t.insert(5); bool erased = t.erase(3); // 只删一份
+int n = t.size(), r = t.rank(5); // 比 5 小的元素个数 + 1
+ll x; if (t.kth(1, x)) cout << x;
+if (t.pre(6, x)) cout << x; // 严格前驱
+if (t.suf(4, x)) cout << x; // 严格后继
+t.init();
+SeqTreap s; s.insert(1, 2); s.insert(s.size() + 1, 5);
+s.reverse(1, 2); ll sum = s.query(1, 2), val = s.at(1);
+s.erase(1); s.init();
 */

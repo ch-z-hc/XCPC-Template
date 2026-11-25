@@ -10,10 +10,9 @@ using namespace std;
 typedef complex < ld > Complex;
 
 /*
-系数从常数项开始放。fft 要求长度是 2 的幂，fft_mul 自动补长，最后把结果四舍五入到整数。
-浮点版建议长度 <= 2^20，min(|a|, |b|) * max|a[i]| * max|b[i]| <= 10^12。精度取决于平台。
-要求精确模卷积时用 conv_mod，模数为任意正 int，支持负系数。三模 NTT 的变换长度不能超过 2^21。
-任一输入为空时卷积返回空数组。变换长度为 n 时，时间 O(n log n)，空间 O(n)。
+整数卷积可用浮点 FFT，精确模卷积用三模 NTT。低次系数在前，变换长度 n 为 2 的幂，时间 O(n log n)。
+浮点版建议 n <= 2^20 且 min(|a|, |b|) * max|a[i]| * max|b[i]| <= 10^12，精度依赖平台。
+精确版支持负系数和任意正 int 模数，要求补长后 n <= 2^21。
 */
 
 void fft(V < Complex > &a, bool inv = false) {
@@ -126,7 +125,7 @@ V < int > conv_mod(const V < ll > &a, const V < ll > &b, int mod) {
 }
 
 /*
+V < Complex > v{1, 2, 3, 0}; fft(v); fft(v, true); // 原地正、逆变换
 V < ll > a{1, -2, 3}, b{4, 5};
-auto c = fft_mul(a, b);
-auto d = conv_mod(a, b, 1000000007);
+auto c = fft_mul(a, b); auto d = conv_mod(a, b, 1000000007);
 */

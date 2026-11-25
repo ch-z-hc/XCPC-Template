@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-每行须等长。query(x1, y1, x2, y2) 取闭矩形的双模哈希，行列都从 0 数。
-空矩形返回 {0, 0}。比较两个矩形时先比尺寸，再比哈希值，仍有碰撞的可能。
-建表时间和空间 O(nm)，查询 O(1)。
+字节矩阵的双模哈希，各行须等长。建表 O(nm)，闭矩形查询 O(1)。
+坐标从 0 数，空矩形哈希为 {0, 0}。比较前先看尺寸，相同哈希可能碰撞。
 */
+
 struct Hash2D {
     struct Table {
         static const ll bx = 911382323, by = 972663749;

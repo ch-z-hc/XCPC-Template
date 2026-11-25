@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-无向图顶点编号 1..n。每条边只加一次，可有重边和自环。边权非负，总和须小于 LLONG_MAX。
-solve 返回 {最小割权值, 割的一侧顶点}，可重复调用。图不连通时割权为 0，点数不足 2 返回 {0, {}}。
-时间 O(n³)，空间 O(n²)。
+无向图全局最小割，O(n³)。每条边只加一次，边权非负且总和小于 LLONG_MAX。
+不连通时割权为 0，点数不足 2 时返回 {0, {}}。
 */
+
 struct MinCut {
     int n;
     V < V < ll > > g;
@@ -66,6 +66,6 @@ struct MinCut {
 };
 
 /*
-MinCut g(n); g.add_edge(u, v, w);
+MinCut g; g.init(n); g.add_edge(u, v, w);
 auto [ans, side] = g.solve();
 */

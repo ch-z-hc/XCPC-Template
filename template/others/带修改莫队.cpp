@@ -5,11 +5,10 @@
 using namespace std;
 
 /*
-按时间顺序记录单点修改和闭区间查询，数组从 1 数。add 和 del 接收元素值，answer(id) 保存答案。
-每次 solve 前清空自己的统计量，操作记录可重复用。统计不同值时，初始值和修改值要一起离散化。
-块长 B 约为 n^(2/3)。q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
-空间 O(n + q + u)，另加题目的统计量。
+离线处理单点修改和闭区间查询，1-based，增删按值。每次求解前清空统计量，离散化须包含修改值。
+块长 B 约为 n^(2/3)，q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
 */
+
 struct MoModify {
     struct Change { int p, before, after; };
     struct Query { int l, r, t, id; };

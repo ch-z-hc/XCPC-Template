@@ -6,11 +6,8 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”“直线与线段”。
-简单多边形按边界顺序给点，0-based。
-area、contain、convexCut 时间 O(n)；convexCut 要求输入为凸多边形。
-浮点采用 EPS；area 是有向面积，逆时针为正，切割保留直线左侧。
-area 以首点为原点减少大坐标相消；仍须保证输入坐标能保留所需精度。
+先复制「点与向量」「直线与线段」。简单多边形按边界顺序给点，坐标须保留所需精度。
+有向面积、一般包含查询、凸多边形切割 O(n)。有序严格凸多边形的包含查询 O(log n)。
 */
 
 db area(V < P > ps) {
@@ -81,3 +78,10 @@ V < P > convexCut(V<P> ps, P q1, P q2) {
     }
     return qs;
 }
+
+/*
+V < P > ps{{0, 0}, {3, 0}, {0, 3}}; P q{1, 1};
+db signed_area = area(ps); // 逆时针为正
+int state = contain(ps, q), fast = containConvex(ps, q); // 0 外部、1 边界、2 内部
+auto cut = convexCut(ps, {1, 0}, {1, 1}); // 保留有向直线左侧，输入须为凸多边形
+*/

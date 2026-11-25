@@ -4,6 +4,11 @@
 
 using namespace std;
 
+/*
+平面向量运算、方向判断和极角比较均为 O(1)，极角排序 O(n log n)。
+相等判断用 EPS；排序直接比较坐标和叉积。取单位向量、指定起始射线时方向须非零。
+*/
+
 #define db long double
 // #define db long long
 
@@ -86,11 +91,18 @@ auto polar_cmp(P dir, bool include = true) {
 }
 
 /*
-用法：从射线 o -> q 开始，绕 o 逆时针排序，o 与 q 不重合。
-与 o 重合的点始终排在最前。其余点按下面两种规则任选其一：
+P o{0, 0}, q{2, 0}, p{1, 1}; P u = q - o, v = p - o;
+P mid = (p + q) / 2, twice = u * 2; cout << mid;
+bool equal = p == q, before = p < q; int sx = sign(p.x), order = cmp(p.x, q.x);
+db len = u.abs(), squared = u.abs2(), dist = p.distTo(q);
+db dot = u.dot(v), det = u.det(v), angle = rad(u, v), arg = v.alpha();
+db twice_area = cross(o, q, p); int side = crossop(o, q, p);
+P unit = u.unit(), normal = u.rot90(), rotated = u.rot(angle);
+int half = v.quadX(); bool earlier = polar_cmpX(u, v); // 从正 X 轴起的半区、极角序
+
+// 从射线 o -> q 开始，绕 o 逆时针排序；与 o 重合的点始终最先。
+V < P > ps{p, o, q};
 auto by_angle = polar_cmp(q - o, true);      // 起始射线上的点最先，true 可省略
 // auto by_angle = polar_cmp(q - o, false);  // 起始射线上的点最后
-sort(ps.begin(), ps.end(), [&](P a, P b) {
-    return by_angle(a - o, b - o);
-});
+sort(ps.begin(), ps.end(), [&](P a, P b) { return by_angle(a - o, b - o); });
 */

@@ -7,11 +7,11 @@ typedef unsigned long long ull;
 using namespace std;
 
 /*
-先复制「多项式基本运算」的 FPS。固定模 998244353，系数先化到 [0, mod)，低次项在前。
-bostan_mori(P, Q, k) 取 P/Q 的 x^k 系数。Q[0] 不能为 0，P 可为空，两者长度均不超过 2^22。
-linear_kth 中 rec[i] 乘 a[n - 1 - i]。init 给前 d 项，与 rec 等长，d < 2^22，零阶视作零序列。
-k 从 0 数，可取任意 ull。设 D 为多项式最大长度，时间 O(D log(D + 1) log(k + 2))，空间 O(D)。
+先复制「多项式基本运算」。求有理生成函数系数或线性递推第 k 项，k 从 0 数，可取任意 ull。
+固定模 998244353，低次系数在前且已取模。P、Q 长度 <= 2^22，Q[0] 非零。
+递推初值和系数等长，阶数 d < 2^22。多项式最大长度为 D 时耗时 O(D log(D + 1) log(k + 2))。
 */
+
 int bostan_mori(V < int > p, V < int > q, ull k) {
     assert(! q.empty() && q[0]);
     while (k && ! p.empty()) {

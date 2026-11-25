@@ -5,9 +5,8 @@
 using namespace std;
 
 /*
-kmp(s, t) 在文本 s 中找模式串 t，按从左到右的顺序返回起点，下标从 0 数。
-匹配可重叠。t 为空时返回 0 到 s.size() 的所有位置。
-时间 O(|s| + |t|)，除答案外占 O(|t|) 空间。
+求模式串前缀函数及其在文本中的全部匹配位置，O(|s| + |t|)。匹配可重叠，下标从 0 数。
+空模式匹配 0..|s| 的全部位置。
 */
 
 V < int > get_pi(const string &t) {
@@ -40,4 +39,4 @@ V < int > kmp(const string &s, const string &t) {
     return ans;
 }
 
-// auto pos = kmp("ababa", "aba"); // {0, 2}
+// auto pi = get_pi("aba"); auto pos = kmp("ababa", "aba"); // {0, 0, 1}、{0, 2}

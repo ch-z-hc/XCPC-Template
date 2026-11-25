@@ -7,10 +7,11 @@ typedef long long ll;
 using namespace std;
 
 /*
-dc_dp 用已算好的上一层 prev 求新一层：cur[i] = min(prev[j] + cost(j + 1, i))，0 <= j < i。
-要求最左最优决策随 i 不减。不可达填 inf，有限转移须小于 inf 且能放进 ll。
-cost 接收闭区间 [l, r]。若求一次费用是 O(1)，一层耗时 O(n log n)，空间 O(n)。
+分治求一层分段 DP，二分栈求顺序递推，均取最小值。区间费用 O(1) 时两者均为 O(n log n)。
+分治要求最左最优决策不减；二分栈要求较晚决策一旦严格占优，此后始终严格占优。
+费用传 1-based 闭区间，有限转移须放入 ll；分层 DP 的不可达状态填 inf，有限值须小于 inf。
 */
+
 template < class Cost >
 V < ll > dc_dp(const V < ll > &prev, Cost cost, ll inf = (1ll << 62)) {
     int n = int(prev.size()) - 1;
@@ -34,7 +35,7 @@ V < ll > dc_dp(const V < ll > &prev, Cost cost, ll inf = (1ll << 62)) {
 n >= 0，cost(l, r) 为 1-based 闭区间费用，所有状态可达。
 对任意 a < b，若 b 在某个 i > b 严格优于 a，则在所有更大 i 上仍严格更优。
 四边形不等式可保证此条件；仅有最终最优决策单调还不够。
-同值保留较小决策；cost 为 O(1) 时 O(n log n) 时间、O(n) 空间。
+同值保留较小决策；cost 为 O(1) 时 O(n log n) 时间。
 所有费用与转移之和须在 ll 范围内；cost 不得依赖尚未算出的状态。
 */
 template < class Cost >

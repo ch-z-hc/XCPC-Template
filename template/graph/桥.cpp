@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n，给每条边分配唯一编号 1..m，重边也要分开编号。
-find() 按编号递增返回所有桥。时间和空间 O(n + m)。
-*/
+// 求无向图全部桥，O(n + m)。边须有唯一编号 1..m，重边分别编号，返回的边号递增。
 
 struct Bridge {
     int n = 0, tim = 0;
@@ -52,7 +49,7 @@ struct Bridge {
 };
 
 /*
-Bridge bridge(n);
+Bridge bridge; bridge.init(n);
 bridge.add_edge(id, u, v);
 V < int > ans = bridge.find();
 */

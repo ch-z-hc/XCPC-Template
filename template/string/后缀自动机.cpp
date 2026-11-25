@@ -6,11 +6,8 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-只接收小写字母。build(s) 重建，extend(c) 在末尾追加一个字符。
-count() 按状态返回出现次数。query() 在至少出现两次的子串中求「长度 × 出现次数」的最大值。
-可以重复查询。建树、统计各 O(n)，空间 O(26n)。
-*/
+// 小写字母后缀自动机，支持末尾追加、子串出现次数统计。建树、统计、求最大「长度 × 次数」均为 O(n)。
+
 struct SAM {
     struct Node {
         array < int, 26 > ch{};
@@ -87,7 +84,8 @@ struct SAM {
 };
 
 /*
-SAM sam;
-sam.build(s);
-ll ans = sam.query();
+SAM sam; sam.build("aba"); sam.extend('b');
+auto cnt = sam.count(); // cnt[u] 为状态 u 的出现次数
+ll best = sam.query();  // 只考虑至少出现两次的子串
+sam.clear();
 */

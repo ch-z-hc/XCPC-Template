@@ -47,7 +47,7 @@ struct Fenwick {
 };
 
 /*
-Fenwick bit(a);
-bit.add(x, v);
-ll sum = bit.query(l, r);
+Fenwick bit; bit.init({0, 2, 5}); bit.add(1, 3);
+ll pre = bit.query(1), sum = bit.query(1, 2);
+bit.init(2); // 重置为全 0
 */

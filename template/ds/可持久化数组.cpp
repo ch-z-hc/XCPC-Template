@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-用 a[1..n] 初始化，st.root 是初始根。modify 在指定版本上改一个值，返回新根。
-旧版本仍可查，也可从旧根另开分支。init 会清空所有版本，空数组不能修改或查询。
-建树 O(n)，单次修改或查询 O(log n)，每次修改新增 O(log n) 个节点。
+支持在任意旧版本上单点赋值和查询，数组从 1 编号。初始化会清空版本，空数组不可读写。
+建树 O(n)，修改、查询 O(log n)，每次修改新增 O(log n) 个节点。
 */
+
 struct PArray {
     struct Node {
         int l = 0, r = 0;

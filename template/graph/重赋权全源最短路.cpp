@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-有向图顶点编号 1..n，允许负边、重边和自环。solve(dis) 遇到任意负环就返回 false。
-成功时 dis[u][v] 是最短距离，不可达为 inf。边权须满足 n * max|w| < inf / 4，可重复求解。
-时间 O(nm + n(n + m) log(n + m))，含答案矩阵的空间 O(n² + m)。
+含负边的有向图全源最短路，遇负环失败，不可达记 inf。要求 n * max|w| < inf / 4。
+时间 O(nm + n(n + m) log(n + m))。
 */
+
 struct Johnson {
     static const ll inf = 1ll << 62;
     struct Edge {
@@ -75,6 +75,6 @@ struct Johnson {
 const ll Johnson::inf;
 
 /*
-Johnson g(n); g.add_edge(u, v, w);
+Johnson g; g.init(n); g.add_edge(u, v, w);
 V < V < ll > > dis; bool ok = g.solve(dis);
 */

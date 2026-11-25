@@ -8,11 +8,10 @@ typedef unsigned long long ull;
 using namespace std;
 
 /*
-to[u] 是点 u 唯一的后继，点编号 1..n。jump(u, k) 沿出边走 k 步，k 可取任意 ull。
-dis(u, v) 返回从 u 到 v 的步数，不可达为 -1。entry、dep 分别是入环点和到环的步数。
-cycles 按出边顺序列环，bel 是从 0 开始的环号，pos 是环内下标，非环点为 -1。
-build 可重建，反向树用递归。建表时间和空间 O(64n)，跳跃或查距离 O(64)。
+每个顶点恰有一条出边，分解环和入环树，支持跳 k 步及有向距离查询。
+1-based，k 可取任意 ull。预处理 O(64n)，每点存 64 级后继，两种查询 O(64)。
 */
+
 struct FuncGraph {
     int n = 0;
     V < V < int > > g, cycles;
@@ -79,6 +78,8 @@ struct FuncGraph {
 };
 
 /*
-FuncGraph graph; graph.build({0, 2, 3, 2});
-int v = graph.jump(1, 100); ll d = graph.dis(1, 3);
+FuncGraph g; g.build({0, 2, 3, 2});
+int v = g.jump(1, 100); ll d = g.dis(1, 3); // 不可达时 d 为 -1
+int entry = g.entry[1], steps = g.dep[1]; // 入环点、到环步数
+auto cycle = g.cycles[g.bel[1]]; // 沿出边列环，pos[u] 为环内位置，非环点为 -1
 */

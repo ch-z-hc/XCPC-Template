@@ -6,10 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-要查 C(n, k)，先用最大 n 建表。要求 0 <= n < mod，mod 是不超过 2^31 的质数。
-choose 遇到 k 越界或 n 超出表长都返回 0。建表 O(n + log mod)，查询 O(1)，空间 O(n)。
-*/
+// 质数模下预处理组合数，0 <= n < mod <= 2^31。建表 O(n + log mod)，查询 O(1)，超出表长返回 0。
 
 struct Comb {
     ll mod = 1;

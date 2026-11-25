@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-对 a[l..r] 做 a[i] = a[i] * mul + add，查询区间和。数组从 1 开始，结果对 mod 取模。
-参数可为负，1 <= mod <= INT_MAX。整段赋值为 v 时传 mul = 0、add = v。
-建树 O(n)，修改和查询 O(log n)，空间 O(n)。
+区间仿射变换和区间和，a[1..n]，1 <= mod <= INT_MAX，参数可负。
+建树 O(n)，修改和查询 O(log n)。
 */
+
 struct AffineSeg {
     int n = 0;
     ll mod = 1;
@@ -84,6 +84,7 @@ struct AffineSeg {
 };
 
 /*
-AffineSeg st; st.init(a, mod); st.modify(l, r, mul, add);
-ll ans = st.query(l, r);
+AffineSeg st; st.init({0, 2, 3}, 17);
+st.modify(1, 2, 2, 1); // 每项变为 2x + 1，赋值为 v 时传 0, v
+ll sum = st.query(1, 2); // 12
 */

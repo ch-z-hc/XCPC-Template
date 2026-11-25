@@ -5,9 +5,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-求满足 a^x 与 b 模 mod 同余的最小非负 x，无解返回 -1。约定 a^0 = 1。
-a 与 mod 互质时可用 bsgs，一般情况用 exbsgs。1 <= mod <= INT_MAX。
-使用哈希表，期望时间和空间 O(sqrt(mod))。
+求满足 a^x 与 b 模 mod 同余的最小非负 x，1 <= mod <= INT_MAX，约定 a^0 = 1，无解返回 -1。
+哈希表的期望时间与空间均为 O(sqrt(mod))。
 */
 
 ll bsgs_inv(ll a, ll mod) {
@@ -62,4 +61,7 @@ ll exbsgs(ll a, ll b, ll mod) {
     return ans == -1 ? -1 : ans + cnt;
 }
 
-// ll x = exbsgs(a, b, mod);
+/*
+ll x = bsgs(2, 3, 5);    // 要求底数与模数互质
+ll y = exbsgs(2, 4, 8);  // 允许不互质
+*/

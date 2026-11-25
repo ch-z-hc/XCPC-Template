@@ -7,8 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-先用小质数 p 建阶乘表，再求大 n 的 C(n, k) mod p。n、k 用非负 ll。
-建表时间和空间 O(p)，查询 O(log_p(n + 1))。选用前先看 p 大小能否开表。
+求 C(n, k) mod p，n、k 为非负 ll，p 为可建阶乘表的小质数。
+预处理 O(p)，查询 O(log_p(n + 1))。
 */
 
 struct Lucas {

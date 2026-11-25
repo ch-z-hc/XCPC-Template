@@ -6,11 +6,10 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”“直线与线段”。
-半平面交，时间 O(n log n)，空间 O(n)。直线均保留左侧。
-返回有正面积的有界交集，顶点逆时针；无界、无解或退化为线 / 点均返回空。
-需要限制范围时，显式添加边界矩形。
+先复制「点与向量」「直线与线段」。求有向直线左侧的交集，O(n log n)。
+只返回有正面积的有界多边形；无界、空集、点、线段均返回空。需要裁剪时加入边界矩形。
 */
+
 V < P > half_plane(V < Line > lines) {
     sort(lines.begin(), lines.end(), [](const Line &a, const Line &b) {
         return a.ang < b.ang;
@@ -55,3 +54,8 @@ V < P > half_plane(V < Line > lines) {
         area += (ans[i] - ans[0]).det(ans[i + 1] - ans[0]);
     return area > EPS ? ans : V < P >{};
 }
+
+/*
+P a{0, 0}, b{2, 0}, c{0, 2};
+auto polygon = half_plane({Line(a, b), Line(b, c), Line(c, a)}); // 逆时针顶点
+*/

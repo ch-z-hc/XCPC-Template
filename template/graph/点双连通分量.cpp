@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n，可有重边，不能有自环。build 后 bcc[i].v 存点，bcc[i].e 存边。
-割点可出现在多个点双里，孤立点自成一块。边按加入顺序从 0 编号。时间和空间 O(n + m)。
-*/
+// 无向图点双分解，O(n + m)。允许重边，不能有自环，孤立点自成一块。边按加入顺序从 0 编号。
 
 struct VBCC {
     struct Block {
@@ -96,7 +93,7 @@ struct VBCC {
 };
 
 /*
-VBCC vbcc(n);
+VBCC vbcc; vbcc.init(n);
 vbcc.add_edge(u, v);
-vbcc.build();
+vbcc.build(); // bcc[i].v 是顶点，bcc[i].e 是边号，割点可属于多个分量
 */

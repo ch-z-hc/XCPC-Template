@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-按字典序把字节串拆成若干不增的 Lyndon 串。返回分界点，第 i 段是 [pos[i], pos[i + 1])。
-相同因子分开保留，空串返回 {0}。字符按无符号字节比较，时间和空间 O(n)。
-*/
+// 将字节串分解为按字典序不增的 Lyndon 串，O(n)。字符按无符号字节比较，相同因子分别保留。
 
 V < int > duval(const string &s) {
     int n = int(s.size());
@@ -28,4 +25,4 @@ V < int > duval(const string &s) {
     return pos;
 }
 
-// auto pos = duval(s);
+// auto pos = duval("aabab"); // 第 i 段为 [pos[i], pos[i + 1])，空串返回 {0}

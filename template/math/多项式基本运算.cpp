@@ -8,11 +8,9 @@ typedef unsigned long long ull;
 using namespace std;
 
 /*
-固定模 998244353。a[i] 是 x^i 的系数，先化到 [0, mod)。以下运算取前 n 项，n <= 2^22。
-inv 要求常数项非零，ln 要求为 1，exp 要求为 0（也可传空数组）。pow 的指数非负，0^0 取 1。
-sqrt 无解返回 false，有解时写入 ans，首个非零系数的根取较小者。n = 0 时结果为空。
-divmod 返回 {商, 余数}，去掉高次零，零多项式用空数组表示。除数须非零，两端长度均不超过 2^22。
-乘法结果长度须 <= 2^23。上述运算时间 O(n log n)，空间 O(n)。
+形式幂级数运算，固定模 998244353，系数从低次到高次且已取模。
+截断长度 n <= 2^22，乘积长度 <= 2^23，除法两端长度 <= 2^22。主要运算 O(n log n)。
+取逆常数项非零，对数常数项为 1，指数常数项为 0；幂次非负，除数非零。
 */
 
 struct FPS {
@@ -204,8 +202,11 @@ struct FPS {
 const int FPS::mod;
 
 /*
-V < int > a{1, 2, 3};
-auto inv = FPS::inv(a, 8); // 保留到 x^7
-V < int > root; bool ok = FPS::sqrt(a, 8, root);
-auto [q, r] = FPS::divmod(a, {1, 1});
+V < int > a{1, 2, 1}, b{1, 1};
+auto product = FPS::mul(a, b), inverse = FPS::inv(a, 8); // 截断到 x^7
+auto log_a = FPS::ln(a, 8), recovered = FPS::exp(log_a, 8), power = FPS::pow(a, 3, 8);
+V < int > root; bool ok = FPS::sqrt(a, 8, root); // 无根时失败，首个非零根取较小者
+auto [q, r] = FPS::divmod(a, b); // 商、余数去掉高次零，零多项式为空
+V < int > v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true); // 长度为 2 的幂
+int scalar = FPS::power(2, 10), sq = FPS::sqrt_mod(4);
 */

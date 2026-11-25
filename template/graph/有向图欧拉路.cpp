@@ -4,11 +4,7 @@
 
 using namespace std;
 
-/*
-有向图顶点编号 1..n，n >= 1。edges 中的 (u, v) 表示 u -> v。
-返回经过每条边恰好一次的顶点序列，无解返回空数组，无边返回 {1}。
-时间和空间 O(n + m)，递归最深 O(m)。
-*/
+// 有向图欧拉路，O(n + m)。顶点从 1 编号，n >= 1，最深递归 O(m)。
 
 V < int > euler_d(int n, const V < pair < int, int > > &edges) {
     V < V < int > > g(n + 1);
@@ -39,4 +35,4 @@ V < int > euler_d(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// V < int > path = euler_d(n, edges);
+// auto path = euler_d(3, {{1, 2}, {2, 3}}); // 顶点序列，无解为空，无边为 {1}

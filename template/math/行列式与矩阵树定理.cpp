@@ -7,10 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-det 对从 0 编号的方阵求行列式，允许负元素，空矩阵返回 1。模数须为 [2, INT_MAX] 内的质数。
-matrix_tree 的顶点编号 1..n，每条边传 {u, v, w}。可有重边，自环跳过，单点图返回 1。
-默认求无向生成树。传 directed = true 时求从 root 向外的树。每棵树贡献边权乘积。
-耗时 O(n³ + n log mod)，建矩阵另需 O(m)，空间 O(n²)。
+质数模下求行列式、生成树边权乘积之和。模数在 [2, INT_MAX] 内，允许负权、重边，忽略自环。
+行列式 O(n³ + n log mod)，建矩阵另需 O(m)。空行列式和单点图均取 1。
 */
 
 ll det(V < V < ll > > a, ll mod) {
@@ -64,6 +62,8 @@ ll matrix_tree(int n, const V < tuple < int, int, ll > > &edges,
 }
 
 /*
-det({{1, 2}, {3, 4}}, 998244353);
-matrix_tree(3, {{1, 2, 1}, {2, 3, 1}, {1, 3, 1}}, 998244353);
+ll mod = 17, d = det({{1, 2}, {3, 4}}, mod);
+V < tuple < int, int, ll > > edges{{1, 2, 1}, {2, 3, 1}, {1, 3, 1}};
+ll undirected = matrix_tree(3, edges, mod);
+ll directed = matrix_tree(3, edges, mod, 1, true); // 从根 1 向外的生成树
 */

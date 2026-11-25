@@ -7,13 +7,11 @@ typedef long long ll;
 using namespace std;
 
 /*
-先复制「势能最短路费用流」的 MCMF。点编号 1..n，每条边要求 0 <= lo <= hi。
-add_supply(u, b) 给 u 增加 b 的净流出量。固定从 s 向 t 送 k，就分别加 k 和 -k。
-默认各点净流出为 0。支持有界负环、自环和重边。solve 可重算，init 清空边和供需。
-solve 返回 {是否可行, 最小费用}，成功后用 f[id] 取原边流量，失败时 f 为空。
-容量上界之和加各点供需绝对值之和、各边 hi * abs(cost) 之和均不能超过 LLONG_MAX / 4。
-单点累计供需用 ll，cost 不能取 LLONG_MIN。增广 A 次耗时 O(nm + A m log n)，空间 O(n + m)。
+先复制「势能最短路费用流」。求满足边流量上下界和顶点净供给的最小费用，支持有界负环。
+0 <= lo <= hi，cost 不能取 LLONG_MIN。Σhi + Σ|供需| 和 Σ(hi * |cost|) 均须 <= LLONG_MAX / 4。
+单点累计供需须放入 ll。增广 A 次耗时 O(nm + A m log n)。
 */
+
 struct LRCostFlow {
     struct Edge {
         int u, v;
@@ -94,7 +92,7 @@ struct LRCostFlow {
 };
 
 /*
-LRCostFlow g(n); int id = g.add_edge(u, v, lo, hi, w);
+LRCostFlow g; g.init(n); int id = g.add_edge(u, v, lo, hi, w);
 g.add_supply(s, k); g.add_supply(t, -k);
 auto [ok, cost] = g.solve(); // 有解时 g.f[id] 是这条边的流量
 */

@@ -7,9 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-把所有会修改的点传给 build，之后可在线单点加、查闭矩形和。查询端点可以任取。
-坐标和权值用 ll，累加不能溢出。建树 O(n log² n)，修改和查询 O(log² n)，空间 O(n log n)。
+单点加、闭矩形求和。建树时给出所有可能修改的点，查询边界任意，和须放入 ll。
+建树 O(n log² n)，修改和查询 O(log² n)。
 */
+
 struct Fenwick2D {
     V < ll > xs;
     V < V < ll > > ys, tr;
@@ -60,6 +61,8 @@ struct Fenwick2D {
 };
 
 /*
-Fenwick2D bit; bit.build(points); bit.add(x, y, v);
-ll ans = bit.query(x1, y1, x2, y2);
+Fenwick2D bit; bit.build({{1, 2}, {3, 4}}); bit.add(1, 2, 5);
+ll pre = bit.prefix(3, 4);               // x <= 3 且 y <= 4
+ll strict = bit.prefix(3, 4, true, false); // x < 3 且 y <= 4
+ll sum = bit.query(1, 2, 3, 4);
 */

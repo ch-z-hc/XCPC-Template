@@ -6,8 +6,8 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”；直线端点不能重合，isLL 要求两线不平行。
-以下交点、相交判断、投影和距离均 O(1)，无模数。
+先复制「点与向量」。直线和线段的相交、投影、反射、距离均为 O(1)。
+定义直线的两点须不同，两直线求交点前须排除平行。
 */
 
 bool checkPll(P p1, P p2, P q1, P q2) {
@@ -131,3 +131,16 @@ struct Line {
     }
     db side(P x) { return v.det(x - p); }
 };
+
+/*
+P a{0, 0}, b{2, 0}, c{1, -1}, d{1, 1};
+if (! checkPll(a, b, c, d)) cout << isLL(a, b, c, d); // 两直线交点
+bool ss = isSS(a, b, c, d), proper = isSS_strict(a, b, c, d);
+bool ls = isLS(a, b, c, d), crosses = isLS_strict(a, b, c, d); // 直线 ab 与线段 cd
+bool overlap = intersect(0, 2, 1, 3), between = isMiddle(0, 1, 2);
+bool in_box = isMiddle(a, c, b); // 分别检查两维坐标
+bool on = onSeg(a, b, c), interior = onSeg_strict(a, b, c);
+P foot = proj(a, b, d), mirror = reflect(a, b, d);
+db dist = nearest(a, b, d), gap = disSS(a, b, c, d); // 点到线段、线段间距离
+Line line(a, b); db signed_dist = line.side(d); // 左侧为正
+*/

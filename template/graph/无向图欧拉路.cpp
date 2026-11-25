@@ -4,11 +4,7 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n，n >= 1。每条边在 edges 中放一次。
-返回经过每条边恰好一次的顶点序列，无解返回空数组，无边返回 {1}。
-时间和空间 O(n + m)，递归最深 O(m)。
-*/
+// 无向图欧拉路，O(n + m)。顶点从 1 编号，n >= 1，每条边只给一次。最深递归 O(m)。
 
 V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     V < V < pair < int, int > > > g(n + 1);
@@ -45,4 +41,4 @@ V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// V < int > path = euler_u(n, edges);
+// auto path = euler_u(3, {{1, 2}, {2, 3}}); // 顶点序列，无解为空，无边为 {1}

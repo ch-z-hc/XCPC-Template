@@ -7,8 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-用静态数组 a[1..n] 建树。在 [l, r] 内，kth 查第 k 小，count 统计不大于 x 的数。
-k 从 1 数，不能超过区间长度。建树时间和空间 O(n log n)，查询 O(log n)。
+静态数组 a[1..n] 的区间第 k 小、区间计数。要求 1 <= k <= r - l + 1。
+建树 O(n log n)，查询 O(log n)。
 */
 
 struct PST {
@@ -70,4 +70,8 @@ struct PST {
     }
 };
 
-// PST tree; tree.build(a); ll x = tree.kth(l, r, k);
+/*
+PST tree; tree.build({0, 5, 2, 5});
+ll x = tree.kth(1, 3, 2);       // 5
+int cnt = tree.count(1, 3, 2);  // <= 2 的元素有 1 个
+*/

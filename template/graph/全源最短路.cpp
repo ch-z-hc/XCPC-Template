@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-用 dis[1..n][1..n] 存边权，重边取最小，无边填 inf，对角填 0，有负自环时取其权值。
-floyd 原地更新距离。有负环时返回 false，受负环影响的点对没有有限最短路。
-0 < inf <= 2^62，有限距离的绝对值须小于 inf。时间 O(n³)，额外空间 O(1)。
+全源最短路，原地更新 1-based 距离矩阵，O(n³)。重边取最小，对角填 0 或更小的自环权。
+无边填 inf，0 < inf <= 2^62，有限距离绝对值须小于 inf。有负环时返回 false。
 */
+
 bool floyd(V < V < ll > > &dis, ll inf = (1ll << 62)) {
     int n = int(dis.size()) - 1;
     for (int k = 1; k <= n; ++ k) {

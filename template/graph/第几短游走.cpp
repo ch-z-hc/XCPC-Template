@@ -7,11 +7,11 @@ typedef long long ll;
 using namespace std;
 
 /*
-非负权有向图，点编号 1..n。query 返回从 s 到 t 最短的 k 条游走长度，按非递减顺序排列。
-按边序列区分游走，可重复经过顶点和终点，零权环也计数。s == t 时含空游走，不足 k 条就返回全部。
-边权与有效长度均须小于 inf。可重复查询。时间 O((n + m) log(n + m + 1) + k log(k + 1))，
-空间 O(m + n log(n + m + 1) + k)。
+求非负权有向图从 s 到 t 最短的 k 条游走长度。按边序列区分，可重复经过终点，零权环也计数。
+s == t 时含空游走，不足 k 条返回全部。边权及有效长度须小于 inf。
+时间 O((n + m) log(n + m + 1) + k log(k + 1))，空间 O(m + n log(n + m + 1) + k)。
 */
+
 struct KWalk {
     static const ll inf = 1ll << 62;
     struct Edge {
@@ -105,6 +105,6 @@ struct KWalk {
 const ll KWalk::inf;
 
 /*
-KWalk g(n); g.add_edge(u, v, w);
+KWalk g; g.init(n); g.add_edge(u, v, w);
 auto lengths = g.query(s, t, k);
 */

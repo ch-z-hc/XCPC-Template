@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-get_z(s)[i] 是 s 与 s[i..] 的最长公共前缀长度，非空串的 z[0] 等于串长。
-exkmp(s, t)[i] 比较 t 与 s[i..]，t 为空时各项均为 0。下标从 0 数，时间和空间 O(|s| + |t|)。
-*/
+// 求一个串或模式串与每个后缀的最长公共前缀，O(|s| + |t|)。位置从 0 数，空模式的匹配长度全为 0。
 
 V < int > get_z(const string &s) {
     int n = int(s.size());
@@ -33,4 +30,7 @@ V < int > exkmp(const string &s, const string &t) {
     return ans;
 }
 
-// auto z = get_z(s); auto match = exkmp(s, t);
+/*
+auto z = get_z("ababa");           // z[i] 比较原串和后缀 i，z[0] = 5
+auto len = exkmp("ababa", "aba");  // len[i] 比较模式 aba 和文本后缀 i
+*/

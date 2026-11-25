@@ -5,10 +5,8 @@
 using namespace std;
 
 /*
-顶点和 DFS 序都从 1 数。子树对应 [in[u], out[u]]，path 把树上路径拆成若干闭区间。
-每段都含两端，整条路径含 LCA。维护边权时要跳过 LCA 对应的位置。
-回调顺序不保证沿 u 到 v 的方向，适合求和、最值。建树 O(n)，每条路径 O(log n) 段。
-lca 查询 O(log n)，空间 O(n)。输入须为连通树，长链 DFS 最深 n 层。
+把树上路径拆为 O(log n) 个闭区间，子树对应 [in[u], out[u]]。建树 O(n)，求 LCA 为 O(log n)。
+路径含 LCA，维护边权时跳过其位置。回调顺序不保证沿路径方向，长链注意递归栈。
 */
 
 struct HLD {
@@ -75,9 +73,9 @@ struct HLD {
 };
 
 /*
-HLD hld(n);
+HLD hld; hld.init(n);
 for (auto [u, v] : edges) hld.add_edge(u, v);
-hld.build(root);
+hld.build(root); int p = hld.lca(u, v);
 // 求路径点权和时，先复制「线段树与树上二分」，按 DFS 序建线段树。
 V < ll > b(n + 1);
 for (int u = 1; u <= n; ++ u) b[hld.in[u]] = a[u];

@@ -5,11 +5,8 @@
 
 using namespace std;
 
-/*
-先复制本章的“点与向量”；平面最近点对，坐标有限，不使用 EPS 排序。
-build(points) 返回原数组的两个 0-based 下标，少于两个点返回 {-1, -1}。
-d2 为距离平方；时间 O(n log n)，空间 O(n)，允许重复点。
-*/
+// 先复制「点与向量」。平面最近点对 O(n log n)，坐标有限，允许重复点。
+
 struct ClosestPair {
     struct Node { P p; int id; };
     V < Node > a, tmp;
@@ -55,4 +52,7 @@ struct ClosestPair {
     }
 };
 
-// ClosestPair cp; auto [u, v] = cp.build(points); db distance = sqrtl(cp.d2);
+/*
+ClosestPair cp; auto [u, v] = cp.build({{0, 0}, {3, 4}}); // 原数组下标
+if (u != -1) cout << sqrtl(cp.d2); // 少于两点时返回 {-1, -1}
+*/

@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-轴对齐矩形面积并与周长并，坐标为 ll；允许负坐标、重复与退化矩形。
-solve(rects) 返回 {面积, 周长}，每项输入 {x1, y1, x2, y2}。
-O(n log n)，空间 O(n)，坐标差与面积 / 周长累加必须不溢出 ll。
+轴对齐矩形的面积并、周长并，O(n log n)。坐标可负，允许重复和退化矩形。
+坐标差、面积和周长的中间量须放入 ll。
 */
+
 struct RectUnion {
     struct Event { ll x, y1, y2; int d; };
     struct Node { int cover = 0, cnt = 0; ll len = 0; bool left = 0, right = 0; };
@@ -69,4 +69,4 @@ struct RectUnion {
     }
 };
 
-// RectUnion scan; auto [area, perimeter] = scan.solve(rectangles);
+// RectUnion scan; auto [area, perimeter] = scan.solve({{0, 0, 2, 3}}); // 6、10

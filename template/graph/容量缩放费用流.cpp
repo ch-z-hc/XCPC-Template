@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-点编号 1..n。flow(s, t) 返回 {最大流量, 对应的最小费用}。负环即使与源汇不连通，也计入费用。
-支持自环，容量须在 [0, 2^41) 内。最大流量和 (n - 1) * 最大绝对边费都须小于 10^12。
-费用累加等计算用 ll，不能溢出。最大容量为 U 时，时间 O(m² log U log m)。
+求最小费用最大流，可有负环（含与源汇不连通的负环）和自环。最大容量 U 时 O(m² log U log m)。
+容量在 [0, 2^41) 内，最大流量及 (n - 1) * 最大绝对边费须小于 10^12，累计费用须放入 ll。
 */
 
 struct ScalingMCMF {
@@ -165,7 +164,7 @@ struct ScalingMCMF {
 };
 
 /*
-ScalingMCMF mcf(n);
+ScalingMCMF mcf; mcf.init(n);
 mcf.add_edge(u, v, cap, cost);
-auto [flow, cost] = mcf.flow(s, t);
+auto [flow, total_cost] = mcf.flow(s, t);
 */

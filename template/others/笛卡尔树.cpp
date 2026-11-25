@@ -6,10 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-用 a[1..n] 建小根笛卡尔树，节点编号就是数组下标。相等时下标较小的点更靠近根。
-tree.root 是根。建树时间和空间 O(n)。
-*/
+// 由 a[1..n] 建小根笛卡尔树，O(n)。以原数组下标编号，相等时较小下标更靠近根。
 
 struct Cartesian {
     int root = 0;

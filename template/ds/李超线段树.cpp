@@ -8,13 +8,9 @@ typedef long long ll;
 using namespace std;
 
 /*
-在整数区间 [L, R] 上求最大值。query_id 返回最优线的插入编号，同值取最早，空时为 0。
-整数用 add_line 或 add_seg，浮点用带 _real 的接口。传给整数接口的小数会被截断。
-只插整数直线时用 query_int 取精确值。线段插值可能是分数，query 返回近似值。
-整数比较用 ll 交叉相乘，须保证端点差、a*x+c 及其乘另一分母都不溢出，含区间外端点。
-一组安全范围是横坐标在 [0, 40000]，斜率、截距和端点纵坐标绝对值不超过 10^9。
-设 X = R - L + 1，树开约 4X 个 int，X <= (INT_MAX - 4) / 4。
-插直线、查询 O(log X)，插线段 O(log² X)。整棵树含 q 条线占 O(X + q) 空间。
+在整数横坐标 [L, R] 维护直线、线段的最大值。X = R - L + 1，建树和清空 O(X)。
+插直线、查询 O(log X)，插线段 O(log² X)。密集建树约需 4X 个 int，X <= (INT_MAX - 4) / 4。
+整数端点差、a*x+c 及与另一分母的乘积须放入 ll。小数斜率、截距或纵坐标用浮点接口。
 */
 
 struct LiChao {
@@ -116,7 +112,6 @@ struct LiChao {
         return id ? line[id].eval(x) : -numeric_limits < ld >::infinity();
     }
 
-    // 只配合 add_line 使用；空集或命中非整数直线返回 false，ans 不可用。
     bool query_int(int x, ll &ans) {
         int id = query_id(x);
         if (! id || line[id].d != 1) return false;
@@ -173,6 +168,12 @@ struct LiChao {
 };
 
 /*
-LiChao tr(1, 10000); tr.add_line(3, -2);
-ll ans; bool ok = tr.query_int(2, ans); // ans = 4
+LiChao tr(1, 10);                   // tr.init(10) 或 tr.init(1, 10) 重设值域
+int first = tr.add_line(3, -2);     // y = 3x - 2，插入返回编号
+ll exact; if (tr.query_int(2, exact)) cout << exact; // 4，只插整数直线时使用
+tr.add_seg(1, 2, 5, 9);             // 两端点 (1, 2)、(5, 9)，区间外无效
+tr.add_line_real(0.5L, 1.2L); tr.add_seg_real(2, 1.5L, 6, 3.5L);
+int id = tr.query_id(2);             // 同值取最早编号，未覆盖为 0
+ld y = tr.query(2);                  // 近似值，未覆盖为负无穷
+tr.clear();                          // 保留值域，清空所有线
 */

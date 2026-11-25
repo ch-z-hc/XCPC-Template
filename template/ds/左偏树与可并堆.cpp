@@ -7,10 +7,10 @@ typedef long long ll;
 using namespace std;
 
 /*
-小根堆，根 0 表示空。push(x) 建一个单点堆，同值时编号小的点先出堆。
-merge 只合并不相交的堆。merge 和 pop 都要接住新根，top 和 pop 只能用于非空堆。
-合并、弹出 O(log n)，取顶 O(1)，插入均摊 O(1)。按任意节点找堆需另维护并查集。
+可合并小根堆，根 0 为空，同值按节点编号出堆。只合并不相交的堆，只对非空堆取顶或弹出。
+建单点堆均摊 O(1)，取顶 O(1)，合并、弹出 O(log n)。
 */
+
 struct LeftistHeap {
     struct Node {
         ll val = 0;
@@ -46,6 +46,8 @@ struct LeftistHeap {
 };
 
 /*
-LeftistHeap heap; int root = 0;
-root = heap.merge(root, heap.push(x)); root = heap.pop(root);
+LeftistHeap heap; int a = heap.push(7), b = heap.push(3);
+a = heap.merge(a, b); ll x = heap.top(a); // 3
+a = heap.pop(a); // 接住新根
+heap.init();
 */

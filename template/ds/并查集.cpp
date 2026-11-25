@@ -37,7 +37,6 @@ struct DSU {
 };
 
 /*
-DSU dsu(n);
-bool merged = dsu.merge(u, v);
-int siz = dsu.size(u);
+DSU dsu; dsu.init(3); bool merged = dsu.merge(1, 2);
+int root = dsu.find(2), siz = dsu.size(1); bool same = dsu.same(1, 2);
 */

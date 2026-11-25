@@ -6,11 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-add(u, v, w) 加入 x[u] - x[v] <= w，变量编号 1..n。
-solve(dis) 有解时把一组可行赋值写入 dis，无解返回 false。
-松弛时的 dis[v] + w 要能放进 ll，包括判负环的那一轮。时间 O(nm)，空间 O(n + m)。
-*/
+// 求差分约束的一组可行解，O(nm)。松弛的中间量须能放入 ll，包括检测负环的最后一轮。
 
 struct Diff {
     int n = 0;
@@ -38,8 +34,6 @@ struct Diff {
 };
 
 /*
-Diff dc(n);
-dc.add(u, v, w);
-V < ll > dis;
-bool ok = dc.solve(dis);
+Diff dc; dc.init(2); dc.add(1, 2, -3); // x[1] - x[2] <= -3
+V < ll > x; if (dc.solve(x)) cout << x[1]; // 无解时返回 false
 */

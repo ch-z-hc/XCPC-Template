@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-静态连通树编号 1..n，边权非负。加完边后 build，此时各点权为 0，重建也会清空点权。
-modify(u, delta) 给点权加 delta，可为负。query(u, r) 求到 u 距离不超过 r 的点权和。
-建树 O(n log² n)，修改和查询 O(log² n)，空间 O(n log n)。距离和点权和用 ll，长链注意递归栈。
+维护静态非负权树的点权，求指定距离内的点权和。建树 O(n log² n)，单点加和查询 O(log² n)。
+重建后点权归零，距离和权值和须放入 ll，长链注意递归栈。
 */
 
 struct CentroidTree {
@@ -123,7 +122,7 @@ struct CentroidTree {
 };
 
 /*
-CentroidTree tree(n);
+CentroidTree tree; tree.init(n);
 for (auto [u, v, w] : edges) tree.add_edge(u, v, w);
 tree.build(); tree.modify(u, delta); ll ans = tree.query(u, radius);
 */

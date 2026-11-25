@@ -7,9 +7,8 @@ typedef unsigned long long ull;
 using namespace std;
 
 /*
-支持整个 ull 范围。is_prime 确定性判素，factor 返回升序质因子，重复因子保留，n < 2 时返回空。
-判素需 O(log n) 次模乘。Pollard-Rho 找最小质因子 p 期望约 O(sqrt(p)) 次模运算。
-这里一次倍增模乘要 O(log n)，两个大质数的乘积可能分解较慢。递归深度 O(log n)。
+支持整个 ull 范围。确定性判素用 O(log n) 次模乘；Pollard–Rho 找因子期望约 O(sqrt(p)) 次模运算，
+p 为最小质因子。一次倍增模乘为 O(log n)。
 */
 
 ull rho_mul(ull a, ull b, ull mod) {
@@ -93,6 +92,7 @@ V < ull > factor(ull n) {
 }
 
 /*
-bool prime = is_prime(n);
-V < ull > p = factor(n);
+bool prime = is_prime(97); auto factors = factor(84); // {2, 2, 3, 7}，n < 2 时为空
+ull prod = rho_mul(12, 34, 97), power = rho_pow(7, 5, 97);
+mt19937_64 rng(42); ull divisor = rho(91, rng); // 只对合数直接找非平凡因子
 */

@@ -7,8 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-从 1 到 n，列出所有 n / i 取值相同的极大闭区间 [l, r]。
-n 为非负 ll，n = 0 返回空数组。时间和空间 O(sqrt(n))，全部区间都存入结果。
+枚举 n / i 相同的极大闭区间，1 <= i <= n。非负 ll 输入，n = 0 时为空。
+时间 O(sqrt(n))，返回数组会保存全部区间。
 */
 
 V < pair < ll, ll > > div_blocks(ll n) {

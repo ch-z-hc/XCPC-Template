@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-在 a[1..n] 上按发生顺序记录单点修改和查询。query(l, r, k) 问闭区间第 k 小，k 从 1 数。
-query 返回答案下标，调用 solve 后用这个下标取值。可重复 solve，init 会清空记录。
-设 V 为出现过的不同值数，q 为操作数，时间 O((n + q) log V log n)，空间 O(n + q)。
+离线求带单点修改的区间第 k 小。a[1..n]，k 从 1 数，操作按发生顺序记录。
+设不同值有 V 个，q 次操作共 O((n + q) log V log n)。
 */
 
 struct KthOffline {

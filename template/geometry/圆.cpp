@@ -6,9 +6,8 @@
 using namespace std;
 
 /*
-先复制本章的“点与向量”“直线与线段”；坐标有限、半径非负。
-圆相关操作均 O(1)。
-浮点误差为 EPS；公切线要求正半径，重合圆交点 / 切线约定返回空。
+先复制「点与向量」「直线与线段」。圆的构造、交点、切线和两圆交面积均为 O(1)。
+坐标有限、半径非负，公切线要求正半径；重合圆的交点和公切线均返回空。
 */
 
 struct Circle {
@@ -105,3 +104,12 @@ db circle_area(Circle a, Circle b) {
                       -1.L, 1.L));
     return a.r * a.r * (x - sinl(2 * x) / 2) + b.r * b.r * (y - sinl(2 * y) / 2);
 }
+
+/*
+P a{0, 0}, b{2, 0}, p{0, 2};
+Circle c = diameter_circle(a, b), d{{2, 0}, 1}, outer;
+bool ok = circumcircle(a, b, p, outer); // 三点共线则失败
+bool inside = c.contains(a); auto line_pts = isCL(c, a, b), circle_pts = isCC(c, d);
+auto pts = tangent_points(c, p); auto lines = common_tangents(c, d);
+db overlap = circle_area(c, d); // 两圆相交面积
+*/

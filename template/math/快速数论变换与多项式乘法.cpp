@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-模 998244353，系数从常数项开始放，先化到 [0, NTT_MOD)。
-multiply 自动补长，结果长度不能超过 2^23。直接调 ntt 时，数组长度须为 2 的幂且不超过 2^23。
-设变换长度为 n，时间 O(n log n)。ntt 原地变换，multiply 另用 O(n) 空间。
+固定模 998244353，低次系数在前且已取模。变换长度须为 2 的幂且 <= 2^23，卷积自动补长。
+变换和卷积均为 O(n log n)，n 为补长后的长度。
 */
 
 const ll NTT_MOD = 998244353;
@@ -61,4 +60,7 @@ V < ll > multiply(V < ll > a, V < ll > b) {
     return a;
 }
 
-// V < ll > c = multiply(a, b);
+/*
+V < ll > a{1, 2, 0, 0}; ntt(a); ntt(a, true); // 正变换、逆变换
+auto c = multiply({1, 2}, {3, 4}); ll inv2 = ntt_pow(2, NTT_MOD - 2);
+*/

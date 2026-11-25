@@ -7,8 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-只接收小写字母。distinct() 是不同非空回文串的个数，count()[u] 是节点 u 的出现次数。
-0 和 1 是虚根，从节点 2 起才代表实际回文串。建树、统计各 O(n)，空间 O(26n)。
+小写字母回文自动机，支持末尾追加、回文串去重和出现次数统计。建树、统计 O(n)，查询种数 O(1)。
+节点 0、1 是虚根。
 */
 
 struct PAM {
@@ -69,4 +69,8 @@ struct PAM {
     }
 };
 
-// PAM pam(s); auto cnt = pam.count(); int tot = pam.distinct();
+/*
+PAM pam; pam.build("ab"); int u = pam.insert('a'); // 最长回文后缀 aba 的节点
+auto cnt = pam.count(); int kinds = pam.distinct(); // cnt[u] = 1，共 3 种非空回文串
+pam.init();
+*/

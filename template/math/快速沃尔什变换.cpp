@@ -7,9 +7,8 @@ typedef long long ll;
 using namespace std;
 
 /*
-数组下标是位掩码，长度 n 须为 2 的幂。系数先化到 [0, mod)，1 < mod <= 2^31。
-OR、AND 的逆变换分别用 ifwt_or、ifwt_and。XOR 逆变换传 true，模数须为奇质数。
-原地变换，时间 O(n log n)，额外空间 O(1)。
+按位 OR、AND、XOR 的原地变换，O(n log n)。长度 n 为 2 的幂，系数已取模，1 < mod <= 2^31。
+XOR 逆变换要求奇质数模。
 */
 
 static void fwt_check(const V < ll > &a) {
@@ -68,8 +67,8 @@ void fwt_xor(V < ll > &a, ll mod, bool inv = false) {
 }
 
 /*
-fwt_or(a, mod);
-ifwt_or(a, mod); // 恢复原数组。
-fwt_xor(a, mod);
-fwt_xor(a, mod, 1);
+V < ll > a{0, 1, 2, 3}; ll mod = 17;
+fwt_or(a, mod); ifwt_or(a, mod);
+fwt_and(a, mod); ifwt_and(a, mod);
+fwt_xor(a, mod); fwt_xor(a, mod, true);
 */

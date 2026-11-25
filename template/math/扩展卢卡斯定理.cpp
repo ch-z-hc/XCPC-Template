@@ -7,9 +7,9 @@ typedef long long ll;
 using namespace std;
 
 /*
-求 C(n, k) 对任意正 int 模数的余数，n 为非负 ll。k 越界或 mod = 1 时返回 0。
-init 给 mod 的每个质数幂 q 建长度 O(q) 的表，大质数模尤其要留意内存。
-建表 O(sqrt(mod) + Σq)，空间 O(Σq)。若有 t 个不同质因子，查询 O(t (log²(n + 2) + log mod))。
+求 C(n, k) 对任意正 int 模数的余数，n 为非负 ll。k 越界或模数为 1 时返回 0。
+为 mod 的每个质数幂 q 建整表，建表 O(sqrt(mod) + Σq)，空间 O(Σq)，大质数模尤其占内存。
+设不同质因子有 t 个，查询 O(t (log²(n + 2) + log mod))。
 */
 
 struct ExLucas {

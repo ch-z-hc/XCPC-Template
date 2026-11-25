@@ -5,9 +5,8 @@
 using namespace std;
 
 /*
-在 a[1..n] 上离线查询闭区间 [l, r]。add、del 接收数组下标，answer(id) 把当前答案存到 id。
-每次 solve 前清空自己的统计量。块长约 n / sqrt(q)，q 个查询排序 O(q log q)，
-移动 O(n sqrt(q) + q) 次，另用 O(q) 空间存查询。
+离线处理 1-based 闭区间查询，增删按数组下标。每次求解前清空统计量。
+块长约 n / sqrt(q)，q 次查询排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
 */
 
 struct Mo {

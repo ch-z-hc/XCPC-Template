@@ -4,10 +4,7 @@
 
 using namespace std;
 
-/*
-无向图顶点编号 1..n，可有重边。build 后 bel[u] 是删去所有桥后 u 所在的分量，从 1 编号。
-bcc 存各分量的点和非桥边，is_bridge 按原边顺序从 0 编号。时间和空间 O(n + m)，长链注意递归栈。
-*/
+// 无向图边双分解，O(n + m)，允许重边。分量从 1 编号，桥标记按原边从 0 编号。
 
 struct EBCC {
     struct Block {
@@ -91,8 +88,8 @@ struct EBCC {
 };
 
 /*
-EBCC ebcc(n);
+EBCC ebcc; ebcc.init(n);
 ebcc.add_edge(u, v);
 ebcc.build();
-int id = ebcc.bel[u];
+int id = ebcc.bel[u]; // bcc[id - 1] 存点及非桥边，is_bridge[e] 标记原边 e
 */

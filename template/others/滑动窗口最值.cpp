@@ -30,4 +30,4 @@ V < T > window_max(const V < T > &a, int k) {
     return ans;
 }
 
-// auto ans = window_min(a, k);
+// auto low = window_min(a, k), high = window_max(a, k);

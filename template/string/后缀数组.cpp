@@ -5,8 +5,8 @@
 using namespace std;
 
 /*
-sa[i] 是字典序第 i 个后缀的起点，rk 与 sa 互逆，下标和排名都从 0 数。
-lcp(u, v) 查两个起点对应后缀的最长公共前缀长度。建表时间和空间 O(n log n)，查询 O(1)。
+后缀按字典序排序，并支持查询两后缀的最长公共前缀。下标、排名从 0 数。
+建表 O(n log n)，LCP 查询 O(1)。
 */
 
 struct SA {
@@ -91,6 +91,6 @@ struct SA {
 };
 
 /*
-SA sa(s);
-int len = sa.lcp(x, y);
+SA sa; sa.build("banana"); int start = sa.sa[0], rank = sa.rk[1];
+int len = sa.lcp(1, 3); // 3，即 ana
 */

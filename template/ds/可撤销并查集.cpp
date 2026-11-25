@@ -5,10 +5,10 @@
 using namespace std;
 
 /*
-点编号 1..n。先用 snapshot() 记下当前位置，rollback(snap) 撤销之后的所有合并。
-合并失败也占一个栈位，只能回到当前历史上的快照。
+按快照撤销合并，只能回到当前历史上的快照，失败的合并也占一个栈位。
 初始化 O(n)，查找和合并 O(log n)，每撤销一次合并 O(1)。
 */
+
 struct RollbackDSU {
     V < int > fa, siz;
     V < pair < int, int > > stk;
@@ -51,8 +51,7 @@ struct RollbackDSU {
 };
 
 /*
-RollbackDSU dsu(n);
-int snap = dsu.snapshot();
-dsu.merge(u, v);
+RollbackDSU dsu; dsu.init(3); int snap = dsu.snapshot();
+bool merged = dsu.merge(1, 2); int root = dsu.find(2);
 dsu.rollback(snap);
 */

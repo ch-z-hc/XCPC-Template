@@ -5,10 +5,10 @@
 using namespace std;
 
 /*
-树的顶点编号 1..n。先加完边并 build(root)，再用 query(u, v) 记录路径询问，返回答案下标。
-add、del 接收顶点，answer(id) 保存答案。每次 solve 前清空统计量，重新 build 会清空询问。
-建表 O(n log n)。q 次询问排序 O(q log q)，移动 O(n sqrt(q) + q) 次，空间 O(n log n + q)。
+离线处理树上路径询问，增删按顶点。先建树再记录询问，重建会清空询问，每次求解前清空统计量。
+建表 O(n log n)，q 次询问排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
 */
+
 struct MoTree {
     struct Query { int l, r, extra, id; };
     int n, lg, timer;
@@ -94,9 +94,9 @@ struct MoTree {
 };
 
 /*
-MoTree mo(n);
+MoTree mo; mo.init(n);
 for (auto [u, v] : edges) mo.add_edge(u, v);
-mo.build(); int id = mo.query(u, v);
+mo.build(); int p = mo.lca(u, v); int id = mo.query(u, v);
 mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 颜色已离散到 1..m
 mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]
 */

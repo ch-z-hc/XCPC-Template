@@ -6,10 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-/*
-在编号 1..n 的连通树中，统计距离不超过 k 的无序点对。两点须不同，边权须非负。
-可对同一棵树多次 query。距离和答案用 ll。每次 O(n log² n)，空间 O(n)，长链注意递归栈。
-*/
+// 统计树上距离 <= k 的无序异点对，单次 O(n log² n)。边权非负，距离和答案须放入 ll。
 
 struct Centroid {
     int n = 0;
@@ -83,4 +80,4 @@ struct Centroid {
     }
 };
 
-// Centroid tree(n); tree.add_edge(u, v, w); ll ans = tree.query(k);
+// Centroid tree; tree.init(n); tree.add_edge(u, v, w); ll ans = tree.query(k);
