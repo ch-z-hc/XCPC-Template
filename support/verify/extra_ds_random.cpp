@@ -3,6 +3,7 @@
 #include "../../template/ds/仿射线段树.cpp"
 #include "../../template/ds/二维树状数组.cpp"
 #include "../../template/ds/动态开点线段树合并与分裂.cpp"
+#include "../../template/ds/线段树分治.cpp"
 #include "../../template/graph/离线动态连通性.cpp"
 #include "../../template/ds/动态树.cpp"
 #include "../../template/geometry/矩形面积并与周长并.cpp"
@@ -184,6 +185,43 @@ bool connected(const V < V < int > > &g, int s, int t) {
     return vis[t];
 }
 
+void check_seg_divide() {
+    struct State {
+        V < int > active;
+        V < V < int > > ans;
+        int snapshot() { return int(active.size()); }
+        void apply(int id) { active.push_back(id); }
+        void answer(int t) {
+            assert(t == int(ans.size()));
+            ans.push_back(active);
+            sort(ans.back().begin(), ans.back().end());
+        }
+        void rollback(int snap) { active.resize(snap); }
+    };
+    SegDivide < State > st;
+    for (int tc = 0; tc < 500; ++ tc) {
+        int n = rnd(0, 20);
+        st.init(n);
+        State s;
+        s.active = {-1};
+        V < V < int > > want(n + 1, {-1});
+        want[0].clear();
+        st.add(1, 0, 0);
+        for (int i = 0; n && i < 30; ++ i) {
+            int l = rnd(1, n), r = rnd(l, n), id = rnd(0, 8);
+            st.add(l, r, id);
+            for (int t = l; t <= r; ++ t) want[t].push_back(id);
+        }
+        for (auto &ids : want) sort(ids.begin(), ids.end());
+        for (int rep = 0; rep < 2; ++ rep) {
+            s.ans.assign(1, {});
+            st.solve(s);
+            assert(s.ans == want && s.active == V < int > {-1});
+        }
+    }
+    cout << "SegDivide: 500 cases OK\n";
+}
+
 void check_connectivity() {
     DynConn dc;
     dc.init(0); assert(dc.solve().empty());
@@ -304,6 +342,6 @@ void check_rect() {
 
 int main() {
     check_fenwick(); check_affine(); check_fenwick2d(); check_merge();
-    check_connectivity(); check_lct(); check_rect();
+    check_connectivity(); check_seg_divide(); check_lct(); check_rect();
     cout << "extra data structures random: OK\n";
 }

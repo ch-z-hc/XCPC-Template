@@ -57,6 +57,7 @@ CHAPTERS = [
         ("template/ds/树状数组.cpp", "树状数组"),
         ("template/ds/二维树状数组.cpp", "二维树状数组"),
         ("template/ds/线段树与树上二分.cpp", "线段树与树上二分"),
+        ("template/ds/线段树分治.cpp", "线段树分治"),
         ("template/ds/区间集合与最小未出现数.cpp", "区间集合与 mex"),
         ("template/ds/仿射线段树.cpp", "仿射线段树"),
         ("template/ds/吉司机线段树.cpp", "吉司机线段树"),
