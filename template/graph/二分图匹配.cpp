@@ -5,9 +5,8 @@
 using namespace std;
 
 /*
-左右两侧分别编号 1..n 和 1..m，add_edge(u, v) 从左点 u 连到右点 v。
-solve() 返回最大匹配边数，ml、mr 存两侧的搭档，0 表示未匹配。
-设有 E 条边，时间 O(nE + n + m)，空间 O(n + m + E)。
+二分图最大匹配，从点数较少的一侧增广。输入始终按原左、右两侧编号。
+两侧点数为 n、m，边数为 E，增广 O(min(n, m) E)，初始化及清空匹配 O(n + m)。
 */
 
 struct Kuhn {
@@ -39,6 +38,14 @@ struct Kuhn {
     }
 
     int solve() {
+        if (n > m) {
+            Kuhn rev(m, n);
+            for (int u = 1; u <= n; ++ u)
+                for (int v : g[u]) rev.add_edge(v, u);
+            int ans = rev.solve();
+            ml.swap(rev.mr); mr.swap(rev.ml);
+            return ans;
+        }
         fill(ml.begin(), ml.end(), 0);
         fill(mr.begin(), mr.end(), 0);
         int ans = 0;
@@ -50,7 +57,6 @@ struct Kuhn {
 };
 
 /*
-Kuhn match(n, m);
-match.add_edge(u, v);
-int ans = match.solve();
+Kuhn match; match.init(4, 2); match.add_edge(3, 1);
+int cnt = match.solve(); // ml[3] = 1，mr[1] = 3，未匹配为 0
 */

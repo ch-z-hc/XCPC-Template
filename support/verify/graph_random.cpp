@@ -211,6 +211,15 @@ int main() {
         };
         int expected = brute(brute, 1, 0);
         assert(match.solve() == expected && match.solve() == expected);
+        int pairs = 0;
+        for (int u = 1; u <= n; ++ u) if (int v = match.ml[u]) {
+            assert(1 <= v && v <= right && match.mr[v] == u);
+            assert(find(adj[u].begin(), adj[u].end(), v) != adj[u].end());
+            ++ pairs;
+        }
+        assert(pairs == expected);
+        for (int v = 1; v <= right; ++ v) if (int u = match.mr[v])
+            assert(1 <= u && u <= n && match.ml[u] == v);
 
         Diff dc(n);
         const ll inf = 1ll << 50;
