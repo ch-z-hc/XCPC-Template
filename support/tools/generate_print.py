@@ -385,6 +385,15 @@ def split_rows(rows, top, size, boundaries=()):
     if any(function and full < end - start <= minimum_full for start, end, function in boundaries):
         return []
     protected = [(start, end) for start, end, _ in boundaries if end - start <= full]
+
+    def whole_statements(limit):
+        while True:
+            cut = min((start for start, stop in protected if start < limit < stop),
+                      default=limit)
+            if cut == limit:
+                return cut
+            limit = cut
+
     chunks, index = [], 0
     y = top - TITLE_HEIGHT
     while index < len(rows):
@@ -400,14 +409,12 @@ def split_rows(rows, top, size, boundaries=()):
                           if rows[i][1] == ""]
             if candidates:
                 end = candidates[-1]
-            while True:
-                previous = end
-                for start, stop in protected:
-                    if start < end < stop:
-                        end = min(end, start)
-                if end == previous:
-                    break
-        if end <= index or (not chunks and end - index < min(8, len(rows))):
+            end = whole_statements(end)
+            if not chunks and end < 8:
+                end = whole_statements(min(index + capacity, len(rows) - 6))
+            if end <= index:
+                end = whole_statements(min(index + capacity, len(rows)))
+        if end <= index or (not chunks and top < TOP and end - index < min(8, len(rows))):
             return []
         chunks.append(end - index)
         index, y = end, TOP

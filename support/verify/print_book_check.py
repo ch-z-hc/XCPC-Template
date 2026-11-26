@@ -140,11 +140,24 @@ def main():
         assert abs(gap - record["last_page_gap"]) < .001
         pages = sorted({row["page"] for row in rows})
         assert pages == list(range(record["page"], record["end_page"] + 1))
+        spans = code_boundaries(entry.source.expandtabs(4), entry.path)
         if len(pages) > 1:
-            assert sum(row["page"] == pages[0] for row in rows) >= 8
-            assert sum(row["page"] == pages[-1] for row in rows) >= 6
-            # 标题下至少保留半页空间，避免在前一份代码末页塞入短开头。
+            first = sum(row["page"] == pages[0] for row in rows)
+            last = sum(row["page"] == pages[-1] for row in rows)
             title_top = rows[0]["y"] + card_top(size) + TITLE_HEIGHT
+            if first < 8 or last < 6:
+                full = page_capacity(TOP, size)
+                def fits_boundary(cut):
+                    return all(not (start < cut < end) for start, end, _ in spans
+                               if end - start <= full)
+                if first < 8:
+                    assert abs(title_top - TOP) < .001
+                    limit = min(page_capacity(TOP, size, title=True), len(rows) - 6)
+                    assert not any(fits_boundary(cut) for cut in range(8, limit + 1))
+                if last < 6:
+                    previous = next(row["line"] - 1 for row in rows if row["page"] == pages[-2])
+                    low = max(previous + 1, len(rows) - full)
+                    assert not any(fits_boundary(cut) for cut in range(low, len(rows) - 5))
             assert title_top - BOTTOM - TITLE_HEIGHT >= (TOP - BOTTOM - TITLE_HEIGHT) / 2
         restored = {}
         for row in rows:
@@ -161,7 +174,7 @@ def main():
         assert ["".join(parts) for parts in restored.values()] == expected
         breaks = [row["line"] - 1 for row, previous in zip(rows[1:], rows)
                   if row["page"] != previous["page"]]
-        for start, end, function in code_boundaries(entry.source.expandtabs(4), entry.path):
+        for start, end, function in spans:
             limit = page_capacity(TOP, MIN_CODE_SIZE if function else size)
             if end - start <= limit:
                 assert not any(start < point < end for point in breaks), (

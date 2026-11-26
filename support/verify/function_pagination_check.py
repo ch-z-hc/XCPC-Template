@@ -29,6 +29,11 @@ def main():
     for entry in load_entries():
         for top in (TOP, TOP - 200):
             verify(entry.source.expandtabs(4), entry.path, top)
+    # 首屏仅有短前言，随后函数能独占一整页，结尾示例不足六行。
+    height = page_capacity(TOP, MIN_CODE_SIZE)
+    source = '#include <vector>\n\n' + 'void f() {\n' + '    work();\n' * (height - 2) + '}\n\n// f();\n'
+    plan, _, breaks = verify(source, "short-prefix.cpp")
+    assert breaks == [2, 2 + height], (plan, breaks)
     # 页尾正好能放下三行注释时，注释仍须跟随下一页的成员函数。
     comment = page_capacity(TOP, MAX_CODE_SIZE, title=True) - 3
     source = ("struct Example {\n" + "".join(f"    int x{i};\n" for i in range(comment - 1))
