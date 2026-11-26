@@ -2,30 +2,34 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct Cartesian {
     int root = 0;
-    V < int > ls, rs, fa;
+    std::vector<int> ls, rs, fa;
 
-    void build(const V < ll > &a) {
+    void build(const std::vector<i64> &a) {
         int n = int(a.size()) - 1;
         ls.assign(n + 1, 0);
         rs.assign(n + 1, 0);
         fa.assign(n + 1, 0);
-        V < int > stk;
-        for (int i = 1; i <= n; ++ i) {
-            int lst = 0;
-            while (! stk.empty() && a[stk.back()] > a[i]) lst = stk.back(), stk.pop_back();
-            if (! stk.empty()) rs[stk.back()] = i, fa[i] = stk.back();
-            if (lst) ls[i] = lst, fa[lst] = i;
-            stk.push_back(i);
+        std::vector<int> stk(n + 1);
+        int top = 0;
+        for (int i = 1; i <= n; i ++) {
+            int k = top;
+            while (k && a[stk[k]] > a[i]) k --;
+            if (k) {
+                rs[stk[k]] = i;
+                fa[i] = stk[k];
+            }
+            if (k < top) {
+                ls[i] = stk[k + 1];
+                fa[ls[i]] = i;
+            }
+            top = k + 1;
+            stk[top] = i;
         }
-        root = stk.empty() ? 0 : stk.front();
+        root = top ? stk[1] : 0;
     }
 };
 

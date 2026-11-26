@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/ds/树状数组.cpp"
 #include "../../template/ds/线段树与树上二分.cpp"
 #include "../../template/ds/仿射线段树.cpp"

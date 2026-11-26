@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/math/多项式基本运算.cpp"
 #include "../../template/math/多项式多点求值与快速插值.cpp"
 #include "../../template/math/子集卷积.cpp"

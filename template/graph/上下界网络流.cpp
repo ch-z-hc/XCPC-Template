@@ -7,30 +7,26 @@ solve() 求可行循环流。指定源汇时，mode 取 0、1、-1 分别求可�
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct LRFlow {
     struct Edge {
         int u, v;
-        ll lo, hi;
+        i64 lo, hi;
     };
 
     struct Net {
         struct Edge {
             int to, rev;
-            ll cap;
+            i64 cap;
         };
 
-        V < V < Edge > > g;
-        V < int > dep, cur;
+        std::vector<std::vector<Edge>> g;
+        std::vector<int> dep, cur;
 
         Net(int n) : g(n + 1), dep(n + 1), cur(n + 1) {}
 
-        int add_edge(int u, int v, ll cap) {
+        int add_edge(int u, int v, i64 cap) {
             int a = int(g[u].size()), b = int(g[v].size());
             g[u].push_back({v, b + (u == v), cap});
             g[v].push_back({u, a, 0});
@@ -43,26 +39,29 @@ struct LRFlow {
         }
 
         bool bfs(int s, int t) {
-            fill(dep.begin(), dep.end(), -1);
-            queue < int > q;
-            dep[s] = 0; q.push(s);
-            while (! q.empty()) {
-                int u = q.front(); q.pop();
-                for (auto &e : g[u]) if (e.cap && dep[e.to] == -1) {
-                    dep[e.to] = dep[u] + 1;
-                    q.push(e.to);
-                }
+            std::fill(dep.begin(), dep.end(), -1);
+            std::queue<int> q;
+            dep[s] = 0;
+            q.push(s);
+            while (!q.empty()) {
+                int u = q.front();
+                q.pop();
+                for (auto &e : g[u])
+                    if (e.cap && dep[e.to] == -1) {
+                        dep[e.to] = dep[u] + 1;
+                        q.push(e.to);
+                    }
             }
             return dep[t] != -1;
         }
 
-        ll dfs(int u, int t, ll flow) {
+        i64 dfs(int u, int t, i64 flow) {
             if (u == t) return flow;
-            for (int &i = cur[u]; i < int(g[u].size()); ++ i) {
+            for (int &i = cur[u]; i < int(g[u].size()); i ++) {
                 auto &e = g[u][i];
-                if (! e.cap || dep[e.to] != dep[u] + 1) continue;
-                ll val = dfs(e.to, t, min(flow, e.cap));
-                if (! val) continue;
+                if (!e.cap || dep[e.to] != dep[u] + 1) continue;
+                i64 val = dfs(e.to, t, std::min(flow, e.cap));
+                if (!val) continue;
                 e.cap -= val;
                 g[e.to][e.rev].cap += val;
                 return val;
@@ -70,10 +69,10 @@ struct LRFlow {
             return 0;
         }
 
-        ll flow(int s, int t) {
-            ll ans = 0, val;
+        i64 flow(int s, int t) {
+            i64 ans = 0, val;
             while (bfs(s, t)) {
-                fill(cur.begin(), cur.end(), 0);
+                std::fill(cur.begin(), cur.end(), 0);
                 while ((val = dfs(s, t, 1ll << 62))) ans += val;
             }
             return ans;
@@ -81,8 +80,8 @@ struct LRFlow {
     };
 
     int n;
-    V < Edge > edges;
-    V < ll > f;
+    std::vector<Edge> edges;
+    std::vector<i64> f;
 
     LRFlow(int n = 0) { init(n); }
 
@@ -92,22 +91,23 @@ struct LRFlow {
         f.clear();
     }
 
-    int add_edge(int u, int v, ll lo, ll hi) {
+    int add_edge(int u, int v, i64 lo, i64 hi) {
         edges.push_back({u, v, lo, hi});
         return int(edges.size()) - 1;
     }
 
-    pair < bool, ll > solve(int s = 0, int t = 0, int mode = 0) {
+    std::pair<bool, i64> solve(int s = 0, int t = 0, int mode = 0) {
         int ss = n + 1, tt = n + 2;
         Net net(n + 2);
-        V < ll > bal(n + 1);
-        V < int > id;
-        V < pair < int, int > > extra;
-        ll sum = 0, need = 0;
+        std::vector<i64> bal(n + 1);
+        std::vector<int> id;
+        std::vector<std::pair<int, int>> extra;
+        i64 sum = 0, need = 0;
         f.clear();
         for (auto &e : edges) {
             id.push_back(net.add_edge(e.u, e.v, e.hi - e.lo));
-            bal[e.u] -= e.lo; bal[e.v] += e.lo;
+            bal[e.u] -= e.lo;
+            bal[e.v] += e.lo;
             sum += e.hi;
         }
         int a = -1, b = -1;
@@ -115,7 +115,7 @@ struct LRFlow {
             a = net.add_edge(t, s, sum);
             b = net.add_edge(s, t, sum);
         }
-        for (int u = 1; u <= n; ++ u) {
+        for (int u = 1; u <= n; u ++) {
             if (bal[u] > 0) {
                 extra.push_back({ss, net.add_edge(ss, u, bal[u])});
                 need += bal[u];
@@ -123,15 +123,16 @@ struct LRFlow {
                 extra.push_back({u, net.add_edge(u, tt, -bal[u])});
         }
         if (net.flow(ss, tt) != need) return {false, 0};
-        ll ans = 0;
+        i64 ans = 0;
         if (s) {
             ans = net.g[s][b].cap - net.g[t][a].cap;
-            net.erase(t, a); net.erase(s, b);
+            net.erase(t, a);
+            net.erase(s, b);
         }
         for (auto [u, k] : extra) net.erase(u, k);
         if (s && mode == 1) ans += net.flow(s, t);
         if (s && mode == -1) ans -= net.flow(t, s);
-        for (int i = 0; i < int(edges.size()); ++ i) {
+        for (int i = 0; i < int(edges.size()); i ++) {
             auto &e = edges[i];
             f.push_back(e.hi - net.g[e.u][id[i]].cap);
         }

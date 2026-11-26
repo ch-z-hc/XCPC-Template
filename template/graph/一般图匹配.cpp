@@ -5,22 +5,19 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct Blossom {
     int n = 0;
-    V < V < char > > g;
-    V < int > match, fa, base, vis, used, flower;
+    std::vector<std::vector<char>> g;
+    std::vector<int> match, fa, base, vis, used, flower;
 
     Blossom(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_;
-        g.assign(n + 1, V < char > (n + 1));
+        g.assign(n + 1, std::vector<char>(n + 1));
         match.assign(n + 1, 0);
-        fa.resize(n + 1); base.resize(n + 1);
+        fa.resize(n + 1);
+        base.resize(n + 1);
         vis.resize(n + 1);
         used.resize(n + 1);
         flower.resize(n + 1);
@@ -31,13 +28,14 @@ struct Blossom {
     }
 
     int lca(int u, int v) {
-        fill(vis.begin(), vis.end(), 0);
+        std::fill(vis.begin(), vis.end(), 0);
         while (1) {
-            u = base[u]; vis[u] = 1;
-            if (! match[u]) break;
+            u = base[u];
+            vis[u] = 1;
+            if (!match[u]) break;
             u = fa[match[u]];
         }
-        while (! vis[base[v]]) v = fa[match[base[v]]];
+        while (!vis[base[v]]) v = fa[match[base[v]]];
         return base[v];
     }
 
@@ -45,40 +43,47 @@ struct Blossom {
         while (base[u] != b) {
             flower[base[u]] = flower[base[match[u]]] = 1;
             fa[u] = v;
-            v = match[u]; u = fa[v];
+            v = match[u];
+            u = fa[v];
         }
     }
 
     bool bfs(int root) {
-        fill(fa.begin(), fa.end(), 0);
-        fill(used.begin(), used.end(), 0);
-        iota(base.begin(), base.end(), 0);
-        queue < int > q;
-        q.push(root); used[root] = 1;
-        while (! q.empty()) {
-            int u = q.front(); q.pop();
-            for (int v = 1; v <= n; ++ v) {
-                if (! g[u][v] || base[u] == base[v] || match[u] == v) continue;
+        std::fill(fa.begin(), fa.end(), 0);
+        std::fill(used.begin(), used.end(), 0);
+        std::iota(base.begin(), base.end(), 0);
+        std::queue<int> q;
+        q.push(root);
+        used[root] = 1;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int v = 1; v <= n; v ++) {
+                if (!g[u][v] || base[u] == base[v] || match[u] == v) continue;
                 if (v == root || (match[v] && fa[match[v]])) {
                     int b = lca(u, v);
-                    fill(flower.begin(), flower.end(), 0);
-                    mark(u, b, v); mark(v, b, u);
-                    for (int i = 1; i <= n; ++ i) if (flower[base[i]]) {
-                        base[i] = b;
-                        if (! used[i]) q.push(i), used[i] = 1;
-                    }
-                } else if (! fa[v]) {
+                    std::fill(flower.begin(), flower.end(), 0);
+                    mark(u, b, v);
+                    mark(v, b, u);
+                    for (int i = 1; i <= n; i ++)
+                        if (flower[base[i]]) {
+                            base[i] = b;
+                            if (!used[i]) q.push(i), used[i] = 1;
+                        }
+                } else if (!fa[v]) {
                     fa[v] = u;
-                    if (! match[v]) {
-                        for (int x = v; x; ) {
+                    if (!match[v]) {
+                        for (int x = v; x;) {
                             int p = fa[x], y = match[p];
-                            match[x] = p; match[p] = x;
+                            match[x] = p;
+                            match[p] = x;
                             x = y;
                         }
                         return 1;
                     }
                     int x = match[v];
-                    used[x] = 1; q.push(x);
+                    used[x] = 1;
+                    q.push(x);
                 }
             }
         }
@@ -86,9 +91,10 @@ struct Blossom {
     }
 
     int solve() {
-        fill(match.begin(), match.end(), 0);
+        std::fill(match.begin(), match.end(), 0);
         int ans = 0;
-        for (int i = 1; i <= n; ++ i) if (! match[i]) ans += bfs(i);
+        for (int i = 1; i <= n; i ++)
+            if (!match[i]) ans += bfs(i);
         return ans;
     }
 };

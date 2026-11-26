@@ -1,3 +1,4 @@
+#include "../contest_types.hpp"
 #include "../../../template/ds/李超线段树.cpp"
 
 // P4097 题意回归：数学同值时必须返回最早的编号。

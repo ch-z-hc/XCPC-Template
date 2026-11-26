@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/ds/无旋平衡树.cpp"
 #include "../../template/ds/带权与异或并查集.cpp"

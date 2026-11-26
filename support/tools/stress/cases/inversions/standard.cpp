@@ -1,12 +1,12 @@
 #include "../../../../../template/ds/树状数组.cpp"
 
 int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    int n; cin >> n; Fenwick bit(n);
-    ll ans = 0;
+    std::ios::sync_with_stdio(0); std::cin.tie(0);
+    int n; std::cin >> n; Fenwick bit(n);
+    i64 ans = 0;
     for (int i = 1; i <= n; ++ i) {
-        int x; cin >> x;
+        int x; std::cin >> x;
         ans += i - 1 - bit.query(x); bit.add(x, 1);
     }
-    cout << ans << '\n';
+    std::cout << ans << '\n';
 }

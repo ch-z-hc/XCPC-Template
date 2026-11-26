@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/ds/可持久化二进制字典树.cpp"
 
 int main() {

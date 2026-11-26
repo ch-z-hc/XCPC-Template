@@ -5,18 +5,16 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
-V < int > duval(const string &s) {
+std::vector<int> duval(const std::string &s) {
     int n = int(s.size());
-    V < int > pos{0};
-    for (int i = 0; i < n; ) {
+    std::vector<int> pos{0};
+    for (int i = 0; i < n;) {
         int j = i + 1, k = i;
         while (j < n && (unsigned char)s[k] <= (unsigned char)s[j]) {
-            if ((unsigned char)s[k] < (unsigned char)s[j]) k = i;
-            else ++ k;
+            if ((unsigned char)s[k] < (unsigned char)s[j])
+                k = i;
+            else
+                ++ k;
             ++ j;
         }
         int len = j - k;

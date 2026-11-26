@@ -5,24 +5,26 @@
 
 #include <bits/stdc++.h>
 
-typedef long double ld;
+using ld = long double;
 
-using namespace std;
-
-template < class F >
-ld ternary_min(F f, ld l, ld r, int times = 200) {
-    for (int i = 0; i < times; ++ i) {
+template <class F> ld ternary_min(F f, ld l, ld r, int times = 200) {
+    for (int i = 0; i < times; i ++) {
         ld d = r / 3 - l / 3, a = l + d, b = r - d;
-        if (f(a) <= f(b)) r = b; else l = a;
+        if (f(a) <= f(b))
+            r = b;
+        else
+            l = a;
     }
     return l + (r / 2 - l / 2);
 }
 
-template < class F >
-ld ternary_max(F f, ld l, ld r, int times = 200) {
-    for (int i = 0; i < times; ++ i) {
+template <class F> ld ternary_max(F f, ld l, ld r, int times = 200) {
+    for (int i = 0; i < times; i ++) {
         ld d = r / 3 - l / 3, a = l + d, b = r - d;
-        if (f(a) >= f(b)) r = b; else l = a;
+        if (f(a) >= f(b))
+            r = b;
+        else
+            l = a;
     }
     return l + (r / 2 - l / 2);
 }

@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/ds/并查集.cpp"
 #include "../../template/ds/树状数组.cpp"

@@ -1,39 +1,33 @@
 /*
-维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 ll，仅查询连通点对。
+维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 i64，仅查询连通点对。
 初始化 O(n)，其余操作均摊 O(log n)。长链注意递归栈。
 link 在两点已连通时失败，cut 只能断开直接相连的边。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct LCT {
     struct Node {
         int ch[2]{}, fa = 0;
         bool rev = false;
-        ll val = 0, sum = 0;
+        i64 val = 0, sum = 0;
     };
-    V < Node > tr;
+    std::vector<Node> tr;
 
-    void init(const V < ll > &a) {
+    void init(const std::vector<i64> &a) {
         tr.assign(a.size(), {});
-        for (int i = 1; i < int(a.size()); ++ i) tr[i].val = tr[i].sum = a[i];
+        for (int i = 1; i < int(a.size()); i ++) tr[i].val = tr[i].sum = a[i];
     }
     bool root(int x) {
         int p = tr[x].fa;
-        return ! p || (tr[p].ch[0] != x && tr[p].ch[1] != x);
+        return !p || (tr[p].ch[0] != x && tr[p].ch[1] != x);
     }
-    void pull(int x) {
-        tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum;
-    }
+    void pull(int x) { tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum; }
     void reverse(int x) {
-        if (! x) return;
-        swap(tr[x].ch[0], tr[x].ch[1]);
+        if (!x) return;
+        std::swap(tr[x].ch[0], tr[x].ch[1]);
         tr[x].rev ^= 1;
     }
     void push(int x) {
@@ -44,41 +38,46 @@ struct LCT {
         }
     }
     void down(int x) {
-        if (! root(x)) down(tr[x].fa);
+        if (!root(x)) down(tr[x].fa);
         push(x);
     }
 
     void rotate(int x) {
         int y = tr[x].fa, z = tr[y].fa, d = tr[y].ch[1] == x;
         int b = tr[x].ch[d ^ 1];
-        if (! root(y)) tr[z].ch[tr[z].ch[1] == y] = x;
+        if (!root(y)) tr[z].ch[tr[z].ch[1] == y] = x;
         tr[x].fa = z;
         tr[x].ch[d ^ 1] = y;
         tr[y].fa = x;
         tr[y].ch[d] = b;
         if (b) tr[b].fa = y;
-        pull(y); pull(x);
+        pull(y);
+        pull(x);
     }
     void splay(int x) {
         down(x);
-        while (! root(x)) {
+        while (!root(x)) {
             int y = tr[x].fa, z = tr[y].fa;
-            if (! root(y))
-                rotate((tr[y].ch[1] == x) == (tr[z].ch[1] == y) ? y : x);
+            if (!root(y)) rotate((tr[y].ch[1] == x) == (tr[z].ch[1] == y) ? y : x);
             rotate(x);
         }
     }
     void access(int x) {
         for (int y = 0, u = x; u; y = u, u = tr[u].fa) {
-            splay(u); tr[u].ch[1] = y;
+            splay(u);
+            tr[u].ch[1] = y;
             if (y) tr[y].fa = u;
             pull(u);
         }
         splay(x);
     }
-    void make_root(int x) { access(x); reverse(x); }
+    void make_root(int x) {
+        access(x);
+        reverse(x);
+    }
     int find_root(int x) {
-        access(x); push(x);
+        access(x);
+        push(x);
         while (tr[x].ch[0]) {
             x = tr[x].ch[0];
             push(x);
@@ -94,17 +93,19 @@ struct LCT {
         return true;
     }
     bool cut(int u, int v) {
-        make_root(u); access(v);
+        make_root(u);
+        access(v);
         if (tr[v].ch[0] != u || tr[u].ch[1]) return false;
-        tr[v].ch[0] = tr[u].fa = 0; pull(v);
+        tr[v].ch[0] = tr[u].fa = 0;
+        pull(v);
         return true;
     }
-    void modify(int u, ll val) {
+    void modify(int u, i64 val) {
         access(u);
         tr[u].val = val;
         pull(u);
     }
-    ll query(int u, int v) {
+    i64 query(int u, int v) {
         make_root(u);
         access(v);
         return tr[v].sum;

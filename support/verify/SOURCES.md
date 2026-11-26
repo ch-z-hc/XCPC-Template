@@ -26,6 +26,7 @@
 | `template/ds/动态开点线段树合并与分裂.cpp` | [P5494 线段树分裂](https://www.luogu.com.cn/problem/P5494) | 直接；合并、分裂会消耗原树，不能共享非空节点。 |
 | `template/ds/主席树.cpp` | [Range Kth Smallest](https://judge.yosupo.jp/problem/range_kth_smallest)、[P3834 静态区间第 k 小](https://www.luogu.com.cn/problem/P3834) | 直接；模板区间与 k 均为 1-based。不是任意单点改值版本。 |
 | `template/ds/可持久化数组.cpp` | [P3919 可持久化线段树 1 / 可持久化数组](https://www.luogu.com.cn/problem/P3919) | 直接；已读取官方题面。调用者保存各版本根，查询产生的新版本复用被查询根；与静态区间第 k 小的主席树分开。 |
+| `template/ds/线段树分治.cpp` | [P2147 洞穴勘测](https://www.luogu.com.cn/problem/P2147) | 将每条边的存活时间加入线段树，用可撤销并查集回答连通性查询。 |
 | `template/ds/可撤销并查集.cpp` | [Persistent Unionfind](https://judge.yosupo.jp/problem/persistent_unionfind) | 应用；需离线建立版本树，递归进入时合并、退出时回滚，并非在线持久化 DSU。 |
 | `template/ds/线段树与树上二分.cpp` | [P3372 线段树 1](https://www.luogu.com.cn/problem/P3372)、[ACL Segtree](https://github.com/atcoder/ac-library/blob/master/document_en/segtree.md) | 前者对应区间加、区间和；阈值搜索与第 k 个另做扫描对拍，`kth` 要求元素非负；所有中间结果须不溢出 `ll`。 |
 | `template/ds/吉司机线段树.cpp` | [Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum) | 直接；题目为 0-based 半开区间，模板为 1-based 闭区间；另提供最小值与最大值查询。 |
@@ -175,6 +176,8 @@
 | `template/geometry/嵌套凸多边形切线.cpp` | [QOJ 14714 三角形内部](https://qoj.ac/problem/14714) | 应用；严格嵌套凸多边形的两侧切点与合法弦区间，复用 `点与向量.cpp` 的基础定义。题目计数留在 `inside_triangle_submission.cpp`，官方样例与随机暴力对拍见 `nested_hull_random.cpp`；未声称在线 AC。 |
 | `template/geometry/最小面积包围矩形.cpp` | [CGAL Minimum Rectangle](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html) | 算法参考；严格逆时针凸包，另测 0 / 1 / 2 点退化；枚举所有边方向作真值，不声称精确实数几何。 |
 | `template/geometry/圆.cpp` | [AOJ CGL_7_D 圆与直线交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_D)、[CGL_7_E 两圆交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_E)、[CGL_7_F 点到圆切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F)、[CGL_7_G 公切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G)、[CGL_7_I 两圆交面积](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_I) | 分别对应交点、切点、公切线与交面积；无穷多交点不返回无限列表，退化圆按源码约定。 |
+| `template/geometry/二维凸包最大点积查询.cpp` | [CGAL 2D Convex Hulls and Extreme Points](https://doc.cgal.org/latest/Convex_hull_2/index.html) | 极点查询参考。整数方向的最大点积与包含关系对照直接枚举。 |
+| `template/geometry/二维动态凸包.cpp` | [CGAL 2D Convex Hulls and Extreme Points](https://doc.cgal.org/latest/Convex_hull_2/index.html) | 静态凸包用于块内重建。插入、按编号删除和查询在本地与存活点集对拍。 |
 | `template/geometry/平面最近点对.cpp` | [Closest Pair](https://judge.yosupo.jp/problem/closest_pair) | 直接；返回原输入点对下标，少于两点时为 `{-1, -1}`。 |
 | `template/geometry/圆面积并与周长并.cpp` | [Green's Theorem](https://sites.science.oregonstate.edu/BridgeBook/talk/book/sguide/green) | 算法参考；面积用解析值与独立竖切片积分对拍，周长用解析值与独立圆弧采样验证；支持包含、重复圆和洞，浮点近退化须另核精度。 |
 | `template/geometry/三维凸包.cpp` | [CGAL 3D Convex Hulls](https://doc.cgal.org/latest/Convex_hull_3/index.html) | 算法参考；独立增量实现，dim < 3 时三角面为空、面积体积为 0，不返回平面凸包面积。 |

@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/math/组合数.cpp"
 #include "../../template/math/等距拉格朗日插值.cpp"
 #include "../../template/math/约数与倍数变换与卷积.cpp"

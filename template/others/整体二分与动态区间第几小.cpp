@@ -6,41 +6,38 @@ query 返回查询编号，取 solve 结果的对应下标即为答案。
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct KthOffline {
     struct Event {
         int type, l, r, k, delta, id, p = 0;
-        ll val;
+        i64 val;
         bool left = false;
     };
 
     int n = 0, cnt = 0;
-    V < ll > a, val, ans;
-    V < Event > log;
-    V < int > bit;
+    std::vector<i64> a, val, ans;
+    std::vector<Event> log;
+    std::vector<int> bit;
 
-    void init(const V < ll > &input) {
+    void init(const std::vector<i64> &input) {
         a = input;
         n = int(a.size()) - 1;
         cnt = 0;
         log.clear();
         val.clear();
         ans.clear();
-        for (int i = 1; i <= n; ++ i) {
+        for (int i = 1; i <= n; i ++) {
             log.push_back({0, i, 0, 0, 1, 0, 0, a[i]});
             val.push_back(a[i]);
         }
     }
 
-    void modify(int p, ll x) {
+    void modify(int p, i64 x) {
         log.push_back({0, p, 0, 0, -1, 0, 0, a[p]});
         log.push_back({0, p, 0, 0, 1, 0, 0, x});
-        a[p] = x; val.push_back(x);
+        a[p] = x;
+        val.push_back(x);
     }
 
     int query(int l, int r, int k) {
@@ -58,45 +55,50 @@ struct KthOffline {
         return ans;
     }
 
-    void solve(V < Event > &ev, V < Event > &tmp, int l, int r, int lo, int hi) {
+    void solve(std::vector<Event> &ev, std::vector<Event> &tmp, int l, int r, int lo,
+               int hi) {
         if (l > r) return;
         if (lo == hi) {
-            for (int i = l; i <= r; ++ i) if (ev[i].type) ans[ev[i].id] = val[lo];
+            for (int i = l; i <= r; i ++)
+                if (ev[i].type) ans[ev[i].id] = val[lo];
             return;
         }
         int mid = (lo + hi) >> 1, cnt = 0;
-        for (int i = l; i <= r; ++ i) {
+        for (int i = l; i <= r; i ++) {
             auto &e = ev[i];
-            if (! e.type) {
+            if (!e.type) {
                 e.left = e.p <= mid;
                 if (e.left) add(e.l, e.delta);
             } else {
                 int c = sum(e.r) - sum(e.l - 1);
                 e.left = e.k <= c;
-                if (! e.left) e.k -= c;
+                if (!e.left) e.k -= c;
             }
             cnt += e.left;
         }
         int p = l, q = l + cnt;
-        for (int i = l; i <= r; ++ i) {
+        for (int i = l; i <= r; i ++) {
             auto &e = ev[i];
-            if (! e.type && e.left) add(e.l, -e.delta);
-            if (e.left) tmp[p ++] = e;
-            else tmp[q ++] = e;
+            if (!e.type && e.left) add(e.l, -e.delta);
+            if (e.left)
+                tmp[p ++] = e;
+            else
+                tmp[q ++] = e;
         }
-        for (int i = l; i <= r; ++ i) ev[i] = tmp[i];
+        for (int i = l; i <= r; i ++) ev[i] = tmp[i];
         solve(ev, tmp, l, l + cnt - 1, lo, mid);
         solve(ev, tmp, l + cnt, r, mid + 1, hi);
     }
 
-    V < ll > solve() {
+    std::vector<i64> solve() {
         ans.assign(cnt, 0);
-        if (! cnt) return ans;
-        sort(val.begin(), val.end());
-        val.erase(unique(val.begin(), val.end()), val.end());
-        V < Event > ev = log, tmp(ev.size());
-        for (auto &e : ev) if (! e.type)
-            e.p = int(lower_bound(val.begin(), val.end(), e.val) - val.begin());
+        if (!cnt) return ans;
+        std::sort(val.begin(), val.end());
+        val.erase(std::unique(val.begin(), val.end()), val.end());
+        std::vector<Event> ev = log, tmp(ev.size());
+        for (auto &e : ev)
+            if (!e.type)
+                e.p = int(std::lower_bound(val.begin(), val.end(), e.val) - val.begin());
         bit.assign(n + 1, 0);
         solve(ev, tmp, 0, int(ev.size()) - 1, 0, int(val.size()) - 1);
         return ans;

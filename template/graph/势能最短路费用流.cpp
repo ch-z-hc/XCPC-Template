@@ -1,24 +1,20 @@
 /*
 求最小费用最大流。容量非负，可有负费用边，残量网络须无负环。
 初始 SPFA 最坏 O(nm)，之后 A 次增广 O(A m log n)。费用不能取 LLONG_MIN，
-势能、路径费用乘流量及累计费用须放入 ll。重复调用在当前残量上继续增广。
+势能、路径费用乘流量及累计费用须放入 i64。重复调用在当前残量上继续增广。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct MCMF {
     struct Edge {
         int to, rev;
-        ll cap, cost;
+        i64 cap, cost;
     };
     int n = 0;
-    V < V < Edge > > g;
+    std::vector<std::vector<Edge>> g;
 
     MCMF(int n = 0) { init(n); }
     void init(int n_) {
@@ -26,59 +22,60 @@ struct MCMF {
         g.assign(n + 1, {});
     }
 
-    void add_edge(int u, int v, ll cap, ll cost) {
+    void add_edge(int u, int v, i64 cap, i64 cost) {
         int a = int(g[u].size()), b = int(g[v].size());
         g[u].push_back({v, b + (u == v), cap, cost});
         g[v].push_back({u, a, 0, -cost});
     }
 
-    pair < ll, ll > flow(int s, int t) {
+    std::pair<i64, i64> flow(int s, int t) {
         if (s == t) return {0, 0};
-        V < ll > h(n + 1), dis(n + 1);
-        V < int > pre(n + 1), pe(n + 1);
-        V < char > reach(n + 1);
+        std::vector<i64> h(n + 1), dis(n + 1);
+        std::vector<int> pre(n + 1), pe(n + 1);
+        std::vector<char> reach(n + 1);
 
-        V < int > vis(n + 1);
-        queue < int > q;
+        std::vector<int> vis(n + 1);
+        std::queue<int> q;
         h[s] = 0;
         reach[s] = 1;
         q.push(s);
         vis[s] = 1;
-        while (! q.empty()) {
+        while (!q.empty()) {
             int u = q.front();
             q.pop();
             vis[u] = 0;
             for (auto &e : g[u]) {
-                if (e.cap && (! reach[e.to] || h[e.to] > h[u] + e.cost)) {
+                if (e.cap && (!reach[e.to] || h[e.to] > h[u] + e.cost)) {
                     h[e.to] = h[u] + e.cost;
                     reach[e.to] = 1;
-                    if (! vis[e.to]) {
+                    if (!vis[e.to]) {
                         vis[e.to] = 1;
                         q.push(e.to);
                     }
                 }
             }
         }
-        ll ans_flow = 0;
-        ll ans_cost = 0;
+        i64 ans_flow = 0;
+        i64 ans_cost = 0;
         while (true) {
-            fill(reach.begin(), reach.end(), 0);
-            fill(pre.begin(), pre.end(), -1);
-            priority_queue < pair < ll, int >, V < pair < ll, int > >,
-                             greater < pair < ll, int > > > pq;
+            std::fill(reach.begin(), reach.end(), 0);
+            std::fill(pre.begin(), pre.end(), -1);
+            std::priority_queue<std::pair<i64, int>, std::vector<std::pair<i64, int>>,
+                                std::greater<std::pair<i64, int>>>
+                pq;
             dis[s] = 0;
             reach[s] = 1;
             pq.push({0, s});
 
-            while (! pq.empty()) {
+            while (!pq.empty()) {
                 auto [du, u] = pq.top();
                 pq.pop();
                 if (du != dis[u]) continue;
-                for (int i = 0; i < int(g[u].size()); ++ i) {
+                for (int i = 0; i < int(g[u].size()); i ++) {
                     auto &e = g[u][i];
-                    if (! e.cap) continue;
-                    ll nd = du + e.cost + h[u] - h[e.to];
-                    if (! reach[e.to] || nd < dis[e.to]) {
+                    if (!e.cap) continue;
+                    i64 nd = du + e.cost + h[u] - h[e.to];
+                    if (!reach[e.to] || nd < dis[e.to]) {
                         dis[e.to] = nd;
                         reach[e.to] = 1;
                         pre[e.to] = u;
@@ -87,14 +84,14 @@ struct MCMF {
                     }
                 }
             }
-            if (! reach[t]) break;
+            if (!reach[t]) break;
 
-            for (int v = 1; v <= n; ++ v)
+            for (int v = 1; v <= n; v ++)
                 if (reach[v]) h[v] += dis[v];
 
-            ll add = LLONG_MAX;
+            i64 add = LLONG_MAX;
             for (int v = t; v != s; v = pre[v])
-                add = min(add, g[pre[v]][pe[v]].cap);
+                add = std::min(add, g[pre[v]][pe[v]].cap);
             for (int v = t; v != s; v = pre[v]) {
                 auto &e = g[pre[v]][pe[v]];
                 e.cap -= add;

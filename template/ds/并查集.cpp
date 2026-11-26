@@ -1,12 +1,8 @@
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct DSU {
     int cnt = 0;
-    V < int > fa, siz;
+    std::vector<int> fa, siz;
 
     DSU(int n = 0) { init(n); }
 
@@ -14,7 +10,7 @@ struct DSU {
         cnt = n;
         fa.resize(n + 1);
         siz.assign(n + 1, 1);
-        iota(fa.begin(), fa.end(), 0);
+        std::iota(fa.begin(), fa.end(), 0);
     }
 
     int find(int u) {
@@ -23,9 +19,10 @@ struct DSU {
     }
 
     bool merge(int u, int v) {
-        u = find(u); v = find(v);
+        u = find(u);
+        v = find(v);
         if (u == v) return 0;
-        if (siz[u] < siz[v]) swap(u, v);
+        if (siz[u] < siz[v]) std::swap(u, v);
         fa[v] = u;
         siz[u] += siz[v];
         cnt --;

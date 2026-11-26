@@ -5,24 +5,21 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
+using i64 = long long;
 
-typedef long long ll;
-
-using namespace std;
-
-bool floyd(V < V < ll > > &dis, ll inf = (1ll << 62)) {
+bool floyd(std::vector<std::vector<i64>> &dis, i64 inf = (1ll << 62)) {
     int n = int(dis.size()) - 1;
-    for (int k = 1; k <= n; ++ k) {
-        for (int i = 1; i <= n; ++ i) {
+    for (int k = 1; k <= n; k ++) {
+        for (int i = 1; i <= n; i ++) {
             if (dis[i][k] >= inf) continue;
-            for (int j = 1; j <= n; ++ j) {
+            for (int j = 1; j <= n; j ++) {
                 if (dis[k][j] >= inf) continue;
-                dis[i][j] = max(-inf, min(dis[i][j], dis[i][k] + dis[k][j]));
+                dis[i][j] = std::max(-inf, std::min(dis[i][j], dis[i][k] + dis[k][j]));
             }
         }
     }
-    for (int i = 1; i <= n; ++ i) if (dis[i][i] < 0) return false;
+    for (int i = 1; i <= n; i ++)
+        if (dis[i][i] < 0) return false;
     return true;
 }
 

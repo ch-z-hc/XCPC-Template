@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/点分树.cpp"
 #include "../../template/graph/最小斯坦纳树.cpp"
 

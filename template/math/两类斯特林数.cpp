@@ -5,40 +5,37 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
+using i64 = long long;
 
-typedef long long ll;
-
-using namespace std;
-
-V < V < ll > > stirling1(int n, ll mod) {
-    V < V < ll > > s(n + 1, V < ll > (n + 1));
+std::vector<std::vector<i64>> stirling1(int n, i64 mod) {
+    std::vector<std::vector<i64>> s(n + 1, std::vector<i64>(n + 1));
     s[0][0] = 1 % mod;
-    for (int i = 1; i <= n; ++ i)
-        for (int j = 1; j <= i; ++ j)
+    for (int i = 1; i <= n; i ++)
+        for (int j = 1; j <= i; j ++)
             s[i][j] = (s[i - 1][j - 1] + (i - 1) * s[i - 1][j]) % mod;
     return s;
 }
 
-V < V < ll > > stirling2(int n, ll mod) {
-    V < V < ll > > s(n + 1, V < ll > (n + 1));
+std::vector<std::vector<i64>> stirling2(int n, i64 mod) {
+    std::vector<std::vector<i64>> s(n + 1, std::vector<i64>(n + 1));
     s[0][0] = 1 % mod;
-    for (int i = 1; i <= n; ++ i)
-        for (int j = 1; j <= i; ++ j)
+    for (int i = 1; i <= n; i ++)
+        for (int j = 1; j <= i; j ++)
             s[i][j] = (s[i - 1][j - 1] + j * s[i - 1][j]) % mod;
     return s;
 }
 
-V < ll > stirling2_row(int n) {
-    V < ll > fac(n + 1, 1), ifac(n + 1, 1), a(n + 1), b(n + 1);
-    for (int i = 1; i <= n; ++ i) fac[i] = fac[i - 1] * i % NTT_MOD;
+std::vector<i64> stirling2_row(int n) {
+    std::vector<i64> fac(n + 1, 1), ifac(n + 1, 1), a(n + 1), b(n + 1);
+    for (int i = 1; i <= n; i ++) fac[i] = fac[i - 1] * i % NTT_MOD;
     ifac[n] = ntt_pow(fac[n], NTT_MOD - 2);
-    for (int i = n; i; -- i) ifac[i - 1] = ifac[i] * i % NTT_MOD;
-    for (int i = 0; i <= n; ++ i) {
+    for (int i = n; i; i --) ifac[i - 1] = ifac[i] * i % NTT_MOD;
+    for (int i = 0; i <= n; i ++) {
         a[i] = ntt_pow(i, n) * ifac[i] % NTT_MOD;
         b[i] = (i & 1) ? (NTT_MOD - ifac[i]) % NTT_MOD : ifac[i];
     }
-    a = multiply(a, b); a.resize(n + 1);
+    a = multiply(a, b);
+    a.resize(n + 1);
     return a;
 }
 

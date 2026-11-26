@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "../contest_types.hpp"
 
 #include "../../../template/math/杜教筛.cpp"
 #include "../../../template/math/扩展卢卡斯定理.cpp"

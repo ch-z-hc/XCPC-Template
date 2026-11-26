@@ -2,15 +2,11 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct SCC {
     int n = 0, tim = 0, cnt = 0;
-    V < V < int > > g;
-    V < int > dfn, low, bel, stk;
-    V < char > vis;
+    std::vector<std::vector<int>> g;
+    std::vector<int> dfn, low, bel, stk;
+    std::vector<char> vis;
 
     SCC(int n = 0) { init(n); }
 
@@ -32,15 +28,17 @@ struct SCC {
         stk.push_back(u);
         vis[u] = 1;
         for (int v : g[u]) {
-            if (! dfn[v]) {
+            if (!dfn[v]) {
                 dfs(v);
-                low[u] = min(low[u], low[v]);
-            } else if (vis[v]) low[u] = min(low[u], dfn[v]);
+                low[u] = std::min(low[u], low[v]);
+            } else if (vis[v])
+                low[u] = std::min(low[u], dfn[v]);
         }
         if (dfn[u] != low[u]) return;
         cnt ++;
         while (1) {
-            int v = stk.back(); stk.pop_back();
+            int v = stk.back();
+            stk.pop_back();
             vis[v] = 0;
             bel[v] = cnt;
             if (u == v) break;
@@ -49,13 +47,13 @@ struct SCC {
 
     int build() {
         tim = cnt = 0;
-        fill(dfn.begin(), dfn.end(), 0);
-        fill(low.begin(), low.end(), 0);
-        fill(bel.begin(), bel.end(), 0);
-        fill(vis.begin(), vis.end(), 0);
+        std::fill(dfn.begin(), dfn.end(), 0);
+        std::fill(low.begin(), low.end(), 0);
+        std::fill(bel.begin(), bel.end(), 0);
+        std::fill(vis.begin(), vis.end(), 0);
         stk.clear();
-        for (int u = 1; u <= n; ++ u)
-            if (! dfn[u]) dfs(u);
+        for (int u = 1; u <= n; u ++)
+            if (!dfn[u]) dfs(u);
         return cnt;
     }
 };

@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/最大团与最大独立集.cpp"
 
 int brute(const MaxClique &mc, bool independent) {

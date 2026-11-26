@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/ds/李超线段树.cpp"
 

@@ -3,17 +3,13 @@
 截断长度 n <= 2^22，乘积长度 <= 2^23，除法两端长度 <= 2^22。主要运算 O(n log n)。
 取逆常数项非零，对数常数项为 1，指数常数项为 0；幂次非负，除数非零。
 sqrt 无根时返回 false，首个非零项取较小的平方根。divmod 去掉商和余数的高次零，零多项式为空。
-直接调用 ntt 时长度须为 2 的幂。
+直接调用 ntt 时长度须为 2 的幂。单位根按需缓存，空间 O(最大变换长度)。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-typedef unsigned long long ull;
-
-using namespace std;
+using i64 = long long;
+using u64 = unsigned long long;
 
 struct FPS {
     static const int mod = 998244353;
@@ -25,25 +21,32 @@ struct FPS {
         return ans;
     }
 
-    static void ntt(V < int > &a, bool inv = false) {
+    static void ntt(std::vector<int> &a, bool inv = false) {
         int n = int(a.size());
-        for (int i = 1, j = 0; i < n; ++ i) {
+        if (inv && n > 1) std::reverse(a.begin() + 1, a.end());
+        for (int i = 1, j = 0; i < n; i ++) {
             int bit = n >> 1;
             for (; j & bit; bit >>= 1) j ^= bit;
             j ^= bit;
-            if (i < j) swap(a[i], a[j]);
+            if (i < j) std::swap(a[i], a[j]);
         }
-        for (int len = 2; len <= n; len <<= 1) {
-            int wn = power(3, (mod - 1) / len);
-            if (inv) wn = power(wn, mod - 2);
-            for (int l = 0; l < n; l += len) {
-                ll w = 1;
-                for (int i = 0; i < len / 2; ++ i, w = w * wn % mod) {
-                    int x = a[l + i], y = w * a[l + i + len / 2] % mod;
-                    a[l + i] = x + y;
-                    if (a[l + i] >= mod) a[l + i] -= mod;
-                    a[l + i + len / 2] = x - y;
-                    if (a[l + i + len / 2] < 0) a[l + i + len / 2] += mod;
+        static std::vector<int> roots{0, 1};
+        for (int k = int(roots.size()); k < n; k *= 2) {
+            int w = power(3, (mod - 1) / (2 * k));
+            roots.resize(2 * k);
+            for (int j = k / 2; j < k; j ++) {
+                roots[2 * j] = roots[j];
+                roots[2 * j + 1] = 1ll * roots[j] * w % mod;
+            }
+        }
+        for (int k = 1; k < n; k *= 2) {
+            for (int l = 0; l < n; l += 2 * k) {
+                for (int j = 0; j < k; j ++) {
+                    int x = a[l + j], y = 1ll * a[l + k + j] * roots[k + j] % mod;
+                    a[l + j] = x + y;
+                    if (a[l + j] >= mod) a[l + j] -= mod;
+                    a[l + k + j] = x - y;
+                    if (a[l + k + j] < 0) a[l + k + j] += mod;
                 }
             }
         }
@@ -53,90 +56,95 @@ struct FPS {
         }
     }
 
-    static V < int > mul(V < int > a, V < int > b) {
+    static std::vector<int> mul(std::vector<int> a, std::vector<int> b) {
         if (a.empty() || b.empty()) return {};
         int m = int(a.size() + b.size() - 1), n = 1;
         while (n < m) n <<= 1;
         assert(n <= (1 << 23));
-        a.resize(n); b.resize(n);
-        ntt(a); ntt(b);
-        for (int i = 0; i < n; ++ i) a[i] = 1ll * a[i] * b[i] % mod;
+        a.resize(n);
+        b.resize(n);
+        ntt(a);
+        ntt(b);
+        for (int i = 0; i < n; i ++) a[i] = 1ll * a[i] * b[i] % mod;
         ntt(a, true);
         a.resize(m);
         return a;
     }
 
-    static V < int > inv(const V < int > &a, int n) {
-        if (! n) return {};
-        assert(n <= (1 << 22) && ! a.empty() && a[0]);
-        V < int > b{power(a[0], mod - 2)};
+    static std::vector<int> inv(const std::vector<int> &a, int n) {
+        if (!n) return {};
+        assert(n <= (1 << 22) && !a.empty() && a[0]);
+        std::vector<int> b{power(a[0], mod - 2)};
         for (int len = 2; int(b.size()) < n; len <<= 1) {
-            int m = min(len, n);
-            V < int > c(a.begin(), a.begin() + min(m, int(a.size())));
-            c = mul(c, b); c.resize(m);
+            int m = std::min(len, n);
+            std::vector<int> c(a.begin(), a.begin() + std::min(m, int(a.size())));
+            c = mul(c, b);
+            c.resize(m);
             for (int &x : c) x = x ? mod - x : 0;
             c[0] = (c[0] + 2) % mod;
-            b = mul(b, c); b.resize(m);
+            b = mul(b, c);
+            b.resize(m);
         }
         return b;
     }
 
-    static V < int > ln(const V < int > &a, int n) {
-        if (! n) return {};
-        assert(n <= (1 << 22) && ! a.empty() && a[0] == 1);
-        int m = min(n, int(a.size()));
-        V < int > d(max(0, m - 1));
-        for (int i = 1; i < m; ++ i) d[i - 1] = 1ll * i * a[i] % mod;
-        d = mul(d, inv(a, n)); d.resize(n - 1);
-        V < int > b(n), iv(n, 1);
-        for (int i = 2; i < n; ++ i)
-            iv[i] = mod - 1ll * (mod / i) * iv[mod % i] % mod;
-        for (int i = 1; i < n; ++ i) b[i] = 1ll * d[i - 1] * iv[i] % mod;
+    static std::vector<int> ln(const std::vector<int> &a, int n) {
+        if (!n) return {};
+        assert(n <= (1 << 22) && !a.empty() && a[0] == 1);
+        int m = std::min(n, int(a.size()));
+        std::vector<int> d(std::max(0, m - 1));
+        for (int i = 1; i < m; i ++) d[i - 1] = 1ll * i * a[i] % mod;
+        d = mul(d, inv(a, n));
+        d.resize(n - 1);
+        std::vector<int> b(n), iv(n, 1);
+        for (int i = 2; i < n; i ++) iv[i] = mod - 1ll * (mod / i) * iv[mod % i] % mod;
+        for (int i = 1; i < n; i ++) b[i] = 1ll * d[i - 1] * iv[i] % mod;
         return b;
     }
 
-    static V < int > exp(const V < int > &a, int n) {
-        if (! n) return {};
+    static std::vector<int> exp(const std::vector<int> &a, int n) {
+        if (!n) return {};
         assert(n <= (1 << 22) && (a.empty() || a[0] == 0));
-        V < int > b{1};
+        std::vector<int> b{1};
         for (int len = 2; int(b.size()) < n; len <<= 1) {
-            int m = min(len, n);
-            V < int > c = ln(b, m);
-            for (int i = 0; i < m; ++ i) {
+            int m = std::min(len, n);
+            std::vector<int> c = ln(b, m);
+            for (int i = 0; i < m; i ++) {
                 c[i] = (i < int(a.size()) ? a[i] : 0) - c[i];
                 if (c[i] < 0) c[i] += mod;
             }
             c[0] ++;
-            b = mul(b, c); b.resize(m);
+            b = mul(b, c);
+            b.resize(m);
         }
         return b;
     }
 
-    static V < int > pow(const V < int > &a, ull k, int n) {
-        if (! n) return {};
+    static std::vector<int> pow(const std::vector<int> &a, u64 k, int n) {
+        if (!n) return {};
         assert(n <= (1 << 22));
-        V < int > ans(n);
-        if (! k) { ans[0] = 1; return ans; }
-        int p = 0, m = min(n, int(a.size()));
-        while (p < m && ! a[p]) p ++;
-        if (p == m || (p && k > ull((n - 1) / p)))
+        std::vector<int> ans(n);
+        if (!k) {
+            ans[0] = 1;
             return ans;
+        }
+        int p = 0, m = std::min(n, int(a.size()));
+        while (p < m && !a[p]) p ++;
+        if (p == m || (p && k > u64((n - 1) / p))) return ans;
         int shift = int(p * k), len = n - shift;
         int iv = power(a[p], mod - 2);
-        V < int > b(len);
-        for (int i = 0; i < len && i + p < m; ++ i)
-            b[i] = 1ll * a[i + p] * iv % mod;
+        std::vector<int> b(len);
+        for (int i = 0; i < len && i + p < m; i ++) b[i] = 1ll * a[i + p] * iv % mod;
         b = ln(b, len);
         for (int &x : b) x = x * (k % mod) % mod;
         b = exp(b, len);
         int v = power(a[p], int(k % (mod - 1)));
-        for (int i = 0; i < len; ++ i)
-            ans[i + shift] = 1ll * b[i] * v % mod;
+        for (int i = 0; i < len; i ++) ans[i + shift] = 1ll * b[i] * v % mod;
         return ans;
     }
 
     static int sqrt_mod(int a) {
-        if (! a) return 0;
+        if (!a) return 0;
         if (power(a, (mod - 1) / 2) != 1) return -1;
         int q = (mod - 1) >> 23, s = 23;
         int c = power(3, q), t = power(a, q);
@@ -150,65 +158,75 @@ struct FPS {
             t = 1ll * t * c % mod;
             s = i;
         }
-        return min(r, mod - r);
+        return std::min(r, mod - r);
     }
 
-    static bool sqrt(const V < int > &a, int n, V < int > &ans) {
-        if (! n) { ans.clear(); return true; }
+    static bool sqrt(const std::vector<int> &a, int n, std::vector<int> &ans) {
+        if (!n) {
+            ans.clear();
+            return true;
+        }
         assert(n <= (1 << 22));
-        int p = 0, m = min(n, int(a.size()));
-        while (p < m && ! a[p]) p ++;
-        if (p == m) { ans.assign(n, 0); return true; }
+        int p = 0, m = std::min(n, int(a.size()));
+        while (p < m && !a[p]) p ++;
+        if (p == m) {
+            ans.assign(n, 0);
+            return true;
+        }
         if (p & 1) return false;
         int r = sqrt_mod(a[p]);
         if (r == -1) return false;
         int len = n - p;
-        V < int > c(len), b{r};
-        for (int i = 0; i < len && i + p < m; ++ i) c[i] = a[i + p];
+        std::vector<int> c(len), b{r};
+        for (int i = 0; i < len && i + p < m; i ++) c[i] = a[i + p];
         for (int size = 2; int(b.size()) < len; size <<= 1) {
-            int k = min(size, len);
-            V < int > d(c.begin(), c.begin() + k);
-            d = mul(d, inv(b, k)); d.resize(k);
+            int k = std::min(size, len);
+            std::vector<int> d(c.begin(), c.begin() + k);
+            d = mul(d, inv(b, k));
+            d.resize(k);
             b.resize(k);
-            for (int i = 0; i < k; ++ i)
+            for (int i = 0; i < k; i ++)
                 b[i] = 1ll * (b[i] + d[i]) * ((mod + 1) / 2) % mod;
         }
         ans.assign(n, 0);
-        for (int i = 0; i < len; ++ i) ans[i + p / 2] = b[i];
+        for (int i = 0; i < len; i ++) ans[i + p / 2] = b[i];
         return true;
     }
 
-    static pair < V < int >, V < int > > divmod(V < int > a,
-                                               V < int > b) {
+    static std::pair<std::vector<int>, std::vector<int>> divmod(std::vector<int> a,
+                                                                std::vector<int> b) {
         assert(a.size() <= (1 << 22) && b.size() <= (1 << 22));
-        while (! a.empty() && ! a.back()) a.pop_back();
-        while (! b.empty() && ! b.back()) b.pop_back();
-        assert(! b.empty());
+        while (!a.empty() && !a.back()) a.pop_back();
+        while (!b.empty() && !b.back()) b.pop_back();
+        assert(!b.empty());
         if (a.size() < b.size()) return {{}, a};
         int n = int(a.size()), m = int(b.size()), k = n - m + 1;
-        V < int > ar = a, br = b;
-        reverse(ar.begin(), ar.end()); reverse(br.begin(), br.end());
+        std::vector<int> ar = a, br = b;
+        std::reverse(ar.begin(), ar.end());
+        std::reverse(br.begin(), br.end());
         ar.resize(k);
-        V < int > q = mul(ar, inv(br, k)); q.resize(k);
-        reverse(q.begin(), q.end());
-        V < int > r = mul(q, b); r.resize(m - 1);
-        for (int i = 0; i < m - 1; ++ i) {
+        std::vector<int> q = mul(ar, inv(br, k));
+        q.resize(k);
+        std::reverse(q.begin(), q.end());
+        std::vector<int> r = mul(q, b);
+        r.resize(m - 1);
+        for (int i = 0; i < m - 1; i ++) {
             r[i] = a[i] - r[i];
             if (r[i] < 0) r[i] += mod;
         }
-        while (! q.empty() && ! q.back()) q.pop_back();
-        while (! r.empty() && ! r.back()) r.pop_back();
+        while (!q.empty() && !q.back()) q.pop_back();
+        while (!r.empty() && !r.back()) r.pop_back();
         return {q, r};
     }
 };
 const int FPS::mod;
 
 /*
-V < int > a{1, 2, 1}, b{1, 1};
+std::vector<int> a{1, 2, 1}, b{1, 1};
 auto product = FPS::mul(a, b), inverse = FPS::inv(a, 8);
 auto log_a = FPS::ln(a, 8), recovered = FPS::exp(log_a, 8), power = FPS::pow(a, 3, 8);
-V < int > root; bool ok = FPS::sqrt(a, 8, root);
+std::vector<int> root; bool ok = FPS::sqrt(a, 8, root);
 auto [q, r] = FPS::divmod(a, b);
-V < int > v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true);
+std::vector<int> v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true);
 int scalar = FPS::power(2, 10), sq = FPS::sqrt_mod(4);
 */

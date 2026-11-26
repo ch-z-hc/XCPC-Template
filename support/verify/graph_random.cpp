@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/ds/可撤销并查集.cpp"
 #include "../../template/graph/强连通分量.cpp"
 #include "../../template/graph/倍增最近公共祖先.cpp"

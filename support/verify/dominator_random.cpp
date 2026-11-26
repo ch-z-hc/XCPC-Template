@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/支配树.cpp"
 
 V < int > reachable(const V < V < int > > &g, int root, int ban) {

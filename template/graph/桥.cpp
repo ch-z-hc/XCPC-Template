@@ -2,21 +2,19 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct Bridge {
     int n = 0, tim = 0;
-    V < V < pair < int, int > > > g;
-    V < int > dfn, low;
-    V < char > is_bridge;
+    std::vector<std::vector<std::pair<int, int>>> g;
+    std::vector<int> dfn, low;
+    std::vector<char> is_bridge;
 
     Bridge(int n = 0) { init(n); }
     void init(int n_) {
-        n = n_; tim = 0;
+        n = n_;
+        tim = 0;
         g.assign(n + 1, {});
-        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
+        dfn.assign(n + 1, 0);
+        low.assign(n + 1, 0);
         is_bridge.clear();
     }
     void add_edge(int id, int u, int v) {
@@ -28,21 +26,23 @@ struct Bridge {
         dfn[u] = low[u] = ++ tim;
         for (auto [v, id] : g[u]) {
             if (id == pe) continue;
-            if (! dfn[v]) {
+            if (!dfn[v]) {
                 dfs(v, id);
-                low[u] = min(low[u], low[v]);
+                low[u] = std::min(low[u], low[v]);
                 if (low[v] > dfn[u]) is_bridge[id] = 1;
-            } else low[u] = min(low[u], dfn[v]);
+            } else
+                low[u] = std::min(low[u], dfn[v]);
         }
     }
-    V < int > find() {
+    std::vector<int> find() {
         tim = 0;
-        fill(dfn.begin(), dfn.end(), 0);
-        fill(low.begin(), low.end(), 0);
-        fill(is_bridge.begin(), is_bridge.end(), 0);
-        for (int u = 1; u <= n; ++ u) if (! dfn[u]) dfs(u, -1);
-        V < int > ans;
-        for (int id = 1; id < int(is_bridge.size()); ++ id)
+        std::fill(dfn.begin(), dfn.end(), 0);
+        std::fill(low.begin(), low.end(), 0);
+        std::fill(is_bridge.begin(), is_bridge.end(), 0);
+        for (int u = 1; u <= n; u ++)
+            if (!dfn[u]) dfs(u, -1);
+        std::vector<int> ans;
+        for (int id = 1; id < int(is_bridge.size()); id ++)
             if (is_bridge[id]) ans.push_back(id);
         return ans;
     }
@@ -51,5 +51,5 @@ struct Bridge {
 /*
 Bridge bridge; bridge.init(n);
 bridge.add_edge(id, u, v);
-V < int > ans = bridge.find();
+std::vector<int> ans = bridge.find();
 */

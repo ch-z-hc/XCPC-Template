@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/others/舞蹈链精确覆盖.cpp"
 
 bool brute(int cols, const V < V < int > > &rows) {

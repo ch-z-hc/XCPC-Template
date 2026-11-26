@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/geometry/三维凸包.cpp"
 #include <bits/stdc++.h>
 

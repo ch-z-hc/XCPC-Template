@@ -5,25 +5,22 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
+using u64 = unsigned long long;
 
-typedef unsigned long long ull;
-
-using namespace std;
-
-int bitset_lcs(const string &s, const string &t) {
+int bitset_lcs(const std::string &s, const std::string &t) {
     int n = int(t.size()), m = (n + 63) / 64;
-    V < V < ull > > mask(256, V < ull > (m));
-    for (int i = 0; i < n; ++ i) mask[(unsigned char)t[i]][i >> 6] |= 1ULL << (i & 63);
-    V < ull > d(m);
+    std::vector<std::vector<u64>> mask(256, std::vector<u64>(m));
+    for (int i = 0; i < n; i ++) mask[(unsigned char)t[i]][i >> 6] |= 1ULL << (i & 63);
+    std::vector<u64> d(m);
     for (unsigned char c : s) {
-        ull carry = 1, borrow = 0;
-        for (int i = 0; i < m; ++ i) {
-            ull old = d[i], x = old | mask[c][i], y = (old << 1) | carry;
+        u64 carry = 1, borrow = 0;
+        for (int i = 0; i < m; i ++) {
+            u64 old = d[i], x = old | mask[c][i], y = (old << 1) | carry;
             carry = old >> 63;
-            ull z = x - y - borrow;
-            ull next = x < y || (borrow && x == y);
-            d[i] = x & ~z; borrow = next;
+            u64 z = x - y - borrow;
+            u64 next = x < y || (borrow && x == y);
+            d[i] = x & ~z;
+            borrow = next;
         }
     }
     int ans = 0;

@@ -6,22 +6,18 @@ build() 递增，build(true) 递减。同点查询取 0，不连通时 lca 返�
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct KruskalTree {
     struct Edge {
         int u, v;
-        ll w;
+        i64 w;
     };
     int n = 0, tot = 0, lg = 1;
-    V < Edge > edges;
-    V < V < int > > t, up;
-    V < int > fa, dep, bel, roots;
-    V < ll > weight;
+    std::vector<Edge> edges;
+    std::vector<std::vector<int>> t, up;
+    std::vector<int> fa, dep, bel, roots;
+    std::vector<i64> weight;
 
     KruskalTree(int n = 0) { init(n); }
     void init(int n_) {
@@ -29,12 +25,13 @@ struct KruskalTree {
         edges.clear();
         tot = 0;
     }
-    void add_edge(int u, int v, ll w) { edges.push_back({u, v, w}); }
+    void add_edge(int u, int v, i64 w) { edges.push_back({u, v, w}); }
     int find(int u) { return fa[u] == u ? u : fa[u] = find(fa[u]); }
 
     void dfs(int u, int p, int root) {
-        up[0][u] = p; bel[u] = root;
-        for (int j = 1; j < lg; ++ j) up[j][u] = up[j - 1][up[j - 1][u]];
+        up[0][u] = p;
+        bel[u] = root;
+        for (int j = 1; j < lg; j ++) up[j][u] = up[j - 1][up[j - 1][u]];
         for (int v : t[u]) {
             dep[v] = dep[u] + 1;
             dfs(v, u, root);
@@ -43,14 +40,16 @@ struct KruskalTree {
 
     void build(bool rev = false) {
         tot = n;
-        fa.resize(2 * n + 1); iota(fa.begin(), fa.end(), 0);
-        t.assign(2 * n + 1, {}); weight.assign(2 * n + 1, 0);
+        fa.resize(2 * n + 1);
+        std::iota(fa.begin(), fa.end(), 0);
+        t.assign(2 * n + 1, {});
+        weight.assign(2 * n + 1, 0);
         auto e = edges;
-        sort(e.begin(), e.end(), [&](Edge a, Edge b) {
-            return rev ? a.w > b.w : a.w < b.w;
-        });
+        std::sort(e.begin(), e.end(),
+                  [&](Edge a, Edge b) { return rev ? a.w > b.w : a.w < b.w; });
         for (auto [u, v, w] : e) {
-            u = find(u); v = find(v);
+            u = find(u);
+            v = find(v);
             if (u == v) continue;
             ++ tot;
             t[tot] = {u, v};
@@ -58,28 +57,34 @@ struct KruskalTree {
             fa[u] = fa[v] = tot;
         }
         roots.clear();
-        for (int u = 1; u <= tot; ++ u) if (fa[u] == u) roots.push_back(u);
+        for (int u = 1; u <= tot; u ++)
+            if (fa[u] == u) roots.push_back(u);
         lg = 1;
-        while ((1ll << lg) <= max(1, tot)) lg ++;
-        up.assign(lg, V < int > (tot + 1));
-        dep.assign(tot + 1, 0); bel.assign(tot + 1, 0);
+        while ((1ll << lg) <= std::max(1, tot)) lg ++;
+        up.assign(lg, std::vector<int>(tot + 1));
+        dep.assign(tot + 1, 0);
+        bel.assign(tot + 1, 0);
         for (int root : roots) dfs(root, 0, root);
     }
 
     int lca(int u, int v) {
         if (bel[u] != bel[v]) return 0;
-        if (dep[u] < dep[v]) swap(u, v);
+        if (dep[u] < dep[v]) std::swap(u, v);
         int d = dep[u] - dep[v];
-        for (int j = 0; j < lg; ++ j) if (d >> j & 1) u = up[j][u];
+        for (int j = 0; j < lg; j ++)
+            if (d >> j & 1) u = up[j][u];
         if (u == v) return u;
-        for (int j = lg - 1; j >= 0; -- j)
-            if (up[j][u] != up[j][v]) { u = up[j][u]; v = up[j][v]; }
+        for (int j = lg - 1; j >= 0; j --)
+            if (up[j][u] != up[j][v]) {
+                u = up[j][u];
+                v = up[j][v];
+            }
         return up[0][u];
     }
 
-    bool query(int u, int v, ll &ans) {
+    bool query(int u, int v, i64 &ans) {
         int p = lca(u, v);
-        if (! p) return false;
+        if (!p) return false;
         ans = u == v ? 0 : weight[p];
         return true;
     }
@@ -88,6 +93,6 @@ struct KruskalTree {
 /*
 KruskalTree tree; tree.init(2); tree.add_edge(1, 2, 7);
 tree.build(); int p = tree.lca(1, 2);
-ll ans; if (tree.query(1, 2, ans)) cout << ans;
+i64 ans; if (tree.query(1, 2, ans)) cout << ans;
 tree.build(true);
 */

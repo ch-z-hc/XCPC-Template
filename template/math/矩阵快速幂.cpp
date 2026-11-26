@@ -5,28 +5,25 @@ n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
 
 #include <bits/stdc++.h>
 
-#define V vector
+using i64 = long long;
 
-typedef long long ll;
+using Matrix = std::vector<std::vector<i64>>;
 
-using namespace std;
-
-typedef V < V < ll > > Matrix;
-
-Matrix matrix_mul(const Matrix &a, const Matrix &b, ll mod) {
+Matrix matrix_mul(const Matrix &a, const Matrix &b, i64 mod) {
     int n = int(a.size()), m = int(b.size()), p = int(b[0].size());
-    Matrix c(n, V < ll > (p, 0));
-    for (int i = 0; i < n; ++ i)
-        for (int k = 0; k < m; ++ k) if (a[i][k])
-            for (int j = 0; j < p; ++ j)
-                c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % mod;
+    Matrix c(n, std::vector<i64>(p, 0));
+    for (int i = 0; i < n; i ++)
+        for (int k = 0; k < m; k ++)
+            if (a[i][k])
+                for (int j = 0; j < p; j ++)
+                    c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % mod;
     return c;
 }
 
-Matrix matrix_pow(Matrix a, ll b, ll mod) {
+Matrix matrix_pow(Matrix a, i64 b, i64 mod) {
     int n = int(a.size());
-    Matrix res(n, V < ll > (n, 0));
-    for (int i = 0; i < n; ++ i) res[i][i] = 1 % mod;
+    Matrix res(n, std::vector<i64>(n, 0));
+    for (int i = 0; i < n; i ++) res[i][i] = 1 % mod;
     for (; b; b >>= 1) {
         if (b & 1) res = matrix_mul(res, a, mod);
         a = matrix_mul(a, a, mod);

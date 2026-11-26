@@ -9,40 +9,36 @@ j 使用展开下标，取点时才对 n 取模。
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct NestedHull {
-    V < int > left, right, l, r;
+    std::vector<int> left, right, l, r;
 
-    void build(V < P > p, V < P > q) {
+    void build(std::vector<P> p, std::vector<P> q) {
         int n = p.size(), m = q.size();
-        left.resize(n); right.resize(n);
-        l.resize(2 * n); r.resize(2 * n);
+        left.resize(n);
+        right.resize(n);
+        l.resize(2 * n);
+        r.resize(2 * n);
         int a = 0, b = 0;
-        for (int j = 1; j < m; ++ j) {
+        for (int j = 1; j < m; j ++) {
             if (cross(p[0], q[a], q[j]) < 0) a = j;
             if (cross(p[0], q[b], q[j]) > 0) b = j;
         }
-        for (int i = 0; i < n; ++ i) {
-            while (cross(p[i], q[a], q[(a + 1) % m]) <= 0)
-                a = (a + 1) % m;
-            while (cross(p[i], q[b], q[(b + 1) % m]) >= 0)
-                b = (b + 1) % m;
-            left[i] = a; right[i] = b;
+        for (int i = 0; i < n; i ++) {
+            while (cross(p[i], q[a], q[(a + 1) % m]) <= 0) a = (a + 1) % m;
+            while (cross(p[i], q[b], q[(b + 1) % m]) >= 0) b = (b + 1) % m;
+            left[i] = a;
+            right[i] = b;
         }
         int j = 1;
-        for (int i = 0; i < n; ++ i) {
-            j = max(j, i + 1);
-            while (j + 1 < i + n &&
-                   cross(p[i], p[(j + 1) % n], q[left[i]]) >= 0) ++ j;
+        for (int i = 0; i < n; i ++) {
+            j = std::max(j, i + 1);
+            while (j + 1 < i + n && cross(p[i], p[(j + 1) % n], q[left[i]]) >= 0) ++ j;
             r[i] = j;
             r[i + n] = j + n;
         }
         j = 1;
-        for (int i = 0; i < n; ++ i) {
-            j = max(j, i + 1);
+        for (int i = 0; i < n; i ++) {
+            j = std::max(j, i + 1);
             while (r[j] < i + n) ++ j;
             l[i] = j;
             l[i + n] = j + n;
@@ -51,10 +47,10 @@ struct NestedHull {
 };
 
 /*
-V < P > p{{0, 0}, {6, 0}, {6, 6}, {0, 6}}, q{{2, 2}, {4, 2}, {3, 4}};
+std::vector<P> p{{0, 0}, {6, 0}, {6, 6}, {0, 6}}, q{{2, 2}, {4, 2}, {3, 4}};
 NestedHull hull; hull.build(p, q);
 int i = 0, n = p.size();
 P a = q[hull.left[i]], b = q[hull.right[i]];
-for (int j = i + 1; j <= hull.r[i]; ++ j) cout << p[j % n];
-for (int j = hull.l[i]; j < i + n; ++ j) cout << p[j % n];
+for (int j = i + 1; j <= hull.r[i]; j ++) cout << p[j % n];
+for (int j = hull.l[i]; j < i + n; j ++) cout << p[j % n];
 */

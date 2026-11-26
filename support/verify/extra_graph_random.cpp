@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/graph/最小树形图.cpp"
 #include "../../template/graph/一般图匹配.cpp"

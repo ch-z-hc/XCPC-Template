@@ -6,30 +6,28 @@ insert 返回加入字符后最长回文后缀的节点，count 按节点返回�
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct PAM {
     struct Node {
-        array < int, 26 > ch{};
+        std::array<int, 26> ch{};
         int len = 0, fail = 0;
-        ll cnt = 0;
+        i64 cnt = 0;
     };
 
-    V < Node > tr;
-    string s;
+    std::vector<Node> tr;
+    std::string s;
     int last = 0;
 
     PAM() { init(); }
-    PAM(const string &s) { build(s); }
+    PAM(const std::string &s) { build(s); }
 
     void init() {
         tr.assign(2, {});
-        tr[0].fail = 1; tr[1].len = -1;
-        s = "#"; last = 0;
+        tr[0].fail = 1;
+        tr[1].len = -1;
+        s = "#";
+        last = 0;
     }
 
     int find(int u) {
@@ -41,7 +39,7 @@ struct PAM {
     int insert(char c) {
         s += c;
         int x = c - 'a', u = find(last);
-        if (! tr[u].ch[x]) {
+        if (!tr[u].ch[x]) {
             int v = int(tr.size());
             tr.push_back({});
             tr[v].len = tr[u].len + 2;
@@ -53,18 +51,17 @@ struct PAM {
         return last;
     }
 
-    void build(const string &str) {
+    void build(const std::string &str) {
         init();
         for (char c : str) insert(c);
     }
 
     int distinct() { return int(tr.size()) - 2; }
 
-    V < ll > count() {
-        V < ll > ans(tr.size());
-        for (int i = 2; i < int(tr.size()); ++ i) ans[i] = tr[i].cnt;
-        for (int i = int(tr.size()) - 1; i >= 2; -- i)
-            ans[tr[i].fail] += ans[i];
+    std::vector<i64> count() {
+        std::vector<i64> ans(tr.size());
+        for (int i = 2; i < int(tr.size()); i ++) ans[i] = tr[i].cnt;
+        for (int i = int(tr.size()) - 1; i >= 2; i --) ans[tr[i].fail] += ans[i];
         ans[0] = ans[1] = 0;
         return ans;
     }

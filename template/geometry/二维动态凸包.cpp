@@ -8,61 +8,63 @@ contains 返回 0、1、2，分别表示外部、边界、内部。snapshot 返�
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct DynamicHull {
     typedef HullQuery::P P;
     int B;
-    V < P > p;
-    V < int > op;
-    V < HullQuery > tr;
+    std::vector<P> p;
+    std::vector<int> op;
+    std::vector<HullQuery> tr;
 
     DynamicHull(int b = 700) { init(b); }
 
     void init(int b = 700) {
         assert(b > 0);
-        B = b; p.clear(); op.clear(); tr.clear();
+        B = b;
+        p.clear();
+        op.clear();
+        tr.clear();
     }
 
     void rebuild(int k) {
-        V < P > a;
-        int l = k * B, r = min((int)p.size(), l + B);
-        for (int i = l; i < r; ++ i)
+        std::vector<P> a;
+        int l = k * B, r = std::min((int)p.size(), l + B);
+        for (int i = l; i < r; i ++)
             if (op[i]) a.push_back(p[i]);
         tr[k].build(a);
     }
 
     int add(P q) {
         int id = p.size(), k = id / B;
-        p.push_back(q); op.push_back(1);
+        p.push_back(q);
+        op.push_back(1);
         if (k == (int)tr.size()) tr.emplace_back();
         rebuild(k);
         return id;
     }
 
     bool erase(int id) {
-        if (id < 0 || id >= (int)p.size() || ! op[id]) return 0;
-        op[id] = 0; rebuild(id / B);
+        if (id < 0 || id >= (int)p.size() || !op[id]) return 0;
+        op[id] = 0;
+        rebuild(id / B);
         return 1;
     }
 
-    bool query(ll a, ll b, ll &ans) {
+    bool query(i64 a, i64 b, i64 &ans) {
         bool ok = 0;
         for (auto &t : tr) {
-            ll v;
-            if (! t.query(a, b, v)) continue;
-            if (! ok || v > ans) ans = v;
+            i64 v;
+            if (!t.query(a, b, v)) continue;
+            if (!ok || v > ans) ans = v;
             ok = 1;
         }
         return ok;
     }
 
     HullQuery snapshot() {
-        V < P > a;
+        std::vector<P> a;
         for (auto &t : tr) a.insert(a.end(), t.h.begin(), t.h.end());
-        HullQuery hull; hull.build(a);
+        HullQuery hull;
+        hull.build(a);
         return hull;
     }
 
@@ -74,7 +76,7 @@ struct DynamicHull {
 
 /*
 DynamicHull hull; hull.init(32); int id = hull.add({2, 3}); hull.add({-1, 4});
-ll ans; if (hull.query(1, 1, ans)) cout << ans;
+i64 ans; if (hull.query(1, 1, ans)) cout << ans;
 int state = hull.contains({2, 3});
 auto now = hull.snapshot();
 bool ok = hull.erase(id);

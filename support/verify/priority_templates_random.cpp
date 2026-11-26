@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/others/单调栈与左右最近更小与更大.cpp"
 #include "../../template/others/单调凸包与斜率优化.cpp"
 #include "../../template/ds/左偏树与可并堆.cpp"

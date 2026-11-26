@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/最大流.cpp"
 #include "../../template/graph/势能最短路费用流.cpp"
 #include "../../template/graph/容量缩放费用流.cpp"
@@ -60,10 +60,10 @@ int main() {
             assert(mcf.flow(1, n) == make_pair(0LL, 0LL));
         }
         for (int u = 1; u <= n; ++ u) {
-            for (int i = 0; i < int(dinic.g[u].size()); ++ i) {
-                auto e = dinic.g[u][i];
-                assert(dinic.g[e.to][e.rev].to == u);
-                assert(dinic.g[e.to][e.rev].rev == i);
+            for (int id : dinic.g[u]) {
+                assert(dinic.edges[id ^ 1].to == u);
+                assert(dinic.edges[id].cap >= 0);
+                assert(dinic.edges[id].cap + dinic.edges[id ^ 1].cap == edges[id / 2].cap);
             }
             for (int i = 0; i < int(mcf.g[u].size()); ++ i) {
                 auto e = mcf.g[u][i];

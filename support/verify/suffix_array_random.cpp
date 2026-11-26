@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/string/后缀数组.cpp"
 

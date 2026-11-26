@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/others/带修改莫队.cpp"
 #include "../../template/others/树上莫队.cpp"

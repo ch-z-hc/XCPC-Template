@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #include "../../template/string/扩展字符串匹配.cpp"
 #include "../../template/string/字符串哈希.cpp"

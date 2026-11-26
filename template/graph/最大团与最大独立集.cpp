@@ -2,22 +2,19 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct MaxClique {
     int n = 0;
     bool rev = 0;
-    V < V < char > > g;
-    V < int > cur, ans;
+    std::vector<std::vector<char>> g;
+    std::vector<int> cur, ans;
 
     MaxClique(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_;
-        g.assign(n + 1, V < char > (n + 1));
-        cur.clear(); ans.clear();
+        g.assign(n + 1, std::vector<char>(n + 1));
+        cur.clear();
+        ans.clear();
     }
 
     void add_edge(int u, int v) {
@@ -26,12 +23,12 @@ struct MaxClique {
 
     bool adjacent(int u, int v) { return bool(g[u][v]) != rev; }
 
-    void dfs(const V < int > &p) {
+    void dfs(const std::vector<int> &p) {
         if (p.empty()) {
             if (cur.size() > ans.size()) ans = cur;
             return;
         }
-        V < V < int > > color;
+        std::vector<std::vector<int>> color;
         for (int u : p) {
             int c = 0;
             while (c < int(color.size())) {
@@ -48,37 +45,39 @@ struct MaxClique {
             if (c == int(color.size())) color.push_back({});
             color[c].push_back(u);
         }
-        V < int > ord, bound;
-        for (int c = 0; c < int(color.size()); ++ c)
+        std::vector<int> ord, bound;
+        for (int c = 0; c < int(color.size()); c ++)
             for (int u : color[c]) {
                 ord.push_back(u);
                 bound.push_back(c + 1);
             }
-        for (int i = int(ord.size()) - 1; i >= 0; -- i) {
+        for (int i = int(ord.size()) - 1; i >= 0; i --) {
             if (int(cur.size()) + bound[i] <= int(ans.size())) return;
             int u = ord[i];
-            V < int > next;
-            for (int j = 0; j < i; ++ j) if (adjacent(u, ord[j])) next.push_back(ord[j]);
+            std::vector<int> next;
+            for (int j = 0; j < i; j ++)
+                if (adjacent(u, ord[j])) next.push_back(ord[j]);
             cur.push_back(u);
             dfs(next);
             cur.pop_back();
         }
     }
 
-    V < int > solve(bool rev_) {
+    std::vector<int> solve(bool rev_) {
         rev = rev_;
         cur.clear();
         ans.clear();
-        V < int > p(n); iota(p.begin(), p.end(), 1);
+        std::vector<int> p(n);
+        std::iota(p.begin(), p.end(), 1);
         dfs(p);
         return ans;
     }
 
-    V < int > clique() { return solve(0); }
-    V < int > indep() { return solve(1); }
+    std::vector<int> clique() { return solve(0); }
+    std::vector<int> indep() { return solve(1); }
 };
 
 /*
 MaxClique mc; mc.init(n); mc.add_edge(u, v);
-V < int > clique = mc.clique(), iset = mc.indep();
+std::vector<int> clique = mc.clique(), iset = mc.indep();
 */

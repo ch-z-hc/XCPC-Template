@@ -5,36 +5,38 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
-V < int > euler_d(int n, const V < pair < int, int > > &edges) {
-    V < V < int > > g(n + 1);
-    V < int > in(n + 1), out(n + 1), cur(n + 1);
-    for (int i = 0; i < int(edges.size()); ++ i) {
-        auto [u, v] = edges[i]; g[u].push_back(v);
-        ++ out[u]; ++ in[v];
+std::vector<int> euler_d(int n, const std::vector<std::pair<int, int>> &edges) {
+    std::vector<std::vector<int>> g(n + 1);
+    std::vector<int> in(n + 1), out(n + 1), cur(n + 1);
+    for (int i = 0; i < int(edges.size()); i ++) {
+        auto [u, v] = edges[i];
+        g[u].push_back(v);
+        ++ out[u];
+        ++ in[v];
     }
     int s = 1, cnt1 = 0, cnt2 = 0;
-    for (int u = 1; u <= n; ++ u) {
-        if (out[u] - in[u] == 1) { s = u; ++ cnt1; }
-        else if (in[u] - out[u] == 1) ++ cnt2;
-        else if (in[u] != out[u]) return {};
+    for (int u = 1; u <= n; u ++) {
+        if (out[u] - in[u] == 1) {
+            s = u;
+            cnt1 ++;
+        } else if (in[u] - out[u] == 1)
+            ++ cnt2;
+        else if (in[u] != out[u])
+            return {};
     }
-    if (! ((cnt1 == 1 && cnt2 == 1) || (cnt1 == 0 && cnt2 == 0))) return {};
+    if (!((cnt1 == 1 && cnt2 == 1) || (cnt1 == 0 && cnt2 == 0))) return {};
     if (cnt1 == 0) {
         while (s <= n && g[s].empty()) ++ s;
-        if (s > n) return edges.empty() ? V < int >{1} : V < int >{};
+        if (s > n) return edges.empty() ? std::vector<int>{1} : std::vector<int>{};
     }
-    V < int > ans;
+    std::vector<int> ans;
     auto dfs = [&](auto &&self, int u) -> void {
         while (cur[u] < int(g[u].size())) self(self, g[u][cur[u] ++]);
         ans.push_back(u);
     };
     dfs(dfs, s);
     if (int(ans.size()) != int(edges.size()) + 1) return {};
-    reverse(ans.begin(), ans.end());
+    std::reverse(ans.begin(), ans.end());
     return ans;
 }
 

@@ -2,23 +2,20 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
-int min_rotation(const string &s) {
+int min_rotation(const std::string &s) {
     int n = int(s.size()), i = 0, j = 1, k = 0;
     while (i < n && j < n && k < n) {
         unsigned char a = s[(i + k) % n], b = s[(j + k) % n];
-        if (a == b) { k ++; continue; }
-        if (a > b) {
-            i += k + 1;
-            if (i <= j) i = j + 1;
+        if (a == b) {
+            k ++;
         } else {
-            j += k + 1;
-            if (j <= i) j = i + 1;
+            int &loser = a > b ? i : j;
+            loser += k + 1;
+            if (i == j) j ++;
+            k = 0;
         }
-        k = 0;
     }
-    return n ? min(i, j) : 0;
+    return std::min(i, j);
 }
 
-// int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);
+// int p = min_rotation(s); std::string t = s.substr(p) + s.substr(0, p);

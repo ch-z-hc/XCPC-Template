@@ -6,77 +6,78 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct Multipoint {
     static const int mod = 998244353;
     int n = 0;
-    V < int > x;
-    V < V < int > > prod;
+    std::vector<int> x;
+    std::vector<std::vector<int>> prod;
 
     void build(int p, int l, int r) {
-        if (l == r) { prod[p] = {x[l] ? mod - x[l] : 0, 1}; return; }
+        if (l == r) {
+            prod[p] = {x[l] ? mod - x[l] : 0, 1};
+            return;
+        }
         int mid = (l + r) / 2;
-        build(p * 2, l, mid); build(p * 2 + 1, mid + 1, r);
+        build(p * 2, l, mid);
+        build(p * 2 + 1, mid + 1, r);
         prod[p] = FPS::mul(prod[p * 2], prod[p * 2 + 1]);
     }
 
-    void build(const V < int > &points) {
-        x = points; n = int(x.size());
-        prod.assign(4 * max(1, n), {});
+    void build(const std::vector<int> &points) {
+        x = points;
+        n = int(x.size());
+        prod.assign(4 * std::max(1, n), {});
         if (n) build(1, 0, n - 1);
     }
 
-    V < int > rem(const V < int > &a, const V < int > &b) {
+    std::vector<int> rem(const std::vector<int> &a, const std::vector<int> &b) {
         return a.size() < b.size() ? a : FPS::divmod(a, b).second;
     }
 
-    void eval(int p, int l, int r, const V < int > &a,
-              V < int > &ans) {
+    void eval(int p, int l, int r, const std::vector<int> &a, std::vector<int> &ans) {
         if (l == r) {
             int v = 0;
-            for (int i = int(a.size()) - 1; i >= 0; -- i)
+            for (int i = int(a.size()) - 1; i >= 0; i --)
                 v = (1ll * v * x[l] + a[i]) % mod;
-            ans[l] = v; return;
+            ans[l] = v;
+            return;
         }
         int mid = (l + r) / 2;
         eval(p * 2, l, mid, rem(a, prod[p * 2]), ans);
         eval(p * 2 + 1, mid + 1, r, rem(a, prod[p * 2 + 1]), ans);
     }
 
-    V < int > eval(const V < int > &a) {
-        V < int > ans(n);
+    std::vector<int> eval(const std::vector<int> &a) {
+        std::vector<int> ans(n);
         if (n) eval(1, 0, n - 1, rem(a, prod[1]), ans);
         return ans;
     }
 
-    V < int > interp(int p, int l, int r,
-                     const V < int > &w) {
+    std::vector<int> interp(int p, int l, int r, const std::vector<int> &w) {
         if (l == r) return {w[l]};
         int mid = (l + r) / 2;
         auto a = FPS::mul(interp(p * 2, l, mid, w), prod[p * 2 + 1]);
         auto b = FPS::mul(interp(p * 2 + 1, mid + 1, r, w), prod[p * 2]);
-        a.resize(max(a.size(), b.size()));
-        for (int i = 0; i < int(b.size()); ++ i) {
+        a.resize(std::max(a.size(), b.size()));
+        for (int i = 0; i < int(b.size()); i ++) {
             a[i] += b[i];
             if (a[i] >= mod) a[i] -= mod;
         }
         return a;
     }
 
-    V < int > interp(const V < int > &y) {
-        if (! n) return {};
-        V < int > d(n), w(n);
-        for (int i = 1; i <= n; ++ i) d[i - 1] = 1ll * i * prod[1][i] % mod;
+    std::vector<int> interp(const std::vector<int> &y) {
+        if (!n) return {};
+        std::vector<int> d(n), w(n);
+        for (int i = 1; i <= n; i ++) d[i - 1] = 1ll * i * prod[1][i] % mod;
         auto values = eval(d);
-        for (int i = 0; i < n; ++ i) {
+        for (int i = 0; i < n; i ++) {
             assert(values[i]);
             w[i] = 1ll * y[i] * FPS::power(values[i], mod - 2) % mod;
         }
         auto ans = interp(1, 0, n - 1, w);
-        ans.resize(n); return ans;
+        ans.resize(n);
+        return ans;
     }
 };
 const int Multipoint::mod;

@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/树链剖分.cpp"
 #include "../../template/graph/虚树.cpp"
 #include "../../template/graph/点分治.cpp"

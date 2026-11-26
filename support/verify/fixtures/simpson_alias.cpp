@@ -1,3 +1,4 @@
+#include "../contest_types.hpp"
 #include "../../../template/math/自适应辛普森积分.cpp"
 
 // 连续六次多项式；粗、细两级 Simpson 恰好相同，误差估计为 0 但真实误差非零。

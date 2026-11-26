@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/ds/二维最近邻.cpp"
 #include <bits/stdc++.h>
 

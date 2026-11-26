@@ -1,3 +1,4 @@
+#include "../contest_types.hpp"
 #include "../../../template/ds/吉司机线段树.cpp"
 #include "../../../template/string/字符串哈希.cpp"
 #include "../../../template/string/二维哈希.cpp"

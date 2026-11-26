@@ -6,14 +6,10 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct DSUOnTree {
     int n = 0;
-    V < V < int > > g;
-    V < int > siz, son, in, out, ord;
+    std::vector<std::vector<int>> g;
+    std::vector<int> siz, son, in, out, ord;
 
     void add(int u);
     void del(int u);
@@ -39,8 +35,8 @@ struct DSUOnTree {
 
     void build(int root = 1) {
         ord.clear();
-        fill(siz.begin(), siz.end(), 0);
-        fill(son.begin(), son.end(), 0);
+        std::fill(siz.begin(), siz.end(), 0);
+        std::fill(son.begin(), son.end(), 0);
         dfs_size(root, 0);
         dfs(root, 0, false);
     }
@@ -49,35 +45,34 @@ struct DSUOnTree {
         in[u] = int(ord.size());
         ord.push_back(u);
         siz[u] = 1;
-        for (int v : g[u]) if (v != fa) {
-            dfs_size(v, u);
-            siz[u] += siz[v];
-            if (! son[u] || siz[v] > siz[son[u]])
-                son[u] = v;
-        }
+        for (int v : g[u])
+            if (v != fa) {
+                dfs_size(v, u);
+                siz[u] += siz[v];
+                if (!son[u] || siz[v] > siz[son[u]]) son[u] = v;
+            }
         out[u] = int(ord.size());
     }
 
     void dfs(int u, int fa, bool keep) {
         for (int v : g[u])
+            if (v != fa && v != son[u]) dfs(v, u, false);
+
+        if (son[u]) dfs(son[u], u, true);
+
+        for (int v : g[u])
             if (v != fa && v != son[u])
-                dfs(v, u, false);
-
-        if (son[u])
-            dfs(son[u], u, true);
-
-        for (int v : g[u]) if (v != fa && v != son[u])
-            for (int i = in[v]; i < out[v]; ++ i) add(ord[i]);
+                for (int i = in[v]; i < out[v]; i ++) add(ord[i]);
         add(u);
         query(u);
 
-        if (! keep)
-            for (int i = in[u]; i < out[u]; ++ i) del(ord[i]);
+        if (!keep)
+            for (int i = in[u]; i < out[u]; i ++) del(ord[i]);
     }
 };
 
 /*
-V < int > color, cnt, ans; int kinds = 0;
+std::vector<int> color, cnt, ans; int kinds = 0;
 void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
 void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
 void query(int u) { ans[u] = kinds; }

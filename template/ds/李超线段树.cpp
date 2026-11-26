@@ -1,34 +1,28 @@
 /*
 在整数横坐标 [L, R] 维护直线、线段的最大值。X = R - L + 1，建树和清空 O(X)。
 插直线、查询 O(log X)，插线段 O(log² X)。密集建树约需 4X 个 int，X <= (INT_MAX - 4) / 4。
-整数端点差、a*x+c 及与另一分母的乘积须放入 ll。小数斜率、截距或纵坐标用浮点接口。
+整数端点差、a*x+c 及与另一分母的乘积须放入 i64。小数斜率、截距或纵坐标用浮点接口。
 在值域内查询。同值取最早插入的编号，无覆盖时 query_id 返回 0，query 返回负无穷。
 query_int 用于取整数直线的精确值。clear 保留值域，init 重设值域。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long double ld;
-typedef long long ll;
-
-using namespace std;
+using ld = long double;
+using i64 = long long;
 
 struct LiChao {
     struct Line {
         ld k = 0, b = 0;
         int id = 0;
-        ll a = 0, c = 0, d = 0;
+        i64 a = 0, c = 0, d = 0;
 
-        ld eval(int x) {
-            return d ? ld(a * x + c) / d : k * x + b;
-        }
+        ld eval(int x) { return d ? ld(a * x + c) / d : k * x + b; }
     };
 
     int L = 1, R = 0;
-    V < int > tr;
-    V < Line > line;
+    std::vector<int> tr;
+    std::vector<Line> line;
 
     LiChao(int r = 0) { init(1, r); }
     LiChao(int l, int r) { init(l, r); }
@@ -38,18 +32,18 @@ struct LiChao {
     void init(int l, int r) {
         L = l;
         R = r;
-        ll n = max(0ll, 1ll * R - L + 1);
+        i64 n = std::max(0ll, 1ll * R - L + 1);
         assert(n <= (INT_MAX - 4) / 4);
         tr.assign(n * 4 + 4, 0);
         line.assign(1, Line{});
     }
 
     void clear() {
-        fill(tr.begin(), tr.end(), 0);
+        std::fill(tr.begin(), tr.end(), 0);
         line.assign(1, Line{});
     }
 
-    int add_line(ll k, ll b) {
+    int add_line(i64 k, i64 b) {
         int id = new_line(k, b);
         line[id].a = k;
         line[id].c = b;
@@ -58,21 +52,20 @@ struct LiChao {
         return id;
     }
 
-    int add_seg(int x0, ll y0, int x1, ll y1) {
+    int add_seg(int x0, i64 y0, int x1, i64 y1) {
         if (x0 > x1) {
-            swap(x0, x1);
-            swap(y0, y1);
+            std::swap(x0, x1);
+            std::swap(y0, y1);
         }
         ld k = x0 == x1 ? 0 : (ld(y1) - ld(y0)) / (ld(x1) - ld(x0));
-        ld b = x0 == x1 ? max(y0, y1) : y0 - k * x0;
+        ld b = x0 == x1 ? std::max(y0, y1) : y0 - k * x0;
         int id = new_line(k, b);
         auto &s = line[id];
         s.d = x0 == x1 ? 1 : 1ll * x1 - x0;
         s.a = x0 == x1 ? 0 : y1 - y0;
-        s.c = x0 == x1 ? max(y0, y1) : y0 * s.d - s.a * x0;
-        int ql = max(L, x0), qr = min(R, x1);
-        if (ql <= qr)
-            modify(1, L, R, ql, qr, id);
+        s.c = x0 == x1 ? std::max(y0, y1) : y0 * s.d - s.a * x0;
+        int ql = std::max(L, x0), qr = std::min(R, x1);
+        if (ql <= qr) modify(1, L, R, ql, qr, id);
         return id;
     }
 
@@ -83,11 +76,14 @@ struct LiChao {
     }
 
     int add_seg_real(int x0, ld y0, int x1, ld y1) {
-        if (x0 > x1) { swap(x0, x1); swap(y0, y1); }
+        if (x0 > x1) {
+            std::swap(x0, x1);
+            std::swap(y0, y1);
+        }
         ld k = x0 == x1 ? 0 : (y1 - y0) / (ld(x1) - ld(x0));
-        ld b = x0 == x1 ? max(y0, y1) : y0 - k * x0;
+        ld b = x0 == x1 ? std::max(y0, y1) : y0 - k * x0;
         int id = new_line(k, b);
-        int ql = max(L, x0), qr = min(R, x1);
+        int ql = std::max(L, x0), qr = std::min(R, x1);
         if (ql <= qr) modify(1, L, R, ql, qr, id);
         return id;
     }
@@ -111,12 +107,12 @@ struct LiChao {
 
     ld query(int x) {
         int id = query_id(x);
-        return id ? line[id].eval(x) : -numeric_limits < ld >::infinity();
+        return id ? line[id].eval(x) : -std::numeric_limits<ld>::infinity();
     }
 
-    bool query_int(int x, ll &ans) {
+    bool query_int(int x, i64 &ans) {
         int id = query_id(x);
-        if (! id || line[id].d != 1) return false;
+        if (!id || line[id].d != 1) return false;
         ans = line[id].a * x + line[id].c;
         return true;
     }
@@ -132,8 +128,8 @@ struct LiChao {
         if (v == 0) return true;
         if (line[u].d && line[v].d) {
             auto &a = line[u], &b = line[v];
-            ll left = (a.a * x + a.c) * b.d;
-            ll right = (b.a * x + b.c) * a.d;
+            i64 left = (a.a * x + a.c) * b.d;
+            i64 right = (b.a * x + b.c) * a.d;
             return left != right ? left > right : u < v;
         }
         ld a = line[u].eval(x);
@@ -148,7 +144,7 @@ struct LiChao {
             return;
         }
         int mid = l + (r - l) / 2;
-        if (better(id, tr[p], mid)) swap(tr[p], id);
+        if (better(id, tr[p], mid)) std::swap(tr[p], id);
         if (l == r) return;
         if (better(id, tr[p], l))
             insert(p * 2, l, mid, id);
@@ -162,17 +158,15 @@ struct LiChao {
             return;
         }
         int mid = l + (r - l) / 2;
-        if (ql <= mid)
-            modify(p * 2, l, mid, ql, qr, id);
-        if (mid < qr)
-            modify(p * 2 + 1, mid + 1, r, ql, qr, id);
+        if (ql <= mid) modify(p * 2, l, mid, ql, qr, id);
+        if (mid < qr) modify(p * 2 + 1, mid + 1, r, ql, qr, id);
     }
 };
 
 /*
 LiChao tr(1, 10); tr.init(10); tr.init(1, 10);
 int first = tr.add_line(3, -2);
-ll exact; if (tr.query_int(2, exact)) cout << exact;
+i64 exact; if (tr.query_int(2, exact)) cout << exact;
 tr.add_seg(1, 2, 5, 9);
 tr.add_line_real(0.5L, 1.2L); tr.add_seg_real(2, 1.5L, 6, 3.5L);
 int id = tr.query_id(2);

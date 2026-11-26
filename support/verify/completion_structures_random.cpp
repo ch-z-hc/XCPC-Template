@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/ds/线段树与树上二分.cpp"
 #include "../../template/ds/区间集合与最小未出现数.cpp"
 #include "../../template/graph/函数图分解与跳跃.cpp"

@@ -5,52 +5,54 @@
 
 #include <bits/stdc++.h>
 
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct IntervalSet {
-    set < pair < ll, ll > > s;
+    std::set<std::pair<i64, i64>> s;
 
     void clear() { s.clear(); }
 
-    void insert(ll l, ll r) {
+    void insert(i64 l, i64 r) {
         if (l >= r) return;
         auto it = s.lower_bound({l, LLONG_MIN});
-        if (it != s.begin() && prev(it)->second >= l) -- it;
+        if (it != s.begin() && std::prev(it)->second >= l) -- it;
         while (it != s.end() && it->first <= r) {
-            l = min(l, it->first); r = max(r, it->second);
+            l = std::min(l, it->first);
+            r = std::max(r, it->second);
             it = s.erase(it);
         }
         s.insert({l, r});
     }
 
-    void erase(ll l, ll r) {
+    void erase(i64 l, i64 r) {
         if (l >= r) return;
         auto it = s.lower_bound({l, LLONG_MIN});
-        if (it != s.begin() && prev(it)->second > l) -- it;
+        if (it != s.begin() && std::prev(it)->second > l) -- it;
         while (it != s.end() && it->first < r) {
             auto [a, b] = *it;
             it = s.erase(it);
             if (a < l) s.insert({a, l});
-            if (b > r) { s.insert({r, b}); break; }
+            if (b > r) {
+                s.insert({r, b});
+                break;
+            }
         }
     }
 
-    bool contains(ll x) {
+    bool contains(i64 x) {
         auto it = s.upper_bound({x, LLONG_MAX});
-        return it != s.begin() && x < prev(it)->second;
+        return it != s.begin() && x < std::prev(it)->second;
     }
 
-    ll mex(ll x = 0) {
+    i64 mex(i64 x = 0) {
         auto it = s.upper_bound({x, LLONG_MAX});
-        if (it != s.begin() && x < prev(it)->second) return prev(it)->second;
+        if (it != s.begin() && x < std::prev(it)->second) return std::prev(it)->second;
         return x;
     }
 };
 
 /*
 IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
-bool covered = seg.contains(1); ll x = seg.mex(1);
+bool covered = seg.contains(1); i64 x = seg.mex(1);
 seg.clear();
 */

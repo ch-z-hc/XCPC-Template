@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 
 #define main contest_entry_main
 #include "../tools/contest_main.cpp"

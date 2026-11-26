@@ -1,19 +1,15 @@
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
-V < int > primes(int n) {
-    V < int > prime, lp(n + 1);
-    for (int i = 2; i <= n; ++ i) {
-        if (! lp[i]) lp[i] = i, prime.push_back(i);
+std::vector<int> primes(int n) {
+    std::vector<int> prime, lp(n + 1);
+    for (int i = 2; i <= n; i ++) {
+        if (!lp[i]) lp[i] = i, prime.push_back(i);
         for (int p : prime) {
-            if (p > lp[i] || 1LL * i * p > n) break;
+            if (p > lp[i] || p > n / i) break;
             lp[i * p] = p;
         }
     }
     return prime;
 }
 
-// V < int > prime = primes(n);
+// std::vector<int> prime = primes(n);

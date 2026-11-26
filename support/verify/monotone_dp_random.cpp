@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/others/决策单调性.cpp"
 
 const ll inf = 1ll << 62;

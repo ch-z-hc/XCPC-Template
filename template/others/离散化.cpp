@@ -2,24 +2,19 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
-template < class T >
-V < int > discretize(const V < T > &a, V < T > &key) {
+template <class T> std::vector<int> discretize(const std::vector<T> &a, std::vector<T> &key) {
     key = a;
-    sort(key.begin(), key.end());
-    key.erase(unique(key.begin(), key.end()), key.end());
+    std::sort(key.begin(), key.end());
+    key.erase(std::unique(key.begin(), key.end()), key.end());
 
-    V < int > id;
+    std::vector<int> id;
     id.reserve(a.size());
     for (const T &x : a)
-        id.push_back(int(lower_bound(key.begin(), key.end(), x) - key.begin()) + 1);
+        id.push_back(int(std::lower_bound(key.begin(), key.end(), x) - key.begin()) + 1);
     return id;
 }
 
 /*
-V < int > a{30, 10, 30}, key;
+std::vector<int> a{30, 10, 30}, key;
 auto id = discretize(a, key);
 */

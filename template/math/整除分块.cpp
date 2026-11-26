@@ -1,20 +1,16 @@
 /*
-枚举 n / i 相同的极大闭区间，1 <= i <= n。非负 ll 输入，n = 0 时为空。
+枚举 n / i 相同的极大闭区间，1 <= i <= n。非负 i64 输入，n = 0 时为空。
 时间 O(sqrt(n))，返回数组会保存全部区间。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
+using i64 = long long;
 
-typedef long long ll;
-
-using namespace std;
-
-V < pair < ll, ll > > div_blocks(ll n) {
-    V < pair < ll, ll > > ans;
-    for (ll l = 1; l <= n;) {
-        ll r = n / (n / l);
+std::vector<std::pair<i64, i64>> div_blocks(i64 n) {
+    std::vector<std::pair<i64, i64>> ans;
+    for (i64 l = 1; l <= n;) {
+        i64 r = n / (n / l);
         ans.push_back({l, r});
         if (r == n) break;
         l = r + 1;

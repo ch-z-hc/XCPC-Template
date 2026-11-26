@@ -5,20 +5,16 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct RollbackDSU {
-    V < int > fa, siz;
-    V < pair < int, int > > stk;
+    std::vector<int> fa, siz;
+    std::vector<int> stk;
 
     RollbackDSU(int n = 0) { init(n); }
 
     void init(int n) {
         fa.resize(n + 1);
         siz.assign(n + 1, 1);
-        iota(fa.begin(), fa.end(), 0);
+        std::iota(fa.begin(), fa.end(), 0);
         stk.clear();
     }
 
@@ -30,10 +26,14 @@ struct RollbackDSU {
     int snapshot() { return int(stk.size()); }
 
     bool merge(int u, int v) {
-        u = find(u); v = find(v);
-        if (u == v) { stk.push_back({-1, -1}); return 0; }
-        if (siz[u] < siz[v]) swap(u, v);
-        stk.push_back({v, siz[u]});
+        u = find(u);
+        v = find(v);
+        if (u == v) {
+            stk.push_back(-1);
+            return 0;
+        }
+        if (siz[u] < siz[v]) std::swap(u, v);
+        stk.push_back(v);
         fa[v] = u;
         siz[u] += siz[v];
         return 1;
@@ -41,11 +41,12 @@ struct RollbackDSU {
 
     void rollback(int snap) {
         while (int(stk.size()) > snap) {
-            auto [v, old] = stk.back(); stk.pop_back();
+            int v = stk.back();
+            stk.pop_back();
             if (v == -1) continue;
             int u = fa[v];
             fa[v] = v;
-            siz[u] = old;
+            siz[u] -= siz[v];
         }
     }
 };

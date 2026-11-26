@@ -7,51 +7,53 @@ ml、mr 记录两侧搭档，未匹配为 0。cover 用 O(n + m + E) 返回 {左
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct HK {
     int n, m;
-    V < V < int > > g;
-    V < int > ml, mr, dep, cur, vs;
+    std::vector<std::vector<int>> g;
+    std::vector<int> ml, mr, dep, cur, vs;
 
     HK(int n = 0, int m = 0) { init(n, m); }
 
     void init(int n_, int m_) {
-        n = n_; m = m_;
+        n = n_;
+        m = m_;
         g.assign(n + 1, {});
-        ml.assign(n + 1, 0); mr.assign(m + 1, 0);
-        dep.resize(n + 1); cur.resize(n + 1);
+        ml.assign(n + 1, 0);
+        mr.assign(m + 1, 0);
+        dep.resize(n + 1);
+        cur.resize(n + 1);
         vs.clear();
     }
 
     void add_edge(int u, int v) { g[u].push_back(v); }
 
     bool bfs() {
-        queue < int > q;
+        std::queue<int> q;
         dep[0] = -1;
         for (int u : vs) {
             dep[u] = ml[u] ? -1 : 0;
-            if (! ml[u]) q.push(u);
+            if (!ml[u]) q.push(u);
         }
-        while (! q.empty()) {
-            int u = q.front(); q.pop();
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
             if (dep[0] != -1 && dep[u] >= dep[0]) continue;
-            for (int v : g[u]) if (dep[mr[v]] == -1) {
-                dep[mr[v]] = dep[u] + 1;
-                if (mr[v]) q.push(mr[v]);
-            }
+            for (int v : g[u])
+                if (dep[mr[v]] == -1) {
+                    dep[mr[v]] = dep[u] + 1;
+                    if (mr[v]) q.push(mr[v]);
+                }
         }
         return dep[0] != -1;
     }
 
     bool dfs(int u) {
-        if (! u) return true;
-        for (int &i = cur[u]; i < int(g[u].size()); ++ i) {
+        if (!u) return true;
+        for (int &i = cur[u]; i < int(g[u].size()); i ++) {
             int v = g[u][i];
-            if (dep[mr[v]] != dep[u] + 1 || ! dfs(mr[v])) continue;
-            ml[u] = v; mr[v] = u;
+            if (dep[mr[v]] != dep[u] + 1 || !dfs(mr[v])) continue;
+            ml[u] = v;
+            mr[v] = u;
             return true;
         }
         dep[u] = -1;
@@ -59,31 +61,38 @@ struct HK {
     }
 
     int solve() {
-        fill(ml.begin(), ml.end(), 0);
-        fill(mr.begin(), mr.end(), 0);
+        std::fill(ml.begin(), ml.end(), 0);
+        std::fill(mr.begin(), mr.end(), 0);
         vs.clear();
-        for (int u = 1; u <= n; ++ u) if (! g[u].empty()) vs.push_back(u);
+        for (int u = 1; u <= n; u ++)
+            if (!g[u].empty()) vs.push_back(u);
         int ans = 0;
         while (bfs()) {
             for (int u : vs) cur[u] = 0;
-            for (int u : vs) if (! ml[u]) ans += dfs(u);
+            for (int u : vs)
+                if (!ml[u]) ans += dfs(u);
         }
         return ans;
     }
 
-    pair < V < int >, V < int > > cover() {
-        V < int > a(n + 1), b(m + 1), left, right;
-        queue < int > q;
-        for (int u = 1; u <= n; ++ u) if (! ml[u]) a[u] = 1, q.push(u);
-        while (! q.empty()) {
-            int u = q.front(); q.pop();
-            for (int v : g[u]) if (ml[u] != v && ! b[v]) {
-                b[v] = 1;
-                if (mr[v] && ! a[mr[v]]) a[mr[v]] = 1, q.push(mr[v]);
-            }
+    std::pair<std::vector<int>, std::vector<int>> cover() {
+        std::vector<int> a(n + 1), b(m + 1), left, right;
+        std::queue<int> q;
+        for (int u = 1; u <= n; u ++)
+            if (!ml[u]) a[u] = 1, q.push(u);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int v : g[u])
+                if (ml[u] != v && !b[v]) {
+                    b[v] = 1;
+                    if (mr[v] && !a[mr[v]]) a[mr[v]] = 1, q.push(mr[v]);
+                }
         }
-        for (int u = 1; u <= n; ++ u) if (! a[u]) left.push_back(u);
-        for (int v = 1; v <= m; ++ v) if (b[v]) right.push_back(v);
+        for (int u = 1; u <= n; u ++)
+            if (!a[u]) left.push_back(u);
+        for (int v = 1; v <= m; v ++)
+            if (b[v]) right.push_back(v);
         return {left, right};
     }
 };

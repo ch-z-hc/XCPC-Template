@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/math/类欧几里得.cpp"
 #include "../../template/math/二次剩余.cpp"
 #include "../../template/math/杜教筛.cpp"

@@ -1,45 +1,40 @@
 /*
 区间加、取上限或下限，查询和与最值。a[1..n] 非空。
-元素和截断值须在 (-2^60, 2^60) 内，区间和、标记及中间乘积须放入 ll。
+元素和截断值须在 (-2^60, 2^60) 内，区间和、标记及中间乘积须放入 i64。
 建树 O(n)，q 次操作总时间 O((n + q) log² n)。
 节点截断只在 max2 < x < max1 时调用 apply_min，只在 min1 < x < min2 时调用 apply_max。
 */
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-typedef long long ll;
-
-using namespace std;
+using i64 = long long;
 
 struct Beats {
-    static const ll INF = 1LL << 60;
+    static const i64 INF = 1LL << 60;
     struct Node {
-        ll sum = 0, max1 = -INF, max2 = -INF;
-        ll min1 = INF, min2 = INF, add = 0;
+        i64 sum = 0, max1 = -INF, max2 = -INF;
+        i64 min1 = INF, min2 = INF, add = 0;
         int cntmax = 0, cntmin = 0;
     };
     int n = 0;
-    V < Node > t;
+    std::vector<Node> t;
 
     void pull(int p) {
         auto &u = t[p];
-        auto &a = t[p * 2]; auto &b = t[p * 2 + 1];
+        auto &a = t[p * 2];
+        auto &b = t[p * 2 + 1];
         u.sum = a.sum + b.sum;
-        u.max1 = max(a.max1, b.max1);
-        u.cntmax = (a.max1 == u.max1 ? a.cntmax : 0)
-                 + (b.max1 == u.max1 ? b.cntmax : 0);
-        u.max2 = max(a.max1 == u.max1 ? a.max2 : a.max1,
-                     b.max1 == u.max1 ? b.max2 : b.max1);
-        u.min1 = min(a.min1, b.min1);
-        u.cntmin = (a.min1 == u.min1 ? a.cntmin : 0)
-                 + (b.min1 == u.min1 ? b.cntmin : 0);
-        u.min2 = min(a.min1 == u.min1 ? a.min2 : a.min1,
-                     b.min1 == u.min1 ? b.min2 : b.min1);
+        u.max1 = std::max(a.max1, b.max1);
+        u.cntmax = (a.max1 == u.max1 ? a.cntmax : 0) + (b.max1 == u.max1 ? b.cntmax : 0);
+        u.max2 =
+            std::max(a.max1 == u.max1 ? a.max2 : a.max1, b.max1 == u.max1 ? b.max2 : b.max1);
+        u.min1 = std::min(a.min1, b.min1);
+        u.cntmin = (a.min1 == u.min1 ? a.cntmin : 0) + (b.min1 == u.min1 ? b.cntmin : 0);
+        u.min2 =
+            std::min(a.min1 == u.min1 ? a.min2 : a.min1, b.min1 == u.min1 ? b.min2 : b.min1);
     }
 
-    void apply_add(int p, int len, ll x) {
+    void apply_add(int p, int len, i64 x) {
         auto &u = t[p];
         u.sum += x * len;
         u.max1 += x;
@@ -49,19 +44,23 @@ struct Beats {
         if (u.min2 != INF) u.min2 += x;
     }
 
-    void apply_min(int p, ll x) {
+    void apply_min(int p, i64 x) {
         auto &u = t[p];
         u.sum += (x - u.max1) * u.cntmax;
-        if (u.min1 == u.max1) u.min1 = x;
-        else if (u.min2 == u.max1) u.min2 = x;
+        if (u.min1 == u.max1)
+            u.min1 = x;
+        else if (u.min2 == u.max1)
+            u.min2 = x;
         u.max1 = x;
     }
 
-    void apply_max(int p, ll x) {
+    void apply_max(int p, i64 x) {
         auto &u = t[p];
         u.sum += (x - u.min1) * u.cntmin;
-        if (u.max1 == u.min1) u.max1 = x;
-        else if (u.max2 == u.min1) u.max2 = x;
+        if (u.max1 == u.min1)
+            u.max1 = x;
+        else if (u.max2 == u.min1)
+            u.max2 = x;
         u.min1 = x;
     }
 
@@ -79,7 +78,7 @@ struct Beats {
         }
     }
 
-    void build(int p, int l, int r, const V < ll > &a) {
+    void build(int p, int l, int r, const std::vector<i64> &a) {
         if (l == r) {
             t[p].sum = t[p].min1 = t[p].max1 = a[l];
             t[p].cntmin = t[p].cntmax = 1;
@@ -91,13 +90,13 @@ struct Beats {
         pull(p);
     }
 
-    void init(const V < ll > &a) {
+    void init(const std::vector<i64> &a) {
         n = int(a.size()) - 1;
         t.assign(n * 4 + 5, Node());
         if (n) build(1, 1, n, a);
     }
 
-    void add(int p, int l, int r, int x, int y, ll v) {
+    void add(int p, int l, int r, int x, int y, i64 v) {
         if (x <= l && r <= y) {
             apply_add(p, r - l + 1, v);
             return;
@@ -109,7 +108,7 @@ struct Beats {
         pull(p);
     }
 
-    void chmin(int p, int l, int r, int x, int y, ll v) {
+    void chmin(int p, int l, int r, int x, int y, i64 v) {
         if (t[p].max1 <= v) return;
         if (x <= l && r <= y && t[p].max2 < v) {
             apply_min(p, v);
@@ -122,7 +121,7 @@ struct Beats {
         pull(p);
     }
 
-    void chmax(int p, int l, int r, int x, int y, ll v) {
+    void chmax(int p, int l, int r, int x, int y, i64 v) {
         if (t[p].min1 >= v) return;
         if (x <= l && r <= y && t[p].min2 > v) {
             apply_max(p, v);
@@ -135,48 +134,48 @@ struct Beats {
         pull(p);
     }
 
-    ll query(int p, int l, int r, int x, int y) {
+    i64 query(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].sum;
         push(p, l, r);
         int mid = (l + r) / 2;
-        ll ans = 0;
+        i64 ans = 0;
         if (x <= mid) ans += query(p * 2, l, mid, x, y);
         if (y > mid) ans += query(p * 2 + 1, mid + 1, r, x, y);
         return ans;
     }
 
-    ll query_min(int p, int l, int r, int x, int y) {
+    i64 query_min(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].min1;
         push(p, l, r);
         int mid = (l + r) / 2;
-        ll ans = INF;
-        if (x <= mid) ans = min(ans, query_min(p * 2, l, mid, x, y));
-        if (y > mid) ans = min(ans, query_min(p * 2 + 1, mid + 1, r, x, y));
+        i64 ans = INF;
+        if (x <= mid) ans = std::min(ans, query_min(p * 2, l, mid, x, y));
+        if (y > mid) ans = std::min(ans, query_min(p * 2 + 1, mid + 1, r, x, y));
         return ans;
     }
 
-    ll query_max(int p, int l, int r, int x, int y) {
+    i64 query_max(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return t[p].max1;
         push(p, l, r);
         int mid = (l + r) / 2;
-        ll ans = -INF;
-        if (x <= mid) ans = max(ans, query_max(p * 2, l, mid, x, y));
-        if (y > mid) ans = max(ans, query_max(p * 2 + 1, mid + 1, r, x, y));
+        i64 ans = -INF;
+        if (x <= mid) ans = std::max(ans, query_max(p * 2, l, mid, x, y));
+        if (y > mid) ans = std::max(ans, query_max(p * 2 + 1, mid + 1, r, x, y));
         return ans;
     }
 
-    void add(int l, int r, ll x) { add(1, 1, n, l, r, x); }
-    void chmin(int l, int r, ll x) { chmin(1, 1, n, l, r, x); }
-    void chmax(int l, int r, ll x) { chmax(1, 1, n, l, r, x); }
-    ll query(int l, int r) { return query(1, 1, n, l, r); }
-    ll query_min(int l, int r) { return query_min(1, 1, n, l, r); }
-    ll query_max(int l, int r) { return query_max(1, 1, n, l, r); }
+    void add(int l, int r, i64 x) { add(1, 1, n, l, r, x); }
+    void chmin(int l, int r, i64 x) { chmin(1, 1, n, l, r, x); }
+    void chmax(int l, int r, i64 x) { chmax(1, 1, n, l, r, x); }
+    i64 query(int l, int r) { return query(1, 1, n, l, r); }
+    i64 query_min(int l, int r) { return query_min(1, 1, n, l, r); }
+    i64 query_max(int l, int r) { return query_max(1, 1, n, l, r); }
 };
-const ll Beats::INF;
+const i64 Beats::INF;
 
 /*
 Beats st; st.init({0, 3, 1, 4});
 st.add(1, 3, 2); st.chmin(1, 2, 4); st.chmax(2, 3, 5);
-ll sum = st.query(1, 3);
-ll low = st.query_min(1, 3), high = st.query_max(1, 3);
+i64 sum = st.query(1, 3);
+i64 low = st.query_min(1, 3), high = st.query_max(1, 3);
 */

@@ -1,22 +1,18 @@
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct LCA {
     int n = 0, lg = 1;
-    V < V < int > > g, fa;
-    V < int > dep;
+    std::vector<std::vector<int>> g, fa;
+    std::vector<int> dep;
 
     LCA(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_;
         lg = 1;
-        while ((1ll << lg) <= max(1, n)) lg ++;
+        while ((1ll << lg) <= std::max(1, n)) lg ++;
         g.assign(n + 1, {});
-        fa.assign(lg, V < int > (n + 1));
+        fa.assign(lg, std::vector<int>(n + 1));
         dep.assign(n + 1, 0);
     }
 
@@ -27,12 +23,12 @@ struct LCA {
 
     void dfs(int u, int p) {
         fa[0][u] = p;
-        for (int j = 1; j < lg; ++ j)
-            fa[j][u] = fa[j - 1][fa[j - 1][u]];
-        for (int v : g[u]) if (v != p) {
-            dep[v] = dep[u] + 1;
-            dfs(v, u);
-        }
+        for (int j = 1; j < lg; j ++) fa[j][u] = fa[j - 1][fa[j - 1][u]];
+        for (int v : g[u])
+            if (v != p) {
+                dep[v] = dep[u] + 1;
+                dfs(v, u);
+            }
     }
 
     void build(int root = 1) {
@@ -41,13 +37,16 @@ struct LCA {
     }
 
     int lca(int u, int v) {
-        if (dep[u] < dep[v]) swap(u, v);
+        if (dep[u] < dep[v]) std::swap(u, v);
         int d = dep[u] - dep[v];
-        for (int j = 0; j < lg; ++ j)
+        for (int j = 0; j < lg; j ++)
             if (d >> j & 1) u = fa[j][u];
         if (u == v) return u;
-        for (int j = lg - 1; j >= 0; -- j)
-            if (fa[j][u] != fa[j][v]) { u = fa[j][u]; v = fa[j][v]; }
+        for (int j = lg - 1; j >= 0; j --)
+            if (fa[j][u] != fa[j][v]) {
+                u = fa[j][u];
+                v = fa[j][v];
+            }
         return fa[0][u];
     }
 };

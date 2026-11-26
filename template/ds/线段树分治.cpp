@@ -7,15 +7,11 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 int q;
-V < V < int > > tr;
+std::vector<std::vector<int>> tr;
 RollbackDSU dsu;
-V < pair < int, int > > edge, ask;
-V < int > ans;
+std::vector<std::pair<int, int>> edge, ask;
+std::vector<int> ans;
 
 void init(int n, int q_) {
     q = q_;
@@ -62,6 +58,6 @@ void dfs(int p, int l, int r) {
 init(3, 4);
 edge = {{1, 2}, {2, 3}};
 add(1, 3, 0); add(2, 4, 1);
-for (int t = 1; t <= q; ++ t) ask[t] = {1, 3};
+for (int t = 1; t <= q; t ++) ask[t] = {1, 3};
 dfs(1, 1, q);
 */

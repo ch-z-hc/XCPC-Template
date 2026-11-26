@@ -2,15 +2,11 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct EulerLCA {
     int n = 0;
-    V < V < int > > g;
-    V < int > pos, dep, ord, lg;
-    V < V < int > > st;
+    std::vector<std::vector<int>> g;
+    std::vector<int> pos, dep, ord, lg;
+    std::vector<std::vector<int>> st;
 
     EulerLCA(int n = 0) { init(n); }
 
@@ -42,15 +38,15 @@ struct EulerLCA {
 
     void build(int root = 1) {
         ord.clear();
-        fill(pos.begin(), pos.end(), -1);
+        std::fill(pos.begin(), pos.end(), -1);
         dfs(root, 0, 0);
         int m = int(ord.size());
         lg.assign(m + 1, 0);
-        for (int i = 2; i <= m; ++ i) lg[i] = lg[i >> 1] + 1;
-        st.assign(lg[m] + 1, V < int > (m));
-        iota(st[0].begin(), st[0].end(), 0);
-        for (int j = 1; j <= lg[m]; ++ j)
-            for (int i = 0; i + (1 << j) <= m; ++ i) {
+        for (int i = 2; i <= m; i ++) lg[i] = lg[i >> 1] + 1;
+        st.assign(lg[m] + 1, std::vector<int>(m));
+        std::iota(st[0].begin(), st[0].end(), 0);
+        for (int j = 1; j <= lg[m]; j ++)
+            for (int i = 0; i + (1 << j) <= m; i ++) {
                 int x = st[j - 1][i];
                 int y = st[j - 1][i + (1 << (j - 1))];
                 st[j][i] = dep[ord[x]] < dep[ord[y]] ? x : y;
@@ -59,7 +55,7 @@ struct EulerLCA {
 
     int lca(int u, int v) {
         int l = pos[u], r = pos[v];
-        if (l > r) swap(l, r);
+        if (l > r) std::swap(l, r);
         int k = lg[r - l + 1];
         int x = st[k][l], y = st[k][r - (1 << k) + 1];
         return dep[ord[x]] < dep[ord[y]] ? ord[x] : ord[y];

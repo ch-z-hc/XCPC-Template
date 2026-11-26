@@ -5,27 +5,23 @@ find 返回前缀节点，不存在时返回 -1。
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct Trie {
     struct Node {
-        array < int, 26 > ch{};
+        std::array<int, 26> ch{};
         int cnt = 0, end = 0;
     };
 
-    V < Node > tr;
+    std::vector<Node> tr;
 
     Trie() { clear(); }
     void clear() { tr.assign(1, Node{}); }
 
-    void insert(const string &s) {
+    void insert(const std::string &s) {
         int u = 0;
         tr[u].cnt ++;
         for (char c : s) {
             int x = c - 'a';
-            if (! tr[u].ch[x]) {
+            if (!tr[u].ch[x]) {
                 tr[u].ch[x] = int(tr.size());
                 tr.emplace_back();
             }
@@ -35,22 +31,22 @@ struct Trie {
         tr[u].end ++;
     }
 
-    int find(const string &s) {
+    int find(const std::string &s) {
         int u = 0;
         for (char c : s) {
             int x = c - 'a';
-            if (! tr[u].ch[x]) return -1;
+            if (!tr[u].ch[x]) return -1;
             u = tr[u].ch[x];
         }
         return u;
     }
 
-    int prefix(const string &s) {
+    int prefix(const std::string &s) {
         int u = find(s);
         return u == -1 ? 0 : tr[u].cnt;
     }
 
-    int count(const string &s) {
+    int count(const std::string &s) {
         int u = find(s);
         return u == -1 ? 0 : tr[u].end;
     }

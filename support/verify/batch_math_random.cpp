@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/math/积性函数求和.cpp"
 #include "../../template/math/单纯形与线性规划.cpp"
 #include "../../template/math/高斯消元.cpp"

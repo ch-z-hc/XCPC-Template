@@ -5,43 +5,49 @@ kth 按不同异或值从小到大编号，k 从 0 数，包含空集的 0。无
 
 #include <bits/stdc++.h>
 
-typedef unsigned long long ull;
-
-using namespace std;
+using u64 = unsigned long long;
 
 struct Basis {
-    array < ull, 63 > p{};
+    std::array<u64, 63> p{};
 
     void clear() { p.fill(0); }
-    bool insert(ull x) {
-        for (int i = 62; i >= 0; -- i) if (x >> i & 1ULL) {
-            if (p[i]) x ^= p[i];
-            else { p[i] = x; return true; }
-        }
+    bool insert(u64 x) {
+        for (int i = 62; i >= 0; i --)
+            if (x >> i & 1ULL) {
+                if (p[i])
+                    x ^= p[i];
+                else {
+                    p[i] = x;
+                    return true;
+                }
+            }
         return false;
     }
-    bool contains(ull x) {
-        for (int i = 62; i >= 0; -- i) if (x >> i & 1ULL) {
-            if (! p[i]) return false;
-            x ^= p[i];
-        }
+    bool contains(u64 x) {
+        for (int i = 62; i >= 0; i --)
+            if (x >> i & 1ULL) {
+                if (!p[i]) return false;
+                x ^= p[i];
+            }
         return true;
     }
-    ull max_xor(ull x = 0) {
-        for (int i = 62; i >= 0; -- i) x = max(x, x ^ p[i]);
+    u64 max_xor(u64 x = 0) {
+        for (int i = 62; i >= 0; i --) x = std::max(x, x ^ p[i]);
         return x;
     }
 
-    bool kth(ull k, ull &ans) {
+    bool kth(u64 k, u64 &ans) {
         auto a = p;
         int n = 0;
-        for (int i = 0; i < 63; ++ i) if (a[i]) {
-            for (int j = 0; j < i; ++ j) if (a[i] >> j & 1ULL) a[i] ^= a[j];
-            n ++;
-        }
+        for (int i = 0; i < 63; i ++)
+            if (a[i]) {
+                for (int j = 0; j < i; j ++)
+                    if (a[i] >> j & 1ULL) a[i] ^= a[j];
+                n ++;
+            }
         if (k >= (1ULL << n)) return false;
         ans = 0;
-        for (int i = 0, j = 0; i < 63; ++ i)
+        for (int i = 0, j = 0; i < 63; i ++)
             if (a[i]) {
                 if (k >> j & 1ULL) ans ^= a[i];
                 j ++;
@@ -52,7 +58,7 @@ struct Basis {
 
 /*
 Basis base; bool independent = base.insert(5); base.insert(3);
-bool has = base.contains(6); ull largest = base.max_xor(0);
-ull x; if (base.kth(1, x)) cout << x;
+bool has = base.contains(6); u64 largest = base.max_xor(0);
+u64 x; if (base.kth(1, x)) cout << x;
 base.clear();
 */

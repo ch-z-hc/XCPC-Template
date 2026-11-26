@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/第几短游走.cpp"
 
 V < ll > brute(const KWalk &kw, int s, int t, int k) {

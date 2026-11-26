@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/graph/容量缩放费用流.cpp"
 
 int main() {

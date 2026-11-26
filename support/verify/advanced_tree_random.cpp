@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/点双连通分量.cpp"
 #include "../../template/graph/边双连通分量.cpp"
 #include "../../template/graph/圆方树.cpp"

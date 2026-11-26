@@ -2,45 +2,31 @@
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct Manacher {
-    string s;
-    V < int > odd, even;
+    std::string s;
+    std::vector<int> odd, even;
 
     Manacher() = default;
-    Manacher(const string &s) { build(s); }
+    Manacher(const std::string &s) { build(s); }
 
-    void build(const string &str) {
+    void build(const std::string &str) {
         s = str;
         int n = int(s.size());
-        odd.assign(n, 0);
-        for (int i = 0, l = 0, r = -1; i < n; ++ i) {
-            int k = i > r ? 1 : min(odd[l + r - i], r - i + 1);
-            while (i - k >= 0 && i + k < n &&
-                   s[i - k] == s[i + k])
-                ++ k;
-            odd[i] = k;
-            if (i + k - 1 > r) {
-                l = i - k + 1;
-                r = i + k - 1;
+        auto scan = [&](int gap) {
+            std::vector<int> radius(n);
+            for (int i = 0, l = 0, r = -1; i < n; i ++) {
+                int &k = radius[i];
+                k = i > r ? 1 - gap : std::min(radius[l + r - i + gap], r - i + 1);
+                while (i - k - gap >= 0 && i + k < n && s[i - k - gap] == s[i + k]) k ++;
+                if (i + k - 1 > r) {
+                    l = i - k + 1 - gap;
+                    r = i + k - 1;
+                }
             }
-        }
-
-        even.assign(n, 0);
-        for (int i = 0, l = 0, r = -1; i < n; ++ i) {
-            int k = i > r ? 0 : min(even[l + r - i + 1], r - i + 1);
-            while (i - k - 1 >= 0 && i + k < n &&
-                   s[i - k - 1] == s[i + k])
-                ++ k;
-            even[i] = k;
-            if (i + k - 1 > r) {
-                l = i - k;
-                r = i + k - 1;
-            }
-        }
+            return radius;
+        };
+        odd = scan(0);
+        even = scan(1);
     }
 
     bool query(int l, int r) {
@@ -50,9 +36,9 @@ struct Manacher {
         return even[(l + r + 1) / 2] >= len / 2;
     }
 
-    pair < int, int > longest() {
-        pair < int, int > ans{0, 0};
-        for (int i = 0; i < int(s.size()); ++ i) {
+    std::pair<int, int> longest() {
+        std::pair<int, int> ans{0, 0};
+        for (int i = 0; i < int(s.size()); i ++) {
             int len1 = 2 * odd[i] - 1;
             if (len1 > ans.second) ans = {i - odd[i] + 1, len1};
             int len2 = 2 * even[i];

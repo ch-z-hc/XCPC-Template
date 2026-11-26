@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/graph/一般图最大权匹配.cpp"
 
 ll brute(const V < V < ll > > &g, int mask, V < ll > &dp) {

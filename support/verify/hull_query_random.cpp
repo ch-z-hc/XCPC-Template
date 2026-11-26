@@ -1,3 +1,4 @@
+#include "contest_types.hpp"
 #include "../../template/geometry/二维凸包最大点积查询.cpp"
 #include "../../template/geometry/二维动态凸包.cpp"
 

@@ -7,98 +7,98 @@ r = min(n, m)，实数 O(nmr)，模数版另加 O(r log p)，异或 O(nm + nr ce
 
 #include <bits/stdc++.h>
 
-#define V vector
+using i64 = long long;
+using ld = long double;
 
-typedef long long ll;
-typedef long double ld;
-
-using namespace std;
-
-int gauss(V < V < ld > > a, int m, V < ld > &x, ld eps = 1e-12L) {
+int gauss(std::vector<std::vector<ld>> a, int m, std::vector<ld> &x, ld eps = 1e-12L) {
     int n = int(a.size()), r = 0;
-    V < int > pos(m, -1);
+    std::vector<int> pos(m, -1);
     x.assign(m, 0);
-    for (int j = 0; j < m && r < n; ++ j) {
+    for (int j = 0; j < m && r < n; j ++) {
         int p = r;
-        for (int i = r + 1; i < n; ++ i)
-            if (abs(a[i][j]) > abs(a[p][j])) p = i;
-        if (abs(a[p][j]) <= eps) continue;
-        swap(a[r], a[p]);
+        for (int i = r + 1; i < n; i ++)
+            if (std::abs(a[i][j]) > std::abs(a[p][j])) p = i;
+        if (std::abs(a[p][j]) <= eps) continue;
+        std::swap(a[r], a[p]);
         ld v = a[r][j];
-        for (int k = j; k <= m; ++ k) a[r][k] /= v;
-        for (int i = 0; i < n; ++ i) if (i != r) {
-            ld t = a[i][j];
-            for (int k = j + 1; k <= m; ++ k) a[i][k] -= t * a[r][k];
-            a[i][j] = 0;
-        }
+        for (int k = j; k <= m; k ++) a[r][k] /= v;
+        for (int i = 0; i < n; i ++)
+            if (i != r) {
+                ld t = a[i][j];
+                for (int k = j + 1; k <= m; k ++) a[i][k] -= t * a[r][k];
+                a[i][j] = 0;
+            }
         pos[j] = r ++;
     }
-    for (int i = r; i < n; ++ i)
-        if (abs(a[i][m]) > eps) return 0;
-    for (int j = 0; j < m; ++ j)
+    for (int i = r; i < n; i ++)
+        if (std::abs(a[i][m]) > eps) return 0;
+    for (int j = 0; j < m; j ++)
         if (pos[j] != -1) x[j] = a[pos[j]][m];
     return r == m ? 1 : 2;
 }
 
-int gauss_mod(V < V < ll > > a, int m, ll p, V < ll > &x) {
+int gauss_mod(std::vector<std::vector<i64>> a, int m, i64 p, std::vector<i64> &x) {
     int n = int(a.size()), r = 0;
-    V < int > pos(m, -1);
+    std::vector<int> pos(m, -1);
     x.assign(m, 0);
     for (auto &row : a)
-        for (ll &v : row) {
+        for (i64 &v : row) {
             v %= p;
             if (v < 0) v += p;
         }
-    auto power = [&](ll a, ll b) {
-        ll ans = 1;
+    auto power = [&](i64 a, i64 b) {
+        i64 ans = 1;
         for (; b; b >>= 1, a = a * a % p)
             if (b & 1) ans = ans * a % p;
         return ans;
     };
-    for (int j = 0; j < m && r < n; ++ j) {
+    for (int j = 0; j < m && r < n; j ++) {
         int k = r;
         while (k < n && a[k][j] == 0) k ++;
         if (k == n) continue;
-        swap(a[r], a[k]);
-        ll inv = power(a[r][j], p - 2);
-        for (int k = j; k <= m; ++ k) a[r][k] = a[r][k] * inv % p;
-        for (int i = 0; i < n; ++ i) if (i != r && a[i][j]) {
-            ll t = a[i][j];
-            for (int k = j + 1; k <= m; ++ k)
-                a[i][k] = (a[i][k] - t * a[r][k] % p + p) % p;
-            a[i][j] = 0;
-        }
+        std::swap(a[r], a[k]);
+        i64 inv = power(a[r][j], p - 2);
+        for (int k = j; k <= m; k ++) a[r][k] = a[r][k] * inv % p;
+        for (int i = 0; i < n; i ++)
+            if (i != r && a[i][j]) {
+                i64 t = a[i][j];
+                for (int k = j + 1; k <= m; k ++)
+                    a[i][k] = (a[i][k] - t * a[r][k] % p + p) % p;
+                a[i][j] = 0;
+            }
         pos[j] = r ++;
     }
-    for (int i = r; i < n; ++ i) if (a[i][m]) return 0;
-    for (int j = 0; j < m; ++ j)
+    for (int i = r; i < n; i ++)
+        if (a[i][m]) return 0;
+    for (int j = 0; j < m; j ++)
         if (pos[j] != -1) x[j] = a[pos[j]][m];
     return r == m ? 1 : 2;
 }
 
-template < size_t N >
-int gauss_xor(V < bitset < N > > a, int m, V < int > &x) {
+template <std::size_t N>
+int gauss_xor(std::vector<std::bitset<N>> a, int m, std::vector<int> &x) {
     int n = int(a.size()), r = 0;
-    V < int > pos(m, -1);
+    std::vector<int> pos(m, -1);
     x.assign(m, 0);
-    for (int j = 0; j < m && r < n; ++ j) {
+    for (int j = 0; j < m && r < n; j ++) {
         int k = r;
-        while (k < n && ! a[k][j]) k ++;
+        while (k < n && !a[k][j]) k ++;
         if (k == n) continue;
-        swap(a[r], a[k]);
-        for (int i = 0; i < n; ++ i)
+        std::swap(a[r], a[k]);
+        for (int i = 0; i < n; i ++)
             if (i != r && a[i][j]) a[i] ^= a[r];
         pos[j] = r ++;
     }
-    for (int i = r; i < n; ++ i) if (a[i][m]) return 0;
-    for (int j = 0; j < m; ++ j)
+    for (int i = r; i < n; i ++)
+        if (a[i][m]) return 0;
+    for (int j = 0; j < m; j ++)
         if (pos[j] != -1) x[j] = int(a[pos[j]][m]);
     return r == m ? 1 : 2;
 }
 
 /*
-V < ld > x; int status = gauss(a, m, x);
-V < ll > y; int mod_status = gauss_mod(b, m, p, y);
-V < bitset < 3 > > c{3, 6};
-V < int > z; int xor_status = gauss_xor(c, 2, z);
+std::vector<ld> x; int status = gauss(a, m, x);
+std::vector<i64> y; int mod_status = gauss_mod(b, m, p, y);
+std::vector<std::bitset<3>> c{3, 6};
+std::vector<int> z; int xor_status = gauss_xor(c, 2, z);
 */

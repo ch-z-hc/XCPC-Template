@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "contest_types.hpp"
 #include "../../template/others/分治三维偏序.cpp"
 #include "../../template/others/整体二分与动态区间第几小.cpp"
 

@@ -5,21 +5,17 @@ bcc[i].v 存顶点，bcc[i].e 存边号，割点可属于多个分量。
 
 #include <bits/stdc++.h>
 
-#define V vector
-
-using namespace std;
-
 struct VBCC {
     struct Block {
-        V < int > v, e;
+        std::vector<int> v, e;
     };
 
     int n = 0, tim = 0;
-    V < V < pair < int, int > > > g;
-    V < int > dfn, low, stk, mark;
-    V < pair < int, int > > edges;
+    std::vector<std::vector<std::pair<int, int>>> g;
+    std::vector<int> dfn, low, stk, mark;
+    std::vector<std::pair<int, int>> edges;
     int token = 0;
-    V < Block > bcc;
+    std::vector<Block> bcc;
 
     VBCC(int n = 0) { init(n); }
 
@@ -45,49 +41,49 @@ struct VBCC {
     }
 
     void collect(int stop) {
-        V < int > v, e;
+        std::vector<int> v, e;
         ++ token;
         while (true) {
             int id = stk.back();
             stk.pop_back();
             e.push_back(id);
-            for (int side = 0; side < 2; ++ side) {
+            for (int side = 0; side < 2; side ++) {
                 int u = side == 0 ? edges[id].first : edges[id].second;
-                if (mark[u] != token)
-                    mark[u] = token, v.push_back(u);
+                if (mark[u] != token) mark[u] = token, v.push_back(u);
             }
             if (id == stop) break;
         }
         bcc.push_back({});
-        bcc.back().v.swap(v); bcc.back().e.swap(e);
+        bcc.back().v.swap(v);
+        bcc.back().e.swap(e);
     }
 
     void dfs(int u, int pe) {
         dfn[u] = low[u] = ++ tim;
         for (auto [v, id] : g[u]) {
             if (id == pe) continue;
-            if (! dfn[v]) {
+            if (!dfn[v]) {
                 stk.push_back(id);
                 dfs(v, id);
-                low[u] = min(low[u], low[v]);
+                low[u] = std::min(low[u], low[v]);
                 if (low[v] >= dfn[u]) collect(id);
             } else if (dfn[v] < dfn[u]) {
                 stk.push_back(id);
-                low[u] = min(low[u], dfn[v]);
+                low[u] = std::min(low[u], dfn[v]);
             }
         }
     }
 
     void build() {
         tim = 0;
-        fill(dfn.begin(), dfn.end(), 0);
-        fill(low.begin(), low.end(), 0);
-        fill(mark.begin(), mark.end(), 0);
+        std::fill(dfn.begin(), dfn.end(), 0);
+        std::fill(low.begin(), low.end(), 0);
+        std::fill(mark.begin(), mark.end(), 0);
         stk.clear();
         bcc.clear();
         token = 0;
-        for (int u = 1; u <= n; ++ u) {
-            if (! dfn[u]) {
+        for (int u = 1; u <= n; u ++) {
+            if (!dfn[u]) {
                 dfs(u, -1);
                 if (g[u].empty()) bcc.push_back({{u}, {}});
             }
