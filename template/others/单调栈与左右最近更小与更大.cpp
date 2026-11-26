@@ -1,3 +1,5 @@
+// 求 a[1..n] 各点左右最近的严格更小或更大元素，O(n)。左、右无解分别记 0、n + 1。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 求 a[1..n] 各点左右最近的严格更小或更大元素，O(n)。左、右无解分别记 0、n + 1。
 
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
                                               bool greater = false) {

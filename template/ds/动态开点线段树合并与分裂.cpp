@@ -1,3 +1,9 @@
+/*
+维护值域 [1, n] 的多重集，根 0 表示空集。计数非负，总数须放入 ll。
+合并的两棵树不能共用节点。合并耗时与重叠节点数成正比，其余操作 O(log n)，节点不回收。
+split 从原树取走指定区间并返回新根，merge(a, b) 将 b 并入 a 后把 b 置零。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-维护值域 [1, n] 的多重集，根 0 表示空集。计数非负，总数须放入 ll。
-合并的两棵树不能共用节点。合并耗时与重叠节点数成正比，其余操作 O(log n)，节点不回收。
-*/
 
 struct MergeSegTree {
     struct Node {
@@ -98,7 +99,7 @@ struct MergeSegTree {
 /*
 MergeSegTree st; st.init(10); int a = 0;
 st.add(a, 3, 2); st.add(a, 6, 1);
-int b = st.split(a, 2, 4); // 从 a 取走 [2, 4]
+int b = st.split(a, 2, 4);
 ll cnt = st.query(b, 1, 5); int x = st.kth(b, 2);
-st.merge(a, b); // 并入 a，b 清零
+st.merge(a, b);
 */

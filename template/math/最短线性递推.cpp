@@ -1,3 +1,9 @@
+/*
+质数模下求序列前缀的最短递推及第 k 项，mod <= 2^31，输入系数先取模。
+n 项求递推 O(n² + n log mod)，d 阶递推求第 k 项 O(d² log(k + 2))。
+rec[i] 为前第 i + 1 项的系数。k 从 0 数，初值至少给出前 d 项。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-质数模下求序列前缀的最短递推及第 k 项，mod <= 2^31，输入系数先取模。
-n 项求递推 O(n² + n log mod)，d 阶递推求第 k 项 O(d² log(k + 2))。
-*/
 
 static ll bm_norm(ll x, ll mod) {
     x %= mod;
@@ -74,7 +75,6 @@ static V < ll > bm_combine(const V < ll > &a, const V < ll > &b,
     return ans;
 }
 
-// 求 0-based 的第 k 项；初始序列长度应至少等于递推阶数。
 ll kth(const V < ll > &init, const V < ll > &rec,
                          ll k, ll mod) {
     int n = int(rec.size());
@@ -95,6 +95,6 @@ ll kth(const V < ll > &init, const V < ll > &rec,
 }
 
 /*
-V < ll > s{0, 1, 1, 2, 3, 5}; auto rec = bm(s, 17); // rec[i] 乘前第 i + 1 项
-ll ans = kth({0, 1}, rec, 7, 17); // k 从 0 数，初值至少给前 d 项
+V < ll > s{0, 1, 1, 2, 3, 5}; auto rec = bm(s, 17);
+ll ans = kth({0, 1}, rec, 7, 17);
 */

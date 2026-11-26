@@ -1,14 +1,15 @@
+/*
+静态点集的最近邻和闭矩形计数。坐标绝对值 <= 10^9，点按输入顺序从 0 编号。
+建树期望 O(n log n)，查询最坏 O(n)。等距取编号较小者。
+nearest 可按编号排除一个点，有解时写入 {距离平方, 点编号}，无候选点返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
 typedef long long ll;
-
-/*
-静态点集的最近邻和闭矩形计数。坐标绝对值 <= 10^9，点按输入顺序从 0 编号。
-建树期望 O(n log n)，查询最坏 O(n)。等距取编号较小者。
-*/
 
 struct KDTree {
     struct Node {
@@ -101,6 +102,6 @@ struct KDTree {
 /*
 KDTree kd; kd.build({{0, 0}, {2, 1}});
 pair < ll, int > ans;
-if (kd.nearest(0, 0, ans, 0)) cout << ans.first << ' ' << ans.second; // 排除点 0，得 5、1
-int cnt = kd.query(0, 0, 1, 1); // 闭矩形内有 1 个点
+if (kd.nearest(0, 0, ans, 0)) cout << ans.first << ' ' << ans.second;
+int cnt = kd.query(0, 0, 1, 1);
 */

@@ -1,3 +1,5 @@
+// 由 a[1..n] 建小根笛卡尔树，O(n)。以原数组下标编号，相等时较小下标更靠近根。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 由 a[1..n] 建小根笛卡尔树，O(n)。以原数组下标编号，相等时较小下标更靠近根。
 
 struct Cartesian {
     int root = 0;
@@ -31,5 +31,5 @@ struct Cartesian {
 
 /*
 Cartesian tree;
-tree.build(a); // a[0] 为占位，tree.root 为根。
+tree.build(a);
 */

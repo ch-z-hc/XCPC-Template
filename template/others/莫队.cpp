@@ -1,24 +1,19 @@
+/*
+离线处理 1-based 闭区间查询，增删按数组下标。每次求解前清空统计量。
+块长约 n / sqrt(q)，q 次查询排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
+文件尾第一段替换结构体中的 3 个成员声明，示例统计区间不同值个数。值先离散到 1..m。
+qs 每项为 {l, r, 答案下标}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
 
-/*
-离线处理 1-based 闭区间查询，增删按数组下标。每次求解前清空统计量。
-块长约 n / sqrt(q)，q 次查询排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
-*/
-
 struct Mo {
     struct Query { int l, r, id; };
 
-    /*
-    // 区间不同值个数
-    V < int > a, cnt, ans; int kinds = 0;
-    void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
-    void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
-    void answer(int id) { ans[id] = kinds; }
-    */
     void add(int p);
     void del(int p);
     void answer(int id);
@@ -42,7 +37,14 @@ struct Mo {
 };
 
 /*
-Mo mo; mo.a = a; // 统计不同值个数，值已离散到 1..m
+V < int > a, cnt, ans; int kinds = 0;
+void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
+void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
+void answer(int id) { ans[id] = kinds; }
+*/
+
+/*
+Mo mo; mo.a = a;
 mo.cnt.assign(m + 1, 0); mo.kinds = 0;
-mo.ans.resize(qs.size()); mo.solve(n, qs); // qs 中每项为 {l, r, 答案下标}
+mo.ans.resize(qs.size()); mo.solve(n, qs);
 */

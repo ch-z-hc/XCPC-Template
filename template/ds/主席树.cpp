@@ -1,3 +1,9 @@
+/*
+静态数组 a[1..n] 的区间第 k 小、区间计数。要求 1 <= k <= r - l + 1。
+建树 O(n log n)，查询 O(log n)。
+count(l, r, x) 统计区间内 <= x 的元素个数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-静态数组 a[1..n] 的区间第 k 小、区间计数。要求 1 <= k <= r - l + 1。
-建树 O(n log n)，查询 O(log n)。
-*/
 
 struct PST {
     struct Node { int ls = 0, rs = 0, sum = 0; };
@@ -72,6 +73,6 @@ struct PST {
 
 /*
 PST tree; tree.build({0, 5, 2, 5});
-ll x = tree.kth(1, 3, 2);       // 5
-int cnt = tree.count(1, 3, 2);  // <= 2 的元素有 1 个
+ll x = tree.kth(1, 3, 2);
+int cnt = tree.count(1, 3, 2);
 */

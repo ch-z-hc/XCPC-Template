@@ -1,3 +1,9 @@
+/*
+质数模下求行列式、生成树边权乘积之和。模数在 [2, INT_MAX] 内，允许负权、重边，忽略自环。
+行列式 O(n³ + n log mod)，建矩阵另需 O(m)。空行列式和单点图均取 1。
+directed 为 true 时统计从 root 向外的有向生成树。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-质数模下求行列式、生成树边权乘积之和。模数在 [2, INT_MAX] 内，允许负权、重边，忽略自环。
-行列式 O(n³ + n log mod)，建矩阵另需 O(m)。空行列式和单点图均取 1。
-*/
 
 ll det(V < V < ll > > a, ll mod) {
     assert(2 <= mod && mod <= INT_MAX);
@@ -65,5 +66,5 @@ ll matrix_tree(int n, const V < tuple < int, int, ll > > &edges,
 ll mod = 17, d = det({{1, 2}, {3, 4}}, mod);
 V < tuple < int, int, ll > > edges{{1, 2, 1}, {2, 3, 1}, {1, 3, 1}};
 ll undirected = matrix_tree(3, edges, mod);
-ll directed = matrix_tree(3, edges, mod, 1, true); // 从根 1 向外的生成树
+ll directed = matrix_tree(3, edges, mod, 1, true);
 */

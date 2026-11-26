@@ -1,3 +1,8 @@
+/*
+0-based 闭区间双模哈希，可跨对象比较。先比长度，再比哈希，相同哈希仍可能碰撞。
+建表 O(n)，取哈希 O(1)，查两个后缀的 LCP 为 O(log n)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-0-based 闭区间双模哈希，可跨对象比较。先比长度，再比哈希，相同哈希仍可能碰撞。
-建表 O(n)，取哈希 O(1)，查两个后缀的 LCP 为 O(log n)。
-*/
 
 struct Hash {
     static const ll mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
@@ -52,5 +52,5 @@ const ll Hash::mod1, Hash::mod2, Hash::base;
 
 /*
 Hash h; h.build("ababa");
-bool same = h.query(0, 2) == h.query(2, 4); int len = h.lcp(0, 2); // true、3
+bool same = h.query(0, 2) == h.query(2, 4); int len = h.lcp(0, 2);
 */

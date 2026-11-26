@@ -1,10 +1,10 @@
+// 求树上第 k 级祖先，建树 O(n log n)，查询 O(1)。k >= 0，越过根返回 0，根深度为 1。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求树上第 k 级祖先，建树 O(n log n)，查询 O(1)。k >= 0，越过根返回 0，根深度为 1。
 
 struct KthAncestor {
     int n = 0, lg = 1;

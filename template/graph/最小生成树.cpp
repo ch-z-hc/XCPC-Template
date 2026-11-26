@@ -1,3 +1,5 @@
+// ok 表示图是否连通，sum、ids 分别为选中边的总权和编号。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -46,5 +48,5 @@ MST kruskal(int n, V < Edge > edges) {
 
 /*
 V < Edge > edges; edges.push_back({u, v, id, w});
-auto mst = kruskal(n, edges); // sum 为总权，ids 为选中边号，ok 表示连通
+auto mst = kruskal(n, edges);
 */

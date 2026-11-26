@@ -1,13 +1,13 @@
+/*
+求模式串前缀函数及其在文本中的全部匹配位置，O(|s| + |t|)。匹配可重叠，下标从 0 数。
+空模式匹配 0..|s| 的全部位置。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-求模式串前缀函数及其在文本中的全部匹配位置，O(|s| + |t|)。匹配可重叠，下标从 0 数。
-空模式匹配 0..|s| 的全部位置。
-*/
 
 V < int > get_pi(const string &t) {
     V < int > pi(t.size());
@@ -39,4 +39,4 @@ V < int > kmp(const string &s, const string &t) {
     return ans;
 }
 
-// auto pi = get_pi("aba"); auto pos = kmp("ababa", "aba"); // {0, 0, 1}、{0, 2}
+// auto pi = get_pi("aba"); auto pos = kmp("ababa", "aba");

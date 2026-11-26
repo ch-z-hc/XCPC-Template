@@ -1,3 +1,10 @@
+/*
+每个顶点恰有一条出边，分解环和入环树，支持跳 k 步及有向距离查询。
+1-based，k 可取任意 ull。预处理 O(64n)，每点存 64 级后继，两种查询 O(64)。
+dis 不可达时返回 -1。entry、dep 分别为入环点、到环步数。
+cycles 按出边顺序存环，pos 为环内位置，非环点为 -1。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -6,11 +13,6 @@ typedef long long ll;
 typedef unsigned long long ull;
 
 using namespace std;
-
-/*
-每个顶点恰有一条出边，分解环和入环树，支持跳 k 步及有向距离查询。
-1-based，k 可取任意 ull。预处理 O(64n)，每点存 64 级后继，两种查询 O(64)。
-*/
 
 struct FuncGraph {
     int n = 0;
@@ -79,7 +81,7 @@ struct FuncGraph {
 
 /*
 FuncGraph g; g.build({0, 2, 3, 2});
-int v = g.jump(1, 100); ll d = g.dis(1, 3); // 不可达时 d 为 -1
-int entry = g.entry[1], steps = g.dep[1]; // 入环点、到环步数
-auto cycle = g.cycles[g.bel[1]]; // 沿出边列环，pos[u] 为环内位置，非环点为 -1
+int v = g.jump(1, 100); ll d = g.dis(1, 3);
+int entry = g.entry[1], steps = g.dep[1];
+auto cycle = g.cycles[g.bel[1]];
 */

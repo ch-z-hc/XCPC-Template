@@ -1,16 +1,17 @@
+/*
+求三维凸包的外向三角面、表面积和体积。随机增量期望 O(n log n)，冲突表最坏占 O(n²) 空间。
+共线等退化边界可能触发 O(n² log n) 回退。面积、体积各遍历一次面表；共面及更低维时均为 0。
+浮点模式用距离容差，要求坐标有限且非零距离可分辨。整数模式要求 |坐标| <= 1e18，
+三轴跨度之积 <= 1e35，long double 有效位至少 64 位，禁用 -ffast-math。
+build 默认距离容差为 1e-9，第三个参数启用整数精确判向，第四个参数为随机种子。面顶点是原点集下标。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 #define db long double
 
 using namespace std;
-
-/*
-求三维凸包的外向三角面、表面积和体积。随机增量期望 O(n log n)，冲突表最坏占 O(n²) 空间。
-退化边界可能触发 O(n² log n) 回退。面积、体积各遍历一次面表；共面及更低维时均为 0。
-浮点模式用距离容差，要求坐标有限且非零距离可分辨。整数模式要求 |坐标| <= 1e18，
-三轴跨度之积 <= 1e35，long double 有效位至少 64 位，禁用 -ffast-math。
-*/
 
 struct P3 {
     db x = 0, y = 0, z = 0;
@@ -102,7 +103,6 @@ struct Hull3D {
         return normal({a, b, c}).abs() <= eps * (p[b] - p[a]).abs();
     }
 
-    // 共线边界可能产生零面积面；保留正确的朴素增量回退。
     void slow(V < int > &id) {
         fallback = 1; faces.clear();
         auto add = [&](int a, int b, int c, int d) {
@@ -253,11 +253,11 @@ struct Hull3D {
 
 /*
 V < P3 > ps{{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-Hull3D hull; hull.build(ps);             // 浮点坐标，默认距离容差 1e-9
-hull.build(ps, 0, true, 42);            // 整数坐标精确判向，最后一项为随机种子
+Hull3D hull; hull.build(ps);
+hull.build(ps, 0, true, 42);
 db surface = hull.area(), volume = hull.volume();
 if (hull.dim == 3) {
-    auto f = hull.faces[0]; P3 normal = hull.normal(f); // f.a、f.b、f.c 为原点集下标
+    auto f = hull.faces[0]; P3 normal = hull.normal(f);
     P3 edge = ps[f.b] - ps[f.a]; db len = edge.abs();
     P3 cross_product = edge.det(normal); db dot_product = edge.dot(normal);
     P3 mid = (ps[f.a] + ps[f.b]) / 2; db z = (mid * 2).at(2);

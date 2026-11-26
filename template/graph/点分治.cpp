@@ -1,3 +1,5 @@
+// 统计树上距离 <= k 的无序异点对，单次 O(n log² n)。边权非负，距离和答案须放入 ll。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 统计树上距离 <= k 的无序异点对，单次 O(n log² n)。边权非负，距离和答案须放入 ll。
 
 struct Centroid {
     int n = 0;

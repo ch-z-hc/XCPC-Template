@@ -1,3 +1,9 @@
+/*
+查询两个版本的多重集之差中与 x 的最大异或值。左版本必须是右版本的子集（含重数）。
+每次操作 O(64)，每次插入新建 65 个节点。
+根 0 为空版本，init 清空所有版本。版本差为空时 max_xor 返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef unsigned long long ull;
 
 using namespace std;
-
-/*
-查询两个版本的多重集之差中与 x 的最大异或值。左版本必须是右版本的子集（含重数）。
-每次操作 O(64)，每次插入新建 65 个节点。
-*/
 
 struct PXorTrie {
     struct Node {
@@ -49,6 +50,6 @@ struct PXorTrie {
 
 /*
 PXorTrie trie; int a = trie.insert(0, 5), b = trie.insert(a, 9);
-ull ans; if (trie.max_xor(a, b, 2, ans)) cout << ans; // 9 ^ 2，空差集时失败
-trie.init(); // 清空所有版本，根 0 为空集
+ull ans; if (trie.max_xor(a, b, 2, ans)) cout << ans;
+trie.init();
 */

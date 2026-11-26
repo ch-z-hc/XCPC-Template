@@ -1,3 +1,8 @@
+/*
+含负边的有向图全源最短路，遇负环失败，不可达记 inf。要求 n * max|w| < inf / 4。
+时间 O(nm + n(n + m) log(n + m))。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-含负边的有向图全源最短路，遇负环失败，不可达记 inf。要求 n * max|w| < inf / 4。
-时间 O(nm + n(n + m) log(n + m))。
-*/
 
 struct Johnson {
     static const ll inf = 1ll << 62;

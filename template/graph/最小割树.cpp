@@ -1,3 +1,8 @@
+/*
+先复制「最大流」的 Dinic。无向图容量非负，总容量须放入 ll，允许重边、自环。
+建树做 n - 1 次最大流，另需 O(n² + n log n)。两点最小割查询 O(log n)，同点取 0。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-先复制「最大流」的 Dinic。无向图容量非负，总容量须放入 ll，允许重边、自环。
-建树做 n - 1 次最大流，另需 O(n² + n log n)。两点最小割查询 O(log n)，同点取 0。
-*/
 
 struct GomoryHu {
     struct Edge {
@@ -52,7 +52,6 @@ struct GomoryHu {
                 flow.add_edge(u, v, c); flow.add_edge(v, u, c);
             }
             ll value = flow.flow(s, p);
-            // 最后一次失败的 BFS 标出残量网络中源点可达的一侧。
             for (int u = s + 1; u <= n; ++ u)
                 if (fa[u] == p && flow.dep[u] != -1) fa[u] = s;
             if (p != 1 && flow.dep[fa[p]] != -1) {

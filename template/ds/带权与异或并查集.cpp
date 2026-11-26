@@ -1,3 +1,9 @@
+/*
+维护点对的差值或异或约束，操作均摊 O(α(n))。差值累加须放入 ll。
+merge(u, v, w) 约束 value[v] - value[u] 或 value[u] ^ value[v] 等于 w。
+约束矛盾时 merge 返回 false，两点不连通时 query 返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -6,8 +12,6 @@ typedef long long ll;
 typedef unsigned long long ull;
 
 using namespace std;
-
-// 维护点对的差值或异或约束，操作均摊 O(α(n))。差值累加须放入 ll。
 
 struct WDSU {
     V < int > fa, siz;
@@ -85,10 +89,10 @@ struct XDSU {
 };
 
 /*
-WDSU d; d.init(3); bool ok = d.merge(1, 2, 7); // value[2] - value[1] = 7，矛盾时失败
-ll w; if (d.query(1, 2, w)) cout << w;        // 不连通时失败
+WDSU d; d.init(3); bool ok = d.merge(1, 2, 7);
+ll w; if (d.query(1, 2, w)) cout << w;
 int root = d.find(1);
-XDSU x; x.init(3); x.merge(1, 2, 5);         // value[1] ^ value[2] = 5
+XDSU x; x.init(3); x.merge(1, 2, 5);
 ull v; if (x.query(1, 2, v)) cout << v;
 int xr = x.find(1);
 */

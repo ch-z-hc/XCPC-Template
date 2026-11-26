@@ -1,3 +1,5 @@
+// 统计每个点以外三个坐标均不大于它的点数，重合点互相计数。结果按输入顺序，O(n log² n)。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 统计每个点以外三个坐标均不大于它的点数，重合点互相计数。结果按输入顺序，O(n log² n)。
 
 V < ll > dominance(const V < array < ll, 3 > > &a) {
     struct Node {

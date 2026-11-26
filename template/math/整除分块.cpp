@@ -1,3 +1,8 @@
+/*
+枚举 n / i 相同的极大闭区间，1 <= i <= n。非负 ll 输入，n = 0 时为空。
+时间 O(sqrt(n))，返回数组会保存全部区间。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-枚举 n / i 相同的极大闭区间，1 <= i <= n。非负 ll 输入，n = 0 时为空。
-时间 O(sqrt(n))，返回数组会保存全部区间。
-*/
 
 V < pair < ll, ll > > div_blocks(ll n) {
     V < pair < ll, ll > > ans;
@@ -22,4 +22,4 @@ V < pair < ll, ll > > div_blocks(ll n) {
     return ans;
 }
 
-// auto blocks = div_blocks(5); // [1, 1]、[2, 2]、[3, 5]
+// auto blocks = div_blocks(5);

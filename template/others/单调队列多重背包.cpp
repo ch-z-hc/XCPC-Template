@@ -1,3 +1,8 @@
+/*
+原地加入一种限量物品，w > 0，价值可负，每种 O(容量)。
+恰好装满时除 dp[0] 外初始化为 neg；只限制总体积时全填 0。中间量须放入 ll。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-原地加入一种限量物品，w > 0，价值可负，每种 O(容量)。
-恰好装满时除 dp[0] 外初始化为 neg；只限制总体积时全填 0。中间量须放入 ll。
-*/
 
 void bounded_knapsack(V < ll > &dp, int w, ll v, int cnt,
                       ll neg = -(1ll << 62)) {

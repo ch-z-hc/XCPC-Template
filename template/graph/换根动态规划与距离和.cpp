@@ -1,3 +1,5 @@
+// 求树上每个点到所有点的距离和，O(n)。输入为 1-based 连通树，可有负边权，距离及乘积须放入 ll。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 求树上每个点到所有点的距离和，O(n)。输入为 1-based 连通树，可有负边权，距离及乘积须放入 ll。
 
 typedef V < V < pair < int, ll > > > Graph;
 

@@ -1,3 +1,8 @@
+/*
+先复制「点与向量」「直线与线段」「圆」。求多圆并的面积和周长，含洞的边界，O(n² log n)。
+坐标有限、半径非负，重合圆只计一次；极近退化时受浮点精度限制。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,17 +10,11 @@
 
 using namespace std;
 
-/*
-先复制「点与向量」「直线与线段」「圆」。求多圆并的面积和周长，含洞的边界，O(n² log n)。
-坐标有限、半径非负，重合圆只计一次；极近退化时受浮点精度限制。
-*/
-
 pair < db, db > circle_union(const V < Circle > &cs) {
     const db pi = acosl(-1), tau = 2 * pi;
     int n = cs.size();
     db area = 0, perimeter = 0;
     if (! n) return {0, 0};
-    // 平移积分原点，减少远离原点时的大数相消。
     P origin = cs[0].o;
     for (int i = 0; i < n; ++ i) {
         Circle a = cs[i];

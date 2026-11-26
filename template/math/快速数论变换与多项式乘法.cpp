@@ -1,3 +1,8 @@
+/*
+固定模 998244353，低次系数在前且已取模。变换长度须为 2 的幂且 <= 2^23，卷积自动补长。
+变换和卷积均为 O(n log n)，n 为补长后的长度。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-固定模 998244353，低次系数在前且已取模。变换长度须为 2 的幂且 <= 2^23，卷积自动补长。
-变换和卷积均为 O(n log n)，n 为补长后的长度。
-*/
 
 const ll NTT_MOD = 998244353;
 const ll NTT_ROOT = 3;
@@ -61,6 +61,6 @@ V < ll > multiply(V < ll > a, V < ll > b) {
 }
 
 /*
-V < ll > a{1, 2, 0, 0}; ntt(a); ntt(a, true); // 正变换、逆变换
+V < ll > a{1, 2, 0, 0}; ntt(a); ntt(a, true);
 auto c = multiply({1, 2}, {3, 4}); ll inv2 = ntt_pow(2, NTT_MOD - 2);
 */

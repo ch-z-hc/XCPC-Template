@@ -1,3 +1,9 @@
+/*
+Treap 维护可重集，SeqTreap 维护可翻转序列。排名、位置从 1 数，序列区间闭合，和须放入 ll。
+操作期望 O(log n)，最坏 O(n)。删除不回收节点，空间随累计插入次数增长。
+Treap 的 erase 每次只删一份，rank(x) 等于严格小于 x 的元素个数加 1，pre、suf 查严格前驱和后继。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-Treap 维护可重集，SeqTreap 维护可翻转序列。排名、位置从 1 数，序列区间闭合，和须放入 ll。
-操作期望 O(log n)，最坏 O(n)。删除不回收节点，空间随累计插入次数增长。
-*/
 
 struct Treap {
     struct Node {
@@ -201,11 +202,11 @@ struct SeqTreap {
 };
 
 /*
-Treap t; t.insert(3); t.insert(5); bool erased = t.erase(3); // 只删一份
-int n = t.size(), r = t.rank(5); // 比 5 小的元素个数 + 1
+Treap t; t.insert(3); t.insert(5); bool erased = t.erase(3);
+int n = t.size(), r = t.rank(5);
 ll x; if (t.kth(1, x)) cout << x;
-if (t.pre(6, x)) cout << x; // 严格前驱
-if (t.suf(4, x)) cout << x; // 严格后继
+if (t.pre(6, x)) cout << x;
+if (t.suf(4, x)) cout << x;
 t.init();
 SeqTreap s; s.insert(1, 2); s.insert(s.size() + 1, 5);
 s.reverse(1, 2); ll sum = s.query(1, 2), val = s.at(1);

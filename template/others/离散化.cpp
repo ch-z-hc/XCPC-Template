@@ -1,10 +1,11 @@
+// 将 a 数组离散化，key 是去重后的原值表，编号 k 的原值为 key[k - 1]，排名是 1-based。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
 
-// 将 a 数组离散化，key 是去重后的原值表，编号 k 的原值为 key[k - 1]，排名是 1-based。
 template < class T >
 V < int > discretize(const V < T > &a, V < T > &key) {
     key = a;
@@ -21,5 +22,4 @@ V < int > discretize(const V < T > &a, V < T > &key) {
 /*
 V < int > a{30, 10, 30}, key;
 auto id = discretize(a, key);
-// id = {2, 1, 2}，key = {10, 30}
 */

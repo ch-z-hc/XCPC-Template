@@ -1,3 +1,10 @@
+/*
+求可行循环流或有源汇的可行流、最大流、最小流，O(n²m)。允许重边、自环，净流量可负。
+0 <= lo <= hi，各边 hi 之和 <= LLONG_MAX / 4。有源汇时 s != t。
+solve() 求可行循环流。指定源汇时，mode 取 0、1、-1 分别求可行流、最大流、最小流。
+返回值含可行性和源点净流出量，求解成功后 f[id] 为边流量。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求可行循环流或有源汇的可行流、最大流、最小流，O(n²m)。允许重边、自环，净流量可负。
-0 <= lo <= hi，各边 hi 之和 <= LLONG_MAX / 4。有源汇时 s != t。
-*/
 
 struct LRFlow {
     struct Edge {
@@ -139,9 +141,9 @@ struct LRFlow {
 
 /*
 LRFlow g; g.init(2); int id = g.add_edge(1, 2, 1, 3);
-auto circulation = g.solve();              // 可行循环流
-auto feasible = g.solve(1, 2, 0);          // 可行流
-auto maximum = g.solve(1, 2, 1);           // 最大流
-auto [ok, value] = g.solve(1, 2, -1);      // 最小流，value 为源点净流出量
-if (ok) cout << g.f[id];                   // 最近一次成功求解的边流量
+auto circulation = g.solve();
+auto feasible = g.solve(1, 2, 0);
+auto maximum = g.solve(1, 2, 1);
+auto [ok, value] = g.solve(1, 2, -1);
+if (ok) cout << g.f[id];
 */

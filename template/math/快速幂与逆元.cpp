@@ -1,3 +1,8 @@
+/*
+模幂 O(log(b + 1))，b 非负，1 <= mod <= INT_MAX。
+求逆元须用质数模。连续求逆要求 n < mod，O(n)；批量求逆要求每项模 mod 非零，O(n + log mod)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-模幂 O(log(b + 1))，b 非负，1 <= mod <= INT_MAX。
-求逆元须用质数模。连续求逆要求 n < mod，O(n)；批量求逆要求每项模 mod 非零，O(n + log mod)。
-*/
 
 ll pow_mod(ll a, unsigned long long b, ll mod) {
     a %= mod;
@@ -48,6 +48,6 @@ V < ll > batch_inverse(const V < ll > &a, ll mod) {
 
 /*
 ll x = pow_mod(-2, 3, 7);
-auto inv = linear_inverse(4, 7);       // inv[i] 为 i 的逆元，1 <= i <= 4
-auto vals = batch_inverse({2, -3}, 7); // 按输入顺序
+auto inv = linear_inverse(4, 7);
+auto vals = batch_inverse({2, -3}, 7);
 */

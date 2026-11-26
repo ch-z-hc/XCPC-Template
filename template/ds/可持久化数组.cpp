@@ -1,3 +1,8 @@
+/*
+支持在任意旧版本上单点赋值和查询，数组从 1 编号。初始化会清空版本，空数组不可读写。
+建树 O(n)，修改、查询 O(log n)，每次修改新增 O(log n) 个节点。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-支持在任意旧版本上单点赋值和查询，数组从 1 编号。初始化会清空版本，空数组不可读写。
-建树 O(n)，修改、查询 O(log n)，每次修改新增 O(log n) 个节点。
-*/
 
 struct PArray {
     struct Node {
@@ -69,5 +69,5 @@ struct PArray {
 /*
 PArray st; st.init({0, 3, 1, 4});
 int p = st.modify(st.root, 2, 9);
-ll old = st.query(st.root, 2), now = st.query(p, 2); // 1 和 9
+ll old = st.query(st.root, 2), now = st.query(p, 2);
 */

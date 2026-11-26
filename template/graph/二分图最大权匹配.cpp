@@ -1,3 +1,9 @@
+/*
+求覆盖全部左点的最大权匹配，左侧 n <= 右侧 m，O(n²m)。只加允许的边，重边取最大权。
+允许负权，边权不能取 LLONG_MIN；距离、势能及相关运算绝对值须小于 LLONG_MAX / 4，总权须放入 ll。
+solve 成功时返回总权，ml、mr 记录搭档，未匹配为 0。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求覆盖全部左点的最大权匹配，左侧 n <= 右侧 m，O(n²m)。只加允许的边，重边取最大权。
-允许负权，边权不能取 LLONG_MIN；距离、势能及相关运算绝对值须小于 LLONG_MAX / 4，总权须放入 ll。
-*/
 
 struct KM {
     int n, m;
@@ -78,5 +79,5 @@ struct KM {
 /*
 KM km; km.init(n, m);
 km.add_edge(u, v, w);
-auto [ok, ans] = km.solve(); // 成功时 ans 为总权，ml、mr 为搭档，未匹配为 0
+auto [ok, ans] = km.solve();
 */

@@ -1,3 +1,8 @@
+/*
+按位 OR、AND、XOR 的原地变换，O(n log n)。长度 n 为 2 的幂，系数已取模，1 < mod <= 2^31。
+XOR 逆变换要求奇质数模。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-按位 OR、AND、XOR 的原地变换，O(n log n)。长度 n 为 2 的幂，系数已取模，1 < mod <= 2^31。
-XOR 逆变换要求奇质数模。
-*/
 
 static void fwt_check(const V < ll > &a) {
     assert(! a.empty() && ! (a.size() & (a.size() - 1)));

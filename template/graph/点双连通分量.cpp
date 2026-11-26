@@ -1,10 +1,13 @@
+/*
+无向图点双分解，O(n + m)。允许重边，不能有自环，孤立点自成一块。边按加入顺序从 0 编号。
+bcc[i].v 存顶点，bcc[i].e 存边号，割点可属于多个分量。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 无向图点双分解，O(n + m)。允许重边，不能有自环，孤立点自成一块。边按加入顺序从 0 编号。
 
 struct VBCC {
     struct Block {
@@ -95,5 +98,5 @@ struct VBCC {
 /*
 VBCC vbcc; vbcc.init(n);
 vbcc.add_edge(u, v);
-vbcc.build(); // bcc[i].v 是顶点，bcc[i].e 是边号，割点可属于多个分量
+vbcc.build();
 */

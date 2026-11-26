@@ -1,3 +1,8 @@
+/*
+先复制「组合数」。采样点为 0..n-1，次数 < n，值先取模，mod 为质数且 n < mod <= 2^31。
+建表 O(n + log mod)，每次求值 O(n)，允许负坐标，空表视为零多项式。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-先复制「组合数」。采样点为 0..n-1，次数 < n，值先取模，mod 为质数且 n < mod <= 2^31。
-建表 O(n + log mod)，每次求值 O(n)，允许负坐标，空表视为零多项式。
-*/
 
 struct LagrangeEq {
     Comb comb;
@@ -43,5 +43,5 @@ struct LagrangeEq {
 
 /*
 LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
-ll ans = poly.query(10); // 100。
+ll ans = poly.query(10);
 */

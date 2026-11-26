@@ -1,10 +1,10 @@
+// 求 a[1..n] 的最长严格递增或非递减子序列，O(n log n)。返回一组原数组下标。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求 a[1..n] 的最长严格递增或非递减子序列，O(n log n)。返回一组原数组下标。
 
 template < class T >
 V < int > lis(const V < T > &a, bool strict = true) {

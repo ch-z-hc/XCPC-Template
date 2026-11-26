@@ -1,13 +1,13 @@
+/*
+求 i 从 0 到 n - 1 的 floor((a*i + b) / m) 之和，O(log m)。n >= 0，m > 0，a、b 可负。
+a*n+b、负数归一化的部分和及答案均须放入 ll。
+*/
+
 #include <bits/stdc++.h>
 
 typedef long long ll;
 
 using namespace std;
-
-/*
-求 i 从 0 到 n - 1 的 floor((a*i + b) / m) 之和，O(log m)。n >= 0，m > 0，a、b 可负。
-a*n+b、负数归一化的部分和及答案均须放入 ll。
-*/
 
 ll floor_sum(ll n, ll m, ll a, ll b) {
     ll ans = 0;
@@ -40,4 +40,4 @@ ll floor_sum(ll n, ll m, ll a, ll b) {
     return ans;
 }
 
-// ll ans = floor_sum(4, 10, -6, 3); // -4
+// ll ans = floor_sum(4, 10, -6, 3);

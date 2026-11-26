@@ -1,13 +1,13 @@
+/*
+按时间顺序加边、删边和询问连通性。允许重边、自环，每次删除一条已存在的边。
+q 次操作共 O(q log q log n)，时间线上的区间副本使空间达到 O(n + q log q)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-按时间顺序加边、删边和询问连通性。允许重边、自环，每次删除一条已存在的边。
-q 次操作共 O(q log q log n)，时间线上的区间副本使空间达到 O(n + q log q)。
-*/
 
 struct DynConn {
     struct Op { int type, u, v; };

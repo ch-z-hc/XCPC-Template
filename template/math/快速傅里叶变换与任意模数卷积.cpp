@@ -1,3 +1,9 @@
+/*
+整数卷积可用浮点 FFT，精确模卷积用三模 NTT。低次系数在前，变换长度 n 为 2 的幂，时间 O(n log n)。
+浮点版建议 n <= 2^20 且 min(|a|, |b|) * max|a[i]| * max|b[i]| <= 10^12，精度依赖平台。
+精确版支持负系数和任意正 int 模数，要求补长后 n <= 2^21。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -8,12 +14,6 @@ typedef long double ld;
 using namespace std;
 
 typedef complex < ld > Complex;
-
-/*
-整数卷积可用浮点 FFT，精确模卷积用三模 NTT。低次系数在前，变换长度 n 为 2 的幂，时间 O(n log n)。
-浮点版建议 n <= 2^20 且 min(|a|, |b|) * max|a[i]| * max|b[i]| <= 10^12，精度依赖平台。
-精确版支持负系数和任意正 int 模数，要求补长后 n <= 2^21。
-*/
 
 void fft(V < Complex > &a, bool inv = false) {
     int n = int(a.size());
@@ -125,7 +125,7 @@ V < int > conv_mod(const V < ll > &a, const V < ll > &b, int mod) {
 }
 
 /*
-V < Complex > v{1, 2, 3, 0}; fft(v); fft(v, true); // 原地正、逆变换
+V < Complex > v{1, 2, 3, 0}; fft(v); fft(v, true);
 V < ll > a{1, -2, 3}, b{4, 5};
 auto c = fft_mul(a, b); auto d = conv_mod(a, b, 1000000007);
 */

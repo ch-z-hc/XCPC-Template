@@ -1,14 +1,14 @@
-#include <bits/stdc++.h>
-
-#define V vector
-
-using namespace std;
-
 /*
 先复制「多项式基本运算」。固定模 998244353，低次系数在前，点和系数先取模。
 求值可用重复点，插值的横坐标须模意义下互异。点数 n、系数数 m 均 <= 2^20。
 时间 O((n + m) log²(n + m))，乘积树空间 O(n log n + m)。
 */
+
+#include <bits/stdc++.h>
+
+#define V vector
+
+using namespace std;
 
 struct Multipoint {
     static const int mod = 998244353;

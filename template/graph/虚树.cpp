@@ -1,13 +1,14 @@
+/*
+给定原树和一组关键点，构造含必要 LCA 的虚树。建原树 O(n log n)，k 个关键点建虚树 O(k log k + k log n)。
+关键点可重复，空集返回根 0。再次查询会清除上一棵虚树，长链注意递归栈。
+nodes 存本次点集，t[u] 的每项为 {儿子, 原树距离}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-给定原树和一组关键点，构造含必要 LCA 的虚树。建原树 O(n log n)，k 个关键点建虚树 O(k log k + k log n)。
-关键点可重复，空集返回根 0。再次查询会清除上一棵虚树，长链注意递归栈。
-*/
 
 struct VTree {
     int n = 0, lg = 1, tim = 0;
@@ -80,5 +81,5 @@ struct VTree {
 /*
 VTree tree; tree.init(3); tree.add_edge(1, 2); tree.add_edge(1, 3); tree.build(1);
 bool above = tree.ancestor(1, 2); int p = tree.lca(2, 3);
-int rt = tree.query({2, 3}); // nodes 为本次点集，t[u] 存 {儿子, 原树距离}
+int rt = tree.query({2, 3});
 */

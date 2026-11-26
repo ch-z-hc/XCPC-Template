@@ -1,13 +1,13 @@
+/*
+有根无序树哈希，儿子顺序不影响结果，相同哈希可能碰撞。点从 1 编号。
+时间 O(n + Σ deg(u) log(deg(u) + 1))。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-有根无序树哈希，儿子顺序不影响结果，相同哈希可能碰撞。点从 1 编号。
-时间 O(n + Σ deg(u) log(deg(u) + 1))。
-*/
 
 static uint64_t hash_mix(uint64_t x) {
     x += 0x9e3779b97f4a7c15ULL;

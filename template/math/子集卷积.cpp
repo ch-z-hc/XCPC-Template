@@ -1,3 +1,8 @@
+/*
+求 c[S] = Σ a[T] * b[S ^ T]，T 枚举 S 的子集。数组等长，长度为 2^n，0 <= n <= 20。
+模数可取任意正 int，系数可负。时间 O(n² 2^n)，空间 O(n 2^n)，n = 20 时主要数组约占 180 MiB。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求 c[S] = Σ a[T] * b[S ^ T]，T 枚举 S 的子集。数组等长，长度为 2^n，0 <= n <= 20。
-模数可取任意正 int，系数可负。时间 O(n² 2^n)，空间 O(n 2^n)，n = 20 时主要数组约占 180 MiB。
-*/
 
 V < int > subset_conv(const V < int > &a, const V < int > &b, int mod) {
     int size = int(a.size()), n = __builtin_ctz(unsigned(size));

@@ -1,14 +1,14 @@
+/*
+先复制「点与向量」。严格逆时针凸包的最小面积包围矩形，O(n)；顶点无重复。
+空集返回空角点，点和线段返回退化矩形。点积、叉积须在 db 的精度范围内。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 #define db long double
 
 using namespace std;
-
-/*
-先复制「点与向量」。严格逆时针凸包的最小面积包围矩形，O(n)；顶点无重复。
-空集返回空角点，点和线段返回退化矩形。点积、叉积须在 db 的精度范围内。
-*/
 
 struct MinRect {
     db area = 0;

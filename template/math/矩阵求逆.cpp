@@ -1,3 +1,5 @@
+// 质数模方阵求逆，O(n³ + n log mod)。元素可负，模数在 [2, INT_MAX] 内。奇异矩阵返回 false。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 质数模方阵求逆，O(n³ + n log mod)。元素可负，模数在 [2, INT_MAX] 内。奇异矩阵返回 false。
 
 bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
     int n = int(a.size());

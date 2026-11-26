@@ -1,3 +1,8 @@
+/*
+求从 root 向外覆盖全图的最小树形图权值，O(n(n + m))。允许负权、重边、自环。
+边权差和总权须放入 ll，根无法到达所有点时失败。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求从 root 向外覆盖全图的最小树形图权值，O(n(n + m))。允许负权、重边、自环。
-边权差和总权须放入 ll，根无法到达所有点时失败。
-*/
 
 struct DMST {
     struct Edge {

@@ -1,3 +1,9 @@
+/*
+小写字母回文自动机，支持末尾追加、回文串去重和出现次数统计。建树、统计 O(n)，查询种数 O(1)。
+节点 0、1 是虚根。
+insert 返回加入字符后最长回文后缀的节点，count 按节点返回出现次数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-小写字母回文自动机，支持末尾追加、回文串去重和出现次数统计。建树、统计 O(n)，查询种数 O(1)。
-节点 0、1 是虚根。
-*/
 
 struct PAM {
     struct Node {
@@ -70,7 +71,7 @@ struct PAM {
 };
 
 /*
-PAM pam; pam.build("ab"); int u = pam.insert('a'); // 最长回文后缀 aba 的节点
-auto cnt = pam.count(); int kinds = pam.distinct(); // cnt[u] = 1，共 3 种非空回文串
+PAM pam; pam.build("ab"); int u = pam.insert('a');
+auto cnt = pam.count(); int kinds = pam.distinct();
 pam.init();
 */

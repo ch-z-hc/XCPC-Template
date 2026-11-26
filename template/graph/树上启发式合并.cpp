@@ -1,26 +1,20 @@
+/*
+离线统计各点子树。按题意填写 add、del、query，增删互逆，查询时恰好保留整棵子树。
+建树前清空统计量，结束时状态恢复为空。共 O(n log n) 次增删、n 次查询，长链注意递归栈。
+文件尾第一段替换结构体中的 3 个成员声明，示例统计子树颜色数。颜色先离散到 1..m，按顶点读 ans。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
 
-/*
-离线统计各点子树。按题意填写 add、del、query，增删互逆，查询时恰好保留整棵子树。
-建树前清空统计量，结束时状态恢复为空。共 O(n log n) 次增删、n 次查询，长链注意递归栈。
-*/
-
 struct DSUOnTree {
     int n = 0;
     V < V < int > > g;
     V < int > siz, son, in, out, ord;
 
-    /*
-    // 子树中的颜色数
-    V < int > color, cnt, ans; int kinds = 0;
-    void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
-    void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
-    void query(int u) { ans[u] = kinds; }
-    */
     void add(int u);
     void del(int u);
     void query(int u);
@@ -83,9 +77,15 @@ struct DSUOnTree {
 };
 
 /*
+V < int > color, cnt, ans; int kinds = 0;
+void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
+void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
+void query(int u) { ans[u] = kinds; }
+*/
+
+/*
 DSUOnTree dsu; dsu.init(n);
 for (auto [u, v] : edges) dsu.add_edge(u, v);
-// color[u] 已离散到 1..m。
 dsu.color = color; dsu.cnt.assign(m + 1, 0); dsu.kinds = 0;
-dsu.ans.resize(n + 1); dsu.build(1); // 顶点 u 的答案为 dsu.ans[u]。
+dsu.ans.resize(n + 1); dsu.build(1);
 */

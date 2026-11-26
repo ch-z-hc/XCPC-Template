@@ -1,29 +1,26 @@
-# 编译并运行 a.cpp（C++17）。
+# a 为 C++17 优化版，a_dbg 启用容器检查、ASan 和 UBSan。
+# > 会覆盖输出文件。ulimit -s 以 KiB 为单位，256 MiB 不能超过系统栈硬限制。
+# time 输出秒数与峰值内存（KiB）。timeout 在 2 秒后请求终止，再过 1 秒强制结束。
+# diff -wB 忽略空白字符和空行，一致时没有输出。
+
 g++ -std=c++17 -O2 -Wall -Wextra a.cpp -o a
 ./a
 
-# 从文件读入，> 会覆盖输出文件。
 ./a < input.txt
 ./a < input.txt > output.txt
 
-# 只查语法和警告。
 g++ -std=c++17 -Wall -Wextra -fsyntax-only a.cpp
 
-# 调试编译：检查容器越界、非法内存访问和未定义行为。
 g++ -std=c++17 -O0 -g -Wall -Wextra a.cpp -o a_dbg \
     -D_GLIBCXX_DEBUG -fsanitize=address,undefined \
     -fno-omit-frame-pointer -fno-sanitize-recover=all
 ./a_dbg < input.txt
 
-# 深递归可把当前终端的栈调到 256 MiB，不能超过系统硬限制。
 ulimit -s 262144
 ulimit -s
 
-# 用优化版测耗时和峰值内存。
 /usr/bin/time -f '%e s, %M KiB' ./a < input.txt > output.txt
 
-# 限时运行：2 秒后发送终止信号，再过 1 秒强制结束。
 timeout -k 1s 2s ./a < input.txt > output.txt
 
-# 比较答案，忽略空白字符和空行；一致时无输出。
 diff -wB output.txt answer.txt

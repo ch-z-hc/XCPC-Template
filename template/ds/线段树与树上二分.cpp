@@ -1,3 +1,10 @@
+/*
+区间加、区间和、区间内按值搜索，a[1..n]，和须放入 ll。按前缀和找第 k 项须保证各项非负。
+建树 O(n)，单次修改和查询 O(log n)。
+first_ge、last_ge 找区间首个、末个 >= x 的位置，kth 找前缀和首次达到 k 的位置。
+三种搜索无解均返回 -1，kth 还要求 k > 0。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-区间加、区间和、区间内按值搜索，a[1..n]，和须放入 ll。按前缀和找第 k 项须保证各项非负。
-建树 O(n)，单次修改和查询 O(log n)。
-*/
 
 struct SegTree {
     int n = 0;
@@ -134,7 +136,7 @@ struct SegTree {
 
 /*
 SegTree st; st.init({0, 2, 1, 5}); st.modify(1, 2, 1);
-ll sum = st.query(1, 3); // 10
-int l = st.first_ge(1, 3, 3), r = st.last_ge(1, 3, 3); // 首、末个 >= 3 的位置
-int p = st.kth(4); // 前缀和首次达到 4 的位置。三种搜索失败均为 -1
+ll sum = st.query(1, 3);
+int l = st.first_ge(1, 3, 3), r = st.last_ge(1, 3, 3);
+int p = st.kth(4);
 */

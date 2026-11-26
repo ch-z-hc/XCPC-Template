@@ -1,10 +1,13 @@
+/*
+无向图欧拉路，O(n + m)。顶点从 1 编号，n >= 1，每条边只给一次。最深递归 O(m)。
+返回顶点序列，无解时为空，无边时为 {1}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 无向图欧拉路，O(n + m)。顶点从 1 编号，n >= 1，每条边只给一次。最深递归 O(m)。
 
 V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     V < V < pair < int, int > > > g(n + 1);
@@ -41,4 +44,4 @@ V < int > euler_u(int n, const V < pair < int, int > > &edges) {
     return ans;
 }
 
-// auto path = euler_u(3, {{1, 2}, {2, 3}}); // 顶点序列，无解为空，无边为 {1}
+// auto path = euler_u(3, {{1, 2}, {2, 3}});

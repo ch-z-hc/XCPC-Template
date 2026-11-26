@@ -1,3 +1,8 @@
+/*
+给定 n 个采样点，计算插值多项式在 at 处的值，O(n² + n log mod)。
+两数组等长，坐标先取模，横坐标在模意义下两两不同；mod 为不超过 2^31 的质数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-给定 n 个采样点，计算插值多项式在 at 处的值，O(n² + n log mod)。
-两数组等长，坐标先取模，横坐标在模意义下两两不同；mod 为不超过 2^31 的质数。
-*/
 
 static ll lagrange_pow(ll a, ll b, ll mod) {
     ll res = 1 % mod;

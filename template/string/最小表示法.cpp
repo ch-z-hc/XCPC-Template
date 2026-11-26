@@ -1,8 +1,8 @@
+// 返回字典序最小循环移位的起点，O(n)。下标从 0 数，并列取最小下标，空串返回 0。
+
 #include <bits/stdc++.h>
 
 using namespace std;
-
-// 返回字典序最小循环移位的起点，O(n)。下标从 0 数，并列取最小下标，空串返回 0。
 
 int min_rotation(const string &s) {
     int n = int(s.size()), i = 0, j = 1, k = 0;

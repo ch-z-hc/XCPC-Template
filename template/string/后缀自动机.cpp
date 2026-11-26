@@ -1,3 +1,8 @@
+/*
+小写字母后缀自动机，支持末尾追加、子串出现次数统计。建树、统计、求最大「长度 × 次数」均为 O(n)。
+count 按状态返回出现次数。query 只考虑至少出现两次的子串。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 小写字母后缀自动机，支持末尾追加、子串出现次数统计。建树、统计、求最大「长度 × 次数」均为 O(n)。
 
 struct SAM {
     struct Node {
@@ -85,7 +88,7 @@ struct SAM {
 
 /*
 SAM sam; sam.build("aba"); sam.extend('b');
-auto cnt = sam.count(); // cnt[u] 为状态 u 的出现次数
-ll best = sam.query();  // 只考虑至少出现两次的子串
+auto cnt = sam.count();
+ll best = sam.query();
 sam.clear();
 */

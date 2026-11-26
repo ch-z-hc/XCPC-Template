@@ -1,10 +1,13 @@
+/*
+将字节串分解为按字典序不增的 Lyndon 串，O(n)。字符按无符号字节比较，相同因子分别保留。
+第 i 段为 [pos[i], pos[i + 1])，空串返回 {0}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 将字节串分解为按字典序不增的 Lyndon 串，O(n)。字符按无符号字节比较，相同因子分别保留。
 
 V < int > duval(const string &s) {
     int n = int(s.size());
@@ -25,4 +28,4 @@ V < int > duval(const string &s) {
     return pos;
 }
 
-// auto pos = duval("aabab"); // 第 i 段为 [pos[i], pos[i + 1])，空串返回 {0}
+// auto pos = duval("aabab");

@@ -1,13 +1,13 @@
+/*
+在 [l, r] 上找单峰函数的极值位置，极值两侧须严格单调，中途不能有平台。
+迭代 times 轮，耗时 O(times) 次函数求值，返回近似位置。
+*/
+
 #include <bits/stdc++.h>
 
 typedef long double ld;
 
 using namespace std;
-
-/*
-在 [l, r] 上找单峰函数的极值位置，极值两侧须严格单调，中途不能有平台。
-迭代 times 轮，耗时 O(times) 次函数求值，返回近似位置。
-*/
 
 template < class F >
 ld ternary_min(F f, ld l, ld r, int times = 200) {

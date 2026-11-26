@@ -1,10 +1,10 @@
+// 连通树最近公共祖先，预处理 O(n log n)，查询 O(1)。欧拉序位置从 0 数，换根须重建。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 连通树最近公共祖先，预处理 O(n log n)，查询 O(1)。欧拉序位置从 0 数，换根须重建。
 
 struct EulerLCA {
     int n = 0;

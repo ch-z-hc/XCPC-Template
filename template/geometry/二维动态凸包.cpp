@@ -1,14 +1,16 @@
+/*
+先复制「二维凸包最大点积查询」。动态维护整点集，坐标和方向限制同 HullQuery。
+设 Q 为累计插入次数，块长 B > 0。增删均摊 O(B log(B + 1))，点积 O(ceil(Q/B) log(B + 1))。
+取完整凸包和单次包含查询均为 O(Q log(Q + 1))。连续查包含可共用一次快照。
+erase 按插入编号删除，重复删除返回 false。空集的点积查询返回 false。
+contains 返回 0、1、2，分别表示外部、边界、内部。snapshot 返回当前全部点的静态凸包。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-先复制「二维凸包最大点积查询」。动态维护整点集，坐标和方向限制同 HullQuery。
-设 Q 为累计插入次数，块长 B > 0。增删均摊 O(B log(B + 1))，点积 O(ceil(Q/B) log(B + 1))。
-取完整凸包和单次包含查询均为 O(Q log(Q + 1))。连续查包含可共用一次快照。
-*/
 
 struct DynamicHull {
     typedef HullQuery::P P;
@@ -27,7 +29,6 @@ struct DynamicHull {
     void rebuild(int k) {
         V < P > a;
         int l = k * B, r = min((int)p.size(), l + B);
-        // 保留原点，删除外层顶点后内部点可能重新成为极点。
         for (int i = l; i < r; ++ i)
             if (op[i]) a.push_back(p[i]);
         tr[k].build(a);
@@ -66,7 +67,6 @@ struct DynamicHull {
     }
 
     int contains(P q) {
-        // 全局凸包不等于各块凸包的并。
         HullQuery hull = snapshot();
         return hull.contains(q);
     }
@@ -74,8 +74,8 @@ struct DynamicHull {
 
 /*
 DynamicHull hull; hull.init(32); int id = hull.add({2, 3}); hull.add({-1, 4});
-ll ans; if (hull.query(1, 1, ans)) cout << ans; // 5，空集时失败
-int state = hull.contains({2, 3}); // 0 外部、1 边界、2 内部
-auto now = hull.snapshot();        // now.h 为凸包，可继续用 now.contains(p)
-bool ok = hull.erase(id);          // 按插入编号删除，重复删除失败
+ll ans; if (hull.query(1, 1, ans)) cout << ans;
+int state = hull.contains({2, 3});
+auto now = hull.snapshot();
+bool ok = hull.erase(id);
 */

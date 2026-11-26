@@ -1,10 +1,10 @@
+// 边权只能是 0 或 1 的单源最短路，O(n + m)。邻接表按 {终点, 边权} 存储，不可达记 INT_MAX / 2。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 边权只能是 0 或 1 的单源最短路，O(n + m)。邻接表按 {终点, 边权} 存储，不可达记 INT_MAX / 2。
 
 V < int > bfs01(const V < V < pair < int, int > > > &g, int s) {
     V < int > dis(g.size(), INT_MAX / 2), vis(g.size());

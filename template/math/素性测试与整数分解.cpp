@@ -1,3 +1,9 @@
+/*
+支持整个 ull 范围。确定性判素用 O(log n) 次模乘；Pollard–Rho 找因子期望约 O(sqrt(p)) 次模运算，
+p 为最小质因子。一次倍增模乘为 O(log n)。
+factor 对 n < 2 返回空表，其余按非降序返回质因子，保留重数。直接调用 rho 时须传入合数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef unsigned long long ull;
 
 using namespace std;
-
-/*
-支持整个 ull 范围。确定性判素用 O(log n) 次模乘；Pollard–Rho 找因子期望约 O(sqrt(p)) 次模运算，
-p 为最小质因子。一次倍增模乘为 O(log n)。
-*/
 
 ull rho_mul(ull a, ull b, ull mod) {
     a %= mod;
@@ -92,7 +93,7 @@ V < ull > factor(ull n) {
 }
 
 /*
-bool prime = is_prime(97); auto factors = factor(84); // {2, 2, 3, 7}，n < 2 时为空
+bool prime = is_prime(97); auto factors = factor(84);
 ull prod = rho_mul(12, 34, 97), power = rho_pow(7, 5, 97);
-mt19937_64 rng(42); ull divisor = rho(91, rng); // 只对合数直接找非平凡因子
+mt19937_64 rng(42); ull divisor = rho(91, rng);
 */

@@ -1,10 +1,10 @@
+// 若跨分量边 u -> v，则 bel[u] > bel[v]。按编号从大到小就是缩点图的拓扑序。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 若跨分量边 u -> v，则 bel[u] > bel[v]。按编号从大到小就是缩点图的拓扑序。
 
 struct SCC {
     int n = 0, tim = 0, cnt = 0;

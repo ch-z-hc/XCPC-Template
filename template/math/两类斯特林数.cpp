@@ -1,3 +1,8 @@
+/*
+先复制「快速数论变换与多项式乘法」。无符号第一类、第二类整表均为 O(n²)，模数可取 [1, 2^31]。
+只求第二类第 n 行可用 NTT，O(n log n)，固定模 998244353，要求 0 <= n < 2^22。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-先复制「快速数论变换与多项式乘法」。无符号第一类、第二类整表均为 O(n²)，模数可取 [1, 2^31]。
-只求第二类第 n 行可用 NTT，O(n log n)，固定模 998244353，要求 0 <= n < 2^22。
-*/
 
 V < V < ll > > stirling1(int n, ll mod) {
     V < V < ll > > s(n + 1, V < ll > (n + 1));

@@ -1,10 +1,13 @@
+/*
+变量编号 1..n，二元布尔约束可满足性判定 O(n + m)。
+add(u, x, v, y) 表示 a[u] == x 或 a[v] == y。solve 无解时返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 变量编号 1..n，二元布尔约束可满足性判定 O(n + m)。
 
 struct SAT {
     int n = 0, tim = 0, cnt = 0;
@@ -59,7 +62,7 @@ struct SAT {
 
 /*
 SAT sat; sat.init(2);
-sat.add(1, 1, 2, 0); // a[1] == 1 或 a[2] == 0
-sat.force(2, 1);     // 固定 a[2] == 1
-if (sat.solve()) cout << sat.ans[1]; // 无解返回 false
+sat.add(1, 1, 2, 0);
+sat.force(2, 1);
+if (sat.solve()) cout << sat.ans[1];
 */

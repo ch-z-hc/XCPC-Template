@@ -1,3 +1,9 @@
+/*
+单点加、闭矩形求和。建树时给出所有可能修改的点，查询边界任意，和须放入 ll。
+建树 O(n log² n)，修改和查询 O(log² n)。
+prefix 默认统计横、纵坐标均不大于给定值的点。strict_x、strict_y 分别将对应边界改为严格小于。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-单点加、闭矩形求和。建树时给出所有可能修改的点，查询边界任意，和须放入 ll。
-建树 O(n log² n)，修改和查询 O(log² n)。
-*/
 
 struct Fenwick2D {
     V < ll > xs;
@@ -40,7 +41,6 @@ struct Fenwick2D {
         }
     }
 
-    // 前缀矩形：strict_x / strict_y 为真时对应方向使用严格小于。
     ll prefix(ll x, ll y, bool strict_x = false, bool strict_y = false) {
         auto it = strict_x ? lower_bound(xs.begin(), xs.end(), x) :
                             upper_bound(xs.begin(), xs.end(), x);
@@ -62,7 +62,7 @@ struct Fenwick2D {
 
 /*
 Fenwick2D bit; bit.build({{1, 2}, {3, 4}}); bit.add(1, 2, 5);
-ll pre = bit.prefix(3, 4);               // x <= 3 且 y <= 4
-ll strict = bit.prefix(3, 4, true, false); // x < 3 且 y <= 4
+ll pre = bit.prefix(3, 4);
+ll strict = bit.prefix(3, 4, true, false);
 ll sum = bit.query(1, 2, 3, 4);
 */

@@ -1,3 +1,5 @@
+// 非负边权单源最短路，O((n + m) log(n + m))。不可达记 inf，有限距离 < inf，松弛和须放入 ll。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -7,8 +9,6 @@ typedef long long ll;
 using namespace std;
 
 typedef V < V < pair < int, ll > > > Graph;
-
-// 非负边权单源最短路，O((n + m) log(n + m))。不可达记 inf，有限距离 < inf，松弛和须放入 ll。
 
 V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     int n = int(g.size()) - 1;
@@ -30,6 +30,6 @@ V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
 
 /*
 Graph g(n + 1);
-g[u].push_back({v, w}); // 无向边还需添加反向边。
+g[u].push_back({v, w});
 V < ll > dis = dijkstra(g, s);
 */

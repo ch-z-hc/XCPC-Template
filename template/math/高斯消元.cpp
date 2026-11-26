@@ -1,3 +1,10 @@
+/*
+求 n 行、m 个未知量的线性方程组，增广矩阵第 m 列是右侧，均从 0 编号。
+实数用绝对容差 eps > 0，模数版须用质数 p <= 2^31；异或版要求 m < N，只填 bitset 前 m + 1 位。
+r = min(n, m)，实数 O(nmr)，模数版另加 O(r log p)，异或 O(nm + nr ceil(N/w))，w 为机器字长。
+三种接口均返回 0 无解、1 唯一解、2 多解，有解时输出一组解。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -6,12 +13,6 @@ typedef long long ll;
 typedef long double ld;
 
 using namespace std;
-
-/*
-求 n 行、m 个未知量的线性方程组，增广矩阵第 m 列是右侧，均从 0 编号。
-实数用绝对容差 eps > 0，模数版须用质数 p <= 2^31；异或版要求 m < N，只填 bitset 前 m + 1 位。
-r = min(n, m)，实数 O(nmr)，模数版另加 O(r log p)，异或 O(nm + nr ceil(N/w))，w 为机器字长。
-*/
 
 int gauss(V < V < ld > > a, int m, V < ld > &x, ld eps = 1e-12L) {
     int n = int(a.size()), r = 0;
@@ -96,9 +97,8 @@ int gauss_xor(V < bitset < N > > a, int m, V < int > &x) {
 }
 
 /*
-// 三种接口均返回 0 无解、1 唯一解、2 多解；有解时输出一组解。
 V < ld > x; int status = gauss(a, m, x);
 V < ll > y; int mod_status = gauss_mod(b, m, p, y);
-V < bitset < 3 > > c{3, 6}; // x0 ^ x1 = 0，x1 = 1
-V < int > z; int xor_status = gauss_xor(c, 2, z); // 唯一解 {1, 1}
+V < bitset < 3 > > c{3, 6};
+V < int > z; int xor_status = gauss_xor(c, 2, z);
 */

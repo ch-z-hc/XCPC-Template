@@ -1,13 +1,15 @@
+/*
+求二分图最大匹配和最小点覆盖。两侧分别编号 1..n、1..m，允许重边。
+E 条边的匹配耗时 O(n + m + E sqrt(n + m))。cover 须在 solve 后调用。
+ml、mr 记录两侧搭档，未匹配为 0。cover 用 O(n + m + E) 返回 {左部顶点, 右部顶点}。
+其余顶点组成最大独立集。修改图后须重新 solve。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-求二分图最大匹配和最小点覆盖。两侧分别编号 1..n、1..m，允许重边。
-E 条边的匹配耗时 O(n + m + E sqrt(n + m))。求点覆盖前须先求最大匹配。
-*/
 
 struct HK {
     int n, m;
@@ -69,10 +71,6 @@ struct HK {
         return ans;
     }
 
-    /*
-    先 solve；O(n + m + E) 返回最小点覆盖 {左部顶点, 右部顶点}。
-    两侧未被覆盖的顶点组成最大独立集。修改图后须重新 solve。
-    */
     pair < V < int >, V < int > > cover() {
         V < int > a(n + 1), b(m + 1), left, right;
         queue < int > q;
@@ -92,6 +90,6 @@ struct HK {
 
 /*
 HK hk; hk.init(3, 2); hk.add_edge(1, 2);
-int cnt = hk.solve(); // ml、mr 为两侧搭档，未匹配为 0
-auto [left, right] = hk.cover(); // 最小点覆盖在两侧选中的顶点
+int cnt = hk.solve();
+auto [left, right] = hk.cover();
 */

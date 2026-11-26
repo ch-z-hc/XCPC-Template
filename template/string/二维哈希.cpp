@@ -1,3 +1,8 @@
+/*
+字节矩阵的双模哈希，各行须等长。建表 O(nm)，闭矩形查询 O(1)。
+坐标从 0 数，空矩形哈希为 {0, 0}。比较前先看尺寸，相同哈希可能碰撞。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-字节矩阵的双模哈希，各行须等长。建表 O(nm)，闭矩形查询 O(1)。
-坐标从 0 数，空矩形哈希为 {0, 0}。比较前先看尺寸，相同哈希可能碰撞。
-*/
 
 struct Hash2D {
     struct Table {

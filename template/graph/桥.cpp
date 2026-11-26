@@ -1,10 +1,10 @@
+// 求无向图全部桥，O(n + m)。边须有唯一编号 1..m，重边分别编号，返回的边号递增。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求无向图全部桥，O(n + m)。边须有唯一编号 1..m，重边分别编号，返回的边号递增。
 
 struct Bridge {
     int n = 0, tim = 0;

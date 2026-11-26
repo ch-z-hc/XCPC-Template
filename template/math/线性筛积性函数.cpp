@@ -1,10 +1,10 @@
+// O(n) 筛出 1..n 的质数、最小质因子、欧拉函数和莫比乌斯函数。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// O(n) 筛出 1..n 的质数、最小质因子、欧拉函数和莫比乌斯函数。
 
 struct Sieve {
     V < int > prime, lp, phi, mu;
@@ -28,6 +28,6 @@ struct Sieve {
 };
 
 /*
-Sieve s; s.build(10); // s.prime 为质数表
-int lp = s.lp[6], phi = s.phi[6], mu = s.mu[6]; // 2、2、1
+Sieve s; s.build(10);
+int lp = s.lp[6], phi = s.phi[6], mu = s.mu[6];
 */

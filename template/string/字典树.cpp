@@ -1,10 +1,13 @@
+/*
+小写字母串的前缀和整串计数，均含重复项，允许空串。插入和查询 O(串长)。
+find 返回前缀节点，不存在时返回 -1。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 小写字母串的前缀和整串计数，均含重复项，允许空串。插入和查询 O(串长)。
 
 struct Trie {
     struct Node {
@@ -54,7 +57,7 @@ struct Trie {
 };
 
 /*
-Trie trie; trie.insert("aba"); int node = trie.find("ab"); // 前缀节点，不存在为 -1
-int pre = trie.prefix("ab"), exact = trie.count("ab");      // 1、0
+Trie trie; trie.insert("aba"); int node = trie.find("ab");
+int pre = trie.prefix("ab"), exact = trie.count("ab");
 trie.clear();
 */

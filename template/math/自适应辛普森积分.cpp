@@ -1,13 +1,13 @@
+/*
+平滑函数定积分，eps > 0 为绝对误差目标，尖峰和高频振荡须先分段。
+max_dep >= 0，最坏 O(2^max_dep)。达到深度上限可能超出目标误差，采样及结果须能用 double 表示。
+*/
+
 #include <bits/stdc++.h>
 
 typedef long double ld;
 
 using namespace std;
-
-/*
-平滑函数定积分，eps > 0 为绝对误差目标，尖峰和高频振荡须先分段。
-max_dep >= 0，最坏 O(2^max_dep)。达到深度上限可能超出目标误差，采样及结果须能用 double 表示。
-*/
 
 template < class F >
 double simpson(F f, double l, double r, double eps = 1e-8, int max_dep = 20) {
@@ -26,7 +26,6 @@ double simpson(F f, double l, double r, double eps = 1e-8, int max_dep = 20) {
             double rm = (ld(mid) + b) / 2;
             ld u = simpson(a, lm) + simpson(lm, mid);
             ld v = simpson(mid, rm) + simpson(rm, b);
-            // 分别检查两侧误差，避免左右抵消导致提前判停。
             if (abs(u - x) + abs(v - y) <= 15 * err)
                 return u + v + (u + v - x - y) / 15;
         }

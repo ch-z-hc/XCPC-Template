@@ -1,3 +1,8 @@
+/*
+矩阵乘法要求维数相容，快速幂要求非空方阵、指数非负。元素先取模，1 < mod <= 2^31。
+n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-矩阵乘法要求维数相容，快速幂要求非空方阵、指数非负。元素先取模，1 < mod <= 2^31。
-n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
-*/
 
 typedef V < V < ll > > Matrix;
 

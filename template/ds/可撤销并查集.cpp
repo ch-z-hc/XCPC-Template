@@ -1,13 +1,13 @@
+/*
+按快照撤销合并，只能回到当前历史上的快照，失败的合并也占一个栈位。
+初始化 O(n)，查找和合并 O(log n)，每撤销一次合并 O(1)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-按快照撤销合并，只能回到当前历史上的快照，失败的合并也占一个栈位。
-初始化 O(n)，查找和合并 O(log n)，每撤销一次合并 O(1)。
-*/
 
 struct RollbackDSU {
     V < int > fa, siz;

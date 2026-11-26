@@ -1,11 +1,14 @@
+/*
+先复制「点与向量」。平面最近点对 O(n log n)，坐标有限，允许重复点。
+build 返回原数组下标，d2 为距离平方。少于两点时返回 {-1, -1}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 #define db long double
 
 using namespace std;
-
-// 先复制「点与向量」。平面最近点对 O(n log n)，坐标有限，允许重复点。
 
 struct ClosestPair {
     struct Node { P p; int id; };
@@ -53,6 +56,6 @@ struct ClosestPair {
 };
 
 /*
-ClosestPair cp; auto [u, v] = cp.build({{0, 0}, {3, 4}}); // 原数组下标
-if (u != -1) cout << sqrtl(cp.d2); // 少于两点时返回 {-1, -1}
+ClosestPair cp; auto [u, v] = cp.build({{0, 0}, {3, 4}});
+if (u != -1) cout << sqrtl(cp.d2);
 */

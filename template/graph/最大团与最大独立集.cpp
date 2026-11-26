@@ -1,10 +1,10 @@
+// 精确求无向图的最大团、最大独立集，最坏 O(2^n n²)，适合小图。忽略自环和重边。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 精确求无向图的最大团、最大独立集，最坏 O(2^n n²)，适合小图。忽略自环和重边。
 
 struct MaxClique {
     int n = 0;

@@ -1,10 +1,10 @@
+// 回文半径及区间回文判断，0-based。预处理 O(n)，区间查询 O(1)，遍历找最长回文 O(n)。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 回文半径及区间回文判断，0-based。预处理 O(n)，区间查询 O(1)，遍历找最长回文 O(n)。
 
 struct Manacher {
     string s;
@@ -64,5 +64,5 @@ struct Manacher {
 
 /*
 Manacher man; man.build("abba");
-bool pal = man.query(0, 3); auto [start, len] = man.longest(); // true、{0, 4}
+bool pal = man.query(0, 3); auto [start, len] = man.longest();
 */

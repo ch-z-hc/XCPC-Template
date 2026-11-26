@@ -1,13 +1,13 @@
+/*
+后缀按字典序排序，并支持查询两后缀的最长公共前缀。下标、排名从 0 数。
+建表 O(n log n)，LCP 查询 O(1)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-后缀按字典序排序，并支持查询两后缀的最长公共前缀。下标、排名从 0 数。
-建表 O(n log n)，LCP 查询 O(1)。
-*/
 
 struct SA {
     string s;
@@ -92,5 +92,5 @@ struct SA {
 
 /*
 SA sa; sa.build("banana"); int start = sa.sa[0], rank = sa.rk[1];
-int len = sa.lcp(1, 3); // 3，即 ana
+int len = sa.lcp(1, 3);
 */

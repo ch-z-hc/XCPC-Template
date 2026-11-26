@@ -1,13 +1,14 @@
+/*
+二分图最大匹配，从点数较少的一侧增广。输入始终按原左、右两侧编号。
+两侧点数为 n、m，边数为 E，增广 O(min(n, m) E)，初始化及清空匹配 O(n + m)。
+ml、mr 按原左、右两侧记录搭档，未匹配为 0。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-二分图最大匹配，从点数较少的一侧增广。输入始终按原左、右两侧编号。
-两侧点数为 n、m，边数为 E，增广 O(min(n, m) E)，初始化及清空匹配 O(n + m)。
-*/
 
 struct Kuhn {
     int n = 0, m = 0;
@@ -58,5 +59,5 @@ struct Kuhn {
 
 /*
 Kuhn match; match.init(4, 2); match.add_edge(3, 1);
-int cnt = match.solve(); // ml[3] = 1，mr[1] = 3，未匹配为 0
+int cnt = match.solve();
 */

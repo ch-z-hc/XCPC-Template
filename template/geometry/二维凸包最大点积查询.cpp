@@ -1,3 +1,9 @@
+/*
+整点静态凸包，支持最大点积和包含查询。坐标、查询点和方向各分量绝对值 <= 10^9。
+建凸包 O(n log n)，两种查询 O(log n)。h 逆时针，不重复首点，保留点和线段退化情形。
+空集的点积查询返回 false。contains 返回 0、1、2，分别表示外部、边界、内部。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-整点静态凸包，支持最大点积和包含查询。坐标、查询点和方向各分量绝对值 <= 10^9。
-建凸包 O(n log n)，两种查询 O(log n)。h 逆时针，不重复首点，保留点和线段退化情形。
-*/
 
 struct HullQuery {
     struct P {
@@ -49,7 +50,6 @@ struct HullQuery {
             ans = max(p.front().dot(q), p.back().dot(q));
             return 1;
         }
-        // 对应凸链上的点积先增后减；水平查询单独取左右端点。
         int l = 0, r = (int)p.size() - 1;
         while (l < r) {
             int mid = (l + r) >> 1;
@@ -88,6 +88,6 @@ struct HullQuery {
 
 /*
 HullQuery hull; hull.build({{0, 0}, {2, 0}, {0, 3}}); ll ans;
-if (hull.query(1, 2, ans)) cout << ans << '\n'; // 6
-hull.contains({0, 1}); // 1，边界。
+if (hull.query(1, 2, ans)) cout << ans << '\n';
+hull.contains({0, 1});
 */

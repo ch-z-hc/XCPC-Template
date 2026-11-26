@@ -1,3 +1,9 @@
+/*
+一般图最大权匹配，允许顶点未匹配。跳过自环及非正权边，重边取最大权。
+O(n³)，要求 w <= LLONG_MAX / (8 * max(1, n))。来源为 bqi343/cp-notebook，CC0-1.0。
+枚举匹配边时只取 u < match[u]。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-一般图最大权匹配，允许顶点未匹配。跳过自环及非正权边，重边取最大权。
-O(n³)，要求 w <= LLONG_MAX / (8 * max(1, n))。来源为 bqi343/cp-notebook，CC0-1.0。
-*/
 
 struct WBlossom {
     struct Edge {
@@ -252,5 +253,5 @@ struct WBlossom {
 
 /*
 WBlossom g; g.init(n); g.add_edge(u, v, w);
-ll weight = g.solve(); // 枚举匹配边时只取 u < g.match[u]
+ll weight = g.solve();
 */

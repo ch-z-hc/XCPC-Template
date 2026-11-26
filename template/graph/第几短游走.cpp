@@ -1,3 +1,9 @@
+/*
+求非负权有向图从 s 到 t 最短的 k 条游走长度。按边序列区分，可重复经过终点，零权环也计数。
+s == t 时含空游走，不足 k 条返回全部。边权及有效长度须小于 inf。
+时间 O((n + m) log(n + m + 1) + k log(k + 1))，空间 O(m + n log(n + m + 1) + k)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,12 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求非负权有向图从 s 到 t 最短的 k 条游走长度。按边序列区分，可重复经过终点，零权环也计数。
-s == t 时含空游走，不足 k 条返回全部。边权及有效长度须小于 inf。
-时间 O((n + m) log(n + m + 1) + k log(k + 1))，空间 O(m + n log(n + m + 1) + k)。
-*/
 
 struct KWalk {
     static const ll inf = 1ll << 62;
@@ -75,7 +75,6 @@ struct KWalk {
         if (dis[s] == inf) return ans;
         tr.assign(1, Node{}); tr[0].dis = -1;
         for (int u : ord) {
-            // 只排除被选中的那一条树边；其他等长边仍代表不同游走。
             for (int id : g[u]) {
                 auto e = edges[id];
                 if (id == edge[u] || dis[e.v] == inf) continue;
@@ -83,7 +82,6 @@ struct KWalk {
                 tr.push_back({delta, e.v, 0, 0, 0});
                 root[u] = merge(root[u], int(tr.size()) - 1, 0);
             }
-            // 最短路树的父亲先出队，零权树边也不会构成环。
             if (edge[u] != -1) root[u] = merge(root[u], root[edges[edge[u]].v], 1);
         }
         ans.push_back(dis[s]);

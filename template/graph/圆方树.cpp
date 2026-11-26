@@ -1,13 +1,13 @@
+/*
+由无自环无向图的完整点双分量构造圆方森林，O(n + 各点双大小之和)。
+分量内顶点不能重复。圆点编号 1..n，第 i 个点双对应方点 n + i + 1，i 从 0 数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-由无自环无向图的完整点双分量构造圆方森林，O(n + 各点双大小之和)。
-分量内顶点不能重复。圆点编号 1..n，第 i 个点双对应方点 n + i + 1，i 从 0 数。
-*/
 
 V < V < int > > block_cut_tree(int n, const V < V < int > > &bcc) {
     V < V < int > > tree(n + bcc.size() + 1);

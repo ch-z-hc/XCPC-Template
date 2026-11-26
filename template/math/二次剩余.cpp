@@ -1,10 +1,10 @@
+// 求 x² 与 a 模 p 同余的较小非负根，无解返回 -1。p 须为 [2, INT_MAX] 内的质数，期望 O(log p)。
+
 #include <bits/stdc++.h>
 
 typedef long long ll;
 
 using namespace std;
-
-// 求 x² 与 a 模 p 同余的较小非负根，无解返回 -1。p 须为 [2, INT_MAX] 内的质数，期望 O(log p)。
 
 ll sqrt_mod(ll a, ll p) {
     a %= p;
@@ -38,4 +38,4 @@ ll sqrt_mod(ll a, ll p) {
     return min(ans.first, p - ans.first);
 }
 
-// ll x = sqrt_mod(10, 13); // 6
+// ll x = sqrt_mod(10, 13);

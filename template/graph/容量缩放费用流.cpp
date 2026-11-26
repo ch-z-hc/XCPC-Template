@@ -1,3 +1,8 @@
+/*
+求最小费用最大流，可有负环（含与源汇不连通的负环）和自环。最大容量 U 时 O(m² log U log m)。
+容量在 [0, 2^41) 内，最大流量及 (n - 1) * 最大绝对边费须小于 10^12，累计费用须放入 ll。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求最小费用最大流，可有负环（含与源汇不连通的负环）和自环。最大容量 U 时 O(m² log U log m)。
-容量在 [0, 2^41) 内，最大流量及 (n - 1) * 最大绝对边费须小于 10^12，累计费用须放入 ll。
-*/
 
 struct ScalingMCMF {
     struct Edge {
@@ -34,7 +34,6 @@ struct ScalingMCMF {
     pair < ll, ll > flow(int s, int t) {
         if (s == t) return {0, 0};
 
-        // t -> s 的大费用负边把最大流转化为最小费用环流。
         const ll large = 1000000000000LL;
         const ll inf = 4000000000000000000LL;
         int super = n + 1;
@@ -143,7 +142,6 @@ struct ScalingMCMF {
                     h[x] += dis[x];
         };
 
-        // large < 2^40；从高位到低位恢复容量。
         for (int bit = 40; bit >= 0; -- bit) {
             for (int id = 0; id < m; ++ id)
                 e[id].cap <<= 1;

@@ -1,3 +1,8 @@
+/*
+无向图全局最小割，O(n³)。每条边只加一次，边权非负且总和小于 LLONG_MAX。
+不连通时割权为 0，点数不足 2 时返回 {0, {}}。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-无向图全局最小割，O(n³)。每条边只加一次，边权非负且总和小于 LLONG_MAX。
-不连通时割权为 0，点数不足 2 时返回 {0, {}}。
-*/
 
 struct MinCut {
     int n;

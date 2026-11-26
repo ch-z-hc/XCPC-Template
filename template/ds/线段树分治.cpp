@@ -1,15 +1,15 @@
-#include <bits/stdc++.h>
-
-#define V vector
-
-using namespace std;
-
 /*
 时间为 1..q。在 l 加入、在 d 删除的操作覆盖 [l, d - 1]，一直有效则覆盖 [l, q]。
 同一时刻的答案须与操作的施加顺序无关。m 个区间共存 O(m log q) 个操作编号。
 动态连通性示例先复制「可撤销并查集」，总时间 O(n + (m log q + q) log n)。
 换题时直接改全局变量和 dfs。
 */
+
+#include <bits/stdc++.h>
+
+#define V vector
+
+using namespace std;
 
 int q;
 V < V < int > > tr;
@@ -59,9 +59,9 @@ void dfs(int p, int l, int r) {
 }
 
 /*
-init(3, 4); // 3 个点，4 个时刻
+init(3, 4);
 edge = {{1, 2}, {2, 3}};
 add(1, 3, 0); add(2, 4, 1);
 for (int t = 1; t <= q; ++ t) ask[t] = {1, 3};
-dfs(1, 1, q); // ans[1..4] = 0, 1, 1, 0
+dfs(1, 1, q);
 */

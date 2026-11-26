@@ -1,10 +1,13 @@
+/*
+无向图边双分解，O(n + m)，允许重边。分量从 1 编号，桥标记按原边从 0 编号。
+分量 id 的点及非桥边存于 bcc[id - 1]，is_bridge[e] 标记原边 e。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 无向图边双分解，O(n + m)，允许重边。分量从 1 编号，桥标记按原边从 0 编号。
 
 struct EBCC {
     struct Block {
@@ -91,5 +94,5 @@ struct EBCC {
 EBCC ebcc; ebcc.init(n);
 ebcc.add_edge(u, v);
 ebcc.build();
-int id = ebcc.bel[u]; // bcc[id - 1] 存点及非桥边，is_bridge[e] 标记原边 e
+int id = ebcc.bel[u];
 */

@@ -1,13 +1,13 @@
+/*
+由完整的边双分量构造桥森林，O(n + m)。bel[u] 从 1 编号，原边按输入顺序从 0 编号。
+邻接表保留原桥编号和孤立分量，允许重边、自环。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-由完整的边双分量构造桥森林，O(n + m)。bel[u] 从 1 编号，原边按输入顺序从 0 编号。
-邻接表保留原桥编号和孤立分量，允许重边、自环。
-*/
 
 V < V < pair < int, int > > > bridge_tree(int cnt, const V < int > &bel,
                                           const V < pair < int, int > > &edges) {

@@ -1,10 +1,13 @@
+/*
+无向图最大基数匹配，O(n³)。自环跳过，重边只算一次。
+枚举匹配边时只取 u < match[u]。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 无向图最大基数匹配，O(n³)。自环跳过，重边只算一次。
 
 struct Blossom {
     int n = 0;
@@ -92,5 +95,5 @@ struct Blossom {
 
 /*
 Blossom g; g.init(n); g.add_edge(u, v);
-int cnt = g.solve(); // 枚举匹配边时只取 u < g.match[u]
+int cnt = g.solve();
 */

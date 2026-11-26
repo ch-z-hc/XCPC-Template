@@ -1,3 +1,10 @@
+/*
+先复制「势能最短路费用流」。求满足边流量上下界和顶点净供给的最小费用，支持有界负环。
+0 <= lo <= hi，cost 不能取 LLONG_MIN。Σhi + Σ|供需| 和 Σ(hi * |cost|) 均须 <= LLONG_MAX / 4。
+单点累计供需须放入 ll。增广 A 次耗时 O(nm + A m log n)。
+solve 成功后，f[id] 是该边的流量。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,12 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-先复制「势能最短路费用流」。求满足边流量上下界和顶点净供给的最小费用，支持有界负环。
-0 <= lo <= hi，cost 不能取 LLONG_MIN。Σhi + Σ|供需| 和 Σ(hi * |cost|) 均须 <= LLONG_MAX / 4。
-单点累计供需须放入 ll。增广 A 次耗时 O(nm + A m log n)。
-*/
 
 struct LRCostFlow {
     struct Edge {
@@ -94,5 +95,5 @@ struct LRCostFlow {
 /*
 LRCostFlow g; g.init(n); int id = g.add_edge(u, v, lo, hi, w);
 g.add_supply(s, k); g.add_supply(t, -k);
-auto [ok, cost] = g.solve(); // 有解时 g.f[id] 是这条边的流量
+auto [ok, cost] = g.solve();
 */

@@ -1,3 +1,8 @@
+/*
+按斜率不增加线，按 x 不减查询最小值，两种操作均摊 O(1)。先加线再查，允许相同斜率和查询位置。
+差值、叉积和 kx + b 须放入 ll；|k|、|b|、|x| 均 <= 10^9 是充分条件。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-按斜率不增加线，按 x 不减查询最小值，两种操作均摊 O(1)。先加线再查，允许相同斜率和查询位置。
-差值、叉积和 kx + b 须放入 ll；|k|、|b|、|x| 均 <= 10^9 是充分条件。
-*/
 
 struct CHT {
     struct Line {

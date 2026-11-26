@@ -1,3 +1,10 @@
+/*
+区间加、取上限或下限，查询和与最值。a[1..n] 非空。
+元素和截断值须在 (-2^60, 2^60) 内，区间和、标记及中间乘积须放入 ll。
+建树 O(n)，q 次操作总时间 O((n + q) log² n)。
+节点截断只在 max2 < x < max1 时调用 apply_min，只在 min1 < x < min2 时调用 apply_max。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,12 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-区间加、取上限或下限，查询和与最值。a[1..n] 非空。
-元素和截断值须在 (-2^60, 2^60) 内，区间和、标记及中间乘积须放入 ll。
-建树 O(n)，q 次操作总时间 O((n + q) log² n)。
-*/
 
 struct Beats {
     static const ll INF = 1LL << 60;
@@ -48,7 +49,6 @@ struct Beats {
         if (u.min2 != INF) u.min2 += x;
     }
 
-    // 调用前保证 max2 < x < max1，只修改最大值一层。
     void apply_min(int p, ll x) {
         auto &u = t[p];
         u.sum += (x - u.max1) * u.cntmax;
@@ -57,7 +57,6 @@ struct Beats {
         u.max1 = x;
     }
 
-    // 调用前保证 min1 < x < min2，只修改最小值一层。
     void apply_max(int p, ll x) {
         auto &u = t[p];
         u.sum += (x - u.min1) * u.cntmin;
@@ -178,6 +177,6 @@ const ll Beats::INF;
 /*
 Beats st; st.init({0, 3, 1, 4});
 st.add(1, 3, 2); st.chmin(1, 2, 4); st.chmax(2, 3, 5);
-ll sum = st.query(1, 3); // 15
-ll low = st.query_min(1, 3), high = st.query_max(1, 3); // 4, 6
+ll sum = st.query(1, 3);
+ll low = st.query_min(1, 3), high = st.query_max(1, 3);
 */

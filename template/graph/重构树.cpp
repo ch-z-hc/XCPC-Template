@@ -1,3 +1,9 @@
+/*
+Kruskal 重构树，递增建树求路径最大边权的最小值，递减建树求路径最小边权的最大值。
+建树 O(m log m + n log n)，查询 O(log n)。原点编号 1..n，新节点从 n + 1 编号。
+build() 递增，build(true) 递减。同点查询取 0，不连通时 lca 返回 0、query 返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-Kruskal 重构树，求路径最大边权的最小值，或路径最小边权的最大值。
-建树 O(m log m + n log n)，查询 O(log n)。原点编号 1..n，新节点从 n + 1 编号。
-*/
 
 struct KruskalTree {
     struct Edge {
@@ -86,7 +87,7 @@ struct KruskalTree {
 
 /*
 KruskalTree tree; tree.init(2); tree.add_edge(1, 2, 7);
-tree.build(); int p = tree.lca(1, 2); // 默认递增建树，不连通时 LCA 为 0
-ll ans; if (tree.query(1, 2, ans)) cout << ans; // 路径最大边权的最小值，同点为 0
-tree.build(true); // 改为递减建树，查询路径最小边权的最大值
+tree.build(); int p = tree.lca(1, 2);
+ll ans; if (tree.query(1, 2, ans)) cout << ans;
+tree.build(true);
 */

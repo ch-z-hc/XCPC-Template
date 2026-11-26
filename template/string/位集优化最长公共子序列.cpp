@@ -1,3 +1,8 @@
+/*
+求两个字节串的 LCS 长度。令 B = max(1, ceil(|t| / 64))，时间 O((|s| + 256)B)，空间 O(256B)。
+较短串放第二个参数可缩短位集。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef unsigned long long ull;
 
 using namespace std;
-
-/*
-求两个字节串的 LCS 长度。令 B = max(1, ceil(|t| / 64))，时间 O((|s| + 256)B)，空间 O(256B)。
-较短串放第二个参数可缩短位集。
-*/
 
 int bitset_lcs(const string &s, const string &t) {
     int n = int(t.size()), m = (n + 63) / 64;

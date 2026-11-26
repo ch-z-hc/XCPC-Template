@@ -1,3 +1,12 @@
+/*
+先复制「点与向量」，闵可夫斯基和还需「多边形」的 area。
+建凸包 O(n log n)，判凸和直径 O(n)，闵可夫斯基和 O(n + m)。
+直径与闵可夫斯基和接受顺、逆时针凸包，相邻顶点不重复，末尾不重复首点。
+convexHull 只留极点，convexHullNonStrict 保留边上的共线点，全共线时中间点会往返各出现一次。
+checkConvexHull 要求按边界顺序输入简单多边形，判断逆时针凸性，允许相邻边共线。
+MincowskySum 任一输入为空时返回空集。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,14 +14,7 @@
 
 using namespace std;
 
-/*
-先复制「点与向量」，闵可夫斯基和还需「多边形」的 area。
-建凸包 O(n log n)，判凸和直径 O(n)，闵可夫斯基和 O(n + m)。
-直径与闵可夫斯基和接受顺、逆时针凸包，相邻顶点不重复，末尾不重复首点。
-*/
-
 V < P > convexHull(V < P > ps) {
-    // 求凸包
     sort(ps.begin(), ps.end());
     ps.erase(unique(ps.begin(), ps.end(), [](P a, P b) {
         return a.x == b.x && a.y == b.y;
@@ -33,7 +35,6 @@ V < P > convexHull(V < P > ps) {
 
 
 V < P > convexHullNonStrict(V < P > ps) {
-    // 求凸包（边界上的点也在凸包内）
     sort(ps.begin(), ps.end());
     ps.erase(unique(ps.begin(), ps.end(), [](P a, P b) {
         return a.x == b.x && a.y == b.y;
@@ -53,11 +54,6 @@ V < P > convexHullNonStrict(V < P > ps) {
 }
 
 bool checkConvexHull(V < P > p) {
-    /*
-    输入须为简单多边形；判断是否为逆时针凸多边形，允许共线边界点。
-    注意：不可通过再跑一次凸包判断点数是否相同
-    因为点数相同 不能代表是凸包的连接方式
-    */
     int n = p.size();
     for (int i = 0; i < n; ++ i) {
         int pre = i - 1;
@@ -71,7 +67,6 @@ bool checkConvexHull(V < P > p) {
 }
 
 db convexDiameter(V < P > ps) {
-    // 旋转卡壳求 凸包直径
     int n = ps.size();
     if (n <= 1) return 0;
     db s = 0;
@@ -94,10 +89,6 @@ db convexDiameter(V < P > ps) {
 }
 
 V < P > MincowskySum(V < P > p, V < P > q) {
-    /*
-    p, q 为两个凸包，顺 / 逆时针均可，O(n + m) 求闵可夫斯基和
-    任一输入为空集时，和集也为空。
-    */
     if (p.empty() || q.empty()) return {};
     auto normalize = [](V < P > & ps) {
         if (area(ps) < 0) reverse(ps.begin(), ps.end());
@@ -113,7 +104,6 @@ V < P > MincowskySum(V < P > p, V < P > q) {
     p[p.size() - 1] = p0 - p[p.size() - 1];
     q[q.size() - 1] = q0 - q[q.size() - 1];
     qs.resize(p.size() + q.size() + 1);
-    // 从最左下顶点出发，竖直向下的边在最后。
     merge(p.begin(), p.end(), q.begin(), q.end(),
           qs.begin() + 1, polar_cmp({0, -1}, false));
     for (int i = 1; i < (int)qs.size(); ++ i)
@@ -124,8 +114,8 @@ V < P > MincowskySum(V < P > p, V < P > q) {
 
 /*
 V < P > ps{{0, 0}, {1, 0}, {2, 0}, {0, 2}};
-auto h = convexHull(ps), border = convexHullNonStrict(ps); // 后者保留边上的共线点
-bool ccw = checkConvexHull(h); // 输入须为简单多边形，判断逆时针凸性
+auto h = convexHull(ps), border = convexHullNonStrict(ps);
+bool ccw = checkConvexHull(h);
 db diameter = convexDiameter(h);
 auto sum = MincowskySum(h, h);
 */

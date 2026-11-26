@@ -1,3 +1,9 @@
+/*
+先复制「多项式基本运算」。求有理生成函数系数或线性递推第 k 项，k 从 0 数，可取任意 ull。
+固定模 998244353，低次系数在前且已取模。P、Q 长度 <= 2^22，Q[0] 非零。
+递推初值和系数等长，阶数 d < 2^22。多项式最大长度为 D 时耗时 O(D log(D + 1) log(k + 2))。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,12 +11,6 @@
 typedef unsigned long long ull;
 
 using namespace std;
-
-/*
-先复制「多项式基本运算」。求有理生成函数系数或线性递推第 k 项，k 从 0 数，可取任意 ull。
-固定模 998244353，低次系数在前且已取模。P、Q 长度 <= 2^22，Q[0] 非零。
-递推初值和系数等长，阶数 d < 2^22。多项式最大长度为 D 时耗时 O(D log(D + 1) log(k + 2))。
-*/
 
 int bostan_mori(V < int > p, V < int > q, ull k) {
     assert(! q.empty() && q[0]);
@@ -39,5 +39,5 @@ int linear_kth(const V < int > &init, const V < int > &rec, ull k) {
 
 /*
 int ans = linear_kth({0, 1}, {1, 1}, 1000000000000000000ull);
-int coef = bostan_mori({1}, {1, FPS::mod - 1}, k); // 恒为 1。
+int coef = bostan_mori({1}, {1, FPS::mod - 1}, k);
 */

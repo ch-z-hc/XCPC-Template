@@ -1,3 +1,11 @@
+/*
+先复制「点与向量」「直线与线段」。简单多边形按边界顺序给点，坐标须保留所需精度。
+有向面积、一般包含查询、凸多边形切割 O(n)。有序严格凸多边形的包含查询 O(log n)。
+area 逆时针为正。contain 和 containConvex 返回 0、1、2，分别表示外部、边界、内部。
+containConvex 接受顺、逆时针严格凸多边形，末尾不重复首点，也接受空集、单点和线段。
+convexCut 保留凸多边形在有向直线 q1 -> q2 左侧的部分，含边界。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,13 +13,7 @@
 
 using namespace std;
 
-/*
-先复制「点与向量」「直线与线段」。简单多边形按边界顺序给点，坐标须保留所需精度。
-有向面积、一般包含查询、凸多边形切割 O(n)。有序严格凸多边形的包含查询 O(log n)。
-*/
-
 db area(V < P > ps) {
-    // 求多边形面积（逆时针顺序给出点 -> 面积为正）
     db ret = 0; if (ps.size() == 0) return 0;
     for (int i = 1; i + 1 < (int)ps.size(); ++ i) {
         ret += (ps[i] - ps[0]).det(ps[i + 1] - ps[0]);
@@ -20,13 +22,6 @@ db area(V < P > ps) {
 }
 
 int contain(V < P > ps, P p) {
-    /*
-    0 : outside
-    1 : on_seg
-    2 : inside
-    */
-
-    // ps 是多边形，判断 p 在多边形 内部 / 线段上 / 外部
     int n = ps.size(), ret = 0;
     for (int i = 0; i < n; ++ i) {
         P u = ps[i], v = ps[(i + 1) % n];
@@ -39,10 +34,6 @@ int contain(V < P > ps, P p) {
     return ret * 2;
 }
 
-/*
-严格凸多边形按顺 / 逆时针给点，末尾不重复首点；也允许空集、单点和线段。
-单次 O(log n)，返回 0 外部 / 1 边界 / 2 内部。
-*/
 int containConvex(const V < P > &ps, P p) {
     int n = ps.size();
     if (! n) return 0;
@@ -55,7 +46,6 @@ int containConvex(const V < P > &ps, P p) {
     if (onSeg(o, ps[l], p) || onSeg(o, ps[r], p)) return 1;
     if (cross(o, ps[l], p) <= 0 || cross(o, ps[r], p) >= 0) return 0;
 
-    // 按叉积符号二分扇区，内部对角线属于相邻扇区的公共边。
     while (abs(r - l) > 1) {
         int mid = l + (r - l) / 2;
         if (cross(o, ps[mid], p) >= 0) l = mid;
@@ -65,7 +55,6 @@ int containConvex(const V < P > &ps, P p) {
 }
 
 V < P > convexCut(V<P> ps, P q1, P q2) {
-    // 直线切割凸包，返回直线左边凸包的点
     V < P > qs;
     int n = ps.size();
     for (int i = 0; i < n; ++ i) {
@@ -81,7 +70,7 @@ V < P > convexCut(V<P> ps, P q1, P q2) {
 
 /*
 V < P > ps{{0, 0}, {3, 0}, {0, 3}}; P q{1, 1};
-db signed_area = area(ps); // 逆时针为正
-int state = contain(ps, q), fast = containConvex(ps, q); // 0 外部、1 边界、2 内部
-auto cut = convexCut(ps, {1, 0}, {1, 1}); // 保留有向直线左侧，输入须为凸多边形
+db signed_area = area(ps);
+int state = contain(ps, q), fast = containConvex(ps, q);
+auto cut = convexCut(ps, {1, 0}, {1, 1});
 */

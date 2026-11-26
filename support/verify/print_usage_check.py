@@ -1,4 +1,4 @@
-"""直接提取四个框架内的注释示例，替换声明后编译并运行，防止示例失效。"""
+"""直接提取四个框架文件尾的成员示例，替换声明后编译并运行，防止示例失效。"""
 from pathlib import Path
 import re
 import resource
@@ -12,11 +12,8 @@ def run_example(path, body):
     source = (ROOT / path).read_text(encoding="utf-8")
     pattern = r"    void add\(int \w+\);\n    void del\(int \w+\);\n    void (?:answer|query)\(int \w+\);"
     declarations, = re.finditer(pattern, source)
-    before = source[:declarations.start()]
-    assert before.endswith("    */\n"), path
-    prefix, opening, members = before.removesuffix("    */\n").rpartition("    /*\n")
-    assert opening, path
-    source = prefix + members.rstrip("\n") + source[declarations.end():]
+    members, _ = re.findall(r"/\*\n(.*?)\n\*/", source[declarations.end():], re.DOTALL)
+    source = source[:declarations.start()] + members + source[declarations.end():]
     generated = OUT / Path(path).name
     generated.write_text(source + "\nint main() {\n" + body + "\n}\n", encoding="utf-8")
     executable = generated.with_suffix("")

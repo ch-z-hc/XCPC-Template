@@ -1,3 +1,8 @@
+/*
+有向图最大流，容量非负，总流量须放入 ll。重复调用 flow 沿用残量，只返回本次新增流量。
+一般图 O(n²m)，二分图匹配建成的单位网络 O(m√n)，一般单位容量图 O(m√m)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-有向图最大流，容量非负，总流量须放入 ll。重复增广沿用残量。
-一般图 O(n²m)，二分图匹配建成的单位网络 O(m√n)，一般单位容量图 O(m√m)。
-*/
 
 struct Dinic {
     struct Edge { int to, rev; ll cap; };
@@ -74,6 +74,6 @@ struct Dinic {
 
 /*
 Dinic dinic; dinic.init(3); dinic.add_edge(1, 2, 4); dinic.add_edge(2, 3, 3);
-ll ans = dinic.flow(1, 3);   // 3
-dinic.add_edge(2, 3, 2); ll extra = dinic.flow(1, 3); // 仅返回新增的 1
+ll ans = dinic.flow(1, 3);
+dinic.add_edge(2, 3, 2); ll extra = dinic.flow(1, 3);
 */

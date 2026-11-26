@@ -1,10 +1,13 @@
+/*
+求一个串或模式串与每个后缀的最长公共前缀，O(|s| + |t|)。位置从 0 数，空模式的匹配长度全为 0。
+非空串的 z[0] 为串长。exkmp(s, t) 以 s 为文本、t 为模式。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求一个串或模式串与每个后缀的最长公共前缀，O(|s| + |t|)。位置从 0 数，空模式的匹配长度全为 0。
 
 V < int > get_z(const string &s) {
     int n = int(s.size());
@@ -31,6 +34,6 @@ V < int > exkmp(const string &s, const string &t) {
 }
 
 /*
-auto z = get_z("ababa");           // z[i] 比较原串和后缀 i，z[0] = 5
-auto len = exkmp("ababa", "aba");  // len[i] 比较模式 aba 和文本后缀 i
+auto z = get_z("ababa");
+auto len = exkmp("ababa", "aba");
 */

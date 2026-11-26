@@ -1,10 +1,10 @@
+// 求无向图全部割点，O(n + m)。允许不连通，每条边只加一次，结果按点号递增。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求无向图全部割点，O(n + m)。允许不连通，每条边只加一次，结果按点号递增。
 
 struct CutVertex {
     int n = 0, tim = 0;

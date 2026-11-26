@@ -30,7 +30,7 @@ bash support/verify/run_linux.sh
 
 栈设为 256 MiB。先对模板和验证程序执行 C++17 语法检查，再运行 46 个无输入验证程序，启用 ASan、UBSan 和标准库断言；任一失败立即退出。构建产物放在 `build/linux-verify/`。几何和 runs 等片段的复制依赖由语法检查中的 `-include` 补齐，模板本身不依赖自定义头文件。
 
-`print_usability.cpp` 检查 HLD 的 DFS 序建树、李超树整数精确取值和端点小区间、宽整数输出的零／负数／最小值，以及异或高斯、Min_25 的调用示例。`print_usage_check.py` 直接从四个框架内的注释提取维护成员，替换声明后编译运行，覆盖重跑和颜色统计；另验证默认单测入口保留首个输入值，以及超大密集坐标区间先由断言拒绝，不触发有符号溢出。这两项均已加入全量流程，Python 示例检查仅在 Linux 下运行。
+`print_usability.cpp` 检查 HLD 的 DFS 序建树、李超树整数精确取值和端点小区间、宽整数输出的零／负数／最小值，以及异或高斯、Min_25 的调用示例。`print_usage_check.py` 直接从四个框架文件尾的示例提取维护成员，替换声明后编译运行，覆盖重跑和颜色统计；另验证默认单测入口保留首个输入值，以及超大密集坐标区间先由断言拒绝，不触发有符号溢出。这两项均已加入全量流程，Python 示例检查仅在 Linux 下运行。
 
 最后运行 `stress_tools_check.py`，检查 6 组对拍示例、场上脚本 `pai.sh` 的比较与停止条件，以及配套验证工具的故障保存流程；工具自身使用普通优化编译，`run.py --sanitize` 可额外检查对拍中的程序。Linux 下可用 `python3 support/verify/stress_tools_check.py --contest-only` 仅检查场上对拍。
 

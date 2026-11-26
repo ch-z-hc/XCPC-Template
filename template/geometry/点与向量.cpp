@@ -1,16 +1,19 @@
+/*
+平面向量运算、方向判断和极角比较均为 O(1)，极角排序 O(n log n)。
+相等判断用 EPS；排序直接比较坐标和叉积。取单位向量、指定起始射线时方向须非零。
+仅作整数点积、叉积时可将 db 改为 long long，中间运算须放入该类型。
+rad(u, v) 返回从非零向量 u 到 v 的有向夹角，取值在 [-π, π] 内，逆时针为正。
+polar_cmpX 从正 X 轴起逆时针排序。polar_cmp(dir, include) 从 dir 起排，默认将同向向量排在最前。
+include 为 false 时同向向量排在最后。零向量始终最先，同向向量不按长度区分。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
 
-/*
-平面向量运算、方向判断和极角比较均为 O(1)，极角排序 O(n log n)。
-相等判断用 EPS；排序直接比较坐标和叉积。取单位向量、指定起始射线时方向须非零。
-*/
-
 #define db long double
-// #define db long long
 
 const db EPS = 1e-9;
 
@@ -60,14 +63,11 @@ ostream & operator << (ostream &out, const P &A) {
     return out;
 }
 
-// 向量夹角与极角排序，O(1)；排序使用精确叉积，不用 EPS 比较角度。
 db rad(P p1, P p2) {
-    // 求向量 p1 p2 的角度（逆时针为正，顺时针为负，范围 (- pi, pi]）
     return atan2l(p1.det(p2), p1.dot(p2));
 }
 
 bool polar_cmpX(P a, P b) {
-    // 极角排序 X 轴正半轴（包含）开始逆时针转
     bool za = a.x == 0 && a.y == 0, zb = b.x == 0 && b.y == 0;
     if (za || zb) return za && ! zb;
     if (a.quadX() != b.quadX())
@@ -75,10 +75,6 @@ bool polar_cmpX(P a, P b) {
     return a.det(b) > 0;
 }
 
-/*
-从非零方向 dir 逆时针排序，同向向量默认最先，include 为 false 时最后。
-零向量始终在所有方向之前，同一方向不按长度区分。
-*/
 auto polar_cmp(P dir, bool include = true) {
     auto part = [=](P p) -> int {
         if (p.x == 0 && p.y == 0) return -1;
@@ -98,11 +94,10 @@ db len = u.abs(), squared = u.abs2(), dist = p.distTo(q);
 db dot = u.dot(v), det = u.det(v), angle = rad(u, v), arg = v.alpha();
 db twice_area = cross(o, q, p); int side = crossop(o, q, p);
 P unit = u.unit(), normal = u.rot90(), rotated = u.rot(angle);
-int half = v.quadX(); bool earlier = polar_cmpX(u, v); // 从正 X 轴起的半区、极角序
+int half = v.quadX(); bool earlier = polar_cmpX(u, v);
 
-// 从射线 o -> q 开始，绕 o 逆时针排序；与 o 重合的点始终最先。
 V < P > ps{p, o, q};
-auto by_angle = polar_cmp(q - o, true);      // 起始射线上的点最先，true 可省略
-// auto by_angle = polar_cmp(q - o, false);  // 起始射线上的点最后
+auto by_angle = polar_cmp(q - o, true);
+auto ray_last = polar_cmp(q - o, false);
 sort(ps.begin(), ps.end(), [&](P a, P b) { return by_angle(a - o, b - o); });
 */

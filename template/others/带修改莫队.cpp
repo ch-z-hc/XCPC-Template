@@ -1,13 +1,14 @@
+/*
+离线处理单点修改和闭区间查询，1-based，增删按值。每次求解前清空统计量，离散化须包含修改值。
+块长 B 约为 n^(2/3)，q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
+文件尾第一段替换结构体中的 3 个成员声明，示例统计区间不同值个数。值先离散到 1..m，按查询编号读 ans。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-离线处理单点修改和闭区间查询，1-based，增删按值。每次求解前清空统计量，离散化须包含修改值。
-块长 B 约为 n^(2/3)，q 次查询、u 次修改，排序 O(q log q)，移动 O(qB + n²/B + un²/B²) 次。
-*/
 
 struct MoModify {
     struct Change { int p, before, after; };
@@ -17,13 +18,6 @@ struct MoModify {
     V < Change > changes;
     V < Query > qs;
 
-    /*
-    // 区间不同值个数
-    V < int > cnt, ans; int kinds = 0;
-    void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
-    void del(int x) { if (-- cnt[x] == 0) -- kinds; }
-    void answer(int id) { ans[id] = kinds; }
-    */
     void add(int x);
     void del(int x);
     void answer(int id);
@@ -70,7 +64,14 @@ struct MoModify {
 };
 
 /*
+V < int > cnt, ans; int kinds = 0;
+void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
+void del(int x) { if (-- cnt[x] == 0) -- kinds; }
+void answer(int id) { ans[id] = kinds; }
+*/
+
+/*
 MoModify mo; mo.init(a); mo.modify(p, x); int id = mo.query(l, r);
-mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 值已离散到 1..m
-mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]
+mo.cnt.assign(m + 1, 0); mo.kinds = 0;
+mo.ans.resize(mo.qs.size()); mo.solve();
 */

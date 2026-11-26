@@ -1,3 +1,5 @@
+// 质数模下预处理组合数，0 <= n < mod <= 2^31。建表 O(n + log mod)，查询 O(1)，超出表长返回 0。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 质数模下预处理组合数，0 <= n < mod <= 2^31。建表 O(n + log mod)，查询 O(1)，超出表长返回 0。
 
 struct Comb {
     ll mod = 1;

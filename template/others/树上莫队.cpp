@@ -1,13 +1,14 @@
+/*
+离线处理树上路径询问，增删按顶点。先建树再记录询问，重建会清空询问，每次求解前清空统计量。
+建表 O(n log n)，q 次询问排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
+文件尾第一段替换结构体中的 3 个成员声明，示例统计路径颜色数。颜色先离散到 1..m，按查询编号读 ans。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-离线处理树上路径询问，增删按顶点。先建树再记录询问，重建会清空询问，每次求解前清空统计量。
-建表 O(n log n)，q 次询问排序 O(q log q)，移动 O(n sqrt(q) + q) 次。
-*/
 
 struct MoTree {
     struct Query { int l, r, extra, id; };
@@ -16,13 +17,6 @@ struct MoTree {
     V < int > in, out, ord, dep;
     V < Query > qs;
 
-    /*
-    // 路径上的颜色数
-    V < int > color, cnt, ans; int kinds = 0;
-    void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
-    void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
-    void answer(int id) { ans[id] = kinds; }
-    */
     void add(int u);
     void del(int u);
     void answer(int id);
@@ -94,9 +88,16 @@ struct MoTree {
 };
 
 /*
+V < int > color, cnt, ans; int kinds = 0;
+void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
+void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
+void answer(int id) { ans[id] = kinds; }
+*/
+
+/*
 MoTree mo; mo.init(n);
 for (auto [u, v] : edges) mo.add_edge(u, v);
 mo.build(); int p = mo.lca(u, v); int id = mo.query(u, v);
-mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0; // 颜色已离散到 1..m
-mo.ans.resize(mo.qs.size()); mo.solve(); // 读 mo.ans[id]
+mo.color = color; mo.cnt.assign(m + 1, 0); mo.kinds = 0;
+mo.ans.resize(mo.qs.size()); mo.solve();
 */

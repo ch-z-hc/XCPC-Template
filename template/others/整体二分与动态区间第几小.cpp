@@ -1,3 +1,9 @@
+/*
+离线求带单点修改的区间第 k 小。a[1..n]，k 从 1 数，操作按发生顺序记录。
+设不同值有 V 个，q 次操作共 O((n + q) log V log n)。
+query 返回查询编号，取 solve 结果的对应下标即为答案。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-离线求带单点修改的区间第 k 小。a[1..n]，k 从 1 数，操作按发生顺序记录。
-设不同值有 V 个，q 次操作共 O((n + q) log V log n)。
-*/
 
 struct KthOffline {
     struct Event {
@@ -104,5 +105,5 @@ struct KthOffline {
 
 /*
 KthOffline solver; solver.init(a); solver.modify(p, x);
-int id = solver.query(l, r, k); auto ans = solver.solve(); // 答案为 ans[id]。
+int id = solver.query(l, r, k); auto ans = solver.solve();
 */

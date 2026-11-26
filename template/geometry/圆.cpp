@@ -1,3 +1,11 @@
+/*
+先复制「点与向量」「直线与线段」。圆的构造、交点、切线和两圆交面积均为 O(1)。
+坐标有限、半径非负。isCC 对重合的正半径圆返回空集，对重合的点圆返回该点。
+isCL 的两点定义无限直线，须互异。circumcircle 在三点共线时返回 false，成功时将外接圆写入 ans。
+tangent_points 返回切点。对正半径圆，圆内、圆上、圆外分别返回 0、1、2 个点。
+common_tangents 要求正半径，包含内外公切线，重合圆返回空集。circle_area 返回两圆的相交面积。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,21 +13,12 @@
 
 using namespace std;
 
-/*
-先复制「点与向量」「直线与线段」。圆的构造、交点、切线和两圆交面积均为 O(1)。
-坐标有限、半径非负，公切线要求正半径；重合圆的交点和公切线均返回空。
-*/
-
 struct Circle {
     P o;
     db r = 0;
     bool contains(P p) const { return p.distTo(o) <= r + EPS; }
 };
 
-/*
-下列圆相关操作均 O(1)。circumcircle 三点共线时返回 false。
-成功时返回 true，将外接圆写入 ans；失败时不要使用 ans。
-*/
 Circle diameter_circle(P a, P b) {
     return {(a + b) / 2, a.distTo(b) / 2};
 }
@@ -33,7 +32,6 @@ bool circumcircle(P a, P b, P c, Circle &ans) {
     return true;
 }
 
-// 圆与无限直线的交点，返回 0 / 1 / 2 个点。
 V < P > isCL(Circle c, P a, P b) {
     P v = (b - a).unit(), p = a + v * (c.o - a).dot(v);
     db d = p.distTo(c.o);
@@ -43,7 +41,6 @@ V < P > isCL(Circle c, P a, P b) {
     return {p - v * h, p + v * h};
 }
 
-// 两圆交点，返回 0 / 1 / 2 个点；重合圆有无穷多交点，约定返回空。
 V < P > isCC(Circle a, Circle b) {
     P v = b.o - a.o;
     db d = v.abs();
@@ -59,7 +56,6 @@ V < P > isCC(Circle a, Circle b) {
     return {p - w, p + w};
 }
 
-// 从点 p 向圆作切线，返回切点；圆内为空，圆上为一个点，圆外为两个。
 V < P > tangent_points(Circle c, P p) {
     P v = p - c.o;
     db d = v.abs(), r = c.r;
@@ -71,7 +67,6 @@ V < P > tangent_points(Circle c, P p) {
     return {q - w, q + w};
 }
 
-// 两个正半径圆的公切线，包含内外公切线；重合圆约定返回空。
 V < Line > common_tangents(Circle a, Circle b) {
     P v = b.o - a.o;
     db d = v.abs();
@@ -108,8 +103,8 @@ db circle_area(Circle a, Circle b) {
 /*
 P a{0, 0}, b{2, 0}, p{0, 2};
 Circle c = diameter_circle(a, b), d{{2, 0}, 1}, outer;
-bool ok = circumcircle(a, b, p, outer); // 三点共线则失败
+bool ok = circumcircle(a, b, p, outer);
 bool inside = c.contains(a); auto line_pts = isCL(c, a, b), circle_pts = isCC(c, d);
 auto pts = tangent_points(c, p); auto lines = common_tangents(c, d);
-db overlap = circle_area(c, d); // 两圆相交面积
+db overlap = circle_area(c, d);
 */

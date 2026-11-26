@@ -1,3 +1,9 @@
+/*
+最大化 c·x，约束 Ax <= b、x >= 0。矩阵 0-based，行列分别对应约束和变量。
+eps 为绝对容差，系数量级悬殊时先缩放。换基 O(nm)，最坏指数时间。来源 Stanford / KACTL，MIT 许可。
+status 为 0、1、2 分别表示无解、有最优解、无界。无界时 x 是一组可行解。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long double ld;
 
 using namespace std;
-
-/*
-最大化 c·x，约束 Ax <= b、x >= 0。矩阵 0-based，行列分别对应约束和变量。
-eps 为绝对容差，系数量级悬殊时先缩放。换基 O(nm)，最坏指数时间。来源 Stanford / KACTL，MIT 许可。
-*/
 
 struct Simplex {
     struct Result {
@@ -94,6 +95,5 @@ struct Simplex {
 
 /*
 Simplex lp; auto res = lp.solve({{1, 1}}, {4}, {2, 1});
-if (res.status == 1) cout << res.value << ' ' << res.x[0]; // 最优值 8，x[0] = 4
-// status 为 0 表示无解，2 表示无界；无界时 x 是一组可行解。
+if (res.status == 1) cout << res.value << ' ' << res.x[0];
 */

@@ -1,3 +1,8 @@
+/*
+求 C(n, k) mod p，n、k 为非负 ll，p 为可建阶乘表的小质数。
+预处理 O(p)，查询 O(log_p(n + 1))。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求 C(n, k) mod p，n、k 为非负 ll，p 为可建阶乘表的小质数。
-预处理 O(p)，查询 O(log_p(n + 1))。
-*/
 
 struct Lucas {
     int p = 2;

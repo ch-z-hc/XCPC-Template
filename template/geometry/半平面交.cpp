@@ -1,14 +1,15 @@
+/*
+先复制「点与向量」「直线与线段」。求有向直线左侧的交集，O(n log n)。
+只返回有正面积的有界多边形；无界、空集、点、线段均返回空。需要裁剪时加入边界矩形。
+结果顶点按逆时针排列。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 #define db long double
 
 using namespace std;
-
-/*
-先复制「点与向量」「直线与线段」。求有向直线左侧的交集，O(n log n)。
-只返回有正面积的有界多边形；无界、空集、点、线段均返回空。需要裁剪时加入边界矩形。
-*/
 
 V < P > half_plane(V < Line > lines) {
     sort(lines.begin(), lines.end(), [](const Line &a, const Line &b) {
@@ -57,5 +58,5 @@ V < P > half_plane(V < Line > lines) {
 
 /*
 P a{0, 0}, b{2, 0}, c{0, 2};
-auto polygon = half_plane({Line(a, b), Line(b, c), Line(c, a)}); // 逆时针顶点
+auto polygon = half_plane({Line(a, b), Line(b, c), Line(c, a)});
 */

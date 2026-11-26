@@ -1,10 +1,10 @@
+// 有向图拓扑排序，O(n + m)。有环时返回 false。
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 有向图拓扑排序，O(n + m)。有环时返回 false。
 
 bool topo(const V < V < int > > &g, V < int > &ans) {
     int n = int(g.size()) - 1;

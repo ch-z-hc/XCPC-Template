@@ -1,10 +1,13 @@
+/*
+维护低 63 位的异或线性基，0 <= x < 2^63。插入、判可表示和最大异或 O(63)，第 k 小 O(63²)。
+kth 按不同异或值从小到大编号，k 从 0 数，包含空集的 0。无此项返回 false，成功时写入 ans。
+*/
+
 #include <bits/stdc++.h>
 
 typedef unsigned long long ull;
 
 using namespace std;
-
-// 维护低 63 位的异或线性基，0 <= x < 2^63。插入、判可表示和最大异或 O(63)，第 k 小 O(63²)。
 
 struct Basis {
     array < ull, 63 > p{};
@@ -29,10 +32,6 @@ struct Basis {
         return x;
     }
 
-    /*
-    不同异或值从小到大第 k 个，k 为 0-based，包含空集的 0。
-    无此项返回 false；成功时写入 ans；O(63^2)，不修改原线性基。
-    */
     bool kth(ull k, ull &ans) {
         auto a = p;
         int n = 0;
@@ -54,6 +53,6 @@ struct Basis {
 /*
 Basis base; bool independent = base.insert(5); base.insert(3);
 bool has = base.contains(6); ull largest = base.max_xor(0);
-ull x; if (base.kth(1, x)) cout << x; // 不同异或值从小到大，0-based，包含 0
+ull x; if (base.kth(1, x)) cout << x;
 base.clear();
 */

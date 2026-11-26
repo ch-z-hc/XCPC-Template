@@ -1,3 +1,8 @@
+/*
+维护静态非负权树的点权，求指定距离内的点权和。建树 O(n log² n)，单点加和查询 O(log² n)。
+重建后点权归零，距离和权值和须放入 ll，长链注意递归栈。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-维护静态非负权树的点权，求指定距离内的点权和。建树 O(n log² n)，单点加和查询 O(log² n)。
-重建后点权归零，距离和权值和须放入 ll，长链注意递归栈。
-*/
 
 struct CentroidTree {
     struct Fenwick {

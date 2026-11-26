@@ -1,3 +1,9 @@
+/*
+可合并小根堆，根 0 为空，同值按节点编号出堆。只合并不相交的堆，只对非空堆取顶或弹出。
+建单点堆均摊 O(1)，取顶 O(1)，合并、弹出 O(log n)。
+merge 和 pop 均返回新根。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-可合并小根堆，根 0 为空，同值按节点编号出堆。只合并不相交的堆，只对非空堆取顶或弹出。
-建单点堆均摊 O(1)，取顶 O(1)，合并、弹出 O(log n)。
-*/
 
 struct LeftistHeap {
     struct Node {
@@ -47,7 +48,7 @@ struct LeftistHeap {
 
 /*
 LeftistHeap heap; int a = heap.push(7), b = heap.push(3);
-a = heap.merge(a, b); ll x = heap.top(a); // 3
-a = heap.pop(a); // 接住新根
+a = heap.merge(a, b); ll x = heap.top(a);
+a = heap.pop(a);
 heap.init();
 */

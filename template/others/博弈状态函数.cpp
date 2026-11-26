@@ -1,13 +1,13 @@
+/*
+求无环公平游戏的 SG 值，O(n + m)。状态从 1 编号，无法行动者输，终止状态为 0。
+有环则失败；独立子游戏的 SG 异或和非零时先手胜。长链注意递归栈。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-求无环公平游戏的 SG 值，O(n + m)。状态从 1 编号，无法行动者输，终止状态为 0。
-有环则失败；独立子游戏的 SG 异或和非零时先手胜。长链注意递归栈。
-*/
 
 bool grundy(const V < V < int > > &g, V < int > &sg) {
     int n = int(g.size()) - 1;
@@ -29,5 +29,5 @@ bool grundy(const V < V < int > > &g, V < int > &sg) {
 
 /*
 V < int > sg;
-bool ok = grundy(g, sg); // 若 ok 为真，sg[u] ^ sg[v] 非零表示先手胜
+bool ok = grundy(g, sg);
 */

@@ -1,3 +1,10 @@
+/*
+求积性函数 f 的前缀和，f(1) = 1，f(p) 须为 c[0] + c[1]p + c[2]p²。
+0 <= n <= 10^12，2 <= mod <= INT_MAX。
+素数幂回调 O(1) 时，常用时间估计 O(n^(3/4) / log n)，空间 O(sqrt(n))。
+pi 返回素数个数的原值，sum 返回前缀和对 mod 的余数。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,12 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求积性函数 f 的前缀和，f(1) = 1，f(p) 须为 c[0] + c[1]p + c[2]p²。
-0 <= n <= 10^12，2 <= mod <= INT_MAX。
-素数幂回调 O(1) 时，常用时间估计 O(n^(3/4) / log n)，空间 O(sqrt(n))。
-*/
 
 struct Min25 {
     ll n = 0, mod = 2;
@@ -105,6 +106,6 @@ struct Min25 {
 };
 
 /*
-Min25 sieve; sieve.init(100, 1000000007); ll primes = sieve.pi(); // 素数个数原值
-ll sum = sieve.sum({2, 0, 0}, [](ll, int e) -> ll { return e + 1; }); // 约数个数和取模
+Min25 sieve; sieve.init(100, 1000000007); ll primes = sieve.pi();
+ll sum = sieve.sum({2, 0, 0}, [](ll, int e) -> ll { return e + 1; });
 */

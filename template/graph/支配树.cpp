@@ -1,10 +1,13 @@
+/*
+求有向图从指定根出发的支配树，O((n + m) log n)。长链注意递归栈。
+idom[root] 为根自身，不可达顶点的 idom 为 0，tree[u] 存支配树上的儿子。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-// 求有向图从指定根出发的支配树，O((n + m) log n)。长链注意递归栈。
 
 struct Dominator {
     int n = 0, tim = 0;
@@ -74,5 +77,5 @@ struct Dominator {
 
 /*
 Dominator dt; dt.init(3); dt.add_edge(1, 2); dt.build(1);
-int parent = dt.idom[2]; // 根指向自身，不可达为 0；tree[u] 存支配树的儿子
+int parent = dt.idom[2];
 */

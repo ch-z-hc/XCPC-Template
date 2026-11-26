@@ -1,3 +1,8 @@
+/*
+约数和、倍数和变换及 GCD、LCM 卷积，均为 O(n log n)。a[1..n] 已取模，a[0] 填 0。
+1 <= mod <= 2^31，可为合数；卷积两数组等长，只保留下标 <= n 的项。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-约数和、倍数和变换及 GCD、LCM 卷积，均为 O(n log n)。a[1..n] 已取模，a[0] 填 0。
-1 <= mod <= 2^31，可为合数；卷积两数组等长，只保留下标 <= n 的项。
-*/
 
 void divisor_zeta(V < ll > &a, ll mod, bool inverse = false) {
     int n = int(a.size()) - 1;
@@ -49,7 +49,7 @@ V < ll > lcm_conv(V < ll > a, V < ll > b, ll mod) {
 
 /*
 V < ll > a{0, 2, 4, 6}, b{0, 1, 2, 3}; ll mod = 17;
-divisor_zeta(a, mod); divisor_zeta(a, mod, true);   // 约数求和、还原
-multiple_zeta(a, mod); multiple_zeta(a, mod, true); // 倍数求和、还原
+divisor_zeta(a, mod); divisor_zeta(a, mod, true);
+multiple_zeta(a, mod); multiple_zeta(a, mod, true);
 auto c = gcd_conv(a, b, mod), d = lcm_conv(a, b, mod);
 */

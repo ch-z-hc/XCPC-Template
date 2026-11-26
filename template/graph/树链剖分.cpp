@@ -1,13 +1,14 @@
+/*
+把树上路径拆为 O(log n) 个闭区间，子树对应 [in[u], out[u]]。建树 O(n)，求 LCA 为 O(log n)。
+路径含 LCA，维护边权时跳过其位置。回调顺序不保证沿路径方向，长链注意递归栈。
+文件尾的路径点权和示例需先复制「线段树与树上二分」，按 DFS 序建线段树。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 
 using namespace std;
-
-/*
-把树上路径拆为 O(log n) 个闭区间，子树对应 [in[u], out[u]]。建树 O(n)，求 LCA 为 O(log n)。
-路径含 LCA，维护边权时跳过其位置。回调顺序不保证沿路径方向，长链注意递归栈。
-*/
 
 struct HLD {
     int n = 0, tim = 0;
@@ -76,7 +77,6 @@ struct HLD {
 HLD hld; hld.init(n);
 for (auto [u, v] : edges) hld.add_edge(u, v);
 hld.build(root); int p = hld.lca(u, v);
-// 求路径点权和时，先复制「线段树与树上二分」，按 DFS 序建线段树。
 V < ll > b(n + 1);
 for (int u = 1; u <= n; ++ u) b[hld.in[u]] = a[u];
 SegTree seg; seg.init(b); ll ans = 0;

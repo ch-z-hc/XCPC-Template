@@ -1,3 +1,8 @@
+/*
+维护可重复的 64 位无符号整数，查询与 x 的最大异或值。每次操作 O(64)，删除不回收节点。
+erase 每次只删一份，空集查询 max_xor 返回 false。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +10,6 @@
 typedef unsigned long long ull;
 
 using namespace std;
-
-// 维护可重复的 64 位无符号整数，查询与 x 的最大异或值。每次操作 O(64)，删除不回收节点。
 
 struct XorTrie {
     struct Node {
@@ -59,7 +62,7 @@ struct XorTrie {
 
 /*
 XorTrie trie; trie.insert(5); ull ans;
-if (trie.max_xor(2, ans)) cout << ans; // 7，空集时失败
-bool erased = trie.erase(5);           // 只删一份
+if (trie.max_xor(2, ans)) cout << ans;
+bool erased = trie.erase(5);
 trie.init();
 */

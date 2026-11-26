@@ -1,3 +1,5 @@
+// 下标从 1 开始，add 的位置须在 [1, n] 内。init(n) 重置为全 0。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -49,5 +51,5 @@ struct Fenwick {
 /*
 Fenwick bit; bit.init({0, 2, 5}); bit.add(1, 3);
 ll pre = bit.query(1), sum = bit.query(1, 2);
-bit.init(2); // 重置为全 0
+bit.init(2);
 */

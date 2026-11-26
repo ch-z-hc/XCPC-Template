@@ -1,3 +1,9 @@
+/*
+维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 ll，仅查询连通点对。
+初始化 O(n)，其余操作均摊 O(log n)。长链注意递归栈。
+link 在两点已连通时失败，cut 只能断开直接相连的边。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 ll，仅查询连通点对。
-初始化 O(n)，其余操作均摊 O(log n)。长链注意递归栈。
-*/
 
 struct LCT {
     struct Node {
@@ -112,9 +113,9 @@ struct LCT {
 
 /*
 LCT tree; tree.init({0, 3, 5, 7});
-bool joined = tree.link(1, 2); // 已连通则失败
+bool joined = tree.link(1, 2);
 tree.modify(2, 9);
-if (tree.same(1, 2)) cout << tree.query(1, 2); // 12
+if (tree.same(1, 2)) cout << tree.query(1, 2);
 tree.make_root(2); int root = tree.find_root(1);
-bool removed = tree.cut(1, 2); // 只能断开直接相连的边
+bool removed = tree.cut(1, 2);
 */

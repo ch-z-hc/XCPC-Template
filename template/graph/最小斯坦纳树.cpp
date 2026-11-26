@@ -1,3 +1,8 @@
+/*
+求非负权无向图连接所有终端的最小代价，空集、单点代价为 0，不可连通返回 -1。
+终端去重后 k <= 20，距离和答案须小于 2^62。时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + m)。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求非负权无向图连接所有终端的最小代价，空集、单点代价为 0，不可连通返回 -1。
-终端去重后 k <= 20，距离和答案须小于 2^62。时间 O(3^k n + 2^k (n + m) log n)，空间 O(2^k n + m)。
-*/
 
 struct Steiner {
     static const ll inf = 1ll << 62;

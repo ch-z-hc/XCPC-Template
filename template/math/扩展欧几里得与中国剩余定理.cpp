@@ -1,3 +1,10 @@
+/*
+求 Bézout 系数、模逆和一般同余方程组。exgcd 输入非负，模数为正，各模数可不互质。
+合并 k 个方程 O(k log M)，M 为运算中的最大模数。无解或合并模数超出 ll 时失败。
+exgcd 给出 ax + by = gcd(a, b) 的系数。inv 无逆元时返回 -1，crt 成功时给出最小非负解和合并模数。
+直接调用 crt_mul 时须有 0 <= a, b < mod。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +12,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-求 Bézout 系数、模逆和一般同余方程组。exgcd 输入非负，模数为正，各模数可不互质。
-合并 k 个方程 O(k log M)，M 为运算中的最大模数。无解或合并模数超出 ll 时失败。
-*/
 
 ll exgcd(ll a, ll b, ll &x, ll &y) {
     if (! b) {
@@ -29,7 +31,6 @@ ll inv(ll a, ll mod) {
     x %= mod; return x < 0 ? x + mod : x;
 }
 
-// 0 <= a, b < mod，mod > 0；倍增模乘，避免 a * b 溢出。
 ll crt_mul(ll a, ll b, ll mod) {
     ll ans = 0;
     for (; b; b >>= 1) {
@@ -58,7 +59,7 @@ bool crt(const V < ll > &r, const V < ll > &m, ll &ans, ll &mod) {
 }
 
 /*
-ll x, y; ll g = exgcd(6, 15, x, y); // 6x + 15y = g
-ll inverse = inv(3, 5);              // 无逆元返回 -1
-ll ans, mod; bool ok = crt({2, 3}, {3, 5}, ans, mod); // 最小非负解 8，模 15
+ll x, y; ll g = exgcd(6, 15, x, y);
+ll inverse = inv(3, 5);
+ll ans, mod; bool ok = crt({2, 3}, {3, 5}, ans, mod);
 */

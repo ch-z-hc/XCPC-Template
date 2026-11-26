@@ -1,3 +1,5 @@
+// 非负权连通树的最远点与直径，分别为 O(n)。距离须放入 ll，长链注意递归栈。
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,8 +7,6 @@
 typedef long long ll;
 
 using namespace std;
-
-// 非负权连通树的最远点与直径，分别为 O(n)。距离须放入 ll，长链注意递归栈。
 
 typedef V < V < pair < int, ll > > > Graph;
 
@@ -23,7 +23,6 @@ pair < int, ll > tree_farthest(int s, const Graph &g) {
     return ans;
 }
 
-// 返回树的两个端点和直径长度。
 tuple < int, int, ll > tree_diameter(const Graph &g) {
     if (g.size() <= 1) return {0, 0, 0};
     int u = tree_farthest(1, g).first;

@@ -1,3 +1,11 @@
+/*
+在整数横坐标 [L, R] 维护直线、线段的最大值。X = R - L + 1，建树和清空 O(X)。
+插直线、查询 O(log X)，插线段 O(log² X)。密集建树约需 4X 个 int，X <= (INT_MAX - 4) / 4。
+整数端点差、a*x+c 及与另一分母的乘积须放入 ll。小数斜率、截距或纵坐标用浮点接口。
+在值域内查询。同值取最早插入的编号，无覆盖时 query_id 返回 0，query 返回负无穷。
+query_int 用于取整数直线的精确值。clear 保留值域，init 重设值域。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -6,12 +14,6 @@ typedef long double ld;
 typedef long long ll;
 
 using namespace std;
-
-/*
-在整数横坐标 [L, R] 维护直线、线段的最大值。X = R - L + 1，建树和清空 O(X)。
-插直线、查询 O(log X)，插线段 O(log² X)。密集建树约需 4X 个 int，X <= (INT_MAX - 4) / 4。
-整数端点差、a*x+c 及与另一分母的乘积须放入 ll。小数斜率、截距或纵坐标用浮点接口。
-*/
 
 struct LiChao {
     struct Line {
@@ -168,12 +170,12 @@ struct LiChao {
 };
 
 /*
-LiChao tr(1, 10);                   // tr.init(10) 或 tr.init(1, 10) 重设值域
-int first = tr.add_line(3, -2);     // y = 3x - 2，插入返回编号
-ll exact; if (tr.query_int(2, exact)) cout << exact; // 4，只插整数直线时使用
-tr.add_seg(1, 2, 5, 9);             // 两端点 (1, 2)、(5, 9)，区间外无效
+LiChao tr(1, 10); tr.init(10); tr.init(1, 10);
+int first = tr.add_line(3, -2);
+ll exact; if (tr.query_int(2, exact)) cout << exact;
+tr.add_seg(1, 2, 5, 9);
 tr.add_line_real(0.5L, 1.2L); tr.add_seg_real(2, 1.5L, 6, 3.5L);
-int id = tr.query_id(2);             // 同值取最早编号，未覆盖为 0
-ld y = tr.query(2);                  // 近似值，未覆盖为负无穷
-tr.clear();                          // 保留值域，清空所有线
+int id = tr.query_id(2);
+ld y = tr.query(2);
+tr.clear();
 */

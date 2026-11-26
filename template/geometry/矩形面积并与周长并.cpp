@@ -1,3 +1,8 @@
+/*
+轴对齐矩形的面积并、周长并，O(n log n)。坐标可负，允许重复和退化矩形。
+坐标差、面积和周长的中间量须放入 ll。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +10,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-轴对齐矩形的面积并、周长并，O(n log n)。坐标可负，允许重复和退化矩形。
-坐标差、面积和周长的中间量须放入 ll。
-*/
 
 struct RectUnion {
     struct Event { ll x, y1, y2; int d; };
@@ -62,11 +62,10 @@ struct RectUnion {
             int l = int(lower_bound(ys.begin(), ys.end(), y1) - ys.begin());
             int r = int(lower_bound(ys.begin(), ys.end(), y2) - ys.begin()) - 1;
             modify(1, 0, n - 1, l, r, d);
-            // 同一 x 先加后删，逐事件长度变化恰为竖直边界。
             perimeter += abs(tr[1].len - before); last = x;
         }
         return {area, perimeter};
     }
 };
 
-// RectUnion scan; auto [area, perimeter] = scan.solve({{0, 0, 2, 3}}); // 6、10
+// RectUnion scan; auto [area, perimeter] = scan.solve({{0, 0, 2, 3}});

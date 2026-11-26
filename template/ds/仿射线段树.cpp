@@ -1,3 +1,9 @@
+/*
+区间仿射变换和区间和，a[1..n]，1 <= mod <= INT_MAX，参数可负。
+建树 O(n)，修改和查询 O(log n)。
+modify(l, r, k, b) 将区间内每项 x 改为 kx + b，区间赋值 v 时传 0, v。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
@@ -5,11 +11,6 @@
 typedef long long ll;
 
 using namespace std;
-
-/*
-区间仿射变换和区间和，a[1..n]，1 <= mod <= INT_MAX，参数可负。
-建树 O(n)，修改和查询 O(log n)。
-*/
 
 struct AffineSeg {
     int n = 0;
@@ -85,6 +86,6 @@ struct AffineSeg {
 
 /*
 AffineSeg st; st.init({0, 2, 3}, 17);
-st.modify(1, 2, 2, 1); // 每项变为 2x + 1，赋值为 v 时传 0, v
-ll sum = st.query(1, 2); // 12
+st.modify(1, 2, 2, 1);
+ll sum = st.query(1, 2);
 */

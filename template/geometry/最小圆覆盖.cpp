@@ -1,14 +1,14 @@
+/*
+先复制「点与向量」「直线与线段」「圆」。最小覆盖圆期望 O(n)，最坏 O(n³)。
+允许重复点和共线点，空集返回圆心在原点、半径为 0 的圆。
+*/
+
 #include <bits/stdc++.h>
 
 #define V vector
 #define db long double
 
 using namespace std;
-
-/*
-先复制「点与向量」「直线与线段」「圆」。最小覆盖圆期望 O(n)，最坏 O(n³)。
-允许重复点和共线点，空集返回圆心在原点、半径为 0 的圆。
-*/
 
 Circle min_circle(V < P > a) {
     mt19937 rng(unsigned(chrono::steady_clock::now().time_since_epoch().count()));
@@ -32,4 +32,4 @@ Circle min_circle(V < P > a) {
     return ans;
 }
 
-// Circle c = min_circle({{0, 0}, {2, 0}, {1, 1}}); // c.o 为圆心，c.r 为半径
+// Circle c = min_circle({{0, 0}, {2, 0}, {1, 1}});
