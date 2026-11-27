@@ -57,7 +57,7 @@ CHAPTERS = [
         ("template/ds/二进制字典树.cpp", "01 Trie"),
         ("template/ds/无旋平衡树.cpp", "FHQ Treap"),
         ("template/ds/主席树.cpp", "主席树"),
-        ("template/ds/仿射线段树.cpp", "线段树（加乘）"),
+        ("template/ds/仿射线段树.cpp", "线段树（add mul）"),
         ("template/ds/单侧最值线段树.cpp", "线段树（add/min）"),
         ("template/ds/区间加与截断线段树.cpp", "线段树（add/min/max）"),
         ("template/ds/带权与异或并查集.cpp", "带权与异或并查集"),
