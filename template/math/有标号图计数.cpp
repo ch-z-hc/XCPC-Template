@@ -7,9 +7,7 @@ n < 2^21，各函数时间 O(n log(n+2))，空间 O(n)。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct GraphCount {

@@ -8,7 +8,6 @@ ml、mr 记录两侧搭档，未匹配为 0。cover 用 O(n + m + E) 返回 {左
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct HK {

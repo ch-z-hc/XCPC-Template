@@ -9,7 +9,6 @@ bsgs 要求底数与模数互质，exbsgs 允许不互质。
 #define se second
 
 typedef long long ll;
-
 using namespace std;
 
 ll bsgs_inv(ll a, ll mod) {

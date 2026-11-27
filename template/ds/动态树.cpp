@@ -7,9 +7,7 @@ link 在两点已连通时失败，cut 只能断开直接相连的边。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct LCT {

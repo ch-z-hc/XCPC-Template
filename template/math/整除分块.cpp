@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 V < pair < ll, ll > > div_blocks(ll n) {

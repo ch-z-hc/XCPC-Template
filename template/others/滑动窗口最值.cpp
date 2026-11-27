@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 template < class T > V < T > window_min(const V < T > &a, int k) {

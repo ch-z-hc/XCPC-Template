@@ -7,9 +7,7 @@ merge 和 pop 均返回新根。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct LeftistHeap {

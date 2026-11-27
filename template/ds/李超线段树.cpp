@@ -9,10 +9,8 @@ query_int 用于取整数直线的精确值。clear 保留值域，init 重设�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef long double ld;
-
 using namespace std;
 
 struct LiChao {

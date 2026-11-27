@@ -8,10 +8,8 @@ cycles 按出边顺序存环，pos 为环内位置，非环点为 -1。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct FuncGraph {

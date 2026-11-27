@@ -7,9 +7,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 V < int > split_conv(const V < int > &a, const V < int > &b, int mod) {

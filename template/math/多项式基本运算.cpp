@@ -9,9 +9,7 @@ sqrt 无根时返回 false，首个非零项取较小的平方根。divmod 去�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct FPS {

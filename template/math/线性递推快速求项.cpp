@@ -7,9 +7,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 int bostan_mori(V < int > p, V < int > q, ull k) {

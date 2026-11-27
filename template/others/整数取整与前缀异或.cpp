@@ -7,7 +7,6 @@
 
 typedef long long ll;
 typedef unsigned long long ull;
-
 using namespace std;
 
 ll floor_div(ll a, ll b) {

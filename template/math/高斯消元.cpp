@@ -8,10 +8,8 @@ r = min(n, m)，实数 O(nmr)，模数版另加 O(r log p)，异或 O(nm + nr ce
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef long double ld;
-
 using namespace std;
 
 int gauss(V < V < ld > > a, int m, V < ld > &x, ld eps = 1e-12L) {

@@ -9,7 +9,6 @@ contains 返回 0、1、2，分别表示外部、边界、内部。snapshot 返�
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct DynamicHull {

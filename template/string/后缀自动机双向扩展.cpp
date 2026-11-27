@@ -10,7 +10,6 @@
 #define fi first
 #define se second
 #define pii pair < int, int >
-
 using namespace std;
 
 struct BiSAM {

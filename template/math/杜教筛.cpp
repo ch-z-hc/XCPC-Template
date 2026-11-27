@@ -7,9 +7,7 @@
 
 #define V vector
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 struct DuJiao {

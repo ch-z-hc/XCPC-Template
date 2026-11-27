@@ -6,9 +6,7 @@ XOR 逆变换要求奇质数模。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 static void fwt_check(const V < ll > &a) {

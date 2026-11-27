@@ -9,7 +9,6 @@
 #define se second
 
 typedef long long ll;
-
 using namespace std;
 
 struct IntervalSet {

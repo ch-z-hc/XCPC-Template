@@ -8,9 +8,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct PXorTrie {

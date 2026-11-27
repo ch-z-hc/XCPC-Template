@@ -7,7 +7,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < array < int, 3 > > runs(const string &s) {

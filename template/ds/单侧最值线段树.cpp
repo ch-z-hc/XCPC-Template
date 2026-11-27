@@ -9,9 +9,7 @@ modify(l, r, d, v) 先加 d，再对每项取 min(x, v) 或 max(x, v)。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 template < bool is_min = true >

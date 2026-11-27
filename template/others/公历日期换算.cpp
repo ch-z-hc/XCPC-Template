@@ -6,7 +6,6 @@
 #include <bits/stdc++.h>
 
 typedef long long ll;
-
 using namespace std;
 
 ll day_number(int y, int m, int d) {

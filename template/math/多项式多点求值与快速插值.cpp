@@ -8,7 +8,6 @@
 
 #define V vector
 #define se second
-
 using namespace std;
 
 struct Multipoint {

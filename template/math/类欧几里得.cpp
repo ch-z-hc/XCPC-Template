@@ -6,7 +6,6 @@ a*n+b、负数归一化的部分和及答案均须放入 ll。
 #include <bits/stdc++.h>
 
 typedef long long ll;
-
 using namespace std;
 
 ll floor_sum(ll n, ll m, ll a, ll b) {

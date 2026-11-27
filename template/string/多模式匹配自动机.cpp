@@ -7,9 +7,7 @@ query 按模式插入编号返回出现次数。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct AC {

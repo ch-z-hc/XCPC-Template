@@ -7,9 +7,7 @@ status 为 0、1、2 分别表示无解、有最优解、无界。无界时 x �
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long double ld;
-
 using namespace std;
 
 struct Simplex {

@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < int > primes(int n) {

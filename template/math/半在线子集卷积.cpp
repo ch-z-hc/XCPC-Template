@@ -7,9 +7,7 @@ g 的长度为 2^n，系数和回调结果已按正 int 模数取模。时间 O(
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 template < class F >

@@ -7,9 +7,7 @@ O(n³)，要求 w <= LLONG_MAX / (8 * max(1, n))。来源为 bqi343/cp-notebook�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct WBlossom {

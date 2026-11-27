@@ -6,7 +6,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 bool grundy(const V < V < int > > &g, V < int > &sg) {

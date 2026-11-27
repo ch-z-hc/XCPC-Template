@@ -6,9 +6,7 @@
 #define fi first
 #define se second
 #define pii pair < int, int >
-
 typedef long long ll;
-
 using namespace std;
 
 template < class T > bool chkmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }

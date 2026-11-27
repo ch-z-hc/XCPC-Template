@@ -8,9 +8,7 @@ first_ge、last_ge 找区间首个、末个 >= x 的位置，kth 找前缀和首
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct SegTree {

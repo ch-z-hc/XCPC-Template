@@ -3,9 +3,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,

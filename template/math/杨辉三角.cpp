@@ -5,9 +5,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 V < V < int > > pascal(int n, int mod) {

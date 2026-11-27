@@ -6,9 +6,7 @@ add(u, v, w) 表示 x[u] - x[v] <= w，solve 无解时返回 false。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct Diff {

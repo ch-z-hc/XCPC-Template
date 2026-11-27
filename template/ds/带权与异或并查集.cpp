@@ -7,10 +7,8 @@ merge(u, v, w) 约束 value[v] - value[u] 或 value[u] ^ value[v] 等于 w。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct WDSU {

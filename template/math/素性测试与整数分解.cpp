@@ -7,9 +7,7 @@ factor 对 n < 2 返回空表，其余按非降序返回质因子，保留重数
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 ull rho_mul(ull a, ull b, ull mod) {

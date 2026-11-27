@@ -6,9 +6,7 @@ count 按状态返回出现次数。query 只考虑至少出现两次的子串�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct SAM {

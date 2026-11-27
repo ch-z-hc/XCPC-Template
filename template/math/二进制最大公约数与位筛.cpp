@@ -6,10 +6,8 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef unsigned long long ull;
-
 using namespace std;
 
 ull binary_gcd(ull a, ull b) {

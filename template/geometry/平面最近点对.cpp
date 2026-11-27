@@ -7,7 +7,6 @@ build 返回原数组下标，d2 为距离平方。少于两点时返回 {-1, -1
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 #define db long double

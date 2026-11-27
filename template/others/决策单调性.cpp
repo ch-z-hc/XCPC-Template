@@ -14,9 +14,7 @@
 #define fi first
 #define se second
 #define pii pair < int, int >
-
 typedef long long ll;
-
 using namespace std;
 
 template < class Cost >

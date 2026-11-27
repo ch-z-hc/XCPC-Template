@@ -6,9 +6,7 @@ erase 每次只删一份，空集查询 max_xor 返回 false。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct XorTrie {

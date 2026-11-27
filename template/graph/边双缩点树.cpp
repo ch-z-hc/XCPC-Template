@@ -7,7 +7,6 @@
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 V < V < pii > > bridge_tree(int cnt, const V < int > &bel,

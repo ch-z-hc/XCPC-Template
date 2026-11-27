@@ -3,9 +3,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 using Graph = V < V < pair < int, ll > > >;

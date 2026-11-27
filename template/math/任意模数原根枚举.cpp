@@ -7,9 +7,7 @@ all_roots 返回正模数 m 的全部原根（升序），无解返回空，m = 
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 int min_root(int m, int &phi) {

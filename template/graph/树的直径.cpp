@@ -5,9 +5,7 @@
 #define V vector
 #define fi first
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 using Graph = V < V < pair < int, ll > > >;

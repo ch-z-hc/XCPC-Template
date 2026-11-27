@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 bool floyd(V < V < ll > > &dis, ll inf = (1ll << 62)) {

@@ -7,7 +7,6 @@
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 struct EBCC {

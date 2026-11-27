@@ -6,7 +6,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < int > duval(const string &s) {

@@ -6,7 +6,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < int > get_pi(const string &t) {

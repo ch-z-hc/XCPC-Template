@@ -5,7 +5,6 @@
 #define V vector
 #define se second
 #define pii pair < int, int >
-
 using namespace std;
 
 struct Manacher {

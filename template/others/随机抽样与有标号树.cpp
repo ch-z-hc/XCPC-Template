@@ -8,9 +8,7 @@ tree 用均匀 Prüfer 序列生成 1-based 有标号树，n >= 1，时间 O(n l
 #define V vector
 #define se second
 #define pii pair < int, int >
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 struct Sampler {

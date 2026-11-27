@@ -6,7 +6,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < V < int > > block_cut_tree(int n, const V < V < int > > &bcc) {

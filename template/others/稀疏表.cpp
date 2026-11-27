@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 ll st_max(ll x, ll y) { return max(x, y); }

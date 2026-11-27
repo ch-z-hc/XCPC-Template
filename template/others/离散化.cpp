@@ -3,7 +3,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 template < class T > V < int > discretize(const V < T > &a, V < T > &key) {

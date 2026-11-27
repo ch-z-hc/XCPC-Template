@@ -7,9 +7,7 @@ build() 递增，build(true) 递减。同点查询取 0，不连通时 lca 返�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct KruskalTree {

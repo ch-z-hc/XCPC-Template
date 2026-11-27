@@ -7,9 +7,7 @@ directed 为 true 时统计从 root 向外的有向生成树。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 ll det(V < V < ll > > a, ll mod) {

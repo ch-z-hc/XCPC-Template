@@ -6,7 +6,6 @@ add(u, x, v, y) 表示 a[u] == x 或 a[v] == y。solve 无解时返回 false。
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct SAT {

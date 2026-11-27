@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef unsigned long long ull;
-
 using namespace std;
 
 int bitset_lcs(const string &s, const string &t) {

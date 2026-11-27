@@ -10,9 +10,7 @@ split 从原树取走指定区间并返回新根，merge(a, b) 将 b 并入 a �
 #define fi first
 #define se second
 #define pii pair < int, int >
-
 typedef long long ll;
-
 using namespace std;
 
 struct MergeSegTree {

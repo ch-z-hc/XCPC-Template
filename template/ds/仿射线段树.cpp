@@ -7,9 +7,7 @@ modify(l, r, k, b) 将区间内每项 x 改为 kx + b，区间赋值 v 时传 0,
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct AffineSeg {

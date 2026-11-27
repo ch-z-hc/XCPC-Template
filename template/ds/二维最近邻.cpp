@@ -9,9 +9,7 @@ nearest 可按编号排除一个点，有解时写入 {距离平方, 点编号}�
 #define V vector
 #define fi first
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 struct KDTree {

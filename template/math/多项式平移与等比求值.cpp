@@ -8,9 +8,7 @@ shift_samples 将 f(0)..f(n-1) 平移到 f(c)..f(c+n-1)，次数 < n。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 V < int > taylor_shift(const V < int > &a, int c) {

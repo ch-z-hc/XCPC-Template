@@ -9,10 +9,8 @@ sparse_power 求 a^k 的前 n 项，要求 a[0] 非零，耗时 O(|a| + n * 非�
 
 #define V vector
 #define pii pair < int, int >
-
 typedef long long ll;
 typedef unsigned long long ull;
-
 using namespace std;
 
 V < int > poly_deriv(const V < int > &a) {

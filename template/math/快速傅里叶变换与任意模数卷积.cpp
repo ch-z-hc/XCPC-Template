@@ -7,10 +7,8 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
 typedef long double ld;
-
 using namespace std;
 
 using Complex = complex < ld >;

@@ -8,7 +8,6 @@ qs 每项为 {l, r, 答案下标}。
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct Mo {

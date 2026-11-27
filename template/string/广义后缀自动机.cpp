@@ -6,9 +6,7 @@ build 按字典树层序离线扩展；总长 n、字母表大小固定时建树
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct GSAM {

@@ -6,9 +6,7 @@ n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 using Matrix = V < V < ll > >;

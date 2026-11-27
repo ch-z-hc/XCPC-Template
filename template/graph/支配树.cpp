@@ -6,7 +6,6 @@ idom[root] 为根自身，不可达顶点的 idom 为 0，tree[u] 存支配树�
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct Dominator {

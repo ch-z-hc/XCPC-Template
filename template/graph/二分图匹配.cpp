@@ -7,7 +7,6 @@ ml、mr 按原左、右两侧记录搭档，未匹配为 0。
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct Kuhn {

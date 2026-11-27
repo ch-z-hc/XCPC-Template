@@ -8,9 +8,7 @@ exgcd 给出 ax + by = gcd(a, b) 的系数。inv 无逆元时返回 -1，crt 成
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 ll exgcd(ll a, ll b, ll &x, ll &y) {

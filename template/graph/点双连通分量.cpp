@@ -9,7 +9,6 @@ bcc[i].v 存顶点，bcc[i].e 存边号，割点可属于多个分量。
 #define fi first
 #define se second
 #define pii pair < int, int >
-
 using namespace std;
 
 struct VBCC {

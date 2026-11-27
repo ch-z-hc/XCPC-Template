@@ -7,7 +7,6 @@ cut[i] 是前 i 个字符的最少回文段数，series 按相邻回文后缀长
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct PalPartition {

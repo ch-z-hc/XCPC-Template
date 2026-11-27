@@ -7,9 +7,7 @@ Treap 的 erase 每次只删一份，rank(x) 等于严格小于 x 的元素个�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct Treap {

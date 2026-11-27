@@ -7,7 +7,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 V < int > power_projection(V < int > a, V < int > b, int n) {

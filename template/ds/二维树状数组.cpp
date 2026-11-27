@@ -8,9 +8,7 @@ prefix 默认统计横、纵坐标均不大于给定值的点。strict_x、stric
 
 #define V vector
 #define fi first
-
 typedef long long ll;
-
 using namespace std;
 
 struct Fenwick2D {

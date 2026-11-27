@@ -7,9 +7,7 @@ s == t 时含空游走，不足 k 条返回全部。边权及有效长度须小�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct KWalk {

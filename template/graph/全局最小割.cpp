@@ -7,9 +7,7 @@
 
 #define V vector
 #define fi first
-
 typedef long long ll;
-
 using namespace std;
 
 struct MinCut {

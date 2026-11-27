@@ -3,7 +3,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 template < class T > V < int > lis(const V < T > &a, bool strict = true) {

@@ -8,9 +8,7 @@
 #define V vector
 #define fi first
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 void bounded_knapsack(V < ll > &dp, int w, ll v, int cnt, ll neg = -(1ll << 62)) {

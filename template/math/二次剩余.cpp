@@ -6,7 +6,6 @@
 #define se second
 
 typedef long long ll;
-
 using namespace std;
 
 ll sqrt_mod(ll a, ll p) {

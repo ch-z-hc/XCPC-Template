@@ -7,7 +7,6 @@
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 V < int > euler_d(int n, const V < pii > &edges) {

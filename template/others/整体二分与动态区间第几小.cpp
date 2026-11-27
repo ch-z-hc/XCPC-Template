@@ -7,9 +7,7 @@ query 返回查询编号，取 solve 结果的对应下标即为答案。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct KthOffline {

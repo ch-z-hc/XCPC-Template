@@ -10,7 +10,6 @@ j 使用展开下标，取点时才对 n 取模。
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 struct NestedHull {

@@ -8,7 +8,6 @@ nodes 存本次点集，t[u] 的每项为 {儿子, 原树距离}。
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 struct VTree {

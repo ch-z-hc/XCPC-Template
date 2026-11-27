@@ -7,9 +7,7 @@ rec[i] 为前第 i + 1 项的系数。k 从 0 数，初值至少给出前 d 项�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 static ll bm_norm(ll x, ll mod) {

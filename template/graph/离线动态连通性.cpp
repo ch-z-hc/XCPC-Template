@@ -7,7 +7,6 @@ q 次操作共 O(q log q log n)，时间线上的区间副本使空间达到 O(n
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 struct DynConn {

@@ -3,7 +3,6 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 bool topo(const V < V < int > > &g, V < int > &ans) {

@@ -7,9 +7,7 @@ count(l, r, x) 统计区间内 <= x 的元素个数。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct PST {

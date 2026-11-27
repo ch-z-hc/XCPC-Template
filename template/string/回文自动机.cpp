@@ -7,9 +7,7 @@ insert 返回加入字符后最长回文后缀的节点，count 按节点返回�
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct PAM {

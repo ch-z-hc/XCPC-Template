@@ -4,7 +4,6 @@
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 V < int > bfs01(const V < V < pii > > &g, int s) {

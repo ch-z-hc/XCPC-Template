@@ -10,9 +10,7 @@ hull 返回逆时针顶点，从字典序最小点起；chain 每个横坐标只
 #define V vector
 #define fi first
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 struct IntHull {

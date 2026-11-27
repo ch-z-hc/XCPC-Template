@@ -9,7 +9,6 @@ common_tangents 要求正半径，包含内外公切线，重合圆返回空集�
 #include <bits/stdc++.h>
 
 #define V vector
-
 using namespace std;
 
 #define db long double

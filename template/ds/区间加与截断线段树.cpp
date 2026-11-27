@@ -12,9 +12,7 @@ modify(l, r, d, lo, hi) 将各项 x 改为 clamp(x + d, lo, hi)，lo <= hi。
 #define V vector
 #define fi first
 #define se second
-
 typedef long long ll;
-
 using namespace std;
 
 struct ClampSeg {

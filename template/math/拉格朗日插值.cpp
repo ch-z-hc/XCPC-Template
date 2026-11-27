@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 static ll lagrange_pow(ll a, ll b, ll mod) {

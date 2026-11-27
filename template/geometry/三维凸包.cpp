@@ -10,7 +10,6 @@ build 默认距离容差为 1e-9，第三个参数启用整数精确判向，第
 
 #define V vector
 #define pii pair < int, int >
-
 using namespace std;
 
 #define db long double

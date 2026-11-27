@@ -8,9 +8,7 @@ pi 返回素数个数的原值，sum 返回前缀和对 mod 的余数。
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 struct Min25 {

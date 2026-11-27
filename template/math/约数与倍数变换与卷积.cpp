@@ -6,9 +6,7 @@
 #include <bits/stdc++.h>
 
 #define V vector
-
 typedef long long ll;
-
 using namespace std;
 
 void divisor_zeta(V < ll > &a, ll mod, bool inverse = false) {
