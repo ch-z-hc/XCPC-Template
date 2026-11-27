@@ -1,6 +1,6 @@
 # 原题与验证题索引
 
-索引覆盖 `template/` 下全部 176 个 C++ 片段。2026-11-27 对照 Calculatelove 参考库补入 25 篇，功能参考链接固定到核对时的提交。
+索引覆盖 `template/` 下全部 177 个 C++ 片段。2026-11-27 对照 Calculatelove 参考库补入 25 篇，功能参考链接固定到核对时的提交。
 
 这里的链接包括原题题面、公开模板题和算法参考，不表示代码抄自该题，也不把通用算法强行归到某一道“最初原题”。洛谷收录的历史比赛题保留题目来源；Library Checker 使用其官方题面与数据仓库。
 
@@ -15,6 +15,7 @@
 | `template/ds/区间集合与最小未出现数.cpp` | [Nyaan Segment Set](https://nyaannyaan.github.io/library/data-structure/segment-set.hpp) | 算法参考；维护整数半开区间的并、删除和 mex，不是逐段赋值 ODT。 |
 | `template/ds/整体加一与集合异或和.cpp` | [01 trie 维护集合异或和](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%2001%20trie%20%E7%BB%B4%E6%8A%A4%E9%9B%86%E5%90%88%E5%BC%82%E6%88%96%E5%92%8C.cpp) | 本地验证见 `reference_string_random.cpp`。 |
 | `template/ds/仿射线段树.cpp` | [Range Affine Range Sum](https://judge.yosupo.jp/problem/range_affine_range_sum)、[P3373 线段树 2](https://www.luogu.com.cn/problem/P3373) | 直接；闭区间与半开区间需转换，模数显式传入。 |
+| `template/ds/单侧最值线段树.cpp` | [AOJ DSL_2_H RMQ and RAQ](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_H)、[ABC196 E Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e) | 前者对应区间加与最小值查询，后者涉及加法和逐项取最值的复合。两种方向均由 `add_min_max_seg_random.cpp` 对拍。 |
 | `template/ds/区间加与截断线段树.cpp` | [ABC196 E Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e) | 应用；题目对全部查询值做同一串变换，模板扩展为区间修改和最值查询。本地见 `clamp_seg_random.cpp`。 |
 | `template/ds/可持久化二进制字典树.cpp` | [P4735 最大异或和](https://www.luogu.com.cn/problem/P4735) | 应用；保存前缀异或值的历史根，将询问转为两个前缀版本之差；不是任意两棵无关树的差。 |
 | `template/ds/二维最近邻.cpp` | [CGAL Spatial Searching](https://doc.cgal.org/latest/Spatial_searching/index.html) | 算法参考；静态二维最近邻与矩形计数，随机数据对照直接枚举，不声称在线通过。 |
