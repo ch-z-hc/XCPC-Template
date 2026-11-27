@@ -337,6 +337,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/geometry/凸多边形包含查询.cpp` | `ConvexQuery::build`、`query`，返回 0 外部 / 1 边界 / 2 内部 |
 | `template/geometry/矩形面积并与周长并.cpp` | `RectUnion::solve`，返回矩形并的面积与周长 |
 | `template/ds/仿射线段树.cpp` | `AffineSeg::init`、`modify`、`query`；修改为乘后加 |
+| `template/ds/区间加与截断线段树.cpp` | `ClampSeg::init`、`add`、`chmin`、`chmax`、`modify(l,r,d,lo,hi)`、`query`；先加再截断，查询返回最小值和最大值 |
 | `template/ds/二维树状数组.cpp` | `Fenwick2D::build`、`add`、`query`，离线收集更新坐标，查询闭矩形 |
 | `template/ds/动态开点线段树合并与分裂.cpp` | `MergeSegTree::init`、`add`、`query`、`kth`、`merge`、`split`；合并消耗源根 |
 | `template/ds/动态树.cpp` | `LCT::init`、`same`、`link`、`cut`、`modify`、`query`；维护点权路径和 |
