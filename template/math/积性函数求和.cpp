@@ -70,7 +70,8 @@ struct Min25 {
                 int k = id(w[j] / p);
                 cnt[j] -= cnt[k] - seen;
                 for (int d = 0; d < 3; d ++)
-                    g[j][d] = norm(g[j][d] - power[d] * norm(g[k][d] - pre[d]) % mod);
+                    g[j][d] = norm(g[j][d]
+                                - power[d] * norm(g[k][d] - pre[d]) % mod);
             }
             for (int d = 0; d < 3; d ++) pre[d] = (pre[d] + power[d]) % mod;
             ++ seen;

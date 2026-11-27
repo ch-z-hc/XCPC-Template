@@ -41,10 +41,8 @@ struct MergeSegTree {
             return p;
         }
         int mid = l + (r - l) / 2;
-        if (x <= mid)
-            tr[p].ls = add(tr[p].ls, l, mid, x, v);
-        else
-            tr[p].rs = add(tr[p].rs, mid + 1, r, x, v);
+        if (x <= mid) tr[p].ls = add(tr[p].ls, l, mid, x, v);
+        else tr[p].rs = add(tr[p].rs, mid + 1, r, x, v);
         pull(p);
         return p;
     }

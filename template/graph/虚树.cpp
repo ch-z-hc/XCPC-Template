@@ -88,7 +88,9 @@ struct VTree {
 };
 
 /*
-VTree tree; tree.init(3); tree.add_edge(1, 2); tree.add_edge(1, 3); tree.build(1);
+VTree tree; tree.init(3);
+tree.add_edge(1, 2); tree.add_edge(1, 3);
+tree.build(1);
 bool above = tree.ancestor(1, 2); int p = tree.lca(2, 3);
 int rt = tree.query({2, 3});
 */

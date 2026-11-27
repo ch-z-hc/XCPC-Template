@@ -38,7 +38,8 @@ struct Fenwick2D {
     void add(ll x, ll y, ll v) {
         int p = int(lower_bound(xs.begin(), xs.end(), x) - xs.begin()) + 1;
         for (int i = p; i <= int(xs.size()); i += i & -i) {
-            int q = int(lower_bound(ys[i].begin(), ys[i].end(), y) - ys[i].begin()) + 1;
+            int q = int(lower_bound(ys[i].begin(), ys[i].end(), y)
+                        - ys[i].begin()) + 1;
             for (int j = q; j < int(tr[i].size()); j += j & -j) tr[i][j] += v;
         }
     }

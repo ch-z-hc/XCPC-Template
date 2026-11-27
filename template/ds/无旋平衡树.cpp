@@ -102,7 +102,8 @@ struct Treap {
                 ans = tr[u].val;
                 return true;
             }
-            if (k <= s) u = tr[u].ls;
+            if (k <= s)
+                u = tr[u].ls;
             else
                 k -= s + 1, u = tr[u].rs;
         }

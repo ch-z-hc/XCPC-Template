@@ -81,7 +81,8 @@ struct Dinic {
 };
 
 /*
-Dinic dinic; dinic.init(3); dinic.add_edge(1, 2, 4); dinic.add_edge(2, 3, 3);
+Dinic dinic; dinic.init(3);
+dinic.add_edge(1, 2, 4); dinic.add_edge(2, 3, 3);
 ll ans = dinic.flow(1, 3);
 dinic.add_edge(2, 3, 2); ll extra = dinic.flow(1, 3);
 */

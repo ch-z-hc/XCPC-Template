@@ -73,7 +73,10 @@ template < class Cost > V < ll > binary_stack_dp(int n, Cost cost, ll base = 0) 
 }
 
 /*
-auto cost = [&](int l, int r) { ll s = sum[r] - sum[l - 1]; return s * s; };
+auto cost = [&](int l, int r) {
+    ll s = sum[r] - sum[l - 1];
+    return s * s;
+};
 V < ll > prev(n + 1, 1ll << 62); prev[0] = 0;
 for (int t = 1; t <= k; t ++) prev = dc_dp(prev, cost);
 auto f = binary_stack_dp(n, cost);

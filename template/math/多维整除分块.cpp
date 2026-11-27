@@ -26,5 +26,7 @@ void quotient_blocks(const V < ll > &nums, ll h, bool up, F visit) {
 }
 
 /*
-quotient_blocks({30, 50}, 100, false, [&](ll l, ll r) { cout << l << ' ' << r << '\n'; });
+quotient_blocks({30, 50}, 100, false, [&](ll l, ll r) {
+    cout << l << ' ' << r << '\n';
+});
 */

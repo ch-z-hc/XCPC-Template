@@ -84,5 +84,8 @@ struct FastOutput {
 /*
 FastInput in; FastOutput out;
 ll x; string word;
-if (in.read(x) && in.read(word)) { out.write(x); out.write(word); out.put('\n'); out.flush(); }
+if (in.read(x) && in.read(word)) {
+    out.write(x); out.write(word);
+    out.put('\n'); out.flush();
+}
 */

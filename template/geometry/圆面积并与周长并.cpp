@@ -41,7 +41,8 @@ pair < db, db > circle_union(const V < Circle > &cs) {
             if (d >= a.r + b.r || d + b.r <= a.r) continue;
             db mid = atan2l(v.y, v.x);
             db angle =
-                acosl(clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
+                acosl(clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r),
+                            -1.L, 1.L));
             db l = mid - angle, r = mid + angle;
             while (l < 0) {
                 l += tau; r += tau;

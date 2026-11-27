@@ -29,8 +29,7 @@ ll bsgs_inv(ll a, ll mod) {
 
 ll bsgs(ll a, ll b, ll mod) {
     if (mod == 1) return 0;
-    a = (a % mod + mod) % mod;
-    b = (b % mod + mod) % mod;
+    a = (a % mod + mod) % mod; b = (b % mod + mod) % mod;
     ll m = ll(sqrtl(mod)) + 1, cur = 1;
     unordered_map < ll, ll > pos;
     pos.reserve(size_t(m * 2));
@@ -50,8 +49,7 @@ ll bsgs(ll a, ll b, ll mod) {
 
 ll exbsgs(ll a, ll b, ll mod) {
     if (mod == 1) return 0;
-    a = (a % mod + mod) % mod;
-    b = (b % mod + mod) % mod;
+    a = (a % mod + mod) % mod; b = (b % mod + mod) % mod;
     ll k = 1, cnt = 0;
     for (ll g; (g = gcd(a, mod)) > 1;) {
         if (b == k) return cnt;

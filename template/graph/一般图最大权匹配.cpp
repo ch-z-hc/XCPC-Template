@@ -36,8 +36,7 @@ struct WBlossom {
         from.assign(m, V < int >(n + 1));
         flower.assign(m, {});
         match.assign(m, 0); slack.assign(m, 0);
-        base.assign(m, 0);
-        fa.assign(m, 0);
+        base.assign(m, 0); fa.assign(m, 0);
         state.assign(m, -1); lab.assign(m, 0);
         seen.assign(m, 0);
         for (int u = 1; u <= n; u ++)
@@ -219,10 +218,8 @@ struct WBlossom {
             for (int x = 1; x <= nx; x ++)
                 if (base[x] == x && slack[x]) {
                     ll w = delta(g[slack[x]][x]);
-                    if (state[x] == -1)
-                        d = min(d, w);
-                    else if (state[x] == 0)
-                        d = min(d, w / 2);
+                    if (state[x] == -1) d = min(d, w);
+                    else if (state[x] == 0) d = min(d, w / 2);
                 }
             for (int u = 1; u <= n; u ++) {
                 if (state[base[u]] == 0) {

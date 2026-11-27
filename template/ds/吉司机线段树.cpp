@@ -29,13 +29,15 @@ struct Beats {
         auto &b = t[p * 2 + 1];
         u.sum = a.sum + b.sum;
         u.max1 = max(a.max1, b.max1);
-        u.cntmax = (a.max1 == u.max1 ? a.cntmax : 0) + (b.max1 == u.max1 ? b.cntmax : 0);
-        u.max2 =
-            max(a.max1 == u.max1 ? a.max2 : a.max1, b.max1 == u.max1 ? b.max2 : b.max1);
+        u.cntmax = (a.max1 == u.max1 ? a.cntmax : 0)
+                 + (b.max1 == u.max1 ? b.cntmax : 0);
+        u.max2 = max(a.max1 == u.max1 ? a.max2 : a.max1,
+                     b.max1 == u.max1 ? b.max2 : b.max1);
         u.min1 = min(a.min1, b.min1);
-        u.cntmin = (a.min1 == u.min1 ? a.cntmin : 0) + (b.min1 == u.min1 ? b.cntmin : 0);
-        u.min2 =
-            min(a.min1 == u.min1 ? a.min2 : a.min1, b.min1 == u.min1 ? b.min2 : b.min1);
+        u.cntmin = (a.min1 == u.min1 ? a.cntmin : 0)
+                 + (b.min1 == u.min1 ? b.cntmin : 0);
+        u.min2 = min(a.min1 == u.min1 ? a.min2 : a.min1,
+                     b.min1 == u.min1 ? b.min2 : b.min1);
     }
 
     void apply_add(int p, int len, ll x) {
@@ -50,20 +52,16 @@ struct Beats {
     void apply_min(int p, ll x) {
         auto &u = t[p];
         u.sum += (x - u.max1) * u.cntmax;
-        if (u.min1 == u.max1)
-            u.min1 = x;
-        else if (u.min2 == u.max1)
-            u.min2 = x;
+        if (u.min1 == u.max1) u.min1 = x;
+        else if (u.min2 == u.max1) u.min2 = x;
         u.max1 = x;
     }
 
     void apply_max(int p, ll x) {
         auto &u = t[p];
         u.sum += (x - u.min1) * u.cntmin;
-        if (u.max1 == u.min1)
-            u.max1 = x;
-        else if (u.max2 == u.min1)
-            u.max2 = x;
+        if (u.max1 == u.min1) u.max1 = x;
+        else if (u.max2 == u.min1) u.max2 = x;
         u.min1 = x;
     }
 

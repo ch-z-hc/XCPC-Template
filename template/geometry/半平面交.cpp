@@ -14,7 +14,7 @@ using namespace std;
 
 V < P > half_plane(V < Line > lines) {
     sort(lines.begin(), lines.end(),
-              [](const Line &a, const Line &b) { return a.ang < b.ang; });
+         [](const Line &a, const Line &b) { return a.ang < b.ang; });
     V < Line > a;
     for (auto line : lines) {
         if (!a.empty() && abs(a.back().v.det(line.v)) <= EPS &&
@@ -33,7 +33,8 @@ V < P > half_plane(V < Line > lines) {
     };
     deque < Line > q;
     for (auto line : a) {
-        while (q.size() >= 2 && line.side(intersect(q[q.size() - 2], q.back())) < -EPS)
+        while (q.size() >= 2 &&
+               line.side(intersect(q[q.size() - 2], q.back())) < -EPS)
             q.pop_back();
         while (q.size() >= 2 && line.side(intersect(q[0], q[1])) < -EPS)
             q.pop_front();

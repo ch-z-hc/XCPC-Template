@@ -103,7 +103,8 @@ db circle_area(Circle a, Circle b) {
 P a{0, 0}, b{2, 0}, p{0, 2};
 Circle c = diameter_circle(a, b), d{{2, 0}, 1}, outer;
 bool ok = circumcircle(a, b, p, outer);
-bool inside = c.contains(a); auto line_pts = isCL(c, a, b), circle_pts = isCC(c, d);
+bool inside = c.contains(a);
+auto line_pts = isCL(c, a, b), circle_pts = isCC(c, d);
 auto pts = tangent_points(c, p); auto lines = common_tangents(c, d);
 db overlap = circle_area(c, d);
 */

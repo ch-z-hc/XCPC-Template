@@ -78,7 +78,8 @@ struct DynamicHull {
 };
 
 /*
-DynamicHull hull; hull.init(32); int id = hull.add({2, 3}); hull.add({-1, 4});
+DynamicHull hull; hull.init(32);
+int id = hull.add({2, 3}); hull.add({-1, 4});
 ll ans; if (hull.query(1, 1, ans)) cout << ans;
 int state = hull.contains({2, 3});
 auto now = hull.snapshot();

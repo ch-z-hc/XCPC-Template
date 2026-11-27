@@ -20,7 +20,8 @@ struct PalPartition {
     PalPartition() { init(); }
     void init() {
         pam.init();
-        half.assign(2, 0); series.assign(2, 0); diff.assign(2, 0);
+        half.assign(2, 0);
+        series.assign(2, 0); diff.assign(2, 0);
         best.assign(2, 0); up.assign(2, {0});
         cut = {0};
     }

@@ -30,8 +30,10 @@ ll sqrt_mod(ll a, ll p) {
     } while (qpow(w, (p - 1) / 2) != p - 1);
 
     auto mul = [&](pair < ll, ll > u, pair < ll, ll > v) {
-        return pair < ll, ll >{(u.fi * v.fi + u.se * v.se % p * w) % p,
-                                   (u.fi * v.se + u.se * v.fi) % p};
+        return pair < ll, ll >{
+            (u.fi * v.fi + u.se * v.se % p * w) % p,
+            (u.fi * v.se + u.se * v.fi) % p
+        };
     };
     pair < ll, ll > ans{1, 0}, x{b, 1};
     for (ll k = (p + 1) / 2; k; k >>= 1, x = mul(x, x))

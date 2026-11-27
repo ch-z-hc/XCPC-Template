@@ -13,8 +13,14 @@ using namespace std;
 
 template < class T > bool chkmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
 template < class T > bool chkmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
-template < class T > void add(T &x, T y, T mod) { x += y; if (x >= mod) x -= mod; }
-template < class T > void sub(T &x, T y, T mod) { x -= y; if (x < 0) x += mod; }
+template < class T > void add(T &x, T y, T mod) {
+    x += y;
+    if (x >= mod) x -= mod;
+}
+template < class T > void sub(T &x, T y, T mod) {
+    x -= y;
+    if (x < 0) x += mod;
+}
 
 /*
 int lo = 5, hi = 5; bool lower = chkmin(lo, 3), higher = chkmax(hi, 7);

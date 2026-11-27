@@ -26,16 +26,16 @@ struct KDTree {
         if (l > r) return -1;
         int mid = (l + r) / 2;
         nth_element(tr.begin() + l, tr.begin() + mid, tr.begin() + r + 1,
-                         [&](const Node &a, const Node &b) {
-                             if (dep & 1) {
-                                 if (a.y != b.y) return a.y < b.y;
-                                 if (a.x != b.x) return a.x < b.x;
-                             } else {
-                                 if (a.x != b.x) return a.x < b.x;
-                                 if (a.y != b.y) return a.y < b.y;
-                             }
-                             return a.id < b.id;
-                         });
+            [&](const Node &a, const Node &b) {
+                if (dep & 1) {
+                    if (a.y != b.y) return a.y < b.y;
+                    if (a.x != b.x) return a.x < b.x;
+                } else {
+                    if (a.x != b.x) return a.x < b.x;
+                    if (a.y != b.y) return a.y < b.y;
+                }
+                return a.id < b.id;
+            });
         tr[mid].l = build(l, mid - 1, dep + 1);
         tr[mid].r = build(mid + 1, r, dep + 1);
         Node &u = tr[mid];

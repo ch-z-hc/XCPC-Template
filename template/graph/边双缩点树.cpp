@@ -10,9 +10,8 @@
 
 using namespace std;
 
-V < V < pii > >
-bridge_tree(int cnt, const V < int > &bel,
-            const V < pii > &edges) {
+V < V < pii > > bridge_tree(int cnt, const V < int > &bel,
+    const V < pii > &edges) {
     V < V < pii > > tree(cnt + 1);
     for (int i = 0; i < int(edges.size()); i ++) {
         auto [u, v] = edges[i];

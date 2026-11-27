@@ -63,8 +63,9 @@ struct RectUnion {
         if (events.empty()) return {0, 0};
         sort(ys.begin(), ys.end());
         ys.erase(unique(ys.begin(), ys.end()), ys.end());
-        sort(events.begin(), events.end(),
-                  [](Event a, Event b) { return a.x != b.x ? a.x < b.x : a.d > b.d; });
+        sort(events.begin(), events.end(), [](Event a, Event b) {
+            return a.x != b.x ? a.x < b.x : a.d > b.d;
+        });
         int n = int(ys.size()) - 1;
         tr.assign(n * 4 + 5, {});
         ll area = 0, perimeter = 0, last = events[0].x;

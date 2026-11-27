@@ -47,10 +47,8 @@ struct PArray {
             return q;
         }
         int mid = (l + r) / 2;
-        if (pos <= mid)
-            t[q].l = modify(t[p].l, l, mid, pos, value);
-        else
-            t[q].r = modify(t[p].r, mid + 1, r, pos, value);
+        if (pos <= mid) t[q].l = modify(t[p].l, l, mid, pos, value);
+        else t[q].r = modify(t[p].r, mid + 1, r, pos, value);
         return q;
     }
 

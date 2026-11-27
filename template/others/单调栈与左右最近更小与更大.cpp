@@ -13,14 +13,16 @@ pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
     int n = int(a.size()) - 1;
     V < int > left(n + 1), right(n + 1, n + 1), st;
     for (int i = 1; i <= n; i ++) {
-        while (!st.empty() && (greater ? a[st.back()] <= a[i] : a[st.back()] >= a[i]))
+        while (!st.empty() &&
+               (greater ? a[st.back()] <= a[i] : a[st.back()] >= a[i]))
             st.pop_back();
         if (!st.empty()) left[i] = st.back();
         st.push_back(i);
     }
     st.clear();
     for (int i = n; i >= 1; i --) {
-        while (!st.empty() && (greater ? a[st.back()] <= a[i] : a[st.back()] >= a[i]))
+        while (!st.empty() &&
+               (greater ? a[st.back()] <= a[i] : a[st.back()] >= a[i]))
             st.pop_back();
         if (!st.empty()) right[i] = st.back();
         st.push_back(i);

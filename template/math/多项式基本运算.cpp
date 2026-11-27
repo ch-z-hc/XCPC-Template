@@ -223,7 +223,8 @@ const int FPS::mod;
 /*
 V < int > a{1, 2, 1}, b{1, 1};
 auto product = FPS::mul(a, b), inverse = FPS::inv(a, 8);
-auto log_a = FPS::ln(a, 8), recovered = FPS::exp(log_a, 8), power = FPS::pow(a, 3, 8);
+auto log_a = FPS::ln(a, 8), recovered = FPS::exp(log_a, 8),
+     power = FPS::pow(a, 3, 8);
 V < int > root; bool ok = FPS::sqrt(a, 8, root);
 auto [q, r] = FPS::divmod(a, b);
 V < int > v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true);

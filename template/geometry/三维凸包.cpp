@@ -54,7 +54,8 @@ struct Hull3D {
         for (int k = 0; k < 3; k ++) {
             u[k] = ip[b][k] - ip[a][k]; v[k] = ip[c][k] - ip[a][k];
         }
-        return {(Int)u[1] * v[2] - (Int)u[2] * v[1], (Int)u[2] * v[0] - (Int)u[0] * v[2],
+        return {(Int)u[1] * v[2] - (Int)u[2] * v[1],
+                (Int)u[2] * v[0] - (Int)u[0] * v[2],
                 (Int)u[0] * v[1] - (Int)u[1] * v[0]};
     }
 
@@ -125,7 +126,8 @@ struct Hull3D {
                     keep.push_back(f);
                     continue;
                 }
-                for (auto [a, b] : {pair{f.a, f.b}, pair{f.b, f.c}, pair{f.c, f.a}}) {
+                for (auto [a, b] :
+                     {pair{f.a, f.b}, pair{f.b, f.c}, pair{f.c, f.a}}) {
                     auto it = edge.find({b, a});
                     if (it == edge.end()) edge.insert({a, b});
                     else edge.erase(it);
@@ -160,9 +162,10 @@ struct Hull3D {
         }
         dim = 0;
         int b = 1;
-        while (b < n && (integer ? p[id[b]].x == p[id[0]].x && p[id[b]].y == p[id[0]].y &&
-                                       p[id[b]].z == p[id[0]].z
-                                 : (p[id[b]] - p[id[0]]).abs() <= eps))
+        while (b < n && (integer
+                    ? p[id[b]].x == p[id[0]].x && p[id[b]].y == p[id[0]].y
+                       && p[id[b]].z == p[id[0]].z
+                    : (p[id[b]] - p[id[0]]).abs() <= eps))
             ++ b;
         if (b == n) return;
         swap(id[1], id[b]);

@@ -26,10 +26,8 @@ struct PST {
         tr[u].sum ++;
         if (l == r) return u;
         int mid = (l + r) / 2;
-        if (x <= mid)
-            tr[u].ls = insert(tr[p].ls, l, mid, x);
-        else
-            tr[u].rs = insert(tr[p].rs, mid + 1, r, x);
+        if (x <= mid) tr[u].ls = insert(tr[p].ls, l, mid, x);
+        else tr[u].rs = insert(tr[p].rs, mid + 1, r, x);
         return u;
     }
 
