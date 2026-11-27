@@ -9,7 +9,7 @@
 
 HTML 直接从源码生成，与 PDF 共用章节顺序、词法配色和代码内容。页面保留 HTML / PDF / OEIS 三个入口，PDF 使用浏览器原生阅读器。网站部署到 `https://chzhc.cn/xcpc/`，不再使用 GitHub Pages、Deployments 或 Releases；PDF 保留在本机并随静态网站发布，不提交到 Git。
 
-各章按 XCPC 比赛查用的优先级编排。通用模板靠前，专项模板靠后，基础篇排在依赖它的篇目之前。
+各章按 XCPC 场上查用的优先级编排。遇到多种题型都能直接套用的模板优先放前面，其次是常见进阶模板和同题型的变体，适用范围窄的专项模板靠后。基础篇排在依赖它的篇目之前，同组线段树按加乘、单侧最值、双侧最值的顺序放在一起。排序依据是常见题型的覆盖面和套用价值，训练题与赛题只用来校准判断。[CSES 题单](https://cses.fi/problemset/) · [ICPC 亚洲东部决赛题解](https://icpcarchive.github.io/Asia-East-Continent/Asia-East-Continent-Final-Contest/The-2024-ICPC-Asia-East-Continent-Final-Contest/tutorials_zh-cn.pdf) · [NWERC 2024 题解](https://2024.nwerc.eu/main/solutions.pdf)
 
 更新时生成、校验相应产物，将已校验的 `template.pdf`、`oeis-2up.pdf` 放入 `dist/`，运行资源版本化与检查后部署该目录。只修改 HTML 样式时可复用现有 PDF；修改模板源码后，需另行生成并校验新版 PDF。提交、推送源码与部署网站是独立步骤。OEIS 原版仅作为本地生成缓存，不发布。
 
