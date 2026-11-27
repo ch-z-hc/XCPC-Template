@@ -29,8 +29,7 @@ struct MoModify {
     void init(const V < int > &a) {
         initial = current = a;
         n = max(0, int(a.size()) - 1);
-        changes.clear();
-        qs.clear();
+        changes.clear(); qs.clear();
     }
     void modify(int p, int x) {
         changes.push_back({p, current[p], x});
@@ -47,8 +46,7 @@ struct MoModify {
         sort(queries.begin(), queries.end(), [&](Query a, Query b) {
             int x = a.l / B, y = b.l / B;
             if (x != y) return x < y;
-            x = a.r / B;
-            y = b.r / B;
+            x = a.r / B; y = b.r / B;
             if (x != y) return (a.l / B & 1) ? x > y : x < y;
             return (x & 1) ? a.t > b.t : a.t < b.t;
         });

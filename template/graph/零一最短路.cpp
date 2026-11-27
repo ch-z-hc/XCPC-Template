@@ -13,17 +13,14 @@ V < int > bfs01(const V < V < pii > > &g, int s) {
     dis[s] = 0;
     q.push_back(s);
     while (!q.empty()) {
-        int u = q.front();
-        q.pop_front();
+        int u = q.front(); q.pop_front();
         if (vis[u]) continue;
         vis[u] = 1;
         for (auto [v, w] : g[u])
             if (dis[v] > dis[u] + w) {
                 dis[v] = dis[u] + w;
-                if (w)
-                    q.push_back(v);
-                else
-                    q.push_front(v);
+                if (w) q.push_back(v);
+                else q.push_front(v);
             }
     }
     return dis;

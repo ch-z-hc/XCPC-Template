@@ -52,8 +52,7 @@ struct KruskalTree {
         sort(e.begin(), e.end(),
                   [&](Edge a, Edge b) { return rev ? a.w > b.w : a.w < b.w; });
         for (auto [u, v, w] : e) {
-            u = find(u);
-            v = find(v);
+            u = find(u); v = find(v);
             if (u == v) continue;
             ++ tot;
             t[tot] = {u, v};
@@ -80,8 +79,7 @@ struct KruskalTree {
         if (u == v) return u;
         for (int j = lg - 1; j >= 0; j --)
             if (up[j][u] != up[j][v]) {
-                u = up[j][u];
-                v = up[j][v];
+                u = up[j][u]; v = up[j][v];
             }
         return up[0][u];
     }

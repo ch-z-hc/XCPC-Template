@@ -22,8 +22,7 @@ struct IntervalSet {
         auto it = s.lower_bound({l, LLONG_MIN});
         if (it != s.begin() && prev(it)->se >= l) -- it;
         while (it != s.end() && it->fi <= r) {
-            l = min(l, it->fi);
-            r = max(r, it->se);
+            l = min(l, it->fi); r = max(r, it->se);
             it = s.erase(it);
         }
         s.insert({l, r});

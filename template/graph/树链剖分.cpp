@@ -20,13 +20,10 @@ struct HLD {
         n = n_;
         tim = 0;
         g.assign(n + 1, {});
-        fa.assign(n + 1, 0);
-        dep.assign(n + 1, 0);
-        siz.assign(n + 1, 0);
-        son.assign(n + 1, 0);
+        fa.assign(n + 1, 0); dep.assign(n + 1, 0);
+        siz.assign(n + 1, 0); son.assign(n + 1, 0);
         top.assign(n + 1, 0);
-        in.assign(n + 1, 0);
-        out.assign(n + 1, 0);
+        in.assign(n + 1, 0); out.assign(n + 1, 0);
         rev.assign(n + 1, 0);
     }
 

@@ -51,10 +51,8 @@ struct CentroidTree {
     void init(int n_) {
         n = n_;
         g.assign(n + 1, {});
-        siz.clear();
-        vis.clear();
-        all.clear();
-        sub.clear();
+        siz.clear(); vis.clear();
+        all.clear(); sub.clear();
         path.clear();
     }
 
@@ -78,8 +76,7 @@ struct CentroidTree {
 
     void collect(int u, int fa, ll d, int root, int branch) {
         path[u].push_back({root, branch, d});
-        all[root].dis.push_back(d);
-        sub[root][branch].dis.push_back(d);
+        all[root].dis.push_back(d); sub[root][branch].dis.push_back(d);
         for (auto [v, w] : g[u])
             if (v != fa && !vis[v]) collect(v, u, d + w, root, branch);
     }
@@ -102,10 +99,8 @@ struct CentroidTree {
     }
 
     void build() {
-        siz.assign(n + 1, 0);
-        vis.assign(n + 1, 0);
-        all.assign(n + 1, {});
-        sub.assign(n + 1, {});
+        siz.assign(n + 1, 0); vis.assign(n + 1, 0);
+        all.assign(n + 1, {}); sub.assign(n + 1, {});
         path.assign(n + 1, {});
         if (n) divide(1);
     }

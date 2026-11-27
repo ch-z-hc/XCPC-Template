@@ -32,12 +32,9 @@ struct Min25 {
         lim = int(sqrtl(n));
         while (1ll * (lim + 1) * (lim + 1) <= n) ++ lim;
         while (1ll * lim * lim > n) -- lim;
-        prime.clear();
-        w.clear();
-        cnt.clear();
-        g.clear();
-        small.assign(lim + 1, -1);
-        large.assign(lim + 1, -1);
+        prime.clear(); w.clear();
+        cnt.clear(); g.clear();
+        small.assign(lim + 1, -1); large.assign(lim + 1, -1);
         V < bool > vis(lim + 1);
         for (int i = 2; i <= lim; i ++) {
             if (!vis[i]) prime.push_back(i);
@@ -51,24 +48,17 @@ struct Min25 {
             ll x = n / l;
             r = n / x;
             int k = int(w.size());
-            if (x <= lim)
-                small[x] = k;
-            else
-                large[n / x] = k;
+            if (x <= lim) small[x] = k;
+            else large[n / x] = k;
             w.push_back(x);
             cnt.push_back(x - 1);
             ll a = x, b = x + 1, c = 2 * x + 1;
-            if (a % 2 == 0)
-                a /= 2;
-            else
-                b /= 2;
+            if (a % 2 == 0) a /= 2;
+            else b /= 2;
             ll s1 = a % mod * (b % mod) % mod;
-            if (a % 3 == 0)
-                a /= 3;
-            else if (b % 3 == 0)
-                b /= 3;
-            else
-                c /= 3;
+            if (a % 3 == 0) a /= 3;
+            else if (b % 3 == 0) b /= 3;
+            else c /= 3;
             ll s2 = a % mod * (b % mod) % mod * (c % mod) % mod;
             g.push_back({(x - 1) % mod, norm(s1 - 1), norm(s2 - 1)});
         }
@@ -94,7 +84,8 @@ struct Min25 {
         for (ll &x : c) x = norm(x);
         V < ll > value(w.size()), pre(prime.size() + 1);
         for (int i = 0; i < int(w.size()); i ++)
-            for (int d = 0; d < 3; d ++) value[i] = (value[i] + c[d] * g[i][d]) % mod;
+            for (int d = 0; d < 3; d ++)
+                value[i] = (value[i] + c[d] * g[i][d]) % mod;
         for (int i = 0; i < int(prime.size()); i ++) {
             ll p = prime[i] % mod;
             ll val = (c[0] + c[1] * p % mod + c[2] * p % mod * p) % mod;

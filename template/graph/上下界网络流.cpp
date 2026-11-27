@@ -49,8 +49,7 @@ struct LRFlow {
             dep[s] = 0;
             q.push(s);
             while (!q.empty()) {
-                int u = q.front();
-                q.pop();
+                int u = q.front(); q.pop();
                 for (auto &e : g[u])
                     if (e.cap && dep[e.to] == -1) {
                         dep[e.to] = dep[u] + 1;
@@ -92,8 +91,7 @@ struct LRFlow {
 
     void init(int n_) {
         n = n_;
-        edges.clear();
-        f.clear();
+        edges.clear(); f.clear();
     }
 
     int add_edge(int u, int v, ll lo, ll hi) {
@@ -111,14 +109,12 @@ struct LRFlow {
         f.clear();
         for (auto &e : edges) {
             id.push_back(net.add_edge(e.u, e.v, e.hi - e.lo));
-            bal[e.u] -= e.lo;
-            bal[e.v] += e.lo;
+            bal[e.u] -= e.lo; bal[e.v] += e.lo;
             sum += e.hi;
         }
         int a = -1, b = -1;
         if (s) {
-            a = net.add_edge(t, s, sum);
-            b = net.add_edge(s, t, sum);
+            a = net.add_edge(t, s, sum); b = net.add_edge(s, t, sum);
         }
         for (int u = 1; u <= n; u ++) {
             if (bal[u] > 0) {
@@ -131,8 +127,7 @@ struct LRFlow {
         ll ans = 0;
         if (s) {
             ans = net.g[s][b].cap - net.g[t][a].cap;
-            net.erase(t, a);
-            net.erase(s, b);
+            net.erase(t, a); net.erase(s, b);
         }
         for (auto [u, k] : extra) net.erase(u, k);
         if (s && mode == 1) ans += net.flow(s, t);

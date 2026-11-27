@@ -14,8 +14,7 @@ struct Comb {
 
     void init(int n, ll mod_) {
         mod = mod_;
-        fac.assign(n + 1, 1);
-        ifac.assign(n + 1, 1);
+        fac.assign(n + 1, 1); ifac.assign(n + 1, 1);
         for (int i = 1; i <= n; i ++) fac[i] = fac[i - 1] * i % mod;
         auto power = [&](ll a, ll b) {
             ll res = 1;

@@ -18,8 +18,7 @@ struct Centroid {
     void init(int n_) {
         n = n_;
         g.assign(n + 1, {});
-        siz.assign(n + 1, 0);
-        vis.assign(n + 1, 0);
+        siz.assign(n + 1, 0); vis.assign(n + 1, 0);
     }
 
     void add_edge(int u, int v, ll w = 1) {

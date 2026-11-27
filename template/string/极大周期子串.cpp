@@ -22,7 +22,8 @@ V < array < int, 3 > > runs(const string &s) {
         SA sorted(t);
         V < int > st{n};
         for (int i = n - 1; i >= 0; i --) {
-            while (st.back() != n && sorted.rk[st.back()] > sorted.rk[i]) st.pop_back();
+            while (st.back() != n && sorted.rk[st.back()] > sorted.rk[i])
+                st.pop_back();
             int j = st.back();
             if (j != n) {
                 int p = j - i, right = sa.lcp(i, j);

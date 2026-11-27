@@ -31,8 +31,7 @@ V < int > kmp(const string &s, const string &t) {
         while (j > 0 && s[i] != t[j]) j = pi[j - 1];
         if (s[i] == t[j]) ++ j;
         if (j == int(t.size())) {
-            ans.push_back(i - j + 1);
-            j = pi[j - 1];
+            ans.push_back(i - j + 1); j = pi[j - 1];
         }
     }
     return ans;

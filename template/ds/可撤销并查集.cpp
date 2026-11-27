@@ -30,27 +30,23 @@ struct RollbackDSU {
     int snapshot() { return int(stk.size()); }
 
     bool merge(int u, int v) {
-        u = find(u);
-        v = find(v);
+        u = find(u); v = find(v);
         if (u == v) {
             stk.push_back(-1);
             return 0;
         }
         if (siz[u] < siz[v]) swap(u, v);
         stk.push_back(v);
-        fa[v] = u;
-        siz[u] += siz[v];
+        fa[v] = u; siz[u] += siz[v];
         return 1;
     }
 
     void rollback(int snap) {
         while (int(stk.size()) > snap) {
-            int v = stk.back();
-            stk.pop_back();
+            int v = stk.back(); stk.pop_back();
             if (v == -1) continue;
             int u = fa[v];
-            fa[v] = v;
-            siz[u] -= siz[v];
+            fa[v] = v; siz[u] -= siz[v];
         }
     }
 };

@@ -28,26 +28,21 @@ struct Dinic {
         n = n_;
         edges.clear();
         g.assign(n + 1, {});
-        dep.resize(n + 1);
-        cur.resize(n + 1);
+        dep.resize(n + 1); cur.resize(n + 1);
     }
 
     void add_edge(int u, int v, ll cap) {
         int id = int(edges.size());
-        edges.push_back({v, cap});
-        edges.push_back({u, 0});
-        g[u].push_back(id);
-        g[v].push_back(id ^ 1);
+        edges.push_back({v, cap}); edges.push_back({u, 0});
+        g[u].push_back(id); g[v].push_back(id ^ 1);
     }
 
     bool bfs(int s, int t) {
         fill(dep.begin(), dep.end(), -1);
         queue < int > q;
-        q.push(s);
-        dep[s] = 0;
+        q.push(s); dep[s] = 0;
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             for (int id : g[u]) {
                 auto [v, cap] = edges[id];
                 if (!cap || dep[v] != -1) continue;
@@ -67,8 +62,7 @@ struct Dinic {
             auto [v, cap] = edges[id];
             if (!cap || dep[v] != dep[u] + 1) continue;
             ll pushed = dfs(v, t, min(left, cap));
-            edges[id].cap -= pushed;
-            edges[id ^ 1].cap += pushed;
+            edges[id].cap -= pushed; edges[id ^ 1].cap += pushed;
             left -= pushed;
             if (!left) break;
         }

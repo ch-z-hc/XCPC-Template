@@ -16,8 +16,7 @@ struct Fenwick {
     Fenwick(const V < ll > &a) { init(a); }
 
     void init(int n_) {
-        n = n_;
-        tr.assign(n + 1, 0);
+        n = n_; tr.assign(n + 1, 0);
     }
 
     void init(const V < ll > &a) {

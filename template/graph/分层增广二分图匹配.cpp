@@ -22,10 +22,8 @@ struct HK {
         n = n_;
         m = m_;
         g.assign(n + 1, {});
-        ml.assign(n + 1, 0);
-        mr.assign(m + 1, 0);
-        dep.resize(n + 1);
-        cur.resize(n + 1);
+        ml.assign(n + 1, 0); mr.assign(m + 1, 0);
+        dep.resize(n + 1); cur.resize(n + 1);
         vs.clear();
     }
 
@@ -39,8 +37,7 @@ struct HK {
             if (!ml[u]) q.push(u);
         }
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             if (dep[0] != -1 && dep[u] >= dep[0]) continue;
             for (int v : g[u])
                 if (dep[mr[v]] == -1) {
@@ -85,8 +82,7 @@ struct HK {
         for (int u = 1; u <= n; u ++)
             if (!ml[u]) a[u] = 1, q.push(u);
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             for (int v : g[u])
                 if (ml[u] != v && !b[v]) {
                     b[v] = 1;

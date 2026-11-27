@@ -23,10 +23,8 @@ struct DLX {
         cols = cols_;
         tr.resize(cols + 1);
         siz.assign(cols + 1, 0);
-        cur.clear();
-        ans.clear();
-        for (int i = 0; i <= cols; i ++)
-            tr[i] = {i - 1, i + 1, i, i, i, 0};
+        cur.clear(); ans.clear();
+        for (int i = 0; i <= cols; i ++) tr[i] = {i - 1, i + 1, i, i, i, 0};
         tr[0].l = cols;
         tr[cols].r = 0;
     }
@@ -51,12 +49,10 @@ struct DLX {
     }
 
     void cover(int c) {
-        tr[tr[c].l].r = tr[c].r;
-        tr[tr[c].r].l = tr[c].l;
+        tr[tr[c].l].r = tr[c].r; tr[tr[c].r].l = tr[c].l;
         for (int i = tr[c].d; i != c; i = tr[i].d)
             for (int j = tr[i].r; j != i; j = tr[j].r) {
-                tr[tr[j].u].d = tr[j].d;
-                tr[tr[j].d].u = tr[j].u;
+                tr[tr[j].u].d = tr[j].d; tr[tr[j].d].u = tr[j].u;
                 siz[tr[j].col] --;
             }
     }
@@ -64,12 +60,10 @@ struct DLX {
     void uncover(int c) {
         for (int i = tr[c].u; i != c; i = tr[i].u)
             for (int j = tr[i].l; j != i; j = tr[j].l) {
-                tr[tr[j].u].d = j;
-                tr[tr[j].d].u = j;
+                tr[tr[j].u].d = j; tr[tr[j].d].u = j;
                 siz[tr[j].col] ++;
             }
-        tr[tr[c].l].r = c;
-        tr[tr[c].r].l = c;
+        tr[tr[c].l].r = c; tr[tr[c].r].l = c;
     }
 
     bool dfs() {
@@ -98,8 +92,7 @@ struct DLX {
     }
 
     bool solve(V < int > &rows) {
-        cur.clear();
-        ans.clear();
+        cur.clear(); ans.clear();
         if (!dfs()) return false;
         rows = ans;
         return true;

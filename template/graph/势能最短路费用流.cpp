@@ -40,13 +40,10 @@ struct MCMF {
 
         V < int > vis(n + 1);
         queue < int > q;
-        h[s] = 0;
-        reach[s] = 1;
-        q.push(s);
-        vis[s] = 1;
+        h[s] = 0; reach[s] = 1;
+        q.push(s); vis[s] = 1;
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             vis[u] = 0;
             for (auto &e : g[u]) {
                 if (e.cap && (!reach[e.to] || h[e.to] > h[u] + e.cost)) {
@@ -59,21 +56,18 @@ struct MCMF {
                 }
             }
         }
-        ll ans_flow = 0;
-        ll ans_cost = 0;
+        ll ans_flow = 0; ll ans_cost = 0;
         while (true) {
             fill(reach.begin(), reach.end(), 0);
             fill(pre.begin(), pre.end(), -1);
             priority_queue < pair < ll, int >, V < pair < ll, int > >,
                                 greater < pair < ll, int > > >
                 pq;
-            dis[s] = 0;
-            reach[s] = 1;
+            dis[s] = 0; reach[s] = 1;
             pq.push({0, s});
 
             while (!pq.empty()) {
-                auto [du, u] = pq.top();
-                pq.pop();
+                auto [du, u] = pq.top(); pq.pop();
                 if (du != dis[u]) continue;
                 for (int i = 0; i < int(g[u].size()); i ++) {
                     auto &e = g[u][i];
@@ -82,8 +76,7 @@ struct MCMF {
                     if (!reach[e.to] || nd < dis[e.to]) {
                         dis[e.to] = nd;
                         reach[e.to] = 1;
-                        pre[e.to] = u;
-                        pe[e.to] = i;
+                        pre[e.to] = u; pe[e.to] = i;
                         pq.push({nd, e.to});
                     }
                 }
@@ -98,8 +91,7 @@ struct MCMF {
                 add = min(add, g[pre[v]][pe[v]].cap);
             for (int v = t; v != s; v = pre[v]) {
                 auto &e = g[pre[v]][pe[v]];
-                e.cap -= add;
-                g[v][e.rev].cap += add;
+                e.cap -= add; g[v][e.rev].cap += add;
             }
             ans_flow += add;
             ans_cost += add * (h[t] - h[s]);

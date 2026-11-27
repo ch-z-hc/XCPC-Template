@@ -68,7 +68,9 @@ struct MergeSegTree {
         return kth(tr[p].rs, mid + 1, r, k - cnt);
     }
 
-    int kth(int root, ll k) { return k >= 1 && k <= tr[root].sum ? kth(root, 1, n, k) : -1; }
+    int kth(int root, ll k) {
+        return k >= 1 && k <= tr[root].sum ? kth(root, 1, n, k) : -1;
+    }
 
     int merge(int u, int v, int l, int r) {
         if (!u) return v;
@@ -85,8 +87,7 @@ struct MergeSegTree {
     }
 
     void merge(int &u, int &v) {
-        u = merge(u, v, 1, n);
-        v = 0;
+        u = merge(u, v, 1, n); v = 0;
     }
 
     pii split(int p, int l, int r, int x, int y) {
@@ -95,12 +96,9 @@ struct MergeSegTree {
         int q = node(), mid = l + (r - l) / 2;
         auto a = split(tr[p].ls, l, mid, x, y);
         auto b = split(tr[p].rs, mid + 1, r, x, y);
-        tr[p].ls = a.fi;
-        tr[q].ls = a.se;
-        tr[p].rs = b.fi;
-        tr[q].rs = b.se;
-        pull(p);
-        pull(q);
+        tr[p].ls = a.fi; tr[q].ls = a.se;
+        tr[p].rs = b.fi; tr[q].rs = b.se;
+        pull(p); pull(q);
         return {p, q};
     }
 

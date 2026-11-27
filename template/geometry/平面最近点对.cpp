@@ -35,8 +35,7 @@ struct ClosestPair {
         }
         int mid = (l + r) >> 1;
         db x = a[mid].p.x;
-        dfs(l, mid);
-        dfs(mid, r);
+        dfs(l, mid); dfs(mid, r);
         merge(a.begin() + l, a.begin() + mid, a.begin() + mid, a.begin() + r, tmp.begin() + l,
               [](Node u, Node v) { return u.p.y < v.p.y; });
         copy(tmp.begin() + l, tmp.begin() + r, a.begin() + l);

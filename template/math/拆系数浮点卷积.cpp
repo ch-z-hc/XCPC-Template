@@ -37,8 +37,7 @@ V < int > split_conv(const V < int > &a, const V < int > &b, int mod) {
         ends[i] = lo * u + Complex(0, 1) * hi * v;
         middle[i] = hi * u + lo * v;
     }
-    fft(ends, true);
-    fft(middle, true);
+    fft(ends, true); fft(middle, true);
     V < int > ans(len);
     for (int i = 0; i < len; i ++) {
         ll hi = llround(ends[i].imag()) % mod;

@@ -22,7 +22,9 @@ struct P3 {
     P3 operator*(db d) const { return {x * d, y * d, z * d}; }
     P3 operator/(db d) const { return {x / d, y / d, z / d}; }
     db dot(P3 p) const { return x * p.x + y * p.y + z * p.z; }
-    P3 det(P3 p) const { return {y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x}; }
+    P3 det(P3 p) const {
+        return {y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x};
+    }
     db abs() const { return sqrtl(dot(*this)); }
     db at(int k) const { return k == 0 ? x : k == 1 ? y : z; }
 };
@@ -50,8 +52,7 @@ struct Hull3D {
     array < Int, 3 > normal_int(int a, int b, int c) const {
         array < long long, 3 > u, v;
         for (int k = 0; k < 3; k ++) {
-            u[k] = ip[b][k] - ip[a][k];
-            v[k] = ip[c][k] - ip[a][k];
+            u[k] = ip[b][k] - ip[a][k]; v[k] = ip[c][k] - ip[a][k];
         }
         return {(Int)u[1] * v[2] - (Int)u[2] * v[1], (Int)u[2] * v[0] - (Int)u[0] * v[2],
                 (Int)u[0] * v[1] - (Int)u[1] * v[0]};
@@ -126,15 +127,12 @@ struct Hull3D {
                 }
                 for (auto [a, b] : {pair{f.a, f.b}, pair{f.b, f.c}, pair{f.c, f.a}}) {
                     auto it = edge.find({b, a});
-                    if (it == edge.end())
-                        edge.insert({a, b});
-                    else
-                        edge.erase(it);
+                    if (it == edge.end()) edge.insert({a, b});
+                    else edge.erase(it);
                 }
             }
             faces.swap(keep);
-            for (auto [a, b] : edge)
-                faces.push_back({a, b, i});
+            for (auto [a, b] : edge) faces.push_back({a, b, i});
         }
     }
 
@@ -189,8 +187,7 @@ struct Hull3D {
                 t = tr.size();
                 tr.emplace_back();
             } else {
-                t = spare.back();
-                spare.pop_back();
+                t = spare.back(); spare.pop_back();
             }
             tr[t].v = {a, b, c};
             tr[t].e = {-1, -1, -1};

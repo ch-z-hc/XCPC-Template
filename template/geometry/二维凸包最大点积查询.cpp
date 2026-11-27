@@ -26,8 +26,7 @@ struct HullQuery {
     ll turn(P a, P b, P c) { return (b - a).det(c - a); }
 
     void build(V < P > p) {
-        lo.clear();
-        hi.clear();
+        lo.clear(); hi.clear();
         h.clear();
         sort(p.begin(), p.end());
         p.erase(unique(p.begin(), p.end()), p.end());
@@ -36,8 +35,7 @@ struct HullQuery {
                 lo.pop_back();
             while (hi.size() > 1 && turn(hi[hi.size() - 2], hi.back(), q) >= 0)
                 hi.pop_back();
-            lo.push_back(q);
-            hi.push_back(q);
+            lo.push_back(q); hi.push_back(q);
         }
         h = lo;
         for (int i = (int)hi.size() - 2; i > 0; i --) h.push_back(hi[i]);
@@ -54,10 +52,8 @@ struct HullQuery {
         int l = 0, r = (int)p.size() - 1;
         while (l < r) {
             int mid = (l + r) >> 1;
-            if (p[mid].dot(q) < p[mid + 1].dot(q))
-                l = mid + 1;
-            else
-                r = mid;
+            if (p[mid].dot(q) < p[mid + 1].dot(q)) l = mid + 1;
+            else r = mid;
         }
         ans = p[l].dot(q);
         return 1;
@@ -80,10 +76,8 @@ struct HullQuery {
         int l = 1, r = n - 1;
         while (r - l > 1) {
             int mid = (l + r) >> 1;
-            if (turn(h[0], h[mid], p) >= 0)
-                l = mid;
-            else
-                r = mid;
+            if (turn(h[0], h[mid], p) >= 0) l = mid;
+            else r = mid;
         }
         ll d = turn(h[l], h[r], p);
         return d < 0 ? 0 : d == 0 ? 1 : 2;

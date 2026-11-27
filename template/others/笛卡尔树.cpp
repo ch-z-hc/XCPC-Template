@@ -14,8 +14,7 @@ struct Cartesian {
 
     void build(const V < ll > &a) {
         int n = int(a.size()) - 1;
-        ls.assign(n + 1, 0);
-        rs.assign(n + 1, 0);
+        ls.assign(n + 1, 0); rs.assign(n + 1, 0);
         fa.assign(n + 1, 0);
         V < int > stk(n + 1);
         int top = 0;

@@ -35,8 +35,7 @@ V < int > subset_conv(const V < int > &a, const V < int > &b, int mod) {
                 }
     };
     for (int k = 0; k <= n; k ++) {
-        transform(f[k], false);
-        transform(g[k], false);
+        transform(f[k], false); transform(g[k], false);
     }
     for (int k = 0; k <= n; k ++) {
         fill(c.begin(), c.end(), 0);

@@ -15,14 +15,12 @@ using namespace std;
 ll bsgs_inv(ll a, ll mod) {
     auto dfs = [&](auto &&self, ll a_, ll b, ll &x, ll &y) -> void {
         if (!b) {
-            x = 1;
-            y = 0;
+            x = 1; y = 0;
             return;
         }
         ll u, v;
         self(self, b, a_ % b, u, v);
-        x = v;
-        y = u - a_ / b * v;
+        x = v; y = u - a_ / b * v;
     };
     ll x, y;
     dfs(dfs, a, mod, x, y);

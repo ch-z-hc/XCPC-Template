@@ -28,8 +28,7 @@ struct LRCostFlow {
 
     void init(int n_) {
         n = n_;
-        edges.clear();
-        f.clear();
+        edges.clear(); f.clear();
         supply.assign(n + 1, 0);
     }
 
@@ -40,10 +39,8 @@ struct LRCostFlow {
     }
 
     void add_supply(int u, ll b) {
-        if (b >= 0)
-            assert(supply[u] <= LLONG_MAX - b);
-        else
-            assert(supply[u] >= LLONG_MIN - b);
+        if (b >= 0) assert(supply[u] <= LLONG_MAX - b);
+        else assert(supply[u] >= LLONG_MIN - b);
         supply[u] += b;
     }
 
@@ -74,8 +71,7 @@ struct LRCostFlow {
         for (auto &e : edges) {
             bool neg = e.cost < 0;
             ll x = neg ? e.hi : e.lo;
-            bal[e.u] -= x;
-            bal[e.v] += x;
+            bal[e.u] -= x; bal[e.v] += x;
             int u = neg ? e.v : e.u, v = neg ? e.u : e.v;
             pos.push_back({u, int(net.g[u].size())});
             net.add_edge(u, v, e.hi - e.lo, neg ? -e.cost : e.cost);

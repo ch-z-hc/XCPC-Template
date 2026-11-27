@@ -25,8 +25,7 @@ struct MinCut {
 
     void add_edge(int u, int v, ll w) {
         if (u == v) return;
-        g[u][v] += w;
-        g[v][u] += w;
+        g[u][v] += w; g[v][u] += w;
     }
 
     pair < ll, V < int > > solve() {
@@ -35,8 +34,7 @@ struct MinCut {
         V < int > id(n);
         iota(id.begin(), id.end(), 1);
         V < V < int > > ver(n + 1);
-        for (int i = 1; i <= n; i ++)
-            ver[i] = {i};
+        for (int i = 1; i <= n; i ++) ver[i] = {i};
         pair < ll, V < int > > ans = {LLONG_MAX, {}};
 
         while (id.size() > 1) {
@@ -51,8 +49,7 @@ struct MinCut {
                     if (dis[u] < ans.fi) ans = {dis[u], ver[u]};
                     for (int v : id)
                         if (v != u && v != pre) {
-                            a[pre][v] += a[u][v];
-                            a[v][pre] = a[pre][v];
+                            a[pre][v] += a[u][v]; a[v][pre] = a[pre][v];
                         }
                     ver[pre].insert(ver[pre].end(), ver[u].begin(), ver[u].end());
                     id.erase(find(id.begin(), id.end(), u));

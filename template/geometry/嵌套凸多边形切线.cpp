@@ -18,8 +18,7 @@ struct NestedHull {
 
     void build(V < P > p, V < P > q) {
         int n = p.size(), m = q.size();
-        left.resize(n);
-        right.resize(n);
+        left.resize(n); right.resize(n);
         l.resize(2 * n);
         r.resize(2 * n);
         int a = 0, b = 0;
@@ -36,7 +35,8 @@ struct NestedHull {
         int j = 1;
         for (int i = 0; i < n; i ++) {
             j = max(j, i + 1);
-            while (j + 1 < i + n && cross(p[i], p[(j + 1) % n], q[left[i]]) >= 0) ++ j;
+            while (j + 1 < i + n && cross(p[i], p[(j + 1) % n], q[left[i]]) >= 0)
+                ++ j;
             r[i] = j;
             r[i + n] = j + n;
         }

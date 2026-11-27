@@ -31,7 +31,8 @@ V < int > poly_integ(const V < int > &a) {
 }
 V < int > cyclic_fold(const V < int > &a, int k) {
     V < int > f(k);
-    for (int i = 0; i < int(a.size()); i ++) f[i % k] = (f[i % k] + a[i]) % FPS::mod;
+    for (int i = 0; i < int(a.size()); i ++)
+        f[i % k] = (f[i % k] + a[i]) % FPS::mod;
     return f;
 }
 V < int > poly_corr(const V < int > &a, V < int > b) {

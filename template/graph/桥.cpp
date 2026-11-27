@@ -18,8 +18,7 @@ struct Bridge {
         n = n_;
         tim = 0;
         g.assign(n + 1, {});
-        dfn.assign(n + 1, 0);
-        low.assign(n + 1, 0);
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
         is_bridge.clear();
     }
     void add_edge(int id, int u, int v) {

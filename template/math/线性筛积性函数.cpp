@@ -10,8 +10,7 @@ struct Sieve {
     V < int > prime, lp, phi, mu;
     void build(int n) {
         prime.clear();
-        lp.assign(n + 1, 0);
-        phi.assign(n + 1, 0);
+        lp.assign(n + 1, 0); phi.assign(n + 1, 0);
         mu.assign(n + 1, 0);
         if (n) phi[1] = mu[1] = 1;
         for (int i = 2; i <= n; i ++) {

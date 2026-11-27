@@ -20,11 +20,11 @@ double simpson(F f, double l, double r, double eps = 1e-8, int max_dep = 20) {
         ld x = simpson(a, mid), y = simpson(mid, b);
         if (dep == 0) return x + y + (x + y - s) / 15;
         if (abs(x + y - s) <= 15 * err) {
-            double lm = (ld(a) + mid) / 2;
-            double rm = (ld(mid) + b) / 2;
+            double lm = (ld(a) + mid) / 2; double rm = (ld(mid) + b) / 2;
             ld u = simpson(a, lm) + simpson(lm, mid);
             ld v = simpson(mid, rm) + simpson(rm, b);
-            if (abs(u - x) + abs(v - y) <= 15 * err) return u + v + (u + v - x - y) / 15;
+            if (abs(u - x) + abs(v - y) <= 15 * err)
+                return u + v + (u + v - x - y) / 15;
         }
         return self(self, a, mid, x, err / 2, dep - 1) +
                self(self, mid, b, y, err / 2, dep - 1);

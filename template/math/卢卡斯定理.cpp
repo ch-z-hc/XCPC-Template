@@ -17,8 +17,7 @@ struct Lucas {
 
     void init(int mod) {
         p = mod;
-        fac.assign(p, 1);
-        ifac.assign(p, 1);
+        fac.assign(p, 1); ifac.assign(p, 1);
         for (int i = 1; i < p; i ++) fac[i] = fac[i - 1] * i % p;
         ll a = fac[p - 1], res = 1;
         for (int b = p - 2; b; b >>= 1) {

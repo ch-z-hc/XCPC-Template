@@ -49,8 +49,7 @@ struct LiChao {
 
     int add_line(ll k, ll b) {
         int id = new_line(k, b);
-        line[id].a = k;
-        line[id].c = b;
+        line[id].a = k; line[id].c = b;
         line[id].d = 1;
         if (L <= R) insert(1, L, R, id);
         return id;
@@ -58,8 +57,7 @@ struct LiChao {
 
     int add_seg(int x0, ll y0, int x1, ll y1) {
         if (x0 > x1) {
-            swap(x0, x1);
-            swap(y0, y1);
+            swap(x0, x1); swap(y0, y1);
         }
         ld k = x0 == x1 ? 0 : (ld(y1) - ld(y0)) / (ld(x1) - ld(x0));
         ld b = x0 == x1 ? max(y0, y1) : y0 - k * x0;
@@ -81,8 +79,7 @@ struct LiChao {
 
     int add_seg_real(int x0, ld y0, int x1, ld y1) {
         if (x0 > x1) {
-            swap(x0, x1);
-            swap(y0, y1);
+            swap(x0, x1); swap(y0, y1);
         }
         ld k = x0 == x1 ? 0 : (y1 - y0) / (ld(x1) - ld(x0));
         ld b = x0 == x1 ? max(y0, y1) : y0 - k * x0;
@@ -133,11 +130,10 @@ struct LiChao {
         if (line[u].d && line[v].d) {
             auto &a = line[u], &b = line[v];
             ll left = (a.a * x + a.c) * b.d;
-            ll right = (b.a * x + b.c) * a.d;
+        ll right = (b.a * x + b.c) * a.d;
             return left != right ? left > right : u < v;
         }
-        ld a = line[u].eval(x);
-        ld b = line[v].eval(x);
+        ld a = line[u].eval(x); ld b = line[v].eval(x);
         if (a == b) return u < v;
         return a > b;
     }

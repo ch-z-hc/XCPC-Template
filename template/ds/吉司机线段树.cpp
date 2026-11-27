@@ -41,8 +41,7 @@ struct Beats {
     void apply_add(int p, int len, ll x) {
         auto &u = t[p];
         u.sum += x * len;
-        u.max1 += x;
-        u.min1 += x;
+        u.max1 += x; u.min1 += x;
         u.add += x;
         if (u.max2 != -INF) u.max2 += x;
         if (u.min2 != INF) u.min2 += x;

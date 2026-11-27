@@ -19,8 +19,7 @@ V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     dis[s] = 0;
     q.push({0, s});
     while (!q.empty()) {
-        auto [d, u] = q.top();
-        q.pop();
+        auto [d, u] = q.top(); q.pop();
         if (d != dis[u]) continue;
         for (auto [v, w] : g[u])
             if (dis[v] > d + w) {

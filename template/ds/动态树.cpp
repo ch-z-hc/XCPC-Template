@@ -28,7 +28,9 @@ struct LCT {
         int p = tr[x].fa;
         return !p || (tr[p].ch[0] != x && tr[p].ch[1] != x);
     }
-    void pull(int x) { tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum; }
+    void pull(int x) {
+        tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum;
+    }
     void reverse(int x) {
         if (!x) return;
         swap(tr[x].ch[0], tr[x].ch[1]);
@@ -36,8 +38,7 @@ struct LCT {
     }
     void push(int x) {
         if (tr[x].rev) {
-            reverse(tr[x].ch[0]);
-            reverse(tr[x].ch[1]);
+            reverse(tr[x].ch[0]); reverse(tr[x].ch[1]);
             tr[x].rev = false;
         }
     }
@@ -50,13 +51,10 @@ struct LCT {
         int y = tr[x].fa, z = tr[y].fa, d = tr[y].ch[1] == x;
         int b = tr[x].ch[d ^ 1];
         if (!root(y)) tr[z].ch[tr[z].ch[1] == y] = x;
-        tr[x].fa = z;
-        tr[x].ch[d ^ 1] = y;
-        tr[y].fa = x;
-        tr[y].ch[d] = b;
+        tr[x].fa = z; tr[x].ch[d ^ 1] = y;
+        tr[y].fa = x; tr[y].ch[d] = b;
         if (b) tr[b].fa = y;
-        pull(y);
-        pull(x);
+        pull(y); pull(x);
     }
     void splay(int x) {
         down(x);

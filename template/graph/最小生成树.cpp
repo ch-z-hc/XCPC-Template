@@ -36,8 +36,7 @@ MST kruskal(int n, V < Edge > edges) {
         int a = find(find, e.u), b = find(find, e.v);
         if (a == b) continue;
         if (siz[a] < siz[b]) swap(a, b);
-        fa[b] = a;
-        siz[a] += siz[b];
+        fa[b] = a; siz[a] += siz[b];
         ans.sum += e.w;
         ans.ids.push_back(e.id);
         if (int(ans.ids.size()) == n - 1) break;

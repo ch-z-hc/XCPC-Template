@@ -28,12 +28,10 @@ bool matrix_inv(V < V < ll > > a, int mod, V < V < ll > > &b) {
         int p = i;
         while (p < n && !a[p][i]) ++ p;
         if (p == n) return false;
-        swap(a[i], a[p]);
-        swap(b[i], b[p]);
+        swap(a[i], a[p]); swap(b[i], b[p]);
         ll inv = power(a[i][i], mod - 2);
         for (int j = 0; j < n; j ++) {
-            a[i][j] = a[i][j] * inv % mod;
-            b[i][j] = b[i][j] * inv % mod;
+            a[i][j] = a[i][j] * inv % mod; b[i][j] = b[i][j] * inv % mod;
         }
         for (int u = 0; u < n; u ++)
             if (u != i) {

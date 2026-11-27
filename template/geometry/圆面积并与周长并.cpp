@@ -44,12 +44,10 @@ pair < db, db > circle_union(const V < Circle > &cs) {
                 acosl(clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
             db l = mid - angle, r = mid + angle;
             while (l < 0) {
-                l += tau;
-                r += tau;
+                l += tau; r += tau;
             }
             while (l >= tau) {
-                l -= tau;
-                r -= tau;
+                l -= tau; r -= tau;
             }
             if (r <= tau)
                 covered.push_back({l, r});

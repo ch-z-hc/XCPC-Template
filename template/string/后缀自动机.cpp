@@ -73,7 +73,8 @@ struct SAM {
         for (int i = int(tr.size()) - 1; i >= 0; i --) ord[-- cnt[tr[i].len]] = i;
         V < ll > ans(tr.size());
         for (int i = 0; i < int(tr.size()); i ++) ans[i] = tr[i].cnt;
-        for (int i = int(ord.size()) - 1; i > 0; i --) ans[tr[ord[i]].fa] += ans[ord[i]];
+        for (int i = int(ord.size()) - 1; i > 0; i --)
+            ans[tr[ord[i]].fa] += ans[ord[i]];
         return ans;
     }
 

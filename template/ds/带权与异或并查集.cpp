@@ -28,8 +28,7 @@ struct WDSU {
     int find(int u) {
         if (fa[u] == u) return u;
         int p = fa[u];
-        fa[u] = find(p);
-        dis[u] += dis[p];
+        fa[u] = find(p); dis[u] += dis[p];
         return fa[u];
     }
 
@@ -38,12 +37,10 @@ struct WDSU {
         if (a == b) return dis[v] - dis[u] == w;
         ll d = w + dis[u] - dis[v];
         if (siz[a] < siz[b]) {
-            fa[a] = b;
-            dis[a] = -d;
+            fa[a] = b; dis[a] = -d;
             siz[b] += siz[a];
         } else {
-            fa[b] = a;
-            dis[b] = d;
+            fa[b] = a; dis[b] = d;
             siz[a] += siz[b];
         }
         return 1;
@@ -71,8 +68,7 @@ struct XDSU {
     int find(int u) {
         if (fa[u] == u) return u;
         int p = fa[u];
-        fa[u] = find(p);
-        dis[u] ^= dis[p];
+        fa[u] = find(p); dis[u] ^= dis[p];
         return fa[u];
     }
 
@@ -81,8 +77,7 @@ struct XDSU {
         if (a == b) return (dis[u] ^ dis[v]) == w;
         ull d = dis[u] ^ dis[v] ^ w;
         if (siz[a] < siz[b]) swap(a, b);
-        fa[b] = a;
-        dis[b] = d;
+        fa[b] = a; dis[b] = d;
         siz[a] += siz[b];
         return 1;
     }

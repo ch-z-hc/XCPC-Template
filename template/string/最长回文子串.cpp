@@ -16,23 +16,22 @@ struct Manacher {
     Manacher(const string &s) { build(s); }
 
     void build(const string &str) {
-        s = str;
-        int n = int(s.size());
+        s = str; int n = int(s.size());
         auto scan = [&](int gap) {
             V < int > radius(n);
             for (int i = 0, l = 0, r = -1; i < n; i ++) {
                 int &k = radius[i];
                 k = i > r ? 1 - gap : min(radius[l + r - i + gap], r - i + 1);
-                while (i - k - gap >= 0 && i + k < n && s[i - k - gap] == s[i + k]) k ++;
+                while (i - k - gap >= 0 && i + k < n &&
+                       s[i - k - gap] == s[i + k])
+                    k ++;
                 if (i + k - 1 > r) {
-                    l = i - k + 1 - gap;
-                    r = i + k - 1;
+                    l = i - k + 1 - gap; r = i + k - 1;
                 }
             }
             return radius;
         };
-        odd = scan(0);
-        even = scan(1);
+        odd = scan(0); even = scan(1);
     }
 
     bool query(int l, int r) {

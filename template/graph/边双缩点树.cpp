@@ -16,8 +16,7 @@ bridge_tree(int cnt, const V < int > &bel,
     V < V < pii > > tree(cnt + 1);
     for (int i = 0; i < int(edges.size()); i ++) {
         auto [u, v] = edges[i];
-        u = bel[u];
-        v = bel[v];
+        u = bel[u]; v = bel[v];
         if (u == v) continue;
         tree[u].push_back({v, i});
         tree[v].push_back({u, i});

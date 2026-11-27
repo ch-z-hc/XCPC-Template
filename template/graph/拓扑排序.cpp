@@ -18,8 +18,7 @@ bool topo(const V < V < int > > &g, V < int > &ans) {
     ans.clear();
     ans.reserve(n);
     while (!q.empty()) {
-        int u = q.front();
-        q.pop();
+        int u = q.front(); q.pop();
         ans.push_back(u);
         for (int v : g[u])
             if (-- deg[v] == 0) q.push(v);

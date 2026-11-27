@@ -12,8 +12,7 @@ using namespace std;
 
 V < int > power_projection(V < int > a, V < int > b, int n) {
     int d = n - 1, mod = FPS::mod;
-    a.resize(n);
-    b.resize(n);
+    a.resize(n); b.resize(n);
     assert(!b[0]);
     V < V < int > > p{a}, q(2, V < int >(n));
     q[0][0] = 1;

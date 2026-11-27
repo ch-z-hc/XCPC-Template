@@ -47,12 +47,9 @@ struct KthAncestor {
 
     void build(int root = 1) {
         up.assign(lg, V < int >(n + 1));
-        dep.assign(n + 1, 0);
-        len.assign(n + 1, 0);
-        son.assign(n + 1, 0);
-        top.assign(n + 1, 0);
-        above.assign(n + 1, {});
-        below.assign(n + 1, {});
+        dep.assign(n + 1, 0); len.assign(n + 1, 0);
+        son.assign(n + 1, 0); top.assign(n + 1, 0);
+        above.assign(n + 1, {}); below.assign(n + 1, {});
         if (!n) return;
         dfs(root, 0);
         decompose(root, root);

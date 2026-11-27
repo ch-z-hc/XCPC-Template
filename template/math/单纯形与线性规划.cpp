@@ -54,7 +54,8 @@ struct Simplex {
                     }
                     ld x = a[i][n + 1] / a[i][s];
                     ld y = a[r][n + 1] / a[r][s];
-                    if (x < y - eps || (abs(x - y) <= eps && bas[i] < bas[r])) r = i;
+                    if (x < y - eps || (abs(x - y) <= eps && bas[i] < bas[r]))
+                        r = i;
                 }
             if (r == -1) return false;
             pivot(r, s);
@@ -63,11 +64,9 @@ struct Simplex {
 
     Result solve(const V < V < ld > > &A, const V < ld > &b,
                  const V < ld > &c) {
-        m = int(b.size());
-        n = int(c.size());
+        m = int(b.size()); n = int(c.size());
         a.assign(m + 2, V < ld >(n + 2));
-        bas.resize(m);
-        nbas.resize(n + 1);
+        bas.resize(m); nbas.resize(n + 1);
         for (int i = 0; i < m; i ++) {
             for (int j = 0; j < n; j ++) a[i][j] = A[i][j];
             bas[i] = n + i;
@@ -87,7 +86,8 @@ struct Simplex {
                 if (bas[i] == -1) {
                     int s = -1;
                     for (int j = 0; j <= n; j ++)
-                        if (abs(a[i][j]) > eps && (s == -1 || nbas[j] < nbas[s])) s = j;
+                        if (abs(a[i][j]) > eps && (s == -1 || nbas[j] < nbas[s]))
+                            s = j;
                     if (s != -1) pivot(i, s);
                 }
         }

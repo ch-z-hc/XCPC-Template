@@ -53,8 +53,7 @@ V < ll > fft_mul(const V < ll > &a, const V < ll > &b) {
     V < Complex > x(n), y(n);
     for (int i = 0; i < int(a.size()); i ++) x[i] = a[i];
     for (int i = 0; i < int(b.size()); i ++) y[i] = b[i];
-    fft(x);
-    fft(y);
+    fft(x); fft(y);
     for (int i = 0; i < n; i ++) x[i] *= y[i];
     fft(x, true);
     V < ll > ans(m);
@@ -105,8 +104,7 @@ struct ModConv {
         V < int > x(n), y(n);
         for (int i = 0; i < int(a.size()); i ++) x[i] = a[i] % mod;
         for (int i = 0; i < int(b.size()); i ++) y[i] = b[i] % mod;
-        ntt(x, mod);
-        ntt(y, mod);
+        ntt(x, mod); ntt(y, mod);
         for (int i = 0; i < n; i ++) x[i] = 1ll * x[i] * y[i] % mod;
         ntt(x, mod, true);
         x.resize(m);

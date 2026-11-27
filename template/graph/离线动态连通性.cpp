@@ -23,8 +23,7 @@ struct DynConn {
     DynConn(int n = 0) { init(n); }
     void init(int n_) {
         n = n_;
-        ops.clear();
-        ans.clear();
+        ops.clear(); ans.clear();
     }
     void add(int u, int v) { ops.push_back({0, min(u, v), max(u, v)}); }
     void erase(int u, int v) { ops.push_back({1, min(u, v), max(u, v)}); }
@@ -37,18 +36,15 @@ struct DynConn {
 
     int find(int u) { return fa[u] == u ? u : find(fa[u]); }
     void merge(int u, int v) {
-        u = find(u);
-        v = find(v);
+        u = find(u); v = find(v);
         if (u == v) return;
         if (siz[u] < siz[v]) swap(u, v);
         stk.push_back({v, siz[u]});
-        fa[v] = u;
-        siz[u] += siz[v];
+        fa[v] = u; siz[u] += siz[v];
     }
     void rollback(int snap) {
         while (int(stk.size()) > snap) {
-            auto [v, s] = stk.back();
-            stk.pop_back();
+            auto [v, s] = stk.back(); stk.pop_back();
             siz[fa[v]] = s;
             fa[v] = v;
         }
@@ -88,8 +84,7 @@ struct DynConn {
                 active[{u, v}].push_back(i);
             else if (type == 1) {
                 auto &a = active[{u, v}];
-                int l = a.back();
-                a.pop_back();
+                int l = a.back(); a.pop_back();
                 insert(1, 0, q - 1, l, i - 1, {u, v});
             }
         }

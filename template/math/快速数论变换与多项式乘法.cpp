@@ -60,10 +60,8 @@ V < ll > multiply(V < ll > a, V < ll > b) {
     if (a.empty() || b.empty()) return {};
     int need = int(a.size() + b.size() - 1), n = 1;
     while (n < need) n <<= 1;
-    a.resize(n);
-    b.resize(n);
-    ntt(a, false);
-    ntt(b, false);
+    a.resize(n); b.resize(n);
+    ntt(a, false); ntt(b, false);
     for (int i = 0; i < n; i ++) a[i] = a[i] * b[i] % NTT_MOD;
     ntt(a, true);
     a.resize(need);

@@ -19,8 +19,7 @@ int bostan_mori(V < int > p, V < int > q, ull k) {
         for (int i = 1; i < int(neg.size()); i += 2)
             if (neg[i]) neg[i] = FPS::mod - neg[i];
         auto a = FPS::mul(p, neg), b = FPS::mul(q, neg);
-        p.clear();
-        q.clear();
+        p.clear(); q.clear();
         for (size_t i = k & 1; i < a.size(); i += 2) p.push_back(a[i]);
         for (size_t i = 0; i < b.size(); i += 2) q.push_back(b[i]);
         k >>= 1;

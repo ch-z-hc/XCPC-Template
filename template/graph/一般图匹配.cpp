@@ -47,8 +47,7 @@ struct Blossom {
         while (base[u] != b) {
             flower[base[u]] = flower[base[match[u]]] = 1;
             fa[u] = v;
-            v = match[u];
-            u = fa[v];
+            v = match[u]; u = fa[v];
         }
     }
 
@@ -60,15 +59,13 @@ struct Blossom {
         q.push(root);
         used[root] = 1;
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             for (int v = 1; v <= n; v ++) {
                 if (!g[u][v] || base[u] == base[v] || match[u] == v) continue;
                 if (v == root || (match[v] && fa[match[v]])) {
                     int b = lca(u, v);
                     fill(flower.begin(), flower.end(), 0);
-                    mark(u, b, v);
-                    mark(v, b, u);
+                    mark(u, b, v); mark(v, b, u);
                     for (int i = 1; i <= n; i ++)
                         if (flower[base[i]]) {
                             base[i] = b;
@@ -79,8 +76,7 @@ struct Blossom {
                     if (!match[v]) {
                         for (int x = v; x;) {
                             int p = fa[x], y = match[p];
-                            match[x] = p;
-                            match[p] = x;
+                            match[x] = p; match[p] = x;
                             x = y;
                         }
                         return 1;

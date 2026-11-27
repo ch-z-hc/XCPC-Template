@@ -25,8 +25,7 @@ struct KM {
         m = m_;
         w.assign(n + 1, V < ll >(m + 1));
         op.assign(n + 1, V < bool >(m + 1));
-        ml.assign(n + 1, 0);
-        mr.assign(m + 1, 0);
+        ml.assign(n + 1, 0); mr.assign(m + 1, 0);
     }
 
     void add_edge(int u, int v, ll val) {

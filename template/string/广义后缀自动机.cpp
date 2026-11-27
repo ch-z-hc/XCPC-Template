@@ -80,7 +80,8 @@ struct GSAM {
     }
     ll distinct() {
         ll ans = 0;
-        for (int i = 1; i < int(tr.size()); i ++) ans += tr[i].len - tr[tr[i].fa].len;
+        for (int i = 1; i < int(tr.size()); i ++)
+            ans += tr[i].len - tr[tr[i].fa].len;
         return ans;
     }
 };

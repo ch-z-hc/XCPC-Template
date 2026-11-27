@@ -39,8 +39,7 @@ struct DMST {
             for (auto e : g)
                 if (e.u != e.v) {
                     if (!fa[e.v] || e.w < in[e.v]) {
-                        fa[e.v] = e.u;
-                        in[e.v] = e.w;
+                        fa[e.v] = e.u; in[e.v] = e.w;
                     }
                 }
             in[root] = 0;
@@ -64,8 +63,7 @@ struct DMST {
                 if (!id[i]) id[i] = ++ cnt;
             for (auto &e : g) {
                 if (id[e.u] != id[e.v]) e.w -= in[e.v];
-                e.u = id[e.u];
-                e.v = id[e.v];
+                e.u = id[e.u]; e.v = id[e.v];
             }
             root = id[root];
             k = cnt;

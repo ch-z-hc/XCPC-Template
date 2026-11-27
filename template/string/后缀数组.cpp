@@ -18,10 +18,8 @@ struct SA {
     SA(const string &s) { build(s); }
 
     void build(const string &str) {
-        s = str;
-        int n = int(s.size()), m = 256;
-        sa.resize(n);
-        rk.resize(n);
+        s = str; int n = int(s.size()), m = 256;
+        sa.resize(n); rk.resize(n);
         height.assign(n, 0);
         lg.assign(n + 1, 0);
         st.clear();
@@ -50,7 +48,8 @@ struct SA {
             for (int i = 1; i < n; i ++) {
                 int u = sa[i], v = sa[i - 1];
                 bool same = old[u] == old[v];
-                same = same && (u + k < n ? old[u + k] : -1) == (v + k < n ? old[v + k] : -1);
+                same = same &&
+                    (u + k < n ? old[u + k] : -1) == (v + k < n ? old[v + k] : -1);
                 rk[u] = same ? p - 1 : p ++;
             }
             if (p == n) break;

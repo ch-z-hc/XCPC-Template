@@ -68,10 +68,8 @@ struct MoTree {
     int query(int u, int v) {
         if (in[u] > in[v]) swap(u, v);
         int z = lca(u, v), id = int(qs.size());
-        if (z == u)
-            qs.push_back({in[u], in[v], 0, id});
-        else
-            qs.push_back({out[u], in[v], z, id});
+        if (z == u) qs.push_back({in[u], in[v], 0, id});
+        else qs.push_back({out[u], in[v], z, id});
         return id;
     }
     void solve() {
@@ -83,10 +81,8 @@ struct MoTree {
         });
         V < int > vis(n + 1);
         auto toggle = [&](int u) {
-            if (vis[u])
-                del(u);
-            else
-                add(u);
+            if (vis[u]) del(u);
+            else add(u);
             vis[u] ^= 1;
         };
         int l = 1, r = 0;

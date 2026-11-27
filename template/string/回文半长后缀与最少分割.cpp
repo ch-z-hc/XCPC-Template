@@ -37,7 +37,8 @@ struct PalPartition {
             }
             int a = u;
             for (int j = int(up[u].size()) - 1; j >= 0; j --) {
-                if (j < int(up[a].size()) && tr[up[a][j]].len > len / 2) a = up[a][j];
+                if (j < int(up[a].size()) && tr[up[a][j]].len > len / 2)
+                    a = up[a][j];
             }
             half.push_back(tr[a].fail);
             diff.push_back(len - tr[v].len);

@@ -18,10 +18,10 @@ struct FixedPower {
         mod = m;
         b = int(sqrt(n)) + 1;
         a = (a % m + m) % m;
-        small.assign(b + 1, 1 % m);
-        large.assign(n / b + 1, 1 % m);
+        small.assign(b + 1, 1 % m); large.assign(n / b + 1, 1 % m);
         for (int i = 1; i <= b; i ++) small[i] = small[i - 1] * a % m;
-        for (int i = 1; i <= n / b; i ++) large[i] = 1ll * large[i - 1] * small[b] % m;
+        for (int i = 1; i <= n / b; i ++)
+            large[i] = 1ll * large[i - 1] * small[b] % m;
     }
 
     int pow(int k) {

@@ -34,16 +34,14 @@ void multiple_zeta(V < ll > &a, ll mod, bool inverse = false) {
 }
 
 V < ll > gcd_conv(V < ll > a, V < ll > b, ll mod) {
-    multiple_zeta(a, mod);
-    multiple_zeta(b, mod);
+    multiple_zeta(a, mod); multiple_zeta(b, mod);
     for (int i = 1; i < int(a.size()); i ++) a[i] = a[i] * b[i] % mod;
     multiple_zeta(a, mod, true);
     return a;
 }
 
 V < ll > lcm_conv(V < ll > a, V < ll > b, ll mod) {
-    divisor_zeta(a, mod);
-    divisor_zeta(b, mod);
+    divisor_zeta(a, mod); divisor_zeta(b, mod);
     for (int i = 1; i < int(a.size()); i ++) a[i] = a[i] * b[i] % mod;
     divisor_zeta(a, mod, true);
     return a;

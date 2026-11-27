@@ -14,7 +14,8 @@ using namespace std;
 int bitset_lcs(const string &s, const string &t) {
     int n = int(t.size()), m = (n + 63) / 64;
     V < V < ull > > mask(256, V < ull >(m));
-    for (int i = 0; i < n; i ++) mask[(unsigned char)t[i]][i >> 6] |= 1ULL << (i & 63);
+    for (int i = 0; i < n; i ++)
+        mask[(unsigned char)t[i]][i >> 6] |= 1ULL << (i & 63);
     V < ull > d(m);
     for (unsigned char c : s) {
         ull carry = 1, borrow = 0;

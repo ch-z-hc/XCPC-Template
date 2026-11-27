@@ -43,8 +43,7 @@ struct SAT {
         if (low[u] != dfn[u]) return;
         ++ cnt;
         while (true) {
-            int v = stk.back();
-            stk.pop_back();
+            int v = stk.back(); stk.pop_back();
             bel[v] = cnt;
             vis[v] = 0;
             if (v == u) break;
@@ -54,10 +53,8 @@ struct SAT {
     bool solve() {
         tim = cnt = 0;
         stk.clear();
-        dfn.assign(2 * n, 0);
-        low.assign(2 * n, 0);
-        bel.assign(2 * n, 0);
-        vis.assign(2 * n, 0);
+        dfn.assign(2 * n, 0); low.assign(2 * n, 0);
+        bel.assign(2 * n, 0); vis.assign(2 * n, 0);
         ans.assign(n + 1, 0);
         for (int u = 0; u < 2 * n; u ++)
             if (!dfn[u]) dfs(u);

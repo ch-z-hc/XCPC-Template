@@ -35,16 +35,13 @@ struct WBlossom {
         g.assign(m, V < Edge >(m));
         from.assign(m, V < int >(n + 1));
         flower.assign(m, {});
-        match.assign(m, 0);
-        slack.assign(m, 0);
+        match.assign(m, 0); slack.assign(m, 0);
         base.assign(m, 0);
         fa.assign(m, 0);
-        state.assign(m, -1);
-        lab.assign(m, 0);
+        state.assign(m, -1); lab.assign(m, 0);
         seen.assign(m, 0);
         for (int u = 1; u <= n; u ++)
-            for (int v = 1; v <= n; v ++)
-                g[u][v] = {u, v, 0};
+            for (int v = 1; v <= n; v ++) g[u][v] = {u, v, 0};
         q = queue < int >();
     }
 
@@ -63,7 +60,8 @@ struct WBlossom {
     void set_slack(int x) {
         slack[x] = 0;
         for (int u = 1; u <= n; u ++)
-            if (g[u][x].w > 0 && base[u] != x && state[base[u]] == 0) update_slack(u, x);
+            if (g[u][x].w > 0 && base[u] != x && state[base[u]] == 0)
+                update_slack(u, x);
     }
 
     void push(int x) {
@@ -144,8 +142,7 @@ struct WBlossom {
         for (int s : flower[b]) {
             for (int x = 1; x <= nx; x ++)
                 if (!g[b][x].w || delta(g[s][x]) < delta(g[b][x])) {
-                    g[b][x] = g[s][x];
-                    g[x][b] = g[x][s];
+                    g[b][x] = g[s][x]; g[x][b] = g[x][s];
                 }
             for (int x = 1; x <= n; x ++)
                 if (from[s][x]) from[b][x] = s;
@@ -185,8 +182,7 @@ struct WBlossom {
         } else if (state[v] == 0) {
             int anc = lca(u, v);
             if (!anc) {
-                augment(u, v);
-                augment(v, u);
+                augment(u, v); augment(v, u);
                 return 1;
             }
             contract(u, anc, v);
@@ -207,8 +203,7 @@ struct WBlossom {
         if (q.empty()) return 0;
         while (1) {
             while (!q.empty()) {
-                int u = q.front();
-                q.pop();
+                int u = q.front(); q.pop();
                 if (state[base[u]] == 1) continue;
                 for (int v = 1; v <= n; v ++)
                     if (g[u][v].w > 0 && base[u] != base[v]) {
@@ -237,10 +232,12 @@ struct WBlossom {
                     lab[u] += d;
             }
             for (int b = n + 1; b <= nx; b ++)
-                if (base[b] == b && state[b] != -1) lab[b] += (state[b] == 0 ? 2 : -2) * d;
+                if (base[b] == b && state[b] != -1)
+                    lab[b] += (state[b] == 0 ? 2 : -2) * d;
             q = queue < int >();
             for (int x = 1; x <= nx; x ++)
-                if (base[x] == x && slack[x] && base[slack[x]] != x && !delta(g[slack[x]][x]))
+                if (base[x] == x && slack[x] && base[slack[x]] != x &&
+                    !delta(g[slack[x]][x]))
                     if (found(g[slack[x]][x])) return 1;
             for (int b = n + 1; b <= nx; b ++)
                 if (base[b] == b && state[b] == 1 && !lab[b]) expand(b);

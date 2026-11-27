@@ -27,7 +27,9 @@ struct ScalingMCMF {
         edges.clear();
     }
 
-    void add_edge(int u, int v, ll cap, ll cost) { edges.push_back({u, v, cap, cost}); }
+    void add_edge(int u, int v, ll cap, ll cost) {
+        edges.push_back({u, v, cap, cost});
+    }
 
     pair < ll, ll > flow(int s, int t) {
         if (s == t) return {0, 0};
@@ -82,8 +84,7 @@ struct ScalingMCMF {
             q.push({0, s_});
 
             while (!q.empty()) {
-                auto [d, x] = q.top();
-                q.pop();
+                auto [d, x] = q.top(); q.pop();
                 if (d != dis[x]) continue;
 
                 for (int id = head[x]; id != -1; id = e[id].next) {
@@ -99,8 +100,7 @@ struct ScalingMCMF {
         };
 
         auto add_one = [&](int id) {
-            int u = e[id].u;
-            int v = e[id].v;
+            int u = e[id].u; int v = e[id].v;
 
             if (e[id].cap != 0) {
                 ++ e[id].cap;

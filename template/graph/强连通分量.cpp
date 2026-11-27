@@ -18,10 +18,8 @@ struct SCC {
         n = n_;
         tim = cnt = 0;
         g.assign(n + 1, {});
-        dfn.assign(n + 1, 0);
-        low.assign(n + 1, 0);
-        bel.assign(n + 1, 0);
-        vis.assign(n + 1, 0);
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
+        bel.assign(n + 1, 0); vis.assign(n + 1, 0);
         stk.clear();
     }
 
@@ -41,8 +39,7 @@ struct SCC {
         if (dfn[u] != low[u]) return;
         cnt ++;
         while (1) {
-            int v = stk.back();
-            stk.pop_back();
+            int v = stk.back(); stk.pop_back();
             vis[v] = 0;
             bel[v] = cnt;
             if (u == v) break;

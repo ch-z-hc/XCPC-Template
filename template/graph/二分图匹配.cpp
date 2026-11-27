@@ -21,8 +21,7 @@ struct Kuhn {
         n = n_;
         m = m_;
         g.assign(n + 1, {});
-        ml.assign(n + 1, 0);
-        mr.assign(m + 1, 0);
+        ml.assign(n + 1, 0); mr.assign(m + 1, 0);
     }
 
     void add_edge(int u, int v) { g[u].push_back(v); }

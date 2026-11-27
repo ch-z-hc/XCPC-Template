@@ -36,7 +36,8 @@ bool is_prime(ull n) {
     ull d = n - 1;
     int s = 0;
     while (!(d & 1)) d >>= 1, s ++;
-    for (ull a : {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL, 9780504ULL, 1795265022ULL}) {
+    for (ull a : {2ULL, 325ULL, 9375ULL, 28178ULL,
+                  450775ULL, 9780504ULL, 1795265022ULL}) {
         if (a % n == 0) continue;
         ull x = rho_pow(a % n, d, n);
         if (x == 1 || x == n - 1) continue;
@@ -64,18 +65,15 @@ ull rho(ull n, mt19937_64 &rng) {
         while (d == 1) {
             ull a = x, b = y, prod = 1;
             for (int i = 0; i < 128; i ++) {
-                x = f(x);
-                y = f(f(y));
+                x = f(x); y = f(f(y));
                 ull dif = x > y ? x - y : y - x;
                 prod = rho_mul(prod, dif, n);
             }
             d = gcd(prod, n);
             if (d == n) {
-                x = a;
-                y = b;
+                x = a; y = b;
                 do {
-                    x = f(x);
-                    y = f(f(y));
+                    x = f(x); y = f(f(y));
                     d = gcd(x > y ? x - y : y - x, n);
                 } while (d == 1);
             }

@@ -17,7 +17,8 @@ V < P > half_plane(V < Line > lines) {
               [](const Line &a, const Line &b) { return a.ang < b.ang; });
     V < Line > a;
     for (auto line : lines) {
-        if (!a.empty() && abs(a.back().v.det(line.v)) <= EPS && a.back().v.dot(line.v) > 0) {
+        if (!a.empty() && abs(a.back().v.det(line.v)) <= EPS &&
+            a.back().v.dot(line.v) > 0) {
             if (a.back().side(line.p) > 0) a.back() = line;
         } else
             a.push_back(line);
@@ -34,13 +35,15 @@ V < P > half_plane(V < Line > lines) {
     for (auto line : a) {
         while (q.size() >= 2 && line.side(intersect(q[q.size() - 2], q.back())) < -EPS)
             q.pop_back();
-        while (q.size() >= 2 && line.side(intersect(q[0], q[1])) < -EPS) q.pop_front();
+        while (q.size() >= 2 && line.side(intersect(q[0], q[1])) < -EPS)
+            q.pop_front();
         if (!q.empty() && abs(q.back().v.det(line.v)) <= EPS) return {};
         q.push_back(line);
     }
     while (q.size() >= 3 && q[0].side(intersect(q[q.size() - 2], q.back())) < -EPS)
         q.pop_back();
-    while (q.size() >= 3 && q.back().side(intersect(q[0], q[1])) < -EPS) q.pop_front();
+    while (q.size() >= 3 && q.back().side(intersect(q[0], q[1])) < -EPS)
+        q.pop_front();
     V < P > ans;
     if (q.size() < 3) return ans;
     for (int i = 0; i < int(q.size()); i ++) {

@@ -36,8 +36,7 @@ struct RectUnion {
             auto a = tr[p * 2], b = tr[p * 2 + 1];
             tr[p].len = a.len + b.len;
             tr[p].cnt = a.cnt + b.cnt - (a.right && b.left);
-            tr[p].left = a.left;
-            tr[p].right = b.right;
+            tr[p].left = a.left; tr[p].right = b.right;
         }
     }
     void modify(int p, int l, int r, int x, int y, int d) {
@@ -59,8 +58,7 @@ struct RectUnion {
             if (x1 == x2 || y1 == y2) continue;
             events.push_back({x1, y1, y2, 1});
             events.push_back({x2, y1, y2, -1});
-            ys.push_back(y1);
-            ys.push_back(y2);
+            ys.push_back(y1); ys.push_back(y2);
         }
         if (events.empty()) return {0, 0};
         sort(ys.begin(), ys.end());

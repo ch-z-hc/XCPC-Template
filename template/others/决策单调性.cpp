@@ -63,10 +63,8 @@ template < class Cost > V < ll > binary_stack_dp(int n, Cost cost, ll base = 0) 
             int l = max(i + 1, q.back().se), r = n;
             while (l < r) {
                 int mid = (l + r) >> 1;
-                if (val(i, mid) < val(j, mid))
-                    r = mid;
-                else
-                    l = mid + 1;
+                if (val(i, mid) < val(j, mid)) r = mid;
+                else l = mid + 1;
             }
             q.push_back({i, l});
         }

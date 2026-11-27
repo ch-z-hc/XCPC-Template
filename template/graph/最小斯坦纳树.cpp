@@ -50,8 +50,7 @@ struct Steiner {
             for (int u = 1; u <= n; u ++)
                 if (f[mask][u] < inf) q.push({f[mask][u], u});
             while (!q.empty()) {
-                auto [d, u] = q.top();
-                q.pop();
+                auto [d, u] = q.top(); q.pop();
                 if (d != f[mask][u]) continue;
                 for (auto [v, w] : g[u])
                     if (w < inf - d) {

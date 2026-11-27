@@ -17,8 +17,7 @@ struct CutVertex {
         n = n_;
         tim = 0;
         g.assign(n + 1, {});
-        dfn.assign(n + 1, 0);
-        low.assign(n + 1, 0);
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
         is_cut.assign(n + 1, 0);
     }
     void add_edge(int u, int v) {

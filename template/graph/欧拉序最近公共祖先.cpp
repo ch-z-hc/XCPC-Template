@@ -20,8 +20,7 @@ struct EulerLCA {
         pos.assign(n + 1, -1);
         dep.assign(n + 1, 0);
         ord.clear();
-        lg.clear();
-        st.clear();
+        lg.clear(); st.clear();
     }
 
     void add_edge(int u, int v) {

@@ -80,10 +80,8 @@ ll kth(const V < ll > &init, const V < ll > &rec, ll k, ll mod) {
     if (n == 0) return 0;
     V < ll > pol(n, 0), e(n, 0);
     pol[0] = 1;
-    if (n == 1)
-        e[0] = bm_norm(rec[0], mod);
-    else
-        e[1] = 1;
+    if (n == 1) e[0] = bm_norm(rec[0], mod);
+    else e[1] = 1;
     while (k > 0) {
         if (k & 1) pol = bm_combine(pol, e, rec, mod);
         e = bm_combine(e, e, rec, mod);

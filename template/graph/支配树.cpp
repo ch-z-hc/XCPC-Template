@@ -19,8 +19,7 @@ struct Dominator {
     void init(int n_) {
         n = n_;
         g.assign(n + 1, {});
-        idom.assign(n + 1, 0);
-        tree.assign(n + 1, {});
+        idom.assign(n + 1, 0); tree.assign(n + 1, {});
     }
 
     void add_edge(int u, int v) { g[u].push_back(v); }
@@ -51,18 +50,15 @@ struct Dominator {
 
     void build(int root) {
         tim = 0;
-        dfn.assign(n + 1, 0);
-        rev.assign(n + 1, 0);
+        dfn.assign(n + 1, 0); rev.assign(n + 1, 0);
         par.assign(n + 1, 0);
         fa.assign(n + 1, 0);
         dom.assign(n + 1, 0);
         idom.assign(n + 1, 0);
-        semi.resize(n + 1);
-        label.resize(n + 1);
+        semi.resize(n + 1); label.resize(n + 1);
         iota(semi.begin(), semi.end(), 0);
         iota(label.begin(), label.end(), 0);
-        pre.assign(n + 1, {});
-        bucket.assign(n + 1, {});
+        pre.assign(n + 1, {}); bucket.assign(n + 1, {});
         tree.assign(n + 1, {});
         dfs(root);
         for (int u = tim; u >= 2; u --) {

@@ -31,11 +31,9 @@ struct EBCC {
         tim = cnt = 0;
         g.assign(n + 1, {});
         edges.clear();
-        dfn.assign(n + 1, 0);
-        low.assign(n + 1, 0);
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
         bel.assign(n + 1, 0);
-        is_bridge.clear();
-        vis.clear();
+        is_bridge.clear(); vis.clear();
         bcc.clear();
     }
 

@@ -30,10 +30,8 @@ struct VBCC {
         n = n_;
         tim = 0;
         g.assign(n + 1, {});
-        dfn.assign(n + 1, 0);
-        low.assign(n + 1, 0);
-        stk.clear();
-        bcc.clear();
+        dfn.assign(n + 1, 0); low.assign(n + 1, 0);
+        stk.clear(); bcc.clear();
         edges.clear();
         mark.assign(n + 1, 0);
         token = 0;
@@ -51,8 +49,7 @@ struct VBCC {
         V < int > v, e;
         ++ token;
         while (true) {
-            int id = stk.back();
-            stk.pop_back();
+            int id = stk.back(); stk.pop_back();
             e.push_back(id);
             for (int side = 0; side < 2; side ++) {
                 int u = side == 0 ? edges[id].fi : edges[id].se;
@@ -61,8 +58,7 @@ struct VBCC {
             if (id == stop) break;
         }
         bcc.push_back({});
-        bcc.back().v.swap(v);
-        bcc.back().e.swap(e);
+        bcc.back().v.swap(v); bcc.back().e.swap(e);
     }
 
     void dfs(int u, int pe) {
@@ -86,8 +82,7 @@ struct VBCC {
         fill(dfn.begin(), dfn.end(), 0);
         fill(low.begin(), low.end(), 0);
         fill(mark.begin(), mark.end(), 0);
-        stk.clear();
-        bcc.clear();
+        stk.clear(); bcc.clear();
         token = 0;
         for (int u = 1; u <= n; u ++) {
             if (!dfn[u]) {

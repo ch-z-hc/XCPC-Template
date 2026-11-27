@@ -20,10 +20,8 @@ struct Hash {
 
     void build(const string &s) {
         n = int(s.size());
-        h1.assign(n + 1, 0);
-        h2.assign(n + 1, 0);
-        p1.assign(n + 1, 1);
-        p2.assign(n + 1, 1);
+        h1.assign(n + 1, 0); h2.assign(n + 1, 0);
+        p1.assign(n + 1, 1); p2.assign(n + 1, 1);
         for (int i = 0; i < n; i ++) {
             int x = (unsigned char)s[i] + 1;
             h1[i + 1] = (h1[i] * base + x) % mod1;
@@ -44,10 +42,8 @@ struct Hash {
         int l = 0, r = n - max(u, v);
         while (l < r) {
             int mid = (l + r + 1) >> 1;
-            if (query(u, u + mid - 1) == query(v, v + mid - 1))
-                l = mid;
-            else
-                r = mid - 1;
+            if (query(u, u + mid - 1) == query(v, v + mid - 1)) l = mid;
+            else r = mid - 1;
         }
         return l;
     }

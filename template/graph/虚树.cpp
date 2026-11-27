@@ -23,11 +23,9 @@ struct VTree {
         lg = 1;
         tim = 0;
         while ((1ll << lg) <= max(1, n)) lg ++;
-        g.assign(n + 1, {});
-        t.assign(n + 1, {});
+        g.assign(n + 1, {}); t.assign(n + 1, {});
         fa.assign(lg, V < int >(n + 1));
-        in.assign(n + 1, 0);
-        out.assign(n + 1, 0);
+        in.assign(n + 1, 0); out.assign(n + 1, 0);
         dep.assign(n + 1, 0);
         nodes.clear();
     }

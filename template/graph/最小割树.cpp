@@ -55,8 +55,7 @@ struct GomoryHu {
             Dinic flow(n);
             for (auto [u, v, c] : edges)
                 if (u != v) {
-                    flow.add_edge(u, v, c);
-                    flow.add_edge(v, u, c);
+                    flow.add_edge(u, v, c); flow.add_edge(v, u, c);
                 }
             ll value = flow.flow(s, p);
             for (int u = s + 1; u <= n; u ++)
@@ -96,8 +95,7 @@ struct GomoryHu {
         for (int j = lg - 1; j >= 0; j --)
             if (up[j][u] != up[j][v]) {
                 ans = min({ans, low[j][u], low[j][v]});
-                u = up[j][u];
-                v = up[j][v];
+                u = up[j][u]; v = up[j][v];
             }
         return min({ans, low[0][u], low[0][v]});
     }

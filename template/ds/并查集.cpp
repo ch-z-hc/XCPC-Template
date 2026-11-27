@@ -23,12 +23,10 @@ struct DSU {
     }
 
     bool merge(int u, int v) {
-        u = find(u);
-        v = find(v);
+        u = find(u); v = find(v);
         if (u == v) return 0;
         if (siz[u] < siz[v]) swap(u, v);
-        fa[v] = u;
-        siz[u] += siz[v];
+        fa[v] = u; siz[u] += siz[v];
         cnt --;
         return 1;
     }

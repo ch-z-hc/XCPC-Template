@@ -64,10 +64,8 @@ struct FPS {
         int m = int(a.size() + b.size() - 1), n = 1;
         while (n < m) n <<= 1;
         assert(n <= (1 << 23));
-        a.resize(n);
-        b.resize(n);
-        ntt(a);
-        ntt(b);
+        a.resize(n); b.resize(n);
+        ntt(a); ntt(b);
         for (int i = 0; i < n; i ++) a[i] = 1ll * a[i] * b[i] % mod;
         ntt(a, true);
         a.resize(m);
@@ -100,7 +98,8 @@ struct FPS {
         d = mul(d, inv(a, n));
         d.resize(n - 1);
         V < int > b(n), iv(n, 1);
-        for (int i = 2; i < n; i ++) iv[i] = mod - 1ll * (mod / i) * iv[mod % i] % mod;
+        for (int i = 2; i < n; i ++)
+            iv[i] = mod - 1ll * (mod / i) * iv[mod % i] % mod;
         for (int i = 1; i < n; i ++) b[i] = 1ll * d[i - 1] * iv[i] % mod;
         return b;
     }
@@ -137,7 +136,8 @@ struct FPS {
         int shift = int(p * k), len = n - shift;
         int iv = power(a[p], mod - 2);
         V < int > b(len);
-        for (int i = 0; i < len && i + p < m; i ++) b[i] = 1ll * a[i + p] * iv % mod;
+        for (int i = 0; i < len && i + p < m; i ++)
+            b[i] = 1ll * a[i + p] * iv % mod;
         b = ln(b, len);
         for (int &x : b) x = x * (k % mod) % mod;
         b = exp(b, len);
@@ -157,8 +157,7 @@ struct FPS {
             while (v != 1) v = 1ll * v * v % mod, i ++;
             int b = power(c, 1 << (s - i - 1));
             r = 1ll * r * b % mod;
-            c = 1ll * b * b % mod;
-            t = 1ll * t * c % mod;
+            c = 1ll * b * b % mod; t = 1ll * t * c % mod;
             s = i;
         }
         return min(r, mod - r);
@@ -186,8 +185,7 @@ struct FPS {
             int k = min(size, len);
             V < int > d(c.begin(), c.begin() + k);
             d = mul(d, inv(b, k));
-            d.resize(k);
-            b.resize(k);
+            d.resize(k); b.resize(k);
             for (int i = 0; i < k; i ++)
                 b[i] = 1ll * (b[i] + d[i]) * ((mod + 1) / 2) % mod;
         }
@@ -205,8 +203,7 @@ struct FPS {
         if (a.size() < b.size()) return {{}, a};
         int n = int(a.size()), m = int(b.size()), k = n - m + 1;
         V < int > ar = a, br = b;
-        reverse(ar.begin(), ar.end());
-        reverse(br.begin(), br.end());
+        reverse(ar.begin(), ar.end()); reverse(br.begin(), br.end());
         ar.resize(k);
         V < int > q = mul(ar, inv(br, k));
         q.resize(k);

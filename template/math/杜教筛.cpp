@@ -21,10 +21,8 @@ struct DuJiao {
     void init(int n) {
         assert(1 <= n && n < INT_MAX);
         limit = n;
-        sp.assign(n + 1, 0);
-        sm.assign(n + 1, 0);
-        mp.clear();
-        mm.clear();
+        sp.assign(n + 1, 0); sm.assign(n + 1, 0);
+        mp.clear(); mm.clear();
         V < int > prime;
         sp[1] = sm[1] = 1;
         for (int i = 2; i <= n; i ++) {
@@ -46,8 +44,7 @@ struct DuJiao {
             }
         }
         for (int i = 1; i <= n; i ++) {
-            sp[i] += sp[i - 1];
-            sm[i] += sm[i - 1];
+            sp[i] += sp[i - 1]; sm[i] += sm[i - 1];
         }
     }
 

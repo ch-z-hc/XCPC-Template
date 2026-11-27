@@ -24,8 +24,7 @@ struct DynamicHull {
     void init(int b = 700) {
         assert(b > 0);
         B = b;
-        p.clear();
-        op.clear();
+        p.clear(); op.clear();
         tr.clear();
     }
 

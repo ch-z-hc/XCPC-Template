@@ -33,15 +33,13 @@ struct KWalk {
         n = n_;
         edges.clear();
         tr.clear();
-        g.assign(n + 1, {});
-        rg.assign(n + 1, {});
+        g.assign(n + 1, {}); rg.assign(n + 1, {});
     }
 
     void add_edge(int u, int v, ll w) {
         int id = int(edges.size());
         edges.push_back({u, v, w});
-        g[u].push_back(id);
-        rg[v].push_back(id);
+        g[u].push_back(id); rg[v].push_back(id);
     }
 
     int merge(int u, int v, bool copy) {
@@ -68,8 +66,7 @@ struct KWalk {
         dis[t] = 0;
         q.push({0, t});
         while (!q.empty()) {
-            auto [d, u] = q.top();
-            q.pop();
+            auto [d, u] = q.top(); q.pop();
             if (d != dis[u]) continue;
             ord.push_back(u);
             for (int id : rg[u]) {
@@ -98,8 +95,7 @@ struct KWalk {
         if (root[s] && tr[root[s]].val < inf - dis[s])
             q.push({dis[s] + tr[root[s]].val, root[s]});
         while (int(ans.size()) < k && !q.empty()) {
-            auto [d, u] = q.top();
-            q.pop();
+            auto [d, u] = q.top(); q.pop();
             ans.push_back(d);
             for (int v : {tr[u].l, tr[u].r})
                 if (v) {

@@ -39,15 +39,12 @@ struct KDTree {
         tr[mid].l = build(l, mid - 1, dep + 1);
         tr[mid].r = build(mid + 1, r, dep + 1);
         Node &u = tr[mid];
-        u.lx = u.rx = u.x;
-        u.ly = u.ry = u.y;
+        u.lx = u.rx = u.x; u.ly = u.ry = u.y;
         u.siz = 1;
         for (int v : {u.l, u.r})
             if (v != -1) {
-                u.lx = min(u.lx, tr[v].lx);
-                u.rx = max(u.rx, tr[v].rx);
-                u.ly = min(u.ly, tr[v].ly);
-                u.ry = max(u.ry, tr[v].ry);
+                u.lx = min(u.lx, tr[v].lx); u.rx = max(u.rx, tr[v].rx);
+                u.ly = min(u.ly, tr[v].ly); u.ry = max(u.ry, tr[v].ry);
                 u.siz += tr[v].siz;
             }
         return mid;
@@ -56,8 +53,7 @@ struct KDTree {
     void build(const V < pair < ll, ll > > &ps) {
         tr.assign(ps.size(), {});
         for (int i = 0; i < (int)ps.size(); i ++) {
-            tr[i].x = ps[i].fi;
-            tr[i].y = ps[i].se;
+            tr[i].x = ps[i].fi; tr[i].y = ps[i].se;
             tr[i].id = i;
         }
         root = build(0, (int)ps.size() - 1, 0);
@@ -78,8 +74,7 @@ struct KDTree {
         ll d1 = a == -1 ? LLONG_MAX : distance(a, x, y);
         ll d2 = b == -1 ? LLONG_MAX : distance(b, x, y);
         if (d1 > d2) {
-            swap(a, b);
-            swap(d1, d2);
+            swap(a, b); swap(d1, d2);
         }
         if (a != -1 && d1 <= ans.fi) search(a, x, y, exclude, ans);
         if (b != -1 && d2 <= ans.fi) search(b, x, y, exclude, ans);

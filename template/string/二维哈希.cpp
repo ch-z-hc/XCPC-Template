@@ -22,8 +22,7 @@ struct Hash2D {
             mod = p;
             int n = int(a.size()), m = n ? int(a[0].size()) : 0;
             h.assign(n + 1, V < ll >(m + 1));
-            x.assign(n + 1, 1);
-            y.assign(m + 1, 1);
+            x.assign(n + 1, 1); y.assign(m + 1, 1);
             for (int i = 1; i <= n; i ++) x[i] = x[i - 1] * bx % mod;
             for (int j = 1; j <= m; j ++) y[j] = y[j - 1] * by % mod;
             for (int i = 0; i < n; i ++) {

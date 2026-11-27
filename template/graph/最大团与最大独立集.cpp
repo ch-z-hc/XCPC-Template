@@ -17,8 +17,7 @@ struct MaxClique {
     void init(int n_) {
         n = n_;
         g.assign(n + 1, V < char >(n + 1));
-        cur.clear();
-        ans.clear();
+        cur.clear(); ans.clear();
     }
 
     void add_edge(int u, int v) {
@@ -69,8 +68,7 @@ struct MaxClique {
 
     V < int > solve(bool rev_) {
         rev = rev_;
-        cur.clear();
-        ans.clear();
+        cur.clear(); ans.clear();
         V < int > p(n);
         iota(p.begin(), p.end(), 1);
         dfs(p);

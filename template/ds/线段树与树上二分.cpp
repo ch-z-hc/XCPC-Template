@@ -54,8 +54,7 @@ struct SegTree {
             return;
         }
         n = int(a.size()) - 1;
-        sum.assign(n * 4 + 5, 0);
-        mx.assign(n * 4 + 5, 0);
+        sum.assign(n * 4 + 5, 0); mx.assign(n * 4 + 5, 0);
         lazy.assign(n * 4 + 5, 0);
         if (n > 0) build(1, 1, n, a);
     }
@@ -110,7 +109,9 @@ struct SegTree {
         return ans != -1 ? ans : last_ge(p * 2, l, mid, x, y, v);
     }
 
-    int last_ge(int l, int r, ll v) { return n && l <= r ? last_ge(1, 1, n, l, r, v) : -1; }
+    int last_ge(int l, int r, ll v) {
+        return n && l <= r ? last_ge(1, 1, n, l, r, v) : -1;
+    }
 
     int kth(ll k) {
         if (!n || k <= 0 || k > sum[1]) return -1;
@@ -119,12 +120,10 @@ struct SegTree {
             push(p, l, r);
             int mid = (l + r) / 2;
             if (k <= sum[p * 2]) {
-                p *= 2;
-                r = mid;
+                p *= 2; r = mid;
             } else {
                 k -= sum[p * 2];
-                p = p * 2 + 1;
-                l = mid + 1;
+                p = p * 2 + 1; l = mid + 1;
             }
         }
         return l;

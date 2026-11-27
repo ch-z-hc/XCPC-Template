@@ -70,10 +70,8 @@ struct Treap {
             ok = 1;
             return merge(tr[u].ls, tr[u].rs);
         }
-        if (x < tr[u].val)
-            tr[u].ls = erase(tr[u].ls, x, ok);
-        else
-            tr[u].rs = erase(tr[u].rs, x, ok);
+        if (x < tr[u].val) tr[u].ls = erase(tr[u].ls, x, ok);
+        else tr[u].rs = erase(tr[u].rs, x, ok);
         pull(u);
         return u;
     }
@@ -104,8 +102,7 @@ struct Treap {
                 ans = tr[u].val;
                 return true;
             }
-            if (k <= s)
-                u = tr[u].ls;
+            if (k <= s) u = tr[u].ls;
             else
                 k -= s + 1, u = tr[u].rs;
         }
@@ -163,8 +160,7 @@ struct SeqTreap {
     }
     void push(int u) {
         if (!tr[u].rev) return;
-        apply(tr[u].ls);
-        apply(tr[u].rs);
+        apply(tr[u].ls); apply(tr[u].rs);
         tr[u].rev = 0;
     }
 

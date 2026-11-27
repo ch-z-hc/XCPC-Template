@@ -23,8 +23,7 @@ struct FuncGraph {
     void dfs(int u) {
         for (int v : g[u])
             if (pos[v] == -1) {
-                bel[v] = bel[u];
-                entry[v] = entry[u];
+                bel[v] = bel[u]; entry[v] = entry[u];
                 dep[v] = dep[u] + 1;
                 dfs(v);
             }
@@ -34,10 +33,8 @@ struct FuncGraph {
         n = int(to.size()) - 1;
         g.assign(n + 1, {});
         cycles.clear();
-        bel.assign(n + 1, -1);
-        pos.assign(n + 1, -1);
-        entry.assign(n + 1, 0);
-        dep.assign(n + 1, 0);
+        bel.assign(n + 1, -1); pos.assign(n + 1, -1);
+        entry.assign(n + 1, 0); dep.assign(n + 1, 0);
         V < int > deg(n + 1, 0);
         up[0] = to;
         for (int u = 1; u <= n; u ++) g[to[u]].push_back(u), ++ deg[to[u]];
@@ -45,8 +42,7 @@ struct FuncGraph {
         for (int u = 1; u <= n; u ++)
             if (!deg[u]) q.push(u);
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             if (!-- deg[to[u]]) q.push(to[u]);
         }
         for (int u = 1; u <= n; u ++)

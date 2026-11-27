@@ -15,13 +15,11 @@ using namespace std;
 
 ll exgcd(ll a, ll b, ll &x, ll &y) {
     if (!b) {
-        x = 1;
-        y = 0;
+        x = 1; y = 0;
         return a;
     }
     ll u, v, g = exgcd(b, a % b, u, v);
-    x = v;
-    y = u - (a / b) * v;
+    x = v; y = u - (a / b) * v;
     return g;
 }
 

@@ -23,8 +23,7 @@ struct Fenwick2D {
         sort(xs.begin(), xs.end());
         xs.erase(unique(xs.begin(), xs.end()), xs.end());
         int n = int(xs.size());
-        ys.assign(n + 1, {});
-        tr.assign(n + 1, {});
+        ys.assign(n + 1, {}); tr.assign(n + 1, {});
         for (auto [x, y] : points) {
             int p = int(lower_bound(xs.begin(), xs.end(), x) - xs.begin()) + 1;
             for (int i = p; i <= n; i += i & -i) ys[i].push_back(y);

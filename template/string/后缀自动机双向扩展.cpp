@@ -60,8 +60,7 @@ struct BiSAM {
         for (char c : t) {
             int x = c - 'a';
             while (u && !sam.tr[u].ch[x]) {
-                u = sam.tr[u].fa;
-                len = sam.tr[u].len;
+                u = sam.tr[u].fa; len = sam.tr[u].len;
             }
             if ((u = sam.tr[u].ch[x])) len ++;
             else len = 0;

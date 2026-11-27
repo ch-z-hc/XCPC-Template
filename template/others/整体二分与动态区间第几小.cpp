@@ -28,8 +28,7 @@ struct KthOffline {
         a = input;
         n = int(a.size()) - 1;
         cnt = 0;
-        log.clear();
-        val.clear();
+        log.clear(); val.clear();
         ans.clear();
         for (int i = 1; i <= n; i ++) {
             log.push_back({0, i, 0, 0, 1, 0, 0, a[i]});
@@ -84,10 +83,8 @@ struct KthOffline {
         for (int i = l; i <= r; i ++) {
             auto &e = ev[i];
             if (!e.type && e.left) add(e.l, -e.delta);
-            if (e.left)
-                tmp[p ++] = e;
-            else
-                tmp[q ++] = e;
+            if (e.left) tmp[p ++] = e;
+            else tmp[q ++] = e;
         }
         for (int i = l; i <= r; i ++) ev[i] = tmp[i];
         solve(ev, tmp, l, l + cnt - 1, lo, mid);

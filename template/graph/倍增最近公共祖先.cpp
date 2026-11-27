@@ -16,8 +16,7 @@ struct LCA {
         lg = 1;
         while ((1ll << lg) <= max(1, n)) lg ++;
         g.assign(n + 1, {});
-        fa.assign(lg, V < int >(n + 1));
-        dep.assign(n + 1, 0);
+        fa.assign(lg, V < int >(n + 1)); dep.assign(n + 1, 0);
     }
 
     void add_edge(int u, int v) {
@@ -48,8 +47,7 @@ struct LCA {
         if (u == v) return u;
         for (int j = lg - 1; j >= 0; j --)
             if (fa[j][u] != fa[j][v]) {
-                u = fa[j][u];
-                v = fa[j][v];
+                u = fa[j][u]; v = fa[j][v];
             }
         return fa[0][u];
     }

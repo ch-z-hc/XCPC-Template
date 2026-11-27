@@ -57,8 +57,7 @@ struct PXorTrie {
                 ans |= 1ull << i;
             else
                 c = b;
-            left = tr[left].ch[c];
-            right = tr[right].ch[c];
+            left = tr[left].ch[c]; right = tr[right].ch[c];
         }
         return true;
     }

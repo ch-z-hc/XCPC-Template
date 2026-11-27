@@ -24,10 +24,8 @@ struct DSUOnTree {
     void init(int n_) {
         n = n_;
         g.assign(n + 1, {});
-        siz.assign(n + 1, 0);
-        son.assign(n + 1, 0);
-        in.assign(n + 1, 0);
-        out.assign(n + 1, 0);
+        siz.assign(n + 1, 0); son.assign(n + 1, 0);
+        in.assign(n + 1, 0); out.assign(n + 1, 0);
         ord.clear();
         ord.reserve(n);
     }

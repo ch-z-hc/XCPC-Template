@@ -25,8 +25,7 @@ struct AC {
 
     void clear() {
         tr.assign(1, Node{});
-        pos.clear();
-        ord.clear();
+        pos.clear(); ord.clear();
     }
 
     int insert(const string &s) {
