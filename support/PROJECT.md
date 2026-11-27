@@ -9,6 +9,8 @@
 
 HTML 直接从源码生成，与 PDF 共用章节顺序、词法配色和代码内容。页面保留 HTML / PDF / OEIS 三个入口，PDF 使用浏览器原生阅读器。网站部署到 `https://chzhc.cn/xcpc/`，不再使用 GitHub Pages、Deployments 或 Releases；PDF 保留在本机并随静态网站发布，不提交到 Git。
 
+各章按 XCPC 比赛查用的优先级编排。通用模板靠前，专项模板靠后，基础篇排在依赖它的篇目之前。
+
 更新时生成、校验相应产物，将已校验的 `template.pdf`、`oeis-2up.pdf` 放入 `dist/`，运行资源版本化与检查后部署该目录。只修改 HTML 样式时可复用现有 PDF；修改模板源码后，需另行生成并校验新版 PDF。提交、推送源码与部署网站是独立步骤。OEIS 原版仅作为本地生成缓存，不发布。
 
 ### HTML 本地构建与检查
@@ -50,7 +52,7 @@ HTML 为每个文件保留稳定锚点；`/` 或 `Ctrl/Cmd + K` 聚焦搜索。�
 
 复制依赖、精度和溢出限制写在顶部。参数、返回值和重置方式随底部调用示例说明。函数旁只保留不直观的局部原因。中文与英文、数字之间留空格，路径、标识符和代码表达式内部保持原样。计算几何保留原有注释文字，多行注释也用 `/* ... */`。
 
-算法实现参考 C.L. 的组织方式。片段沿用比赛主程序的 `using namespace std;`、`ll`、`ull`、`V < T >`、`fi`、`se` 和 `pii`，循环可写 `i ++`。比赛主程序、Linux 编译与运行、对拍，以及几何的 6.1–6.4、6.7 沿用个人版本。其余二维几何片段继续复用 `P`、`db`、`EPS`。[参考库源码](https://github.com/Calculatelove/cp-library-v4-LaTeX/tree/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents)
+算法实现参考 C.L. 的组织方式。片段沿用比赛主程序的 `using namespace std;`、`ll`、`ull`、`V < T >`、`fi`、`se` 和 `pii`，循环可写 `i ++`。比赛主程序、Linux 编译与运行和对拍沿用个人版本。几何中沿用个人版本的篇目包括「点与向量」「直线与线段」「多边形」「凸包、直径与闵可夫斯基和」和「凸多边形包含查询」。其余二维几何片段继续复用 `P`、`db`、`EPS`。[参考库源码](https://github.com/Calculatelove/cp-library-v4-LaTeX/tree/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents)
 
 常量写 `const`，不写 `constexpr`；少量结构体共用常量使用 `static const`，片段末尾的配套定义也要复制。普通查询函数不加尾部 `const`，不再支持通过 `const` 对象调用；原版几何保留原写法。大数组、字符串等输入仍用 `const &`，避免整份复制并支持临时参数；局部引用直接用 `auto &`。
 
