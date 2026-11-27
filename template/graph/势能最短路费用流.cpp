@@ -1,7 +1,7 @@
 /*
 求最小费用最大流。容量非负，可有负费用边，残量网络须无负环。
-初始 SPFA 最坏 O(nm)，之后 A 次增广 O(A m log n)。费用不能取 LLONG_MIN，
-势能、路径费用乘流量及累计费用须放入 ll。重复调用在当前残量上继续增广。
+初始 SPFA 最坏 O(nm)，之后 A 次 Dijkstra 增广共 O(A m log n)。
+费用不能取 LLONG_MIN，势能、路径费用乘流量及累计费用须放入 ll。重复调用沿用当前残量。
 */
 
 #include <bits/stdc++.h>
