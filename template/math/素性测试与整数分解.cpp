@@ -1,6 +1,6 @@
 /*
-支持整个 ull 范围。确定性判素用 O(log n) 次模乘；Pollard–Rho 找因子期望约 O(sqrt(p)) 次模运算，
-p 为最小质因子。一次倍增模乘为 O(log n)。
+支持整个 ull 范围。Miller-Rabin 确定性判素用 O(log n) 次模乘。
+Pollard-Rho 找因子期望约 O(sqrt(p)) 次模运算，p 为最小质因子。一次倍增模乘为 O(log n)。
 factor 对 n < 2 返回空表，其余按非降序返回质因子，保留重数。直接调用 rho 时须传入合数。
 */
 

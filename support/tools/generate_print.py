@@ -125,7 +125,7 @@ CHAPTERS = [
     ("数学", [
         ("template/math/线性筛素数.cpp", "线性筛素数"),
         ("template/math/线性筛积性函数.cpp", "线性筛积性函数"),
-        ("template/math/素性测试与整数分解.cpp", "Miller-Rabin 与 Pollard-Rho"),
+        ("template/math/素性测试与整数分解.cpp", "判素与质因数分解"),
         ("template/math/原根.cpp", "原根"),
         ("template/math/快速幂与逆元.cpp", "快速幂与线性、批量逆元"),
         ("template/math/扩展欧几里得与中国剩余定理.cpp", "exgcd、逆元与扩展 CRT"),
