@@ -167,9 +167,9 @@ def main():
             key = entry_id(entry)
             title = html.escape(entry.title)
             links.append(
-                f'<a href="#{quote(key, safe="")}" data-entry="{html.escape(key)}">'
+                f'<a href="#{quote(key, safe="")}" data-entry="{html.escape(key)}" title="{title}">'
                 f'<span class="entry-number">{label(entry.number)}</span>'
-                f'<span>{label(entry.title)}</span></a>')
+                f'<span class="entry-title">{title}</span></a>')
         toc.append(
             f'<details class="toc-group"{" open" if chapter_number == 1 else ""}>'
             f'<summary><span>{label(str(chapter_number))}</span>{label(chapter)}</summary>'

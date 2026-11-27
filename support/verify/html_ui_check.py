@@ -15,6 +15,31 @@ sys.path.insert(0, str(ROOT / "support/tools"))
 from generate_html import code_html, entry_cards, entry_id, load_entries
 
 
+def check_toc_titles(page, expected):
+    measured = page.locator(".toc-group").evaluate_all("""groups => {
+        const wasOpen = groups.map(group => group.open);
+        groups.forEach(group => group.open = true);
+        const rows = [...document.querySelectorAll(".toc-links .entry-title")].map(title => {
+            const range = document.createRange();
+            range.selectNodeContents(title);
+            return {
+                title: title.textContent,
+                tooltip: title.parentElement.title,
+                lines: new Set([...range.getClientRects()].map(rect => rect.top)).size,
+                clipped: title.scrollWidth > title.clientWidth,
+                ellipsis: getComputedStyle(title).textOverflow === "ellipsis",
+            };
+        });
+        groups.forEach((group, i) => group.open = wasOpen[i]);
+        return rows;
+    }""")
+    assert [row["title"] for row in measured] == [entry.title for entry in expected]
+    for row in measured:
+        assert row["lines"] == 1 and row["ellipsis"] and row["tooltip"] == row["title"], row
+    kd_tree = next(row for row in measured if row["title"] == "KD-tree：二维最近邻")
+    assert not kd_tree["clipped"], kd_tree
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8765/XCPC-Template/")
@@ -44,6 +69,7 @@ def main():
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(args.url)
         page.evaluate("document.fonts.ready")
+        check_toc_titles(page, expected)
         actual = page.locator(".entry code").all_text_contents()
         assert actual == [source for entry in expected for _, source, _ in entry_cards(entry)]
         assert page.evaluate('document.fonts.check(\'14px "Maple Mono Web"\')')
@@ -182,6 +208,7 @@ def main():
             tab.locator(".menu-button").click()
             expect(tab.locator("#search")).to_be_focused()
             assert tab.locator("#reader").evaluate("el => el.inert")
+            check_toc_titles(tab, expected)
             tab.locator("#search").fill("树状数组")
             if width == 390:
                 tab.screenshot(path=str(args.screenshots / "mobile-menu.png"))

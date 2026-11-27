@@ -23,7 +23,7 @@
   --ui-font: var(--font-ui, sans-serif);
   --text-font: var(--ui-font);
   --top: 64px;
-  --sidebar: 268px;
+  --sidebar: 312px;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -69,6 +69,7 @@ button, a, input, summary, pre { -webkit-tap-highlight-color: transparent; }
 .toc-links a:hover { background: #00000006; color: var(--ink); }
 .toc-links a[aria-current] { background: #1867c012; color: var(--accent); }
 .entry-number { flex: none; min-width: 32px; font-size: 12px; color: inherit; font-variant-numeric: tabular-nums; }
+.entry-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .toc-links a[aria-current] .entry-number { color: inherit; }
 main { margin: var(--top) max(0px, calc((100vw - 1280px)/2)) 0 calc(max(0px, (100vw - 1280px)/2) + var(--sidebar)); padding: 36px 40px; min-width: 0; }
 .paper { max-width: 900px; min-height: calc(100dvh - var(--top) - 72px); margin: 0 auto; background: white; }
@@ -112,7 +113,7 @@ pre::selection, code::selection, code span::selection { background: #67769660; }
   .view-tabs a { padding: 10px 14px; font-size: 13px; }
   .menu-button { grid-column: 1; grid-row: 2; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 8px; border: 0; border-radius: 4px; background: #1867c012; color: var(--accent); }
   .menu-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
-  .sidebar { left: 0; width: min(340px, 90vw); z-index: 25; transform: translateX(-100%); padding: 24px 18px; }
+  .sidebar { left: 0; width: min(340px, 90vw); z-index: 25; transform: translateX(-100%); padding: 24px 12px; }
   .toc-open .sidebar { transform: translateX(0); }
   .toc-open { overflow: hidden; }
   .backdrop { position: fixed; inset: var(--top) 0 0; z-index: 20; background: #21212166; border: 0; padding: 0; }
@@ -137,5 +138,4 @@ pre::selection, code::selection, code span::selection { background: #67769660; }
 }
 
 
-.toc-links a > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 ::selection { background: #1867c029; }
