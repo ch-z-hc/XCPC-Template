@@ -194,8 +194,7 @@ struct FPS {
         return true;
     }
 
-    static pair < V < int >, V < int > > divmod(V < int > a,
-                                                                V < int > b) {
+    static pair < V < int >, V < int > > divmod(V < int > a, V < int > b) {
         assert(a.size() <= (1 << 22) && b.size() <= (1 << 22));
         while (!a.empty() && !a.back()) a.pop_back();
         while (!b.empty() && !b.back()) b.pop_back();

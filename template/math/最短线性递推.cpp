@@ -61,7 +61,7 @@ V < ll > bm(const V < ll > &s, ll mod) {
 }
 
 static V < ll > bm_combine(const V < ll > &a, const V < ll > &b,
-                                   const V < ll > &rec, ll mod) {
+    const V < ll > &rec, ll mod) {
     int k = int(rec.size());
     V < ll > ans(2 * k, 0);
     for (int i = 0; i < k; i ++)

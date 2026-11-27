@@ -58,8 +58,7 @@ struct KthOffline {
         return ans;
     }
 
-    void solve(V < Event > &ev, V < Event > &tmp, int l, int r, int lo,
-               int hi) {
+    void solve(V < Event > &ev, V < Event > &tmp, int l, int r, int lo, int hi) {
         if (l > r) return;
         if (lo == hi) {
             for (int i = l; i <= r; i ++)

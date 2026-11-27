@@ -9,7 +9,7 @@ typedef long long ll;
 using namespace std;
 
 pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
-                                                               bool greater = false) {
+    bool greater = false) {
     int n = int(a.size()) - 1;
     V < int > left(n + 1), right(n + 1, n + 1), st;
     for (int i = 1; i <= n; i ++) {

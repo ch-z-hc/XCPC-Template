@@ -62,8 +62,7 @@ struct Simplex {
         }
     }
 
-    Result solve(const V < V < ld > > &A, const V < ld > &b,
-                 const V < ld > &c) {
+    Result solve(const V < V < ld > > &A, const V < ld > &b, const V < ld > &c) {
         m = int(b.size()); n = int(c.size());
         a.assign(m + 2, V < ld >(n + 2));
         bas.resize(m); nbas.resize(n + 1);

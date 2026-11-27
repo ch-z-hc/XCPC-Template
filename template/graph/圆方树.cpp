@@ -9,8 +9,7 @@
 
 using namespace std;
 
-V < V < int > > block_cut_tree(int n,
-                                             const V < V < int > > &bcc) {
+V < V < int > > block_cut_tree(int n, const V < V < int > > &bcc) {
     V < V < int > > tree(n + bcc.size() + 1);
     for (int i = 0; i < int(bcc.size()); i ++) {
         int p = n + i + 1;

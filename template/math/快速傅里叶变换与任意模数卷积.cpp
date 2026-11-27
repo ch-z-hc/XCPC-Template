@@ -97,8 +97,7 @@ struct ModConv {
         }
     }
 
-    static V < int > mul(const V < int > &a, const V < int > &b,
-                                int mod) {
+    static V < int > mul(const V < int > &a, const V < int > &b, int mod) {
         int m = int(a.size() + b.size() - 1), n = 1;
         while (n < m) n <<= 1;
         V < int > x(n), y(n);
