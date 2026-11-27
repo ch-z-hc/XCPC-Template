@@ -8,6 +8,10 @@ common_tangents 要求正半径，包含内外公切线，重合圆返回空集�
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 #define db long double
 
 struct Circle {
@@ -29,52 +33,52 @@ bool circumcircle(P a, P b, P c, Circle &ans) {
     return true;
 }
 
-std::vector<P> isCL(Circle c, P a, P b) {
+V < P > isCL(Circle c, P a, P b) {
     P v = (b - a).unit(), p = a + v * (c.o - a).dot(v);
     db d = p.distTo(c.o);
     if (d > c.r + EPS) return {};
-    db h = sqrtl(std::max(0.L, (c.r - d) * (c.r + d)));
+    db h = sqrtl(max(0.L, (c.r - d) * (c.r + d)));
     if (h <= EPS) return {p};
     return {p - v * h, p + v * h};
 }
 
-std::vector<P> isCC(Circle a, Circle b) {
+V < P > isCC(Circle a, Circle b) {
     P v = b.o - a.o;
     db d = v.abs();
     if (d <= EPS) {
         if (a.r == 0 && b.r == 0) return {a.o};
         return {};
     }
-    if (d > a.r + b.r + EPS || d < std::abs(a.r - b.r) - EPS) return {};
+    if (d > a.r + b.r + EPS || d < abs(a.r - b.r) - EPS) return {};
     db x = (a.r * a.r - b.r * b.r + d * d) / (2 * d);
-    db h = sqrtl(std::max(0.L, a.r * a.r - x * x));
+    db h = sqrtl(max(0.L, a.r * a.r - x * x));
     P p = a.o + v * (x / d), w = v.rot90() * (h / d);
     if (h <= EPS) return {p};
     return {p - w, p + w};
 }
 
-std::vector<P> tangent_points(Circle c, P p) {
+V < P > tangent_points(Circle c, P p) {
     P v = p - c.o;
     db d = v.abs(), r = c.r;
     if (d < r - EPS) return {};
-    if (std::abs(d - r) <= EPS) return {p};
+    if (abs(d - r) <= EPS) return {p};
     P q = c.o + v * (r * r / (d * d));
-    P w = v.rot90() * (r * sqrtl(std::max(0.L, d * d - r * r)) / (d * d));
+    P w = v.rot90() * (r * sqrtl(max(0.L, d * d - r * r)) / (d * d));
     if (r <= EPS) return {c.o};
     return {q - w, q + w};
 }
 
-std::vector<Line> common_tangents(Circle a, Circle b) {
+V < Line > common_tangents(Circle a, Circle b) {
     P v = b.o - a.o;
     db d = v.abs();
-    std::vector<Line> ans;
+    V < Line > ans;
     if (d <= EPS) return ans;
     v = v / d;
     for (int s : {-1, 1}) {
         db c = (a.r - s * b.r) / d;
-        if (std::abs(c) > 1 + EPS) continue;
-        c = std::clamp(c, -1.L, 1.L);
-        db h = sqrtl(std::max(0.L, 1 - c * c));
+        if (abs(c) > 1 + EPS) continue;
+        c = clamp(c, -1.L, 1.L);
+        db h = sqrtl(max(0.L, 1 - c * c));
         for (int side : {-1, 1}) {
             P normal = v * c + v.rot90() * (side * h);
             P p = a.o + normal * a.r;
@@ -89,9 +93,9 @@ db circle_area(Circle a, Circle b) {
     const db pi = acosl(-1);
     db d = a.o.distTo(b.o);
     if (d >= a.r + b.r) return 0;
-    if (d <= std::abs(a.r - b.r)) return pi * std::min(a.r, b.r) * std::min(a.r, b.r);
-    db x = acosl(std::clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
-    db y = acosl(std::clamp((d * d + b.r * b.r - a.r * a.r) / (2 * d * b.r), -1.L, 1.L));
+    if (d <= abs(a.r - b.r)) return pi * min(a.r, b.r) * min(a.r, b.r);
+    db x = acosl(clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
+    db y = acosl(clamp((d * d + b.r * b.r - a.r * a.r) / (2 * d * b.r), -1.L, 1.L));
     return a.r * a.r * (x - sinl(2 * x) / 2) + b.r * b.r * (y - sinl(2 * y) / 2);
 }
 

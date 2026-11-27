@@ -6,21 +6,26 @@ nodes 存本次点集，t[u] 的每项为 {儿子, 原树距离}。
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 struct VTree {
     int n = 0, lg = 1, tim = 0;
-    std::vector<std::vector<int>> g, fa;
-    std::vector<std::vector<std::pair<int, int>>> t;
-    std::vector<int> in, out, dep, nodes;
+    V < V < int > > g, fa;
+    V < V < pii > > t;
+    V < int > in, out, dep, nodes;
 
     VTree(int n = 0) { init(n); }
     void init(int n_) {
         n = n_;
         lg = 1;
         tim = 0;
-        while ((1ll << lg) <= std::max(1, n)) lg ++;
+        while ((1ll << lg) <= max(1, n)) lg ++;
         g.assign(n + 1, {});
         t.assign(n + 1, {});
-        fa.assign(lg, std::vector<int>(n + 1));
+        fa.assign(lg, V < int >(n + 1));
         in.assign(n + 1, 0);
         out.assign(n + 1, 0);
         dep.assign(n + 1, 0);
@@ -62,20 +67,20 @@ struct VTree {
         return fa[0][u];
     }
 
-    int query(std::vector<int> key) {
+    int query(V < int > key) {
         for (int u : nodes) t[u].clear();
         nodes.clear();
         if (key.empty()) return 0;
         auto cmp = [&](int u, int v) {
             return in[u] < in[v];
         };
-        std::sort(key.begin(), key.end(), cmp);
-        key.erase(std::unique(key.begin(), key.end()), key.end());
+        sort(key.begin(), key.end(), cmp);
+        key.erase(unique(key.begin(), key.end()), key.end());
         nodes = key;
         for (int i = 1; i < int(key.size()); i ++)
             nodes.push_back(lca(key[i - 1], key[i]));
-        std::sort(nodes.begin(), nodes.end(), cmp);
-        nodes.erase(std::unique(nodes.begin(), nodes.end()), nodes.end());
+        sort(nodes.begin(), nodes.end(), cmp);
+        nodes.erase(unique(nodes.begin(), nodes.end()), nodes.end());
         for (int i = 1; i < int(nodes.size()); i ++) {
             int v = nodes[i], u = lca(nodes[i - 1], v);
             t[u].push_back({v, dep[v] - dep[u]});

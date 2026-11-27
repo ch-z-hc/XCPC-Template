@@ -5,17 +5,21 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct PArray {
     struct Node {
         int l = 0, r = 0;
-        i64 val = 0;
+        ll val = 0;
     };
     int n = 0, root = 0;
-    std::vector<Node> t;
+    V < Node > t;
 
-    int build(int l, int r, const std::vector<i64> &a) {
+    int build(int l, int r, const V < ll > &a) {
         int p = int(t.size());
         t.push_back(Node());
         if (l == r) {
@@ -28,13 +32,13 @@ struct PArray {
         return p;
     }
 
-    void init(const std::vector<i64> &a) {
+    void init(const V < ll > &a) {
         n = int(a.size()) - 1;
         t.assign(1, Node());
         root = n ? build(1, n, a) : 0;
     }
 
-    int modify(int p, int l, int r, int pos, i64 value) {
+    int modify(int p, int l, int r, int pos, ll value) {
         int q = int(t.size());
         Node u = t[p];
         t.push_back(u);
@@ -50,20 +54,20 @@ struct PArray {
         return q;
     }
 
-    i64 query(int p, int l, int r, int pos) {
+    ll query(int p, int l, int r, int pos) {
         if (l == r) return t[p].val;
         int mid = (l + r) / 2;
         if (pos <= mid) return query(t[p].l, l, mid, pos);
         return query(t[p].r, mid + 1, r, pos);
     }
 
-    int modify(int p, int pos, i64 value) { return modify(p, 1, n, pos, value); }
+    int modify(int p, int pos, ll value) { return modify(p, 1, n, pos, value); }
 
-    i64 query(int p, int pos) { return query(p, 1, n, pos); }
+    ll query(int p, int pos) { return query(p, 1, n, pos); }
 };
 
 /*
 PArray st; st.init({0, 3, 1, 4});
 int p = st.modify(st.root, 2, 9);
-i64 old = st.query(st.root, 2), now = st.query(p, 2);
+ll old = st.query(st.root, 2), now = st.query(p, 2);
 */

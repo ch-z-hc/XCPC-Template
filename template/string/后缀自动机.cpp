@@ -5,16 +5,20 @@ count 按状态返回出现次数。query 只考虑至少出现两次的子串�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct SAM {
     struct Node {
-        std::array<int, 26> ch{};
+        array < int, 26 > ch{};
         int fa = -1, len = 0;
-        i64 cnt = 0;
+        ll cnt = 0;
     };
 
-    std::vector<Node> tr;
+    V < Node > tr;
     int last = 0;
 
     SAM() { clear(); }
@@ -55,29 +59,29 @@ struct SAM {
         last = cur;
     }
 
-    void build(const std::string &s) {
+    void build(const string &s) {
         clear();
         for (char c : s) extend(c);
     }
 
-    std::vector<i64> count() {
+    V < ll > count() {
         int n = 0;
-        for (auto &p : tr) n = std::max(n, p.len);
-        std::vector<int> cnt(n + 1), ord(tr.size());
+        for (auto &p : tr) n = max(n, p.len);
+        V < int > cnt(n + 1), ord(tr.size());
         for (auto &p : tr) cnt[p.len] ++;
         for (int i = 1; i <= n; i ++) cnt[i] += cnt[i - 1];
         for (int i = int(tr.size()) - 1; i >= 0; i --) ord[-- cnt[tr[i].len]] = i;
-        std::vector<i64> ans(tr.size());
+        V < ll > ans(tr.size());
         for (int i = 0; i < int(tr.size()); i ++) ans[i] = tr[i].cnt;
         for (int i = int(ord.size()) - 1; i > 0; i --) ans[tr[ord[i]].fa] += ans[ord[i]];
         return ans;
     }
 
-    i64 query() {
+    ll query() {
         auto cnt = count();
-        i64 ans = 0;
+        ll ans = 0;
         for (int i = 0; i < int(tr.size()); i ++)
-            if (cnt[i] > 1) ans = std::max(ans, cnt[i] * tr[i].len);
+            if (cnt[i] > 1) ans = max(ans, cnt[i] * tr[i].len);
         return ans;
     }
 };
@@ -85,6 +89,6 @@ struct SAM {
 /*
 SAM sam; sam.build("aba"); sam.extend('b');
 auto cnt = sam.count();
-i64 best = sam.query();
+ll best = sam.query();
 sam.clear();
 */

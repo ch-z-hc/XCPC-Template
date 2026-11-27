@@ -2,12 +2,16 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-std::pair<std::vector<int>, std::vector<int>> monotonic_bounds(const std::vector<i64> &a,
+typedef long long ll;
+
+using namespace std;
+
+pair < V < int >, V < int > > monotonic_bounds(const V < ll > &a,
                                                                bool greater = false) {
     int n = int(a.size()) - 1;
-    std::vector<int> left(n + 1), right(n + 1, n + 1), st;
+    V < int > left(n + 1), right(n + 1, n + 1), st;
     for (int i = 1; i <= n; i ++) {
         while (!st.empty() && (greater ? a[st.back()] <= a[i] : a[st.back()] >= a[i]))
             st.pop_back();
@@ -25,6 +29,6 @@ std::pair<std::vector<int>, std::vector<int>> monotonic_bounds(const std::vector
 }
 
 /*
-std::vector<i64> a{0, 3, 1, 2};
+V < ll > a{0, 3, 1, 2};
 auto [l, r] = monotonic_bounds(a); auto greater = monotonic_bounds(a, true);
 */

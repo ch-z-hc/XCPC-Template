@@ -2,9 +2,14 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> bfs01(const std::vector<std::vector<std::pair<int, int>>> &g, int s) {
-    std::vector<int> dis(g.size(), INT_MAX / 2), vis(g.size());
-    std::deque<int> q;
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
+V < int > bfs01(const V < V < pii > > &g, int s) {
+    V < int > dis(g.size(), INT_MAX / 2), vis(g.size());
+    deque < int > q;
     dis[s] = 0;
     q.push_back(s);
     while (!q.empty()) {

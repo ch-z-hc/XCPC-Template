@@ -5,13 +5,17 @@ n 阶方阵乘法 O(n³)，快速幂 O(n³ log(k + 2))。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-using Matrix = std::vector<std::vector<i64>>;
+typedef long long ll;
 
-Matrix matrix_mul(const Matrix &a, const Matrix &b, i64 mod) {
+using namespace std;
+
+using Matrix = V < V < ll > >;
+
+Matrix matrix_mul(const Matrix &a, const Matrix &b, ll mod) {
     int n = int(a.size()), m = int(b.size()), p = int(b[0].size());
-    Matrix c(n, std::vector<i64>(p, 0));
+    Matrix c(n, V < ll >(p, 0));
     for (int i = 0; i < n; i ++)
         for (int k = 0; k < m; k ++)
             if (a[i][k])
@@ -20,9 +24,9 @@ Matrix matrix_mul(const Matrix &a, const Matrix &b, i64 mod) {
     return c;
 }
 
-Matrix matrix_pow(Matrix a, i64 b, i64 mod) {
+Matrix matrix_pow(Matrix a, ll b, ll mod) {
     int n = int(a.size());
-    Matrix res(n, std::vector<i64>(n, 0));
+    Matrix res(n, V < ll >(n, 0));
     for (int i = 0; i < n; i ++) res[i][i] = 1 % mod;
     for (; b; b >>= 1) {
         if (b & 1) res = matrix_mul(res, a, mod);

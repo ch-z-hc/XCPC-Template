@@ -6,10 +6,14 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct DSUOnTree {
     int n = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> siz, son, in, out, ord;
+    V < V < int > > g;
+    V < int > siz, son, in, out, ord;
 
     void add(int u);
     void del(int u);
@@ -35,8 +39,8 @@ struct DSUOnTree {
 
     void build(int root = 1) {
         ord.clear();
-        std::fill(siz.begin(), siz.end(), 0);
-        std::fill(son.begin(), son.end(), 0);
+        fill(siz.begin(), siz.end(), 0);
+        fill(son.begin(), son.end(), 0);
         dfs_size(root, 0);
         dfs(root, 0, false);
     }
@@ -72,7 +76,7 @@ struct DSUOnTree {
 };
 
 /*
-std::vector<int> color, cnt, ans; int kinds = 0;
+V < int > color, cnt, ans; int kinds = 0;
 void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
 void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
 void query(int u) { ans[u] = kinds; }

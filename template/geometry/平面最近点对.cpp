@@ -5,6 +5,11 @@ build 返回原数组下标，d2 为距离平方。少于两点时返回 {-1, -1
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 #define db long double
 
 struct ClosestPair {
@@ -12,8 +17,8 @@ struct ClosestPair {
         P p;
         int id;
     };
-    std::vector<Node> a, tmp;
-    std::pair<int, int> ids;
+    V < Node > a, tmp;
+    pii ids;
     db d2;
 
     void update(Node u, Node v) {
@@ -24,7 +29,7 @@ struct ClosestPair {
         if (r - l <= 3) {
             for (int i = l; i < r; i ++)
                 for (int j = i + 1; j < r; j ++) update(a[i], a[j]);
-            std::sort(a.begin() + l, a.begin() + r,
+            sort(a.begin() + l, a.begin() + r,
                       [](Node u, Node v) { return u.p.y < v.p.y; });
             return;
         }
@@ -46,14 +51,14 @@ struct ClosestPair {
                 tmp[l + cnt ++] = a[i];
             }
     }
-    std::pair<int, int> build(const std::vector<P> &points) {
+    pii build(const V < P > &points) {
         a.clear();
         tmp.resize(points.size());
         for (int i = 0; i < int(points.size()); i ++)
             a.push_back({points[i], i});
-        std::sort(a.begin(), a.end(), [](Node u, Node v) { return u.p < v.p; });
+        sort(a.begin(), a.end(), [](Node u, Node v) { return u.p < v.p; });
         ids = {-1, -1};
-        d2 = std::numeric_limits<db>::infinity();
+        d2 = numeric_limits < db >::infinity();
         dfs(0, int(a.size()));
         return ids;
     }

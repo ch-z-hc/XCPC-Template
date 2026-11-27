@@ -6,19 +6,23 @@
 
 #include <bits/stdc++.h>
 
-using u64 = unsigned long long;
+#define V vector
+
+typedef unsigned long long ull;
+
+using namespace std;
 
 struct PXorTrie {
     struct Node {
-        std::array<int, 2> ch{};
+        array < int, 2 > ch{};
         int cnt = 0;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
 
     PXorTrie() { init(); }
     void init() { tr.assign(1, {}); }
 
-    int insert(int p, u64 x) {
+    int insert(int p, ull x) {
         int root = int(tr.size());
         tr.push_back(tr[p]);
         tr[root].cnt ++;
@@ -34,7 +38,7 @@ struct PXorTrie {
         return root;
     }
 
-    bool max_xor(int left, int right, u64 x, u64 &ans) {
+    bool max_xor(int left, int right, ull x, ull &ans) {
         if (tr[left].cnt == tr[right].cnt) return false;
         ans = 0;
         for (int i = 63; i >= 0; i --) {
@@ -52,6 +56,6 @@ struct PXorTrie {
 
 /*
 PXorTrie trie; int a = trie.insert(0, 5), b = trie.insert(a, 9);
-u64 ans; if (trie.max_xor(a, b, 2, ans)) cout << ans;
+ull ans; if (trie.max_xor(a, b, 2, ans)) cout << ans;
 trie.init();
 */

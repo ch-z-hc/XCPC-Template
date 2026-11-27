@@ -1,20 +1,24 @@
 /*
 求从 root 向外覆盖全图的最小树形图权值，O(n(n + m))。允许负权、重边、自环。
-边权差和总权须放入 i64，根无法到达所有点时失败。
+边权差和总权须放入 ll，根无法到达所有点时失败。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct DMST {
     struct Edge {
         int u, v;
-        i64 w;
+        ll w;
     };
 
     int n = 0;
-    std::vector<Edge> edges;
+    V < Edge > edges;
 
     DMST(int n = 0) { init(n); }
 
@@ -23,15 +27,15 @@ struct DMST {
         edges.clear();
     }
 
-    void add_edge(int u, int v, i64 w) { edges.push_back({u, v, w}); }
+    void add_edge(int u, int v, ll w) { edges.push_back({u, v, w}); }
 
-    bool solve(int root, i64 &ans) {
+    bool solve(int root, ll &ans) {
         int k = n;
         ans = 0;
-        std::vector<Edge> g = edges;
+        V < Edge > g = edges;
         while (1) {
-            std::vector<i64> in(k + 1);
-            std::vector<int> fa(k + 1), id(k + 1), vis(k + 1);
+            V < ll > in(k + 1);
+            V < int > fa(k + 1), id(k + 1), vis(k + 1);
             for (auto e : g)
                 if (e.u != e.v) {
                     if (!fa[e.v] || e.w < in[e.v]) {
@@ -71,5 +75,5 @@ struct DMST {
 
 /*
 DMST mst; mst.init(n); mst.add_edge(u, v, w);
-i64 ans; bool ok = mst.solve(root, ans);
+ll ans; bool ok = mst.solve(root, ans);
 */

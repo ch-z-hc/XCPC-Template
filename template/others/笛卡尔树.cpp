@@ -2,18 +2,22 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Cartesian {
     int root = 0;
-    std::vector<int> ls, rs, fa;
+    V < int > ls, rs, fa;
 
-    void build(const std::vector<i64> &a) {
+    void build(const V < ll > &a) {
         int n = int(a.size()) - 1;
         ls.assign(n + 1, 0);
         rs.assign(n + 1, 0);
         fa.assign(n + 1, 0);
-        std::vector<int> stk(n + 1);
+        V < int > stk(n + 1);
         int top = 0;
         for (int i = 1; i <= n; i ++) {
             int k = top;

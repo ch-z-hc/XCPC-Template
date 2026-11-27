@@ -1,18 +1,22 @@
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct LCA {
     int n = 0, lg = 1;
-    std::vector<std::vector<int>> g, fa;
-    std::vector<int> dep;
+    V < V < int > > g, fa;
+    V < int > dep;
 
     LCA(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_;
         lg = 1;
-        while ((1ll << lg) <= std::max(1, n)) lg ++;
+        while ((1ll << lg) <= max(1, n)) lg ++;
         g.assign(n + 1, {});
-        fa.assign(lg, std::vector<int>(n + 1));
+        fa.assign(lg, V < int >(n + 1));
         dep.assign(n + 1, 0);
     }
 
@@ -37,7 +41,7 @@ struct LCA {
     }
 
     int lca(int u, int v) {
-        if (dep[u] < dep[v]) std::swap(u, v);
+        if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
         for (int j = 0; j < lg; j ++)
             if (d >> j & 1) u = fa[j][u];

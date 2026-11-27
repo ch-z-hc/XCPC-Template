@@ -2,11 +2,15 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct SCC {
     int n = 0, tim = 0, cnt = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> dfn, low, bel, stk;
-    std::vector<char> vis;
+    V < V < int > > g;
+    V < int > dfn, low, bel, stk;
+    V < char > vis;
 
     SCC(int n = 0) { init(n); }
 
@@ -30,9 +34,9 @@ struct SCC {
         for (int v : g[u]) {
             if (!dfn[v]) {
                 dfs(v);
-                low[u] = std::min(low[u], low[v]);
+                low[u] = min(low[u], low[v]);
             } else if (vis[v])
-                low[u] = std::min(low[u], dfn[v]);
+                low[u] = min(low[u], dfn[v]);
         }
         if (dfn[u] != low[u]) return;
         cnt ++;
@@ -47,10 +51,10 @@ struct SCC {
 
     int build() {
         tim = cnt = 0;
-        std::fill(dfn.begin(), dfn.end(), 0);
-        std::fill(low.begin(), low.end(), 0);
-        std::fill(bel.begin(), bel.end(), 0);
-        std::fill(vis.begin(), vis.end(), 0);
+        fill(dfn.begin(), dfn.end(), 0);
+        fill(low.begin(), low.end(), 0);
+        fill(bel.begin(), bel.end(), 0);
+        fill(vis.begin(), vis.end(), 0);
         stk.clear();
         for (int u = 1; u <= n; u ++)
             if (!dfn[u]) dfs(u);

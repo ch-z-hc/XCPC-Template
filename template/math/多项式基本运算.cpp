@@ -8,8 +8,11 @@ sqrt 无根时返回 false，首个非零项取较小的平方根。divmod 去�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
-using u64 = unsigned long long;
+#define V vector
+
+typedef unsigned long long ull;
+
+using namespace std;
 
 struct FPS {
     static const int mod = 998244353;
@@ -21,16 +24,16 @@ struct FPS {
         return ans;
     }
 
-    static void ntt(std::vector<int> &a, bool inv = false) {
+    static void ntt(V < int > &a, bool inv = false) {
         int n = int(a.size());
-        if (inv && n > 1) std::reverse(a.begin() + 1, a.end());
+        if (inv && n > 1) reverse(a.begin() + 1, a.end());
         for (int i = 1, j = 0; i < n; i ++) {
             int bit = n >> 1;
             for (; j & bit; bit >>= 1) j ^= bit;
             j ^= bit;
-            if (i < j) std::swap(a[i], a[j]);
+            if (i < j) swap(a[i], a[j]);
         }
-        static std::vector<int> roots{0, 1};
+        static V < int > roots{0, 1};
         for (int k = int(roots.size()); k < n; k *= 2) {
             int w = power(3, (mod - 1) / (2 * k));
             roots.resize(2 * k);
@@ -56,7 +59,7 @@ struct FPS {
         }
     }
 
-    static std::vector<int> mul(std::vector<int> a, std::vector<int> b) {
+    static V < int > mul(V < int > a, V < int > b) {
         if (a.empty() || b.empty()) return {};
         int m = int(a.size() + b.size() - 1), n = 1;
         while (n < m) n <<= 1;
@@ -71,13 +74,13 @@ struct FPS {
         return a;
     }
 
-    static std::vector<int> inv(const std::vector<int> &a, int n) {
+    static V < int > inv(const V < int > &a, int n) {
         if (!n) return {};
         assert(n <= (1 << 22) && !a.empty() && a[0]);
-        std::vector<int> b{power(a[0], mod - 2)};
+        V < int > b{power(a[0], mod - 2)};
         for (int len = 2; int(b.size()) < n; len <<= 1) {
-            int m = std::min(len, n);
-            std::vector<int> c(a.begin(), a.begin() + std::min(m, int(a.size())));
+            int m = min(len, n);
+            V < int > c(a.begin(), a.begin() + min(m, int(a.size())));
             c = mul(c, b);
             c.resize(m);
             for (int &x : c) x = x ? mod - x : 0;
@@ -88,27 +91,27 @@ struct FPS {
         return b;
     }
 
-    static std::vector<int> ln(const std::vector<int> &a, int n) {
+    static V < int > ln(const V < int > &a, int n) {
         if (!n) return {};
         assert(n <= (1 << 22) && !a.empty() && a[0] == 1);
-        int m = std::min(n, int(a.size()));
-        std::vector<int> d(std::max(0, m - 1));
+        int m = min(n, int(a.size()));
+        V < int > d(max(0, m - 1));
         for (int i = 1; i < m; i ++) d[i - 1] = 1ll * i * a[i] % mod;
         d = mul(d, inv(a, n));
         d.resize(n - 1);
-        std::vector<int> b(n), iv(n, 1);
+        V < int > b(n), iv(n, 1);
         for (int i = 2; i < n; i ++) iv[i] = mod - 1ll * (mod / i) * iv[mod % i] % mod;
         for (int i = 1; i < n; i ++) b[i] = 1ll * d[i - 1] * iv[i] % mod;
         return b;
     }
 
-    static std::vector<int> exp(const std::vector<int> &a, int n) {
+    static V < int > exp(const V < int > &a, int n) {
         if (!n) return {};
         assert(n <= (1 << 22) && (a.empty() || a[0] == 0));
-        std::vector<int> b{1};
+        V < int > b{1};
         for (int len = 2; int(b.size()) < n; len <<= 1) {
-            int m = std::min(len, n);
-            std::vector<int> c = ln(b, m);
+            int m = min(len, n);
+            V < int > c = ln(b, m);
             for (int i = 0; i < m; i ++) {
                 c[i] = (i < int(a.size()) ? a[i] : 0) - c[i];
                 if (c[i] < 0) c[i] += mod;
@@ -120,20 +123,20 @@ struct FPS {
         return b;
     }
 
-    static std::vector<int> pow(const std::vector<int> &a, u64 k, int n) {
+    static V < int > pow(const V < int > &a, ull k, int n) {
         if (!n) return {};
         assert(n <= (1 << 22));
-        std::vector<int> ans(n);
+        V < int > ans(n);
         if (!k) {
             ans[0] = 1;
             return ans;
         }
-        int p = 0, m = std::min(n, int(a.size()));
+        int p = 0, m = min(n, int(a.size()));
         while (p < m && !a[p]) p ++;
-        if (p == m || (p && k > u64((n - 1) / p))) return ans;
+        if (p == m || (p && k > ull((n - 1) / p))) return ans;
         int shift = int(p * k), len = n - shift;
         int iv = power(a[p], mod - 2);
-        std::vector<int> b(len);
+        V < int > b(len);
         for (int i = 0; i < len && i + p < m; i ++) b[i] = 1ll * a[i + p] * iv % mod;
         b = ln(b, len);
         for (int &x : b) x = x * (k % mod) % mod;
@@ -158,16 +161,16 @@ struct FPS {
             t = 1ll * t * c % mod;
             s = i;
         }
-        return std::min(r, mod - r);
+        return min(r, mod - r);
     }
 
-    static bool sqrt(const std::vector<int> &a, int n, std::vector<int> &ans) {
+    static bool sqrt(const V < int > &a, int n, V < int > &ans) {
         if (!n) {
             ans.clear();
             return true;
         }
         assert(n <= (1 << 22));
-        int p = 0, m = std::min(n, int(a.size()));
+        int p = 0, m = min(n, int(a.size()));
         while (p < m && !a[p]) p ++;
         if (p == m) {
             ans.assign(n, 0);
@@ -177,11 +180,11 @@ struct FPS {
         int r = sqrt_mod(a[p]);
         if (r == -1) return false;
         int len = n - p;
-        std::vector<int> c(len), b{r};
+        V < int > c(len), b{r};
         for (int i = 0; i < len && i + p < m; i ++) c[i] = a[i + p];
         for (int size = 2; int(b.size()) < len; size <<= 1) {
-            int k = std::min(size, len);
-            std::vector<int> d(c.begin(), c.begin() + k);
+            int k = min(size, len);
+            V < int > d(c.begin(), c.begin() + k);
             d = mul(d, inv(b, k));
             d.resize(k);
             b.resize(k);
@@ -193,22 +196,22 @@ struct FPS {
         return true;
     }
 
-    static std::pair<std::vector<int>, std::vector<int>> divmod(std::vector<int> a,
-                                                                std::vector<int> b) {
+    static pair < V < int >, V < int > > divmod(V < int > a,
+                                                                V < int > b) {
         assert(a.size() <= (1 << 22) && b.size() <= (1 << 22));
         while (!a.empty() && !a.back()) a.pop_back();
         while (!b.empty() && !b.back()) b.pop_back();
         assert(!b.empty());
         if (a.size() < b.size()) return {{}, a};
         int n = int(a.size()), m = int(b.size()), k = n - m + 1;
-        std::vector<int> ar = a, br = b;
-        std::reverse(ar.begin(), ar.end());
-        std::reverse(br.begin(), br.end());
+        V < int > ar = a, br = b;
+        reverse(ar.begin(), ar.end());
+        reverse(br.begin(), br.end());
         ar.resize(k);
-        std::vector<int> q = mul(ar, inv(br, k));
+        V < int > q = mul(ar, inv(br, k));
         q.resize(k);
-        std::reverse(q.begin(), q.end());
-        std::vector<int> r = mul(q, b);
+        reverse(q.begin(), q.end());
+        V < int > r = mul(q, b);
         r.resize(m - 1);
         for (int i = 0; i < m - 1; i ++) {
             r[i] = a[i] - r[i];
@@ -222,11 +225,11 @@ struct FPS {
 const int FPS::mod;
 
 /*
-std::vector<int> a{1, 2, 1}, b{1, 1};
+V < int > a{1, 2, 1}, b{1, 1};
 auto product = FPS::mul(a, b), inverse = FPS::inv(a, 8);
 auto log_a = FPS::ln(a, 8), recovered = FPS::exp(log_a, 8), power = FPS::pow(a, 3, 8);
-std::vector<int> root; bool ok = FPS::sqrt(a, 8, root);
+V < int > root; bool ok = FPS::sqrt(a, 8, root);
 auto [q, r] = FPS::divmod(a, b);
-std::vector<int> v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true);
+V < int > v{1, 2, 1, 0}; FPS::ntt(v); FPS::ntt(v, true);
 int scalar = FPS::power(2, 10), sq = FPS::sqrt_mod(4);
 */

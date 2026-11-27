@@ -1,14 +1,18 @@
-// 统计树上距离 <= k 的无序异点对，单次 O(n log² n)。边权非负，距离和答案须放入 i64。
+// 统计树上距离 <= k 的无序异点对，单次 O(n log² n)。边权非负，距离和答案须放入 ll。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Centroid {
     int n = 0;
-    std::vector<std::vector<std::pair<int, i64>>> g;
-    std::vector<int> siz;
-    std::vector<char> vis;
+    V < V < pair < int, ll > > > g;
+    V < int > siz;
+    V < char > vis;
 
     Centroid(int n = 0) { init(n); }
     void init(int n_) {
@@ -18,7 +22,7 @@ struct Centroid {
         vis.assign(n + 1, 0);
     }
 
-    void add_edge(int u, int v, i64 w = 1) {
+    void add_edge(int u, int v, ll w = 1) {
         g[u].push_back({v, w});
         g[v].push_back({u, w});
     }
@@ -36,16 +40,16 @@ struct Centroid {
         return u;
     }
 
-    void collect(int u, int fa, i64 d, i64 k, std::vector<i64> &a) {
+    void collect(int u, int fa, ll d, ll k, V < ll > &a) {
         if (d > k) return;
         a.push_back(d);
         for (auto [v, w] : g[u])
             if (v != fa && !vis[v] && w <= k - d) collect(v, u, d + w, k, a);
     }
 
-    i64 count(std::vector<i64> &a, i64 k) {
-        std::sort(a.begin(), a.end());
-        i64 ans = 0;
+    ll count(V < ll > &a, ll k) {
+        sort(a.begin(), a.end());
+        ll ans = 0;
         int l = 0, r = int(a.size()) - 1;
         while (l < r) {
             if (a[l] <= k - a[r])
@@ -56,14 +60,14 @@ struct Centroid {
         return ans;
     }
 
-    i64 solve(int s, i64 k) {
+    ll solve(int s, ll k) {
         int u = find(s, 0, dfs_size(s, 0));
         vis[u] = 1;
-        std::vector<i64> all{0};
-        i64 ans = 0;
+        V < ll > all{0};
+        ll ans = 0;
         for (auto [v, w] : g[u])
             if (!vis[v]) {
-                std::vector<i64> a;
+                V < ll > a;
                 collect(v, u, w, k, a);
                 ans -= count(a, k);
                 all.insert(all.end(), a.begin(), a.end());
@@ -74,10 +78,10 @@ struct Centroid {
         return ans;
     }
 
-    i64 query(i64 k) {
-        std::fill(vis.begin(), vis.end(), 0);
+    ll query(ll k) {
+        fill(vis.begin(), vis.end(), 0);
         return n && k >= 0 ? solve(1, k) : 0;
     }
 };
 
-// Centroid tree; tree.init(n); tree.add_edge(u, v, w); i64 ans = tree.query(k);
+// Centroid tree; tree.init(n); tree.add_edge(u, v, w); ll ans = tree.query(k);

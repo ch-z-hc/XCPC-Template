@@ -5,13 +5,15 @@ kth 按不同异或值从小到大编号，k 从 0 数，包含空集的 0。无
 
 #include <bits/stdc++.h>
 
-using u64 = unsigned long long;
+typedef unsigned long long ull;
+
+using namespace std;
 
 struct Basis {
-    std::array<u64, 63> p{};
+    array < ull, 63 > p{};
 
     void clear() { p.fill(0); }
-    bool insert(u64 x) {
+    bool insert(ull x) {
         for (int i = 62; i >= 0; i --)
             if (x >> i & 1ULL) {
                 if (p[i])
@@ -23,7 +25,7 @@ struct Basis {
             }
         return false;
     }
-    bool contains(u64 x) {
+    bool contains(ull x) {
         for (int i = 62; i >= 0; i --)
             if (x >> i & 1ULL) {
                 if (!p[i]) return false;
@@ -31,12 +33,12 @@ struct Basis {
             }
         return true;
     }
-    u64 max_xor(u64 x = 0) {
-        for (int i = 62; i >= 0; i --) x = std::max(x, x ^ p[i]);
+    ull max_xor(ull x = 0) {
+        for (int i = 62; i >= 0; i --) x = max(x, x ^ p[i]);
         return x;
     }
 
-    bool kth(u64 k, u64 &ans) {
+    bool kth(ull k, ull &ans) {
         auto a = p;
         int n = 0;
         for (int i = 0; i < 63; i ++)
@@ -58,7 +60,7 @@ struct Basis {
 
 /*
 Basis base; bool independent = base.insert(5); base.insert(3);
-bool has = base.contains(6); u64 largest = base.max_xor(0);
-u64 x; if (base.kth(1, x)) cout << x;
+bool has = base.contains(6); ull largest = base.max_xor(0);
+ull x; if (base.kth(1, x)) cout << x;
 base.clear();
 */

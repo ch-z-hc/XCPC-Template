@@ -6,52 +6,56 @@ bsgs 要求底数与模数互质，exbsgs 允许不互质。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define se second
 
-i64 bsgs_inv(i64 a, i64 mod) {
-    auto dfs = [&](auto &&self, i64 a_, i64 b, i64 &x, i64 &y) -> void {
+typedef long long ll;
+
+using namespace std;
+
+ll bsgs_inv(ll a, ll mod) {
+    auto dfs = [&](auto &&self, ll a_, ll b, ll &x, ll &y) -> void {
         if (!b) {
             x = 1;
             y = 0;
             return;
         }
-        i64 u, v;
+        ll u, v;
         self(self, b, a_ % b, u, v);
         x = v;
         y = u - a_ / b * v;
     };
-    i64 x, y;
+    ll x, y;
     dfs(dfs, a, mod, x, y);
     return (x % mod + mod) % mod;
 }
 
-i64 bsgs(i64 a, i64 b, i64 mod) {
+ll bsgs(ll a, ll b, ll mod) {
     if (mod == 1) return 0;
     a = (a % mod + mod) % mod;
     b = (b % mod + mod) % mod;
-    i64 m = i64(sqrtl(mod)) + 1, cur = 1;
-    std::unordered_map<i64, i64> pos;
-    pos.reserve(std::size_t(m * 2));
-    for (i64 j = 0; j < m; j ++) {
+    ll m = ll(sqrtl(mod)) + 1, cur = 1;
+    unordered_map < ll, ll > pos;
+    pos.reserve(size_t(m * 2));
+    for (ll j = 0; j < m; j ++) {
         pos.emplace(cur, j);
         cur = cur * a % mod;
     }
-    i64 step = bsgs_inv(cur, mod);
+    ll step = bsgs_inv(cur, mod);
     cur = b;
-    for (i64 i = 0; i <= m; i ++) {
+    for (ll i = 0; i <= m; i ++) {
         auto it = pos.find(cur);
-        if (it != pos.end()) return i * m + it->second;
+        if (it != pos.end()) return i * m + it->se;
         cur = cur * step % mod;
     }
     return -1;
 }
 
-i64 exbsgs(i64 a, i64 b, i64 mod) {
+ll exbsgs(ll a, ll b, ll mod) {
     if (mod == 1) return 0;
     a = (a % mod + mod) % mod;
     b = (b % mod + mod) % mod;
-    i64 k = 1, cnt = 0;
-    for (i64 g; (g = std::gcd(a, mod)) > 1;) {
+    ll k = 1, cnt = 0;
+    for (ll g; (g = gcd(a, mod)) > 1;) {
         if (b == k) return cnt;
         if (b % g) return -1;
         b /= g;
@@ -59,11 +63,11 @@ i64 exbsgs(i64 a, i64 b, i64 mod) {
         cnt ++;
         k = k * (a / g) % mod;
     }
-    i64 ans = bsgs(a, b * bsgs_inv(k, mod) % mod, mod);
+    ll ans = bsgs(a, b * bsgs_inv(k, mod) % mod, mod);
     return ans == -1 ? -1 : ans + cnt;
 }
 
 /*
-i64 x = bsgs(2, 3, 5);
-i64 y = exbsgs(2, 4, 8);
+ll x = bsgs(2, 3, 5);
+ll y = exbsgs(2, 4, 8);
 */

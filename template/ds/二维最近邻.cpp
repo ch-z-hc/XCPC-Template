@@ -6,20 +6,26 @@ nearest 可按编号排除一个点，有解时写入 {距离平方, 点编号}�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+#define fi first
+#define se second
+
+typedef long long ll;
+
+using namespace std;
 
 struct KDTree {
     struct Node {
-        i64 x = 0, y = 0, lx = 0, ly = 0, rx = 0, ry = 0;
+        ll x = 0, y = 0, lx = 0, ly = 0, rx = 0, ry = 0;
         int id = 0, l = -1, r = -1, siz = 1;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
     int root = -1;
 
     int build(int l, int r, int dep) {
         if (l > r) return -1;
         int mid = (l + r) / 2;
-        std::nth_element(tr.begin() + l, tr.begin() + mid, tr.begin() + r + 1,
+        nth_element(tr.begin() + l, tr.begin() + mid, tr.begin() + r + 1,
                          [&](const Node &a, const Node &b) {
                              if (dep & 1) {
                                  if (a.y != b.y) return a.y < b.y;
@@ -38,54 +44,54 @@ struct KDTree {
         u.siz = 1;
         for (int v : {u.l, u.r})
             if (v != -1) {
-                u.lx = std::min(u.lx, tr[v].lx);
-                u.rx = std::max(u.rx, tr[v].rx);
-                u.ly = std::min(u.ly, tr[v].ly);
-                u.ry = std::max(u.ry, tr[v].ry);
+                u.lx = min(u.lx, tr[v].lx);
+                u.rx = max(u.rx, tr[v].rx);
+                u.ly = min(u.ly, tr[v].ly);
+                u.ry = max(u.ry, tr[v].ry);
                 u.siz += tr[v].siz;
             }
         return mid;
     }
 
-    void build(const std::vector<std::pair<i64, i64>> &ps) {
+    void build(const V < pair < ll, ll > > &ps) {
         tr.assign(ps.size(), {});
         for (int i = 0; i < (int)ps.size(); i ++) {
-            tr[i].x = ps[i].first;
-            tr[i].y = ps[i].second;
+            tr[i].x = ps[i].fi;
+            tr[i].y = ps[i].se;
             tr[i].id = i;
         }
         root = build(0, (int)ps.size() - 1, 0);
     }
 
-    i64 distance(int u, i64 x, i64 y) {
-        i64 dx = x - std::clamp(x, tr[u].lx, tr[u].rx);
-        i64 dy = y - std::clamp(y, tr[u].ly, tr[u].ry);
+    ll distance(int u, ll x, ll y) {
+        ll dx = x - clamp(x, tr[u].lx, tr[u].rx);
+        ll dy = y - clamp(y, tr[u].ly, tr[u].ry);
         return dx * dx + dy * dy;
     }
 
-    void search(int u, i64 x, i64 y, int exclude, std::pair<i64, int> &ans) {
+    void search(int u, ll x, ll y, int exclude, pair < ll, int > &ans) {
         if (u == -1) return;
         auto &p = tr[u];
-        i64 dx = x - p.x, dy = y - p.y;
-        if (p.id != exclude) ans = std::min(ans, std::pair{dx * dx + dy * dy, p.id});
+        ll dx = x - p.x, dy = y - p.y;
+        if (p.id != exclude) ans = min(ans, pair{dx * dx + dy * dy, p.id});
         int a = p.l, b = p.r;
-        i64 d1 = a == -1 ? LLONG_MAX : distance(a, x, y);
-        i64 d2 = b == -1 ? LLONG_MAX : distance(b, x, y);
+        ll d1 = a == -1 ? LLONG_MAX : distance(a, x, y);
+        ll d2 = b == -1 ? LLONG_MAX : distance(b, x, y);
         if (d1 > d2) {
-            std::swap(a, b);
-            std::swap(d1, d2);
+            swap(a, b);
+            swap(d1, d2);
         }
-        if (a != -1 && d1 <= ans.first) search(a, x, y, exclude, ans);
-        if (b != -1 && d2 <= ans.first) search(b, x, y, exclude, ans);
+        if (a != -1 && d1 <= ans.fi) search(a, x, y, exclude, ans);
+        if (b != -1 && d2 <= ans.fi) search(b, x, y, exclude, ans);
     }
 
-    bool nearest(i64 x, i64 y, std::pair<i64, int> &ans, int exclude = -1) {
+    bool nearest(ll x, ll y, pair < ll, int > &ans, int exclude = -1) {
         ans = {LLONG_MAX, INT_MAX};
         search(root, x, y, exclude, ans);
-        return ans.second != INT_MAX;
+        return ans.se != INT_MAX;
     }
 
-    int query(int u, i64 lx, i64 ly, i64 rx, i64 ry) {
+    int query(int u, ll lx, ll ly, ll rx, ll ry) {
         if (u == -1) return 0;
         auto &p = tr[u];
         if (p.rx < lx || rx < p.lx || p.ry < ly || ry < p.ly) return 0;
@@ -94,7 +100,7 @@ struct KDTree {
         return ans + query(p.l, lx, ly, rx, ry) + query(p.r, lx, ly, rx, ry);
     }
 
-    int query(i64 lx, i64 ly, i64 rx, i64 ry) {
+    int query(ll lx, ll ly, ll rx, ll ry) {
         if (lx > rx || ly > ry) return 0;
         return query(root, lx, ly, rx, ry);
     }
@@ -102,7 +108,7 @@ struct KDTree {
 
 /*
 KDTree kd; kd.build({{0, 0}, {2, 1}});
-std::pair<i64, int> ans;
-if (kd.nearest(0, 0, ans, 0)) cout << ans.first << ' ' << ans.second;
+pair < ll, int > ans;
+if (kd.nearest(0, 0, ans, 0)) cout << ans.fi << ' ' << ans.se;
 int cnt = kd.query(0, 0, 1, 1);
 */

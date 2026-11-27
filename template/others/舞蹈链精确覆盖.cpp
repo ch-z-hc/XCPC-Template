@@ -5,13 +5,17 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct DLX {
     struct Node {
         int l, r, u, d, col, row;
     };
     int cols = 0;
-    std::vector<Node> tr;
-    std::vector<int> siz, cur, ans;
+    V < Node > tr;
+    V < int > siz, cur, ans;
 
     DLX(int cols = 0) { init(cols); }
 
@@ -27,7 +31,7 @@ struct DLX {
         tr[cols].r = 0;
     }
 
-    void add_row(int id, const std::vector<int> &columns) {
+    void add_row(int id, const V < int > &columns) {
         int first = 0;
         for (int c : columns) {
             int u = int(tr.size());
@@ -93,7 +97,7 @@ struct DLX {
         return 0;
     }
 
-    bool solve(std::vector<int> &rows) {
+    bool solve(V < int > &rows) {
         cur.clear();
         ans.clear();
         if (!dfs()) return false;
@@ -104,5 +108,5 @@ struct DLX {
 
 /*
 DLX dlx; dlx.init(cols); dlx.add_row(id, {c1, c2});
-std::vector<int> rows; bool ok = dlx.solve(rows);
+V < int > rows; bool ok = dlx.solve(rows);
 */

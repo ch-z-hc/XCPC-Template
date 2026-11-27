@@ -1,15 +1,21 @@
-// 非负权连通树的最远点与直径，分别为 O(n)。距离须放入 i64，长链注意递归栈。
+// 非负权连通树的最远点与直径，分别为 O(n)。距离须放入 ll，长链注意递归栈。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+#define fi first
+#define se second
 
-using Graph = std::vector<std::vector<std::pair<int, i64>>>;
+typedef long long ll;
 
-std::pair<int, i64> tree_farthest(int s, const Graph &g) {
-    std::pair<int, i64> ans = {s, 0};
-    auto dfs = [&](auto &&self, int u, int fa, i64 dis) -> void {
-        if (dis > ans.second) ans = {u, dis};
+using namespace std;
+
+using Graph = V < V < pair < int, ll > > >;
+
+pair < int, ll > tree_farthest(int s, const Graph &g) {
+    pair < int, ll > ans = {s, 0};
+    auto dfs = [&](auto &&self, int u, int fa, ll dis) -> void {
+        if (dis > ans.se) ans = {u, dis};
         for (int i = int(g[u].size()) - 1; i >= 0; i --) {
             auto [v, w] = g[u][i];
             if (v != fa) self(self, v, u, dis + w);
@@ -19,9 +25,9 @@ std::pair<int, i64> tree_farthest(int s, const Graph &g) {
     return ans;
 }
 
-std::tuple<int, int, i64> tree_diameter(const Graph &g) {
+tuple < int, int, ll > tree_diameter(const Graph &g) {
     if (g.size() <= 1) return {0, 0, 0};
-    int u = tree_farthest(1, g).first;
+    int u = tree_farthest(1, g).fi;
     auto [v, len] = tree_farthest(u, g);
     return {u, v, len};
 }

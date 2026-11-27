@@ -6,31 +6,35 @@ directed 为 true 时统计从 root 向外的有向生成树。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-i64 det(std::vector<std::vector<i64>> a, i64 mod) {
+typedef long long ll;
+
+using namespace std;
+
+ll det(V < V < ll > > a, ll mod) {
     assert(2 <= mod && mod <= INT_MAX);
     int n = int(a.size());
     for (auto &row : a) {
         assert(int(row.size()) == n);
-        for (i64 &x : row) x = (x % mod + mod) % mod;
+        for (ll &x : row) x = (x % mod + mod) % mod;
     }
-    auto power = [&](i64 a, i64 b) {
-        i64 ans = 1;
+    auto power = [&](ll a, ll b) {
+        ll ans = 1;
         for (; b; b >>= 1, a = a * a % mod)
             if (b & 1) ans = ans * a % mod;
         return ans;
     };
-    i64 ans = 1;
+    ll ans = 1;
     for (int i = 0; i < n; i ++) {
         int p = i;
         while (p < n && !a[p][i]) p ++;
         if (p == n) return 0;
-        if (p != i) std::swap(a[p], a[i]), ans = mod - ans;
+        if (p != i) swap(a[p], a[i]), ans = mod - ans;
         ans = ans * a[i][i] % mod;
-        i64 iv = power(a[i][i], mod - 2);
+        ll iv = power(a[i][i], mod - 2);
         for (int j = i + 1; j < n; j ++) {
-            i64 v = a[j][i] * iv % mod;
+            ll v = a[j][i] * iv % mod;
             for (int k = i; k < n; k ++)
                 a[j][k] = (a[j][k] - v * a[i][k] % mod + mod) % mod;
         }
@@ -38,12 +42,12 @@ i64 det(std::vector<std::vector<i64>> a, i64 mod) {
     return ans;
 }
 
-i64 matrix_tree(int n, const std::vector<std::tuple<int, int, i64>> &edges, i64 mod,
+ll matrix_tree(int n, const V < tuple < int, int, ll > > &edges, ll mod,
                 int root = 1, bool directed = false) {
     assert(n >= 1 && 1 <= root && root <= n);
     assert(2 <= mod && mod <= INT_MAX);
-    std::vector<std::vector<i64>> a(n - 1, std::vector<i64>(n - 1));
-    auto add = [&](int u, int v, i64 w) {
+    V < V < ll > > a(n - 1, V < ll >(n - 1));
+    auto add = [&](int u, int v, ll w) {
         if (u == root || v == root) return;
         int i = u - 1 - (u > root), j = v - 1 - (v > root);
         a[i][j] = (a[i][j] + w + mod) % mod;
@@ -60,8 +64,8 @@ i64 matrix_tree(int n, const std::vector<std::tuple<int, int, i64>> &edges, i64 
 }
 
 /*
-i64 mod = 17, d = det({{1, 2}, {3, 4}}, mod);
-std::vector<std::tuple<int, int, i64>> edges{{1, 2, 1}, {2, 3, 1}, {1, 3, 1}};
-i64 undirected = matrix_tree(3, edges, mod);
-i64 directed = matrix_tree(3, edges, mod, 1, true);
+ll mod = 17, d = det({{1, 2}, {3, 4}}, mod);
+V < tuple < int, int, ll > > edges{{1, 2, 1}, {2, 3, 1}, {1, 3, 1}};
+ll undirected = matrix_tree(3, edges, mod);
+ll directed = matrix_tree(3, edges, mod, 1, true);
 */

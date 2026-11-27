@@ -1,37 +1,41 @@
 /*
-先复制「最大流」的 Dinic。无向图容量非负，总容量须放入 i64，允许重边、自环。
+先复制「最大流」的 Dinic。无向图容量非负，总容量须放入 ll，允许重边、自环。
 建树做 n - 1 次最大流，另需 O(n² + n log n)。两点最小割查询 O(log n)，同点取 0。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct GomoryHu {
     struct Edge {
         int u, v;
-        i64 cap;
+        ll cap;
     };
     int n = 0, lg = 1;
-    std::vector<Edge> edges;
-    std::vector<std::vector<std::pair<int, i64>>> t;
-    std::vector<int> fa, dep;
-    std::vector<i64> cut;
-    std::vector<std::vector<int>> up;
-    std::vector<std::vector<i64>> low;
+    V < Edge > edges;
+    V < V < pair < int, ll > > > t;
+    V < int > fa, dep;
+    V < ll > cut;
+    V < V < int > > up;
+    V < V < ll > > low;
 
     GomoryHu(int n = 0) { init(n); }
     void init(int n_) {
         n = n_;
         edges.clear();
     }
-    void add_edge(int u, int v, i64 cap) { edges.push_back({u, v, cap}); }
+    void add_edge(int u, int v, ll cap) { edges.push_back({u, v, cap}); }
 
     void dfs(int u, int p) {
         up[0][u] = p;
         for (int j = 1; j < lg; j ++) {
             up[j][u] = up[j - 1][up[j - 1][u]];
-            low[j][u] = std::min(low[j - 1][u], low[j - 1][up[j - 1][u]]);
+            low[j][u] = min(low[j - 1][u], low[j - 1][up[j - 1][u]]);
         }
         for (auto [v, w] : t[u])
             if (v != p) {
@@ -54,7 +58,7 @@ struct GomoryHu {
                     flow.add_edge(u, v, c);
                     flow.add_edge(v, u, c);
                 }
-            i64 value = flow.flow(s, p);
+            ll value = flow.flow(s, p);
             for (int u = s + 1; u <= n; u ++)
                 if (fa[u] == p && flow.dep[u] != -1) fa[u] = s;
             if (p != 1 && flow.dep[fa[p]] != -1) {
@@ -71,35 +75,35 @@ struct GomoryHu {
             t[fa[u]].push_back({u, cut[u]});
         }
         lg = 1;
-        while ((1ll << lg) <= std::max(1, n)) lg ++;
-        up.assign(lg, std::vector<int>(n + 1));
-        low.assign(lg, std::vector<i64>(n + 1, LLONG_MAX));
+        while ((1ll << lg) <= max(1, n)) lg ++;
+        up.assign(lg, V < int >(n + 1));
+        low.assign(lg, V < ll >(n + 1, LLONG_MAX));
         dep.assign(n + 1, 0);
         if (n) dfs(1, 0);
     }
 
-    i64 query(int u, int v) {
+    ll query(int u, int v) {
         if (u == v) return 0;
-        i64 ans = LLONG_MAX;
-        if (dep[u] < dep[v]) std::swap(u, v);
+        ll ans = LLONG_MAX;
+        if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
         for (int j = 0; j < lg; j ++)
             if (d >> j & 1) {
-                ans = std::min(ans, low[j][u]);
+                ans = min(ans, low[j][u]);
                 u = up[j][u];
             }
         if (u == v) return ans;
         for (int j = lg - 1; j >= 0; j --)
             if (up[j][u] != up[j][v]) {
-                ans = std::min({ans, low[j][u], low[j][v]});
+                ans = min({ans, low[j][u], low[j][v]});
                 u = up[j][u];
                 v = up[j][v];
             }
-        return std::min({ans, low[0][u], low[0][v]});
+        return min({ans, low[0][u], low[0][v]});
     }
 };
 
 /*
 GomoryHu tree; tree.init(n); tree.add_edge(u, v, cap); tree.build();
-i64 value = tree.query(s, t);
+ll value = tree.query(s, t);
 */

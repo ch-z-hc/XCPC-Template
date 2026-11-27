@@ -2,16 +2,20 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct KthAncestor {
     int n = 0, lg = 1;
-    std::vector<std::vector<int>> g, up, above, below;
-    std::vector<int> dep, len, son, top;
+    V < V < int > > g, up, above, below;
+    V < int > dep, len, son, top;
 
     KthAncestor(int n = 0) { init(n); }
     void init(int n_) {
         n = n_;
         lg = 1;
-        while ((1ll << lg) <= std::max(1, n)) lg ++;
+        while ((1ll << lg) <= max(1, n)) lg ++;
         g.assign(n + 1, {});
     }
     void add_edge(int u, int v) {
@@ -42,7 +46,7 @@ struct KthAncestor {
     }
 
     void build(int root = 1) {
-        up.assign(lg, std::vector<int>(n + 1));
+        up.assign(lg, V < int >(n + 1));
         dep.assign(n + 1, 0);
         len.assign(n + 1, 0);
         son.assign(n + 1, 0);

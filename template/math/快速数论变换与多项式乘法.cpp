@@ -5,31 +5,35 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-const i64 NTT_MOD = 998244353;
-const i64 NTT_ROOT = 3;
+typedef long long ll;
 
-i64 ntt_pow(i64 a, i64 b) {
-    i64 res = 1;
+using namespace std;
+
+const ll NTT_MOD = 998244353;
+const ll NTT_ROOT = 3;
+
+ll ntt_pow(ll a, ll b) {
+    ll res = 1;
     for (; b; b >>= 1) {
         if (b & 1) res = 1ll * res * a % NTT_MOD;
         a = 1ll * a * a % NTT_MOD;
     }
     return res;
 }
-void ntt(std::vector<i64> &a, bool inv = false) {
+void ntt(V < ll > &a, bool inv = false) {
     int n = int(a.size());
-    if (inv && n > 1) std::reverse(a.begin() + 1, a.end());
+    if (inv && n > 1) reverse(a.begin() + 1, a.end());
     for (int i = 1, j = 0; i < n; i ++) {
         int bit = n >> 1;
         for (; j & bit; bit >>= 1) j ^= bit;
         j ^= bit;
-        if (i < j) std::swap(a[i], a[j]);
+        if (i < j) swap(a[i], a[j]);
     }
-    static std::vector<i64> roots{0, 1};
+    static V < ll > roots{0, 1};
     for (int k = int(roots.size()); k < n; k *= 2) {
-        i64 w = ntt_pow(NTT_ROOT, (NTT_MOD - 1) / (2 * k));
+        ll w = ntt_pow(NTT_ROOT, (NTT_MOD - 1) / (2 * k));
         roots.resize(2 * k);
         for (int j = k / 2; j < k; j ++) {
             roots[2 * j] = roots[j];
@@ -39,7 +43,7 @@ void ntt(std::vector<i64> &a, bool inv = false) {
     for (int k = 1; k < n; k *= 2) {
         for (int l = 0; l < n; l += 2 * k) {
             for (int j = 0; j < k; j ++) {
-                i64 x = a[l + j], y = 1ll * a[l + k + j] * roots[k + j] % NTT_MOD;
+                ll x = a[l + j], y = 1ll * a[l + k + j] * roots[k + j] % NTT_MOD;
                 a[l + j] = x + y;
                 if (a[l + j] >= NTT_MOD) a[l + j] -= NTT_MOD;
                 a[l + k + j] = x - y;
@@ -48,11 +52,11 @@ void ntt(std::vector<i64> &a, bool inv = false) {
         }
     }
     if (inv) {
-        i64 inv_n = ntt_pow(n, NTT_MOD - 2);
+        ll inv_n = ntt_pow(n, NTT_MOD - 2);
         for (auto &x : a) x = x * inv_n % NTT_MOD;
     }
 }
-std::vector<i64> multiply(std::vector<i64> a, std::vector<i64> b) {
+V < ll > multiply(V < ll > a, V < ll > b) {
     if (a.empty() || b.empty()) return {};
     int need = int(a.size() + b.size() - 1), n = 1;
     while (n < need) n <<= 1;
@@ -67,6 +71,6 @@ std::vector<i64> multiply(std::vector<i64> a, std::vector<i64> b) {
 }
 
 /*
-std::vector<i64> a{1, 2, 0, 0}; ntt(a); ntt(a, true);
-auto c = multiply({1, 2}, {3, 4}); i64 inv2 = ntt_pow(2, NTT_MOD - 2);
+V < ll > a{1, 2, 0, 0}; ntt(a); ntt(a, true);
+auto c = multiply({1, 2}, {3, 4}); ll inv2 = ntt_pow(2, NTT_MOD - 2);
 */

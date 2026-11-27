@@ -6,11 +6,16 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define se second
+
+using namespace std;
+
 struct Multipoint {
     static const int mod = 998244353;
     int n = 0;
-    std::vector<int> x;
-    std::vector<std::vector<int>> prod;
+    V < int > x;
+    V < V < int > > prod;
 
     void build(int p, int l, int r) {
         if (l == r) {
@@ -23,18 +28,18 @@ struct Multipoint {
         prod[p] = FPS::mul(prod[p * 2], prod[p * 2 + 1]);
     }
 
-    void build(const std::vector<int> &points) {
+    void build(const V < int > &points) {
         x = points;
         n = int(x.size());
-        prod.assign(4 * std::max(1, n), {});
+        prod.assign(4 * max(1, n), {});
         if (n) build(1, 0, n - 1);
     }
 
-    std::vector<int> rem(const std::vector<int> &a, const std::vector<int> &b) {
-        return a.size() < b.size() ? a : FPS::divmod(a, b).second;
+    V < int > rem(const V < int > &a, const V < int > &b) {
+        return a.size() < b.size() ? a : FPS::divmod(a, b).se;
     }
 
-    void eval(int p, int l, int r, const std::vector<int> &a, std::vector<int> &ans) {
+    void eval(int p, int l, int r, const V < int > &a, V < int > &ans) {
         if (l == r) {
             int v = 0;
             for (int i = int(a.size()) - 1; i >= 0; i --)
@@ -47,18 +52,18 @@ struct Multipoint {
         eval(p * 2 + 1, mid + 1, r, rem(a, prod[p * 2 + 1]), ans);
     }
 
-    std::vector<int> eval(const std::vector<int> &a) {
-        std::vector<int> ans(n);
+    V < int > eval(const V < int > &a) {
+        V < int > ans(n);
         if (n) eval(1, 0, n - 1, rem(a, prod[1]), ans);
         return ans;
     }
 
-    std::vector<int> interp(int p, int l, int r, const std::vector<int> &w) {
+    V < int > interp(int p, int l, int r, const V < int > &w) {
         if (l == r) return {w[l]};
         int mid = (l + r) / 2;
         auto a = FPS::mul(interp(p * 2, l, mid, w), prod[p * 2 + 1]);
         auto b = FPS::mul(interp(p * 2 + 1, mid + 1, r, w), prod[p * 2]);
-        a.resize(std::max(a.size(), b.size()));
+        a.resize(max(a.size(), b.size()));
         for (int i = 0; i < int(b.size()); i ++) {
             a[i] += b[i];
             if (a[i] >= mod) a[i] -= mod;
@@ -66,9 +71,9 @@ struct Multipoint {
         return a;
     }
 
-    std::vector<int> interp(const std::vector<int> &y) {
+    V < int > interp(const V < int > &y) {
         if (!n) return {};
-        std::vector<int> d(n), w(n);
+        V < int > d(n), w(n);
         for (int i = 1; i <= n; i ++) d[i - 1] = 1ll * i * prod[1][i] % mod;
         auto values = eval(d);
         for (int i = 0; i < n; i ++) {

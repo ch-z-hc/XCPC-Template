@@ -5,30 +5,35 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define fi first
+#define se second
+
+typedef long long ll;
+
+using namespace std;
 
 struct IntervalSet {
-    std::set<std::pair<i64, i64>> s;
+    set < pair < ll, ll > > s;
 
     void clear() { s.clear(); }
 
-    void insert(i64 l, i64 r) {
+    void insert(ll l, ll r) {
         if (l >= r) return;
         auto it = s.lower_bound({l, LLONG_MIN});
-        if (it != s.begin() && std::prev(it)->second >= l) -- it;
-        while (it != s.end() && it->first <= r) {
-            l = std::min(l, it->first);
-            r = std::max(r, it->second);
+        if (it != s.begin() && prev(it)->se >= l) -- it;
+        while (it != s.end() && it->fi <= r) {
+            l = min(l, it->fi);
+            r = max(r, it->se);
             it = s.erase(it);
         }
         s.insert({l, r});
     }
 
-    void erase(i64 l, i64 r) {
+    void erase(ll l, ll r) {
         if (l >= r) return;
         auto it = s.lower_bound({l, LLONG_MIN});
-        if (it != s.begin() && std::prev(it)->second > l) -- it;
-        while (it != s.end() && it->first < r) {
+        if (it != s.begin() && prev(it)->se > l) -- it;
+        while (it != s.end() && it->fi < r) {
             auto [a, b] = *it;
             it = s.erase(it);
             if (a < l) s.insert({a, l});
@@ -39,20 +44,20 @@ struct IntervalSet {
         }
     }
 
-    bool contains(i64 x) {
+    bool contains(ll x) {
         auto it = s.upper_bound({x, LLONG_MAX});
-        return it != s.begin() && x < std::prev(it)->second;
+        return it != s.begin() && x < prev(it)->se;
     }
 
-    i64 mex(i64 x = 0) {
+    ll mex(ll x = 0) {
         auto it = s.upper_bound({x, LLONG_MAX});
-        if (it != s.begin() && x < std::prev(it)->second) return std::prev(it)->second;
+        if (it != s.begin() && x < prev(it)->se) return prev(it)->se;
         return x;
     }
 };
 
 /*
 IntervalSet seg; seg.insert(1, 4); seg.erase(2, 3);
-bool covered = seg.contains(1); i64 x = seg.mex(1);
+bool covered = seg.contains(1); ll x = seg.mex(1);
 seg.clear();
 */

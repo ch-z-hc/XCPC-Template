@@ -1,22 +1,26 @@
 /*
-Treap 维护可重集，SeqTreap 维护可翻转序列。排名、位置从 1 数，序列区间闭合，和须放入 i64。
+Treap 维护可重集，SeqTreap 维护可翻转序列。排名、位置从 1 数，序列区间闭合，和须放入 ll。
 操作期望 O(log n)，最坏 O(n)。删除不回收节点，空间随累计插入次数增长。
 Treap 的 erase 每次只删一份，rank(x) 等于严格小于 x 的元素个数加 1，pre、suf 查严格前驱和后继。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Treap {
     struct Node {
         int ls = 0, rs = 0, siz = 0;
         unsigned pri = 0;
-        i64 val = 0;
+        ll val = 0;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
     int root = 0;
-    std::mt19937 rng{unsigned(std::chrono::steady_clock::now().time_since_epoch().count())};
+    mt19937 rng{unsigned(chrono::steady_clock::now().time_since_epoch().count())};
 
     Treap() { init(); }
     void init() {
@@ -26,7 +30,7 @@ struct Treap {
     int size() { return tr[root].siz; }
     void pull(int u) { tr[u].siz = tr[tr[u].ls].siz + tr[tr[u].rs].siz + 1; }
 
-    void split(int u, i64 x, int &a, int &b) {
+    void split(int u, ll x, int &a, int &b) {
         if (!u) {
             a = b = 0;
             return;
@@ -53,14 +57,14 @@ struct Treap {
         return b;
     }
 
-    void insert(i64 x) {
+    void insert(ll x) {
         int u = int(tr.size()), a, b;
         tr.push_back({0, 0, 1, unsigned(rng()), x});
         split(root, x, a, b);
         root = merge(merge(a, u), b);
     }
 
-    int erase(int u, i64 x, bool &ok) {
+    int erase(int u, ll x, bool &ok) {
         if (!u) return 0;
         if (tr[u].val == x) {
             ok = 1;
@@ -74,13 +78,13 @@ struct Treap {
         return u;
     }
 
-    bool erase(i64 x) {
+    bool erase(ll x) {
         bool ok = 0;
         root = erase(root, x, ok);
         return ok;
     }
 
-    int rank(i64 x) {
+    int rank(ll x) {
         int ans = 1, u = root;
         while (u) {
             if (tr[u].val < x)
@@ -91,7 +95,7 @@ struct Treap {
         return ans;
     }
 
-    bool kth(int k, i64 &ans) {
+    bool kth(int k, ll &ans) {
         if (k < 1 || k > size()) return false;
         int u = root;
         while (u) {
@@ -108,7 +112,7 @@ struct Treap {
         return false;
     }
 
-    bool pre(i64 x, i64 &ans) {
+    bool pre(ll x, ll &ans) {
         bool ok = false;
         for (int u = root; u;) {
             if (tr[u].val < x)
@@ -119,7 +123,7 @@ struct Treap {
         return ok;
     }
 
-    bool suf(i64 x, i64 &ans) {
+    bool suf(ll x, ll &ans) {
         bool ok = false;
         for (int u = root; u;) {
             if (tr[u].val > x)
@@ -135,12 +139,12 @@ struct SeqTreap {
     struct Node {
         int ls = 0, rs = 0, siz = 0;
         unsigned pri = 0;
-        i64 val = 0, sum = 0;
+        ll val = 0, sum = 0;
         bool rev = false;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
     int root = 0;
-    std::mt19937 rng{unsigned(std::chrono::steady_clock::now().time_since_epoch().count())};
+    mt19937 rng{unsigned(chrono::steady_clock::now().time_since_epoch().count())};
 
     SeqTreap() { init(); }
     void init() {
@@ -154,7 +158,7 @@ struct SeqTreap {
     }
     void apply(int u) {
         if (!u) return;
-        std::swap(tr[u].ls, tr[u].rs);
+        swap(tr[u].ls, tr[u].rs);
         tr[u].rev ^= 1;
     }
     void push(int u) {
@@ -194,7 +198,7 @@ struct SeqTreap {
         return b;
     }
 
-    void insert(int pos, i64 x) {
+    void insert(int pos, ll x) {
         assert(pos >= 1 && pos <= size() + 1);
         int u = int(tr.size()), a, b;
         tr.push_back({0, 0, 1, unsigned(rng()), x, x, false});
@@ -219,27 +223,27 @@ struct SeqTreap {
         root = merge(merge(a, b), c);
     }
 
-    i64 query(int l, int r) {
+    ll query(int l, int r) {
         assert(l >= 1 && l <= r && r <= size());
         int a, b, c;
         split(root, l - 1, a, b);
         split(b, r - l + 1, b, c);
-        i64 ans = tr[b].sum;
+        ll ans = tr[b].sum;
         root = merge(merge(a, b), c);
         return ans;
     }
 
-    i64 at(int pos) { return query(pos, pos); }
+    ll at(int pos) { return query(pos, pos); }
 };
 
 /*
 Treap t; t.insert(3); t.insert(5); bool erased = t.erase(3);
 int n = t.size(), r = t.rank(5);
-i64 x; if (t.kth(1, x)) cout << x;
+ll x; if (t.kth(1, x)) cout << x;
 if (t.pre(6, x)) cout << x;
 if (t.suf(4, x)) cout << x;
 t.init();
 SeqTreap s; s.insert(1, 2); s.insert(s.size() + 1, 5);
-s.reverse(1, 2); i64 sum = s.query(1, 2), val = s.at(1);
+s.reverse(1, 2); ll sum = s.query(1, 2), val = s.at(1);
 s.erase(1); s.init();
 */

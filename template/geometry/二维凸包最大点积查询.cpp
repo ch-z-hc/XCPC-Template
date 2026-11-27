@@ -6,27 +6,31 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct HullQuery {
     struct P {
-        i64 x, y;
+        ll x, y;
         P operator-(P p) { return {x - p.x, y - p.y}; }
-        i64 dot(P p) { return x * p.x + y * p.y; }
-        i64 det(P p) { return x * p.y - y * p.x; }
+        ll dot(P p) { return x * p.x + y * p.y; }
+        ll det(P p) { return x * p.y - y * p.x; }
         bool operator<(P p) const { return x != p.x ? x < p.x : y < p.y; }
         bool operator==(P p) const { return x == p.x && y == p.y; }
     };
-    std::vector<P> lo, hi, h;
+    V < P > lo, hi, h;
 
-    i64 turn(P a, P b, P c) { return (b - a).det(c - a); }
+    ll turn(P a, P b, P c) { return (b - a).det(c - a); }
 
-    void build(std::vector<P> p) {
+    void build(V < P > p) {
         lo.clear();
         hi.clear();
         h.clear();
-        std::sort(p.begin(), p.end());
-        p.erase(std::unique(p.begin(), p.end()), p.end());
+        sort(p.begin(), p.end());
+        p.erase(unique(p.begin(), p.end()), p.end());
         for (P q : p) {
             while (lo.size() > 1 && turn(lo[lo.size() - 2], lo.back(), q) <= 0)
                 lo.pop_back();
@@ -39,12 +43,12 @@ struct HullQuery {
         for (int i = (int)hi.size() - 2; i > 0; i --) h.push_back(hi[i]);
     }
 
-    bool query(i64 a, i64 b, i64 &ans) {
+    bool query(ll a, ll b, ll &ans) {
         if (h.empty()) return 0;
         auto &p = b >= 0 ? hi : lo;
         P q{a, b};
         if (!b) {
-            ans = std::max(p.front().dot(q), p.back().dot(q));
+            ans = max(p.front().dot(q), p.back().dot(q));
             return 1;
         }
         int l = 0, r = (int)p.size() - 1;
@@ -60,8 +64,8 @@ struct HullQuery {
     }
 
     bool on_seg(P a, P b, P p) {
-        return !turn(a, b, p) && std::min(a.x, b.x) <= p.x && p.x <= std::max(a.x, b.x) &&
-               std::min(a.y, b.y) <= p.y && p.y <= std::max(a.y, b.y);
+        return !turn(a, b, p) && min(a.x, b.x) <= p.x && p.x <= max(a.x, b.x) &&
+               min(a.y, b.y) <= p.y && p.y <= max(a.y, b.y);
     }
 
     int contains(P p) {
@@ -69,7 +73,7 @@ struct HullQuery {
         if (!n) return 0;
         if (n == 1) return h[0] == p;
         if (n == 2) return on_seg(h[0], h[1], p);
-        i64 d1 = turn(h[0], h[1], p), d2 = turn(h[0], h[n - 1], p);
+        ll d1 = turn(h[0], h[1], p), d2 = turn(h[0], h[n - 1], p);
         if (d1 < 0 || d2 > 0) return 0;
         if (!d1) return on_seg(h[0], h[1], p);
         if (!d2) return on_seg(h[0], h[n - 1], p);
@@ -81,13 +85,13 @@ struct HullQuery {
             else
                 r = mid;
         }
-        i64 d = turn(h[l], h[r], p);
+        ll d = turn(h[l], h[r], p);
         return d < 0 ? 0 : d == 0 ? 1 : 2;
     }
 };
 
 /*
-HullQuery hull; hull.build({{0, 0}, {2, 0}, {0, 3}}); i64 ans;
+HullQuery hull; hull.build({{0, 0}, {2, 0}, {0, 3}}); ll ans;
 if (hull.query(1, 2, ans)) cout << ans << '\n';
 hull.contains({0, 1});
 */

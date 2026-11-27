@@ -1,15 +1,19 @@
-// 求树上每个点到所有点的距离和，O(n)。输入为 1-based 连通树，可有负边权，距离及乘积须放入 i64。
+// 求树上每个点到所有点的距离和，O(n)。输入为 1-based 连通树，可有负边权，距离及乘积须放入 ll。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-using Graph = std::vector<std::vector<std::pair<int, i64>>>;
+typedef long long ll;
 
-std::vector<i64> reroot(const Graph &g) {
+using namespace std;
+
+using Graph = V < V < pair < int, ll > > >;
+
+V < ll > reroot(const Graph &g) {
     int n = int(g.size()) - 1;
     if (n <= 0) return {};
-    std::vector<i64> siz(n + 1, 1), sum(n + 1), ans(n + 1);
+    V < ll > siz(n + 1, 1), sum(n + 1), ans(n + 1);
     auto dfs1 = [&](auto &&self, int u, int fa) -> void {
         for (auto [v, w] : g[u])
             if (v != fa) {
@@ -21,7 +25,7 @@ std::vector<i64> reroot(const Graph &g) {
     auto dfs2 = [&](auto &&self, int u, int fa) -> void {
         for (auto [v, w] : g[u])
             if (v != fa) {
-                ans[v] = ans[u] + (i64(n) - 2 * siz[v]) * w;
+                ans[v] = ans[u] + (ll(n) - 2 * siz[v]) * w;
                 self(self, v, u);
             }
     };
@@ -31,4 +35,4 @@ std::vector<i64> reroot(const Graph &g) {
     return ans;
 }
 
-// std::vector<i64> sum = reroot(g);
+// V < ll > sum = reroot(g);

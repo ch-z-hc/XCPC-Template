@@ -5,11 +5,15 @@ add(u, x, v, y) 表示 a[u] == x 或 a[v] == y。solve 无解时返回 false。
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct SAT {
     int n = 0, tim = 0, cnt = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> dfn, low, bel, stk, ans;
-    std::vector<char> vis;
+    V < V < int > > g;
+    V < int > dfn, low, bel, stk, ans;
+    V < char > vis;
 
     SAT(int n = 0) { init(n); }
     void init(int n_) {
@@ -32,9 +36,9 @@ struct SAT {
         vis[u] = 1;
         for (int v : g[u]) {
             if (!dfn[v])
-                dfs(v), low[u] = std::min(low[u], low[v]);
+                dfs(v), low[u] = min(low[u], low[v]);
             else if (vis[v])
-                low[u] = std::min(low[u], dfn[v]);
+                low[u] = min(low[u], dfn[v]);
         }
         if (low[u] != dfn[u]) return;
         ++ cnt;

@@ -5,10 +5,14 @@ idom[root] 为根自身，不可达顶点的 idom 为 0，tree[u] 存支配树�
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct Dominator {
     int n = 0, tim = 0;
-    std::vector<std::vector<int>> g, pre, bucket, tree;
-    std::vector<int> dfn, rev, par, semi, fa, label, dom, idom;
+    V < V < int > > g, pre, bucket, tree;
+    V < int > dfn, rev, par, semi, fa, label, dom, idom;
 
     Dominator(int n = 0) { init(n); }
 
@@ -55,14 +59,14 @@ struct Dominator {
         idom.assign(n + 1, 0);
         semi.resize(n + 1);
         label.resize(n + 1);
-        std::iota(semi.begin(), semi.end(), 0);
-        std::iota(label.begin(), label.end(), 0);
+        iota(semi.begin(), semi.end(), 0);
+        iota(label.begin(), label.end(), 0);
         pre.assign(n + 1, {});
         bucket.assign(n + 1, {});
         tree.assign(n + 1, {});
         dfs(root);
         for (int u = tim; u >= 2; u --) {
-            for (int v : pre[u]) semi[u] = std::min(semi[u], semi[eval(v)]);
+            for (int v : pre[u]) semi[u] = min(semi[u], semi[eval(v)]);
             bucket[semi[u]].push_back(u);
             fa[u] = par[u];
             for (int v : bucket[par[u]]) {

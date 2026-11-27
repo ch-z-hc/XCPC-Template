@@ -5,9 +5,13 @@
 
 #include <bits/stdc++.h>
 
-std::vector<std::vector<int>> block_cut_tree(int n,
-                                             const std::vector<std::vector<int>> &bcc) {
-    std::vector<std::vector<int>> tree(n + bcc.size() + 1);
+#define V vector
+
+using namespace std;
+
+V < V < int > > block_cut_tree(int n,
+                                             const V < V < int > > &bcc) {
+    V < V < int > > tree(n + bcc.size() + 1);
     for (int i = 0; i < int(bcc.size()); i ++) {
         int p = n + i + 1;
         for (int u : bcc[i]) {
@@ -19,7 +23,7 @@ std::vector<std::vector<int>> block_cut_tree(int n,
 }
 
 /*
-std::vector<std::vector<int>> blocks;
+V < V < int > > blocks;
 for (auto &b : vbcc.bcc) blocks.push_back(b.v);
 auto tree = block_cut_tree(n, blocks);
 */

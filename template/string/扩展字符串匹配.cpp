@@ -5,25 +5,29 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> get_z(const std::string &s) {
+#define V vector
+
+using namespace std;
+
+V < int > get_z(const string &s) {
     int n = int(s.size());
-    std::vector<int> z(n);
+    V < int > z(n);
     if (n) z[0] = n;
     for (int i = 1, l = 0, r = -1; i < n; i ++) {
         int &k = z[i];
-        if (i <= r) k = std::min(r - i + 1, z[i - l]);
+        if (i <= r) k = min(r - i + 1, z[i - l]);
         while (i + k < n && s[k] == s[i + k]) k ++;
         if (i + k - 1 > r) l = i, r = i + k - 1;
     }
     return z;
 }
 
-std::vector<int> exkmp(const std::string &s, const std::string &t) {
+V < int > exkmp(const string &s, const string &t) {
     int n = int(s.size()), m = int(t.size());
-    std::vector<int> z = get_z(t), ans(n);
+    V < int > z = get_z(t), ans(n);
     for (int i = 0, l = 0, r = -1; i < n; i ++) {
         int &k = ans[i];
-        if (i <= r) k = std::min(r - i + 1, z[i - l]);
+        if (i <= r) k = min(r - i + 1, z[i - l]);
         while (k < m && i + k < n && t[k] == s[i + k]) k ++;
         if (i + k - 1 > r) l = i, r = i + k - 1;
     }

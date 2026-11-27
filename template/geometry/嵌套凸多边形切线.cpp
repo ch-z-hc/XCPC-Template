@@ -9,10 +9,14 @@ j 使用展开下标，取点时才对 n 取模。
 
 #include <bits/stdc++.h>
 
-struct NestedHull {
-    std::vector<int> left, right, l, r;
+#define V vector
 
-    void build(std::vector<P> p, std::vector<P> q) {
+using namespace std;
+
+struct NestedHull {
+    V < int > left, right, l, r;
+
+    void build(V < P > p, V < P > q) {
         int n = p.size(), m = q.size();
         left.resize(n);
         right.resize(n);
@@ -31,14 +35,14 @@ struct NestedHull {
         }
         int j = 1;
         for (int i = 0; i < n; i ++) {
-            j = std::max(j, i + 1);
+            j = max(j, i + 1);
             while (j + 1 < i + n && cross(p[i], p[(j + 1) % n], q[left[i]]) >= 0) ++ j;
             r[i] = j;
             r[i + n] = j + n;
         }
         j = 1;
         for (int i = 0; i < n; i ++) {
-            j = std::max(j, i + 1);
+            j = max(j, i + 1);
             while (r[j] < i + n) ++ j;
             l[i] = j;
             l[i + n] = j + n;
@@ -47,7 +51,7 @@ struct NestedHull {
 };
 
 /*
-std::vector<P> p{{0, 0}, {6, 0}, {6, 6}, {0, 6}}, q{{2, 2}, {4, 2}, {3, 4}};
+V < P > p{{0, 0}, {6, 0}, {6, 6}, {0, 6}}, q{{2, 2}, {4, 2}, {3, 4}};
 NestedHull hull; hull.build(p, q);
 int i = 0, n = p.size();
 P a = q[hull.left[i]], b = q[hull.right[i]];

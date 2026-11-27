@@ -2,8 +2,12 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct Sieve {
-    std::vector<int> prime, lp, phi, mu;
+    V < int > prime, lp, phi, mu;
     void build(int n) {
         prime.clear();
         lp.assign(n + 1, 0);

@@ -6,15 +6,19 @@ rec[i] 为前第 i + 1 项的系数。k 从 0 数，初值至少给出前 d 项�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-static i64 bm_norm(i64 x, i64 mod) {
+typedef long long ll;
+
+using namespace std;
+
+static ll bm_norm(ll x, ll mod) {
     x %= mod;
     return x < 0 ? x + mod : x;
 }
 
-static i64 bm_pow(i64 a, i64 b, i64 mod) {
-    i64 res = 1 % mod;
+static ll bm_pow(ll a, ll b, ll mod) {
+    ll res = 1 % mod;
     for (; b; b >>= 1) {
         if (b & 1) res = 1ll * res * a % mod;
         a = 1ll * a * a % mod;
@@ -22,21 +26,21 @@ static i64 bm_pow(i64 a, i64 b, i64 mod) {
     return res;
 }
 
-std::vector<i64> bm(const std::vector<i64> &s, i64 mod) {
-    std::vector<i64> c{1}, b{1};
+V < ll > bm(const V < ll > &s, ll mod) {
+    V < ll > c{1}, b{1};
     int len = 0, m = 1;
-    i64 last = 1;
+    ll last = 1;
 
     for (int n = 0; n < int(s.size()); n ++) {
-        i64 d = s[n] % mod;
+        ll d = s[n] % mod;
         for (int i = 1; i <= len; i ++) d = (d + c[i] * s[n - i]) % mod;
         if (d == 0) {
             ++ m;
             continue;
         }
 
-        std::vector<i64> old = c;
-        i64 coef = d * bm_pow(last, mod - 2, mod) % mod;
+        V < ll > old = c;
+        ll coef = d * bm_pow(last, mod - 2, mod) % mod;
         if (int(c.size()) < int(b.size()) + m) c.resize(b.size() + m, 0);
         for (int i = 0; i < int(b.size()); i ++)
             c[i + m] = bm_norm(c[i + m] - coef * b[i], mod);
@@ -52,14 +56,14 @@ std::vector<i64> bm(const std::vector<i64> &s, i64 mod) {
     }
 
     c.erase(c.begin());
-    for (i64 &x : c) x = bm_norm(-x, mod);
+    for (ll &x : c) x = bm_norm(-x, mod);
     return c;
 }
 
-static std::vector<i64> bm_combine(const std::vector<i64> &a, const std::vector<i64> &b,
-                                   const std::vector<i64> &rec, i64 mod) {
+static V < ll > bm_combine(const V < ll > &a, const V < ll > &b,
+                                   const V < ll > &rec, ll mod) {
     int k = int(rec.size());
-    std::vector<i64> ans(2 * k, 0);
+    V < ll > ans(2 * k, 0);
     for (int i = 0; i < k; i ++)
         for (int j = 0; j < k; j ++) ans[i + j] = (ans[i + j] + a[i] * b[j]) % mod;
     for (int i = 2 * k - 2; i >= k; i --)
@@ -70,11 +74,11 @@ static std::vector<i64> bm_combine(const std::vector<i64> &a, const std::vector<
     return ans;
 }
 
-i64 kth(const std::vector<i64> &init, const std::vector<i64> &rec, i64 k, i64 mod) {
+ll kth(const V < ll > &init, const V < ll > &rec, ll k, ll mod) {
     int n = int(rec.size());
     if (k < int(init.size())) return bm_norm(init[int(k)], mod);
     if (n == 0) return 0;
-    std::vector<i64> pol(n, 0), e(n, 0);
+    V < ll > pol(n, 0), e(n, 0);
     pol[0] = 1;
     if (n == 1)
         e[0] = bm_norm(rec[0], mod);
@@ -85,12 +89,12 @@ i64 kth(const std::vector<i64> &init, const std::vector<i64> &rec, i64 k, i64 mo
         e = bm_combine(e, e, rec, mod);
         k >>= 1;
     }
-    i64 ans = 0;
+    ll ans = 0;
     for (int i = 0; i < n; i ++) ans = (ans + pol[i] * init[i]) % mod;
     return ans;
 }
 
 /*
-std::vector<i64> s{0, 1, 1, 2, 3, 5}; auto rec = bm(s, 17);
-i64 ans = kth({0, 1}, rec, 7, 17);
+V < ll > s{0, 1, 1, 2, 3, 5}; auto rec = bm(s, 17);
+ll ans = kth({0, 1}, rec, 7, 17);
 */

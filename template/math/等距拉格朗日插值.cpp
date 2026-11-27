@@ -5,30 +5,34 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct LagrangeEq {
     Comb comb;
-    std::vector<i64> y;
+    V < ll > y;
 
-    void build(const std::vector<i64> &values, i64 mod) {
+    void build(const V < ll > &values, ll mod) {
         y = values;
         comb.init(int(y.size()), mod);
     }
 
-    i64 query(i64 x) {
+    ll query(ll x) {
         int n = int(y.size());
-        i64 mod = comb.mod;
+        ll mod = comb.mod;
         x %= mod;
         if (x < 0) x += mod;
         if (x < n) return y[int(x)];
-        std::vector<i64> pre(n + 1, 1), suf(n + 1, 1);
+        V < ll > pre(n + 1, 1), suf(n + 1, 1);
         for (int i = 0; i < n; i ++) pre[i + 1] = pre[i] * ((x - i + mod) % mod) % mod;
         for (int i = n - 1; i >= 0; i --)
             suf[i] = suf[i + 1] * ((x - i + mod) % mod) % mod;
-        i64 ans = 0;
+        ll ans = 0;
         for (int i = 0; i < n; i ++) {
-            i64 v = y[i] * pre[i] % mod * suf[i + 1] % mod;
+            ll v = y[i] * pre[i] % mod * suf[i + 1] % mod;
             v = v * comb.ifac[i] % mod * comb.ifac[n - 1 - i] % mod;
             if ((n - 1 - i) & 1) v = (mod - v) % mod;
             ans = (ans + v) % mod;
@@ -39,5 +43,5 @@ struct LagrangeEq {
 
 /*
 LagrangeEq poly; poly.build({0, 1, 4}, 1000000007);
-i64 ans = poly.query(10);
+ll ans = poly.query(10);
 */

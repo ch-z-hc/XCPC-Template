@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 
-template <class T> std::vector<T> window_min(const std::vector<T> &a, int k) {
-    std::deque<int> q;
-    std::vector<T> ans;
+#define V vector
+
+using namespace std;
+
+template < class T > V < T > window_min(const V < T > &a, int k) {
+    deque < int > q;
+    V < T > ans;
     for (int i = 0; i < int(a.size()); i ++) {
         while (!q.empty() && q.front() <= i - k) q.pop_front();
         while (!q.empty() && a[q.back()] >= a[i]) q.pop_back();
@@ -12,9 +16,9 @@ template <class T> std::vector<T> window_min(const std::vector<T> &a, int k) {
     return ans;
 }
 
-template <class T> std::vector<T> window_max(const std::vector<T> &a, int k) {
-    std::deque<int> q;
-    std::vector<T> ans;
+template < class T > V < T > window_max(const V < T > &a, int k) {
+    deque < int > q;
+    V < T > ans;
     for (int i = 0; i < int(a.size()); i ++) {
         while (!q.empty() && q.front() <= i - k) q.pop_front();
         while (!q.empty() && a[q.back()] <= a[i]) q.pop_back();

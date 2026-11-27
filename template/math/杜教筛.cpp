@@ -1,17 +1,22 @@
 /*
-求 1..n 的欧拉函数和、莫比乌斯函数和，0 <= n <= 4×10^9，结果用 i64，多次查询共用缓存。
+求 1..n 的欧拉函数和、莫比乌斯函数和，0 <= n <= 4×10^9，结果用 ll，多次查询共用缓存。
 1 <= limit < INT_MAX。对最大查询 N 取 limit 约 N^(2/3)，耗时 O(N^(2/3))，空间 O(limit + N / limit)。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+#define se second
+
+typedef long long ll;
+
+using namespace std;
 
 struct DuJiao {
     int limit;
-    std::vector<i64> sp, sm;
-    std::unordered_map<i64, i64> mp;
-    std::unordered_map<i64, i64> mm;
+    V < ll > sp, sm;
+    unordered_map < ll, ll > mp;
+    unordered_map < ll, ll > mm;
 
     void init(int n) {
         assert(1 <= n && n < INT_MAX);
@@ -20,7 +25,7 @@ struct DuJiao {
         sm.assign(n + 1, 0);
         mp.clear();
         mm.clear();
-        std::vector<int> prime;
+        V < int > prime;
         sp[1] = sm[1] = 1;
         for (int i = 2; i <= n; i ++) {
             if (!sp[i]) {
@@ -46,26 +51,26 @@ struct DuJiao {
         }
     }
 
-    i64 phi(i64 n) {
+    ll phi(ll n) {
         assert(0 <= n && n <= 4000000000LL);
         if (n <= limit) return sp[n];
         auto it = mp.find(n);
-        if (it != mp.end()) return it->second;
-        i64 ans = n % 2 ? n * ((n + 1) / 2) : (n / 2) * (n + 1);
-        for (i64 l = 2, r; l <= n; l = r + 1) {
+        if (it != mp.end()) return it->se;
+        ll ans = n % 2 ? n * ((n + 1) / 2) : (n / 2) * (n + 1);
+        for (ll l = 2, r; l <= n; l = r + 1) {
             r = n / (n / l);
             ans -= (r - l + 1) * phi(n / l);
         }
         return mp[n] = ans;
     }
 
-    i64 mu(i64 n) {
+    ll mu(ll n) {
         assert(0 <= n && n <= 4000000000LL);
         if (n <= limit) return sm[n];
         auto it = mm.find(n);
-        if (it != mm.end()) return it->second;
-        i64 ans = 1;
-        for (i64 l = 2, r; l <= n; l = r + 1) {
+        if (it != mm.end()) return it->se;
+        ll ans = 1;
+        for (ll l = 2, r; l <= n; l = r + 1) {
             r = n / (n / l);
             ans -= (r - l + 1) * mu(n / l);
         }
@@ -75,5 +80,5 @@ struct DuJiao {
 
 /*
 DuJiao d; d.init(5000000);
-i64 phi_sum = d.phi(n), mu_sum = d.mu(n);
+ll phi_sum = d.phi(n), mu_sum = d.mu(n);
 */

@@ -6,16 +6,20 @@ query 按模式插入编号返回出现次数。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct AC {
     struct Node {
-        std::array<int, 26> ch{}, go{};
+        array < int, 26 > ch{}, go{};
         int fail = 0;
     };
 
-    std::vector<Node> tr;
-    std::vector<int> pos, ord;
+    V < Node > tr;
+    V < int > pos, ord;
 
     AC() { clear(); }
 
@@ -25,7 +29,7 @@ struct AC {
         ord.clear();
     }
 
-    int insert(const std::string &s) {
+    int insert(const string &s) {
         int u = 0;
         for (char c : s) {
             int x = c - 'a';
@@ -56,8 +60,8 @@ struct AC {
         }
     }
 
-    std::vector<i64> query(const std::string &s) {
-        std::vector<i64> cnt(tr.size()), ans(pos.size());
+    V < ll > query(const string &s) {
+        V < ll > cnt(tr.size()), ans(pos.size());
         int u = 0;
         for (char c : s) {
             u = tr[u].go[c - 'a'];

@@ -6,6 +6,10 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct MoModify {
     struct Change {
         int p, before, after;
@@ -14,17 +18,17 @@ struct MoModify {
         int l, r, t, id;
     };
     int n = 0;
-    std::vector<int> initial, current;
-    std::vector<Change> changes;
-    std::vector<Query> qs;
+    V < int > initial, current;
+    V < Change > changes;
+    V < Query > qs;
 
     void add(int x);
     void del(int x);
     void answer(int id);
 
-    void init(const std::vector<int> &a) {
+    void init(const V < int > &a) {
         initial = current = a;
-        n = std::max(0, int(a.size()) - 1);
+        n = max(0, int(a.size()) - 1);
         changes.clear();
         qs.clear();
     }
@@ -38,9 +42,9 @@ struct MoModify {
         return id;
     }
     void solve() {
-        int B = std::max(1, int(std::pow(std::max(1, n), 2.0 / 3)));
+        int B = max(1, int(pow(max(1, n), 2.0 / 3)));
         auto queries = qs;
-        std::sort(queries.begin(), queries.end(), [&](Query a, Query b) {
+        sort(queries.begin(), queries.end(), [&](Query a, Query b) {
             int x = a.l / B, y = b.l / B;
             if (x != y) return x < y;
             x = a.r / B;
@@ -48,7 +52,7 @@ struct MoModify {
             if (x != y) return (a.l / B & 1) ? x > y : x < y;
             return (x & 1) ? a.t > b.t : a.t < b.t;
         });
-        std::vector<int> a = initial;
+        V < int > a = initial;
         int l = 1, r = 0, t = 0;
         auto apply = [&](int id, bool forward) {
             auto c = changes[id];
@@ -69,7 +73,7 @@ struct MoModify {
 };
 
 /*
-std::vector<int> cnt, ans; int kinds = 0;
+V < int > cnt, ans; int kinds = 0;
 void add(int x) { if (cnt[x] ++ == 0) ++ kinds; }
 void del(int x) { if (-- cnt[x] == 0) -- kinds; }
 void answer(int id) { ans[id] = kinds; }

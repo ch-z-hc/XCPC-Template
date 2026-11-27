@@ -2,21 +2,27 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define se second
+#define pii pair < int, int >
+
+using namespace std;
+
 struct Manacher {
-    std::string s;
-    std::vector<int> odd, even;
+    string s;
+    V < int > odd, even;
 
     Manacher() = default;
-    Manacher(const std::string &s) { build(s); }
+    Manacher(const string &s) { build(s); }
 
-    void build(const std::string &str) {
+    void build(const string &str) {
         s = str;
         int n = int(s.size());
         auto scan = [&](int gap) {
-            std::vector<int> radius(n);
+            V < int > radius(n);
             for (int i = 0, l = 0, r = -1; i < n; i ++) {
                 int &k = radius[i];
-                k = i > r ? 1 - gap : std::min(radius[l + r - i + gap], r - i + 1);
+                k = i > r ? 1 - gap : min(radius[l + r - i + gap], r - i + 1);
                 while (i - k - gap >= 0 && i + k < n && s[i - k - gap] == s[i + k]) k ++;
                 if (i + k - 1 > r) {
                     l = i - k + 1 - gap;
@@ -36,13 +42,13 @@ struct Manacher {
         return even[(l + r + 1) / 2] >= len / 2;
     }
 
-    std::pair<int, int> longest() {
-        std::pair<int, int> ans{0, 0};
+    pii longest() {
+        pii ans{0, 0};
         for (int i = 0; i < int(s.size()); i ++) {
             int len1 = 2 * odd[i] - 1;
-            if (len1 > ans.second) ans = {i - odd[i] + 1, len1};
+            if (len1 > ans.se) ans = {i - odd[i] + 1, len1};
             int len2 = 2 * even[i];
-            if (len2 > ans.second) ans = {i - even[i], len2};
+            if (len2 > ans.se) ans = {i - even[i], len2};
         }
         return ans;
     }

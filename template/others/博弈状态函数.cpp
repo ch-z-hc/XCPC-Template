@@ -5,16 +5,20 @@
 
 #include <bits/stdc++.h>
 
-bool grundy(const std::vector<std::vector<int>> &g, std::vector<int> &sg) {
+#define V vector
+
+using namespace std;
+
+bool grundy(const V < V < int > > &g, V < int > &sg) {
     int n = int(g.size()) - 1;
-    std::vector<int> color(n + 1, 0);
+    V < int > color(n + 1, 0);
     sg.assign(n + 1, 0);
     auto dfs = [&](auto &&self, int u) -> bool {
         if (color[u]) return color[u] == 2;
         color[u] = 1;
         for (int v : g[u])
             if (!self(self, v)) return false;
-        std::vector<bool> seen(g[u].size() + 1, false);
+        V < bool > seen(g[u].size() + 1, false);
         for (int v : g[u])
             if (sg[v] < int(seen.size())) seen[sg[v]] = true;
         while (seen[sg[u]]) ++ sg[u];
@@ -27,6 +31,6 @@ bool grundy(const std::vector<std::vector<int>> &g, std::vector<int> &sg) {
 }
 
 /*
-std::vector<int> sg;
+V < int > sg;
 bool ok = grundy(g, sg);
 */

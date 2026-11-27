@@ -1,24 +1,28 @@
 /*
-求差分约束的一组可行解，O(nm)。松弛的中间量须能放入 i64，包括检测负环的最后一轮。
+求差分约束的一组可行解，O(nm)。松弛的中间量须能放入 ll，包括检测负环的最后一轮。
 add(u, v, w) 表示 x[u] - x[v] <= w，solve 无解时返回 false。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Diff {
     int n = 0;
-    std::vector<std::tuple<int, int, i64>> edges;
+    V < tuple < int, int, ll > > edges;
 
     Diff(int n = 0) : n(n) {}
     void init(int n_) {
         n = n_;
         edges.clear();
     }
-    void add(int u, int v, i64 w) { edges.push_back({u, v, w}); }
+    void add(int u, int v, ll w) { edges.push_back({u, v, w}); }
 
-    bool solve(std::vector<i64> &dis) {
+    bool solve(V < ll > &dis) {
         dis.assign(n + 1, 0);
         for (int i = 1; i <= n; i ++) {
             bool op = false;
@@ -37,5 +41,5 @@ struct Diff {
 
 /*
 Diff dc; dc.init(2); dc.add(1, 2, -3);
-std::vector<i64> x; if (dc.solve(x)) cout << x[1];
+V < ll > x; if (dc.solve(x)) cout << x[1];
 */

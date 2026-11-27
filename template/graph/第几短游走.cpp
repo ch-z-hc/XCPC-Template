@@ -6,22 +6,26 @@ s == t 时含空游走，不足 k 条返回全部。边权及有效长度须小�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct KWalk {
-    static const i64 inf = 1ll << 62;
+    static const ll inf = 1ll << 62;
     struct Edge {
         int u, v;
-        i64 w;
+        ll w;
     };
     struct Node {
-        i64 val = 0;
+        ll val = 0;
         int to = 0, l = 0, r = 0, dis = 0;
     };
     int n = 0;
-    std::vector<Edge> edges;
-    std::vector<std::vector<int>> g, rg;
-    std::vector<Node> tr;
+    V < Edge > edges;
+    V < V < int > > g, rg;
+    V < Node > tr;
 
     KWalk(int n = 0) { init(n); }
 
@@ -33,7 +37,7 @@ struct KWalk {
         rg.assign(n + 1, {});
     }
 
-    void add_edge(int u, int v, i64 w) {
+    void add_edge(int u, int v, ll w) {
         int id = int(edges.size());
         edges.push_back({u, v, w});
         g[u].push_back(id);
@@ -42,24 +46,24 @@ struct KWalk {
 
     int merge(int u, int v, bool copy) {
         if (!u || !v) return u | v;
-        if (tr[u].val > tr[v].val) std::swap(u, v);
+        if (tr[u].val > tr[v].val) swap(u, v);
         if (copy) {
             tr.push_back(tr[u]);
             u = int(tr.size()) - 1;
         }
         tr[u].r = merge(tr[u].r, v, copy);
-        if (tr[tr[u].l].dis < tr[tr[u].r].dis) std::swap(tr[u].l, tr[u].r);
+        if (tr[tr[u].l].dis < tr[tr[u].r].dis) swap(tr[u].l, tr[u].r);
         tr[u].dis = tr[tr[u].r].dis + 1;
         return u;
     }
 
-    std::vector<i64> query(int s, int t, int k) {
-        std::vector<i64> ans;
+    V < ll > query(int s, int t, int k) {
+        V < ll > ans;
         if (k <= 0) return ans;
-        std::vector<i64> dis(n + 1, inf);
-        std::vector<int> edge(n + 1, -1), ord, root(n + 1);
-        std::priority_queue<std::pair<i64, int>, std::vector<std::pair<i64, int>>,
-                            std::greater<std::pair<i64, int>>>
+        V < ll > dis(n + 1, inf);
+        V < int > edge(n + 1, -1), ord, root(n + 1);
+        priority_queue < pair < ll, int >, V < pair < ll, int > >,
+                            greater < pair < ll, int > > >
             q;
         dis[t] = 0;
         q.push({0, t});
@@ -84,7 +88,7 @@ struct KWalk {
             for (int id : g[u]) {
                 auto e = edges[id];
                 if (id == edge[u] || dis[e.v] == inf) continue;
-                i64 delta = e.w + dis[e.v] - dis[u];
+                ll delta = e.w + dis[e.v] - dis[u];
                 tr.push_back({delta, e.v, 0, 0, 0});
                 root[u] = merge(root[u], int(tr.size()) - 1, 0);
             }
@@ -99,7 +103,7 @@ struct KWalk {
             ans.push_back(d);
             for (int v : {tr[u].l, tr[u].r})
                 if (v) {
-                    i64 delta = tr[v].val - tr[u].val;
+                    ll delta = tr[v].val - tr[u].val;
                     if (delta < inf - d) q.push({d + delta, v});
                 }
             int v = root[tr[u].to];
@@ -108,7 +112,7 @@ struct KWalk {
         return ans;
     }
 };
-const i64 KWalk::inf;
+const ll KWalk::inf;
 
 /*
 KWalk g; g.init(n); g.add_edge(u, v, w);

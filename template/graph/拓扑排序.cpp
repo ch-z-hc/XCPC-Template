@@ -2,13 +2,17 @@
 
 #include <bits/stdc++.h>
 
-bool topo(const std::vector<std::vector<int>> &g, std::vector<int> &ans) {
+#define V vector
+
+using namespace std;
+
+bool topo(const V < V < int > > &g, V < int > &ans) {
     int n = int(g.size()) - 1;
-    std::vector<int> deg(n + 1);
+    V < int > deg(n + 1);
     for (int u = 1; u <= n; u ++)
         for (int v : g[u]) ++ deg[v];
 
-    std::queue<int> q;
+    queue < int > q;
     for (int u = 1; u <= n; u ++)
         if (deg[u] == 0) q.push(u);
     ans.clear();
@@ -24,6 +28,6 @@ bool topo(const std::vector<std::vector<int>> &g, std::vector<int> &ans) {
 }
 
 /*
-std::vector<int> order;
+V < int > order;
 bool acyclic = topo(g, order);
 */

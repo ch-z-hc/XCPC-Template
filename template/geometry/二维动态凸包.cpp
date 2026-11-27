@@ -8,12 +8,16 @@ contains 返回 0、1、2，分别表示外部、边界、内部。snapshot 返�
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct DynamicHull {
     typedef HullQuery::P P;
     int B;
-    std::vector<P> p;
-    std::vector<int> op;
-    std::vector<HullQuery> tr;
+    V < P > p;
+    V < int > op;
+    V < HullQuery > tr;
 
     DynamicHull(int b = 700) { init(b); }
 
@@ -26,8 +30,8 @@ struct DynamicHull {
     }
 
     void rebuild(int k) {
-        std::vector<P> a;
-        int l = k * B, r = std::min((int)p.size(), l + B);
+        V < P > a;
+        int l = k * B, r = min((int)p.size(), l + B);
         for (int i = l; i < r; i ++)
             if (op[i]) a.push_back(p[i]);
         tr[k].build(a);
@@ -49,10 +53,10 @@ struct DynamicHull {
         return 1;
     }
 
-    bool query(i64 a, i64 b, i64 &ans) {
+    bool query(ll a, ll b, ll &ans) {
         bool ok = 0;
         for (auto &t : tr) {
-            i64 v;
+            ll v;
             if (!t.query(a, b, v)) continue;
             if (!ok || v > ans) ans = v;
             ok = 1;
@@ -61,7 +65,7 @@ struct DynamicHull {
     }
 
     HullQuery snapshot() {
-        std::vector<P> a;
+        V < P > a;
         for (auto &t : tr) a.insert(a.end(), t.h.begin(), t.h.end());
         HullQuery hull;
         hull.build(a);
@@ -76,7 +80,7 @@ struct DynamicHull {
 
 /*
 DynamicHull hull; hull.init(32); int id = hull.add({2, 3}); hull.add({-1, 4});
-i64 ans; if (hull.query(1, 1, ans)) cout << ans;
+ll ans; if (hull.query(1, 1, ans)) cout << ans;
 int state = hull.contains({2, 3});
 auto now = hull.snapshot();
 bool ok = hull.erase(id);

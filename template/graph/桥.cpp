@@ -2,11 +2,16 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 struct Bridge {
     int n = 0, tim = 0;
-    std::vector<std::vector<std::pair<int, int>>> g;
-    std::vector<int> dfn, low;
-    std::vector<char> is_bridge;
+    V < V < pii > > g;
+    V < int > dfn, low;
+    V < char > is_bridge;
 
     Bridge(int n = 0) { init(n); }
     void init(int n_) {
@@ -28,20 +33,20 @@ struct Bridge {
             if (id == pe) continue;
             if (!dfn[v]) {
                 dfs(v, id);
-                low[u] = std::min(low[u], low[v]);
+                low[u] = min(low[u], low[v]);
                 if (low[v] > dfn[u]) is_bridge[id] = 1;
             } else
-                low[u] = std::min(low[u], dfn[v]);
+                low[u] = min(low[u], dfn[v]);
         }
     }
-    std::vector<int> find() {
+    V < int > find() {
         tim = 0;
-        std::fill(dfn.begin(), dfn.end(), 0);
-        std::fill(low.begin(), low.end(), 0);
-        std::fill(is_bridge.begin(), is_bridge.end(), 0);
+        fill(dfn.begin(), dfn.end(), 0);
+        fill(low.begin(), low.end(), 0);
+        fill(is_bridge.begin(), is_bridge.end(), 0);
         for (int u = 1; u <= n; u ++)
             if (!dfn[u]) dfs(u, -1);
-        std::vector<int> ans;
+        V < int > ans;
         for (int id = 1; id < int(is_bridge.size()); id ++)
             if (is_bridge[id]) ans.push_back(id);
         return ans;
@@ -51,5 +56,5 @@ struct Bridge {
 /*
 Bridge bridge; bridge.init(n);
 bridge.add_edge(id, u, v);
-std::vector<int> ans = bridge.find();
+V < int > ans = bridge.find();
 */

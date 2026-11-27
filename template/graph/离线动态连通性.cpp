@@ -5,15 +5,20 @@ q 次操作共 O(q log q log n)，时间线上的区间副本使空间达到 O(n
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 struct DynConn {
     struct Op {
         int type, u, v;
     };
     int n;
-    std::vector<Op> ops;
-    std::vector<int> fa, siz, ans;
-    std::vector<std::pair<int, int>> stk;
-    std::vector<std::vector<std::pair<int, int>>> tr;
+    V < Op > ops;
+    V < int > fa, siz, ans;
+    V < pii > stk;
+    V < V < pii > > tr;
 
     DynConn(int n = 0) { init(n); }
     void init(int n_) {
@@ -21,8 +26,8 @@ struct DynConn {
         ops.clear();
         ans.clear();
     }
-    void add(int u, int v) { ops.push_back({0, std::min(u, v), std::max(u, v)}); }
-    void erase(int u, int v) { ops.push_back({1, std::min(u, v), std::max(u, v)}); }
+    void add(int u, int v) { ops.push_back({0, min(u, v), max(u, v)}); }
+    void erase(int u, int v) { ops.push_back({1, min(u, v), max(u, v)}); }
     int query(int u, int v) {
         int id = int(ans.size());
         ans.push_back(0);
@@ -35,7 +40,7 @@ struct DynConn {
         u = find(u);
         v = find(v);
         if (u == v) return;
-        if (siz[u] < siz[v]) std::swap(u, v);
+        if (siz[u] < siz[v]) swap(u, v);
         stk.push_back({v, siz[u]});
         fa[v] = u;
         siz[u] += siz[v];
@@ -49,7 +54,7 @@ struct DynConn {
         }
     }
 
-    void insert(int p, int l, int r, int x, int y, std::pair<int, int> edge) {
+    void insert(int p, int l, int r, int x, int y, pii edge) {
         if (x > r || y < l) return;
         if (x <= l && r <= y) {
             tr[p].push_back(edge);
@@ -73,10 +78,10 @@ struct DynConn {
         rollback(snap);
     }
 
-    std::vector<int> solve() {
+    V < int > solve() {
         int q = int(ops.size());
         tr.assign(q * 4 + 5, {});
-        std::map<std::pair<int, int>, std::vector<int>> active;
+        map < pii, V < int > > active;
         for (int i = 0; i < q; i ++) {
             auto [type, u, v] = ops[i];
             if (type == 0)
@@ -91,7 +96,7 @@ struct DynConn {
         for (auto &[edge, a] : active)
             for (int l : a) insert(1, 0, q - 1, l, q - 1, edge);
         fa.resize(n + 1);
-        std::iota(fa.begin(), fa.end(), 0);
+        iota(fa.begin(), fa.end(), 0);
         siz.assign(n + 1, 1);
         stk.clear();
         int id = 0;

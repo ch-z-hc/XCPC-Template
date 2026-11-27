@@ -7,11 +7,16 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 int q;
-std::vector<std::vector<int>> tr;
+V < V < int > > tr;
 RollbackDSU dsu;
-std::vector<std::pair<int, int>> edge, ask;
-std::vector<int> ans;
+V < pii > edge, ask;
+V < int > ans;
 
 void init(int n, int q_) {
     q = q_;

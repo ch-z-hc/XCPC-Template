@@ -1,18 +1,22 @@
 /*
 按斜率不增加线，按 x 不减查询最小值，两种操作均摊 O(1)。先加线再查，允许相同斜率和查询位置。
-差值、叉积和 kx + b 须放入 i64；|k|、|b|、|x| 均 <= 10^9 是充分条件。
+差值、叉积和 kx + b 须放入 ll；|k|、|b|、|x| 均 <= 10^9 是充分条件。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct CHT {
     struct Line {
-        i64 k, b;
-        i64 eval(i64 x) { return k * x + b; }
+        ll k, b;
+        ll eval(ll x) { return k * x + b; }
     };
-    std::vector<Line> q;
+    V < Line > q;
     int head = 0;
 
     void clear() {
@@ -24,7 +28,7 @@ struct CHT {
         return (b.b - a.b) * (b.k - c.k) >= (c.b - b.b) * (a.k - b.k);
     }
 
-    void add(i64 k, i64 b) {
+    void add(ll k, ll b) {
         Line c{k, b};
         if (int(q.size()) > head && q.back().k == k) {
             if (q.back().b <= b) return;
@@ -35,7 +39,7 @@ struct CHT {
         q.push_back(c);
     }
 
-    i64 query(i64 x) {
+    ll query(ll x) {
         while (head + 1 < int(q.size()) && q[head + 1].eval(x) <= q[head].eval(x))
             ++ head;
         return q[head].eval(x);
@@ -44,5 +48,5 @@ struct CHT {
 
 /*
 CHT hull; hull.add(3, 1); hull.add(1, 2);
-i64 val = hull.query(4); hull.clear();
+ll val = hull.query(4); hull.clear();
 */

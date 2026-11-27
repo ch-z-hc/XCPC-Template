@@ -5,12 +5,16 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-std::vector<int> subset_conv(const std::vector<int> &a, const std::vector<int> &b, int mod) {
+typedef long long ll;
+
+using namespace std;
+
+V < int > subset_conv(const V < int > &a, const V < int > &b, int mod) {
     int size = int(a.size()), n = __builtin_ctz(unsigned(size));
-    std::vector<int> cnt(size), ans(size), c(size);
-    std::vector<std::vector<int>> f(n + 1, std::vector<int>(size)), g = f;
+    V < int > cnt(size), ans(size), c(size);
+    V < V < int > > f(n + 1, V < int >(size)), g = f;
     for (int s = 0; s < size; s ++) {
         cnt[s] = __builtin_popcount(unsigned(s));
         int x = a[s] % mod, y = b[s] % mod;
@@ -19,11 +23,11 @@ std::vector<int> subset_conv(const std::vector<int> &a, const std::vector<int> &
         f[cnt[s]][s] = x;
         g[cnt[s]][s] = y;
     }
-    auto transform = [&](std::vector<int> &row, bool inverse) {
+    auto transform = [&](V < int > &row, bool inverse) {
         for (int bit = 1; bit < size; bit <<= 1)
             for (int l = 0; l < size; l += bit * 2)
                 for (int i = 0; i < bit; i ++) {
-                    i64 x = row[l + bit + i];
+                    ll x = row[l + bit + i];
                     x += inverse ? -row[l + i] : row[l + i];
                     if (x < 0) x += mod;
                     if (x >= mod) x -= mod;
@@ -35,7 +39,7 @@ std::vector<int> subset_conv(const std::vector<int> &a, const std::vector<int> &
         transform(g[k], false);
     }
     for (int k = 0; k <= n; k ++) {
-        std::fill(c.begin(), c.end(), 0);
+        fill(c.begin(), c.end(), 0);
         for (int j = 0; j <= k; j ++)
             for (int s = 0; s < size; s ++)
                 c[s] = (c[s] + 1ll * f[j][s] * g[k - j][s]) % mod;

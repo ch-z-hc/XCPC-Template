@@ -5,9 +5,13 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 #define db long double
 
-std::pair<db, db> circle_union(const std::vector<Circle> &cs) {
+pair < db, db > circle_union(const V < Circle > &cs) {
     const db pi = acosl(-1), tau = 2 * pi;
     int n = cs.size();
     db area = 0, perimeter = 0;
@@ -16,7 +20,7 @@ std::pair<db, db> circle_union(const std::vector<Circle> &cs) {
     for (int i = 0; i < n; i ++) {
         Circle a = cs[i];
         if (a.r == 0) continue;
-        std::vector<std::pair<db, db>> covered;
+        V < pair < db, db > > covered;
         bool hidden = 0;
         for (int j = 0; j < n; j ++) {
             if (i == j || cs[j].r == 0) continue;
@@ -37,7 +41,7 @@ std::pair<db, db> circle_union(const std::vector<Circle> &cs) {
             if (d >= a.r + b.r || d + b.r <= a.r) continue;
             db mid = atan2l(v.y, v.x);
             db angle =
-                acosl(std::clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
+                acosl(clamp((d * d + a.r * a.r - b.r * b.r) / (2 * d * a.r), -1.L, 1.L));
             db l = mid - angle, r = mid + angle;
             while (l < 0) {
                 l += tau;
@@ -55,7 +59,7 @@ std::pair<db, db> circle_union(const std::vector<Circle> &cs) {
             }
         }
         if (hidden) continue;
-        std::sort(covered.begin(), covered.end());
+        sort(covered.begin(), covered.end());
         P o = a.o - origin;
         auto add_arc = [&](db l, db r) {
             if (l >= r) return;
@@ -67,11 +71,11 @@ std::pair<db, db> circle_union(const std::vector<Circle> &cs) {
         db last = 0;
         for (auto [l, r] : covered) {
             add_arc(last, l);
-            last = std::max(last, r);
+            last = max(last, r);
         }
         add_arc(last, tau);
     }
-    return {std::max(0.L, area), perimeter};
+    return {max(0.L, area), perimeter};
 }
 
 // auto [area, perimeter] = circle_union(cs);

@@ -5,9 +5,14 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> euler_d(int n, const std::vector<std::pair<int, int>> &edges) {
-    std::vector<std::vector<int>> g(n + 1);
-    std::vector<int> in(n + 1), out(n + 1), cur(n + 1);
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
+V < int > euler_d(int n, const V < pii > &edges) {
+    V < V < int > > g(n + 1);
+    V < int > in(n + 1), out(n + 1), cur(n + 1);
     for (int i = 0; i < int(edges.size()); i ++) {
         auto [u, v] = edges[i];
         g[u].push_back(v);
@@ -27,16 +32,16 @@ std::vector<int> euler_d(int n, const std::vector<std::pair<int, int>> &edges) {
     if (!((cnt1 == 1 && cnt2 == 1) || (cnt1 == 0 && cnt2 == 0))) return {};
     if (cnt1 == 0) {
         while (s <= n && g[s].empty()) ++ s;
-        if (s > n) return edges.empty() ? std::vector<int>{1} : std::vector<int>{};
+        if (s > n) return edges.empty() ? V < int >{1} : V < int >{};
     }
-    std::vector<int> ans;
+    V < int > ans;
     auto dfs = [&](auto &&self, int u) -> void {
         while (cur[u] < int(g[u].size())) self(self, g[u][cur[u] ++]);
         ans.push_back(u);
     };
     dfs(dfs, s);
     if (int(ans.size()) != int(edges.size()) + 1) return {};
-    std::reverse(ans.begin(), ans.end());
+    reverse(ans.begin(), ans.end());
     return ans;
 }
 

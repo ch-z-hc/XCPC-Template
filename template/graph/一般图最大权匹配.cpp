@@ -6,20 +6,24 @@ O(n³)，要求 w <= LLONG_MAX / (8 * max(1, n))。来源为 bqi343/cp-notebook�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct WBlossom {
     struct Edge {
         int u = 0, v = 0;
-        i64 w = 0;
+        ll w = 0;
     };
     int n = 0, nx = 0;
-    i64 timer = 0;
-    std::vector<std::vector<Edge>> g;
-    std::vector<std::vector<int>> flower, from;
-    std::vector<int> match, slack, base, fa, state;
-    std::vector<i64> lab, seen;
-    std::queue<int> q;
+    ll timer = 0;
+    V < V < Edge > > g;
+    V < V < int > > flower, from;
+    V < int > match, slack, base, fa, state;
+    V < ll > lab, seen;
+    queue < int > q;
 
     WBlossom(int n = 0) { init(n); }
 
@@ -28,8 +32,8 @@ struct WBlossom {
         nx = n;
         timer = 0;
         int m = 2 * n + 1;
-        g.assign(m, std::vector<Edge>(m));
-        from.assign(m, std::vector<int>(n + 1));
+        g.assign(m, V < Edge >(m));
+        from.assign(m, V < int >(n + 1));
         flower.assign(m, {});
         match.assign(m, 0);
         slack.assign(m, 0);
@@ -41,16 +45,16 @@ struct WBlossom {
         for (int u = 1; u <= n; u ++)
             for (int v = 1; v <= n; v ++)
                 g[u][v] = {u, v, 0};
-        q = std::queue<int>();
+        q = queue < int >();
     }
 
-    void add_edge(int u, int v, i64 w) {
+    void add_edge(int u, int v, ll w) {
         if (u == v || w <= 0) return;
-        assert(w <= LLONG_MAX / (8ll * std::max(1, n)));
-        g[u][v].w = g[v][u].w = std::max(g[u][v].w, w);
+        assert(w <= LLONG_MAX / (8ll * max(1, n)));
+        g[u][v].w = g[v][u].w = max(g[u][v].w, w);
     }
 
-    i64 delta(Edge e) { return lab[e.u] + lab[e.v] - 2 * e.w; }
+    ll delta(Edge e) { return lab[e.u] + lab[e.v] - 2 * e.w; }
 
     void update_slack(int u, int x) {
         if (!slack[x] || delta(g[u][x]) < delta(g[slack[x]][x])) slack[x] = u;
@@ -78,7 +82,7 @@ struct WBlossom {
     int position(int b, int x) {
         int p = int(find(flower[b].begin(), flower[b].end(), x) - flower[b].begin());
         if (p & 1) {
-            std::reverse(flower[b].begin() + 1, flower[b].end());
+            reverse(flower[b].begin() + 1, flower[b].end());
             p = int(flower[b].size()) - p;
         }
         return p;
@@ -107,7 +111,7 @@ struct WBlossom {
 
     int lca(int u, int v) {
         ++ timer;
-        for (; u || v; std::swap(u, v)) {
+        for (; u || v; swap(u, v)) {
             if (!u) continue;
             if (seen[u] == timer) return u;
             seen[u] = timer;
@@ -132,11 +136,11 @@ struct WBlossom {
             }
         };
         collect(u);
-        std::reverse(flower[b].begin() + 1, flower[b].end());
+        reverse(flower[b].begin() + 1, flower[b].end());
         collect(v);
         set_base(b, b);
         for (int x = 1; x <= nx; x ++) g[b][x].w = g[x][b].w = 0;
-        std::fill(from[b].begin(), from[b].end(), 0);
+        fill(from[b].begin(), from[b].end(), 0);
         for (int s : flower[b]) {
             for (int x = 1; x <= nx; x ++)
                 if (!g[b][x].w || delta(g[s][x]) < delta(g[b][x])) {
@@ -191,7 +195,7 @@ struct WBlossom {
     }
 
     bool matching() {
-        q = std::queue<int>();
+        q = queue < int >();
         for (int x = 1; x <= nx; x ++) {
             state[x] = -1;
             slack[x] = 0;
@@ -214,16 +218,16 @@ struct WBlossom {
                             update_slack(u, base[v]);
                     }
             }
-            i64 d = LLONG_MAX / 4;
+            ll d = LLONG_MAX / 4;
             for (int b = n + 1; b <= nx; b ++)
-                if (base[b] == b && state[b] == 1) d = std::min(d, lab[b] / 2);
+                if (base[b] == b && state[b] == 1) d = min(d, lab[b] / 2);
             for (int x = 1; x <= nx; x ++)
                 if (base[x] == x && slack[x]) {
-                    i64 w = delta(g[slack[x]][x]);
+                    ll w = delta(g[slack[x]][x]);
                     if (state[x] == -1)
-                        d = std::min(d, w);
+                        d = min(d, w);
                     else if (state[x] == 0)
-                        d = std::min(d, w / 2);
+                        d = min(d, w / 2);
                 }
             for (int u = 1; u <= n; u ++) {
                 if (state[base[u]] == 0) {
@@ -234,7 +238,7 @@ struct WBlossom {
             }
             for (int b = n + 1; b <= nx; b ++)
                 if (base[b] == b && state[b] != -1) lab[b] += (state[b] == 0 ? 2 : -2) * d;
-            q = std::queue<int>();
+            q = queue < int >();
             for (int x = 1; x <= nx; x ++)
                 if (base[x] == x && slack[x] && base[slack[x]] != x && !delta(g[slack[x]][x]))
                     if (found(g[slack[x]][x])) return 1;
@@ -243,25 +247,25 @@ struct WBlossom {
         }
     }
 
-    i64 solve() {
+    ll solve() {
         nx = n;
         timer = 0;
-        std::fill(match.begin(), match.end(), 0);
-        std::fill(base.begin(), base.end(), 0);
-        std::fill(seen.begin(), seen.end(), 0);
-        std::fill(lab.begin(), lab.end(), 0);
+        fill(match.begin(), match.end(), 0);
+        fill(base.begin(), base.end(), 0);
+        fill(seen.begin(), seen.end(), 0);
+        fill(lab.begin(), lab.end(), 0);
         for (auto &a : flower) a.clear();
-        i64 w = 0;
+        ll w = 0;
         for (int u = 1; u <= n; u ++) {
             base[u] = u;
             for (int v = 1; v <= n; v ++) {
                 from[u][v] = u == v ? u : 0;
-                w = std::max(w, g[u][v].w);
+                w = max(w, g[u][v].w);
             }
         }
         for (int u = 1; u <= n; u ++) lab[u] = w;
         while (matching()) {}
-        i64 ans = 0;
+        ll ans = 0;
         for (int u = 1; u <= n; u ++)
             if (match[u] > u) ans += g[u][match[u]].w;
         return ans;
@@ -270,5 +274,5 @@ struct WBlossom {
 
 /*
 WBlossom g; g.init(n); g.add_edge(u, v, w);
-i64 weight = g.solve();
+ll weight = g.solve();
 */

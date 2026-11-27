@@ -2,11 +2,15 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct CutVertex {
     int n = 0, tim = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> dfn, low;
-    std::vector<char> is_cut;
+    V < V < int > > g;
+    V < int > dfn, low;
+    V < char > is_cut;
 
     CutVertex(int n = 0) { init(n); }
     void init(int n_) {
@@ -28,21 +32,21 @@ struct CutVertex {
             if (!dfn[v]) {
                 ++ cnt;
                 dfs(v, u);
-                low[u] = std::min(low[u], low[v]);
+                low[u] = min(low[u], low[v]);
                 if (fa != 0 && low[v] >= dfn[u]) is_cut[u] = 1;
             } else if (v != fa)
-                low[u] = std::min(low[u], dfn[v]);
+                low[u] = min(low[u], dfn[v]);
         }
         if (fa == 0 && cnt > 1) is_cut[u] = 1;
     }
-    std::vector<int> find() {
+    V < int > find() {
         tim = 0;
-        std::fill(dfn.begin(), dfn.end(), 0);
-        std::fill(low.begin(), low.end(), 0);
-        std::fill(is_cut.begin(), is_cut.end(), 0);
+        fill(dfn.begin(), dfn.end(), 0);
+        fill(low.begin(), low.end(), 0);
+        fill(is_cut.begin(), is_cut.end(), 0);
         for (int u = 1; u <= n; u ++)
             if (!dfn[u]) dfs(u, 0);
-        std::vector<int> ans;
+        V < int > ans;
         for (int u = 1; u <= n; u ++)
             if (is_cut[u]) ans.push_back(u);
         return ans;
@@ -52,5 +56,5 @@ struct CutVertex {
 /*
 CutVertex cut; cut.init(n);
 cut.add_edge(u, v);
-std::vector<int> ans = cut.find();
+V < int > ans = cut.find();
 */

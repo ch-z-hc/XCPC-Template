@@ -5,17 +5,21 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Johnson {
-    static const i64 inf = 1ll << 62;
+    static const ll inf = 1ll << 62;
     struct Edge {
         int u, v;
-        i64 w;
+        ll w;
     };
     int n;
-    std::vector<Edge> e;
-    std::vector<std::vector<std::pair<int, i64>>> g;
+    V < Edge > e;
+    V < V < pair < int, ll > > > g;
 
     Johnson(int n = 0) { init(n); }
 
@@ -25,15 +29,15 @@ struct Johnson {
         g.assign(n + 1, {});
     }
 
-    void add_edge(int u, int v, i64 w) {
+    void add_edge(int u, int v, ll w) {
         e.push_back({u, v, w});
         g[u].push_back({v, w});
     }
 
-    bool solve(std::vector<std::vector<i64>> &ans) {
-        std::vector<i64> h(n + 1);
+    bool solve(V < V < ll > > &ans) {
+        V < ll > h(n + 1);
         for (int i = 1; i <= n; i ++) {
-            std::vector<i64> nh = h;
+            V < ll > nh = h;
             bool op = 0;
             for (auto [u, v, w] : e)
                 if (nh[v] > h[u] + w) {
@@ -45,11 +49,11 @@ struct Johnson {
             if (i == n) return false;
         }
 
-        ans.assign(n + 1, std::vector<i64>(n + 1, inf));
+        ans.assign(n + 1, V < ll >(n + 1, inf));
         for (int s = 1; s <= n; s ++) {
-            std::vector<i64> dis(n + 1, inf);
-            std::priority_queue<std::pair<i64, int>, std::vector<std::pair<i64, int>>,
-                                std::greater<std::pair<i64, int>>>
+            V < ll > dis(n + 1, inf);
+            priority_queue < pair < ll, int >, V < pair < ll, int > >,
+                                greater < pair < ll, int > > >
                 q;
             dis[s] = 0;
             q.push({0, s});
@@ -58,7 +62,7 @@ struct Johnson {
                 q.pop();
                 if (d != dis[u]) continue;
                 for (auto [v, w] : g[u]) {
-                    i64 nd = d + w + h[u] - h[v];
+                    ll nd = d + w + h[u] - h[v];
                     if (dis[v] <= nd) continue;
                     dis[v] = nd;
                     q.push({nd, v});
@@ -70,9 +74,9 @@ struct Johnson {
         return true;
     }
 };
-const i64 Johnson::inf;
+const ll Johnson::inf;
 
 /*
 Johnson g; g.init(n); g.add_edge(u, v, w);
-std::vector<std::vector<i64>> dis; bool ok = g.solve(dis);
+V < V < ll > > dis; bool ok = g.solve(dis);
 */

@@ -5,45 +5,50 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+#define fi first
+
+typedef long long ll;
+
+using namespace std;
 
 struct MinCut {
     int n;
-    std::vector<std::vector<i64>> g;
+    V < V < ll > > g;
 
     MinCut(int n = 0) { init(n); }
 
     void init(int n) {
         this->n = n;
-        g.assign(n + 1, std::vector<i64>(n + 1));
+        g.assign(n + 1, V < ll >(n + 1));
     }
 
-    void add_edge(int u, int v, i64 w) {
+    void add_edge(int u, int v, ll w) {
         if (u == v) return;
         g[u][v] += w;
         g[v][u] += w;
     }
 
-    std::pair<i64, std::vector<int>> solve() {
+    pair < ll, V < int > > solve() {
         if (n < 2) return {0, {}};
         auto a = g;
-        std::vector<int> id(n);
-        std::iota(id.begin(), id.end(), 1);
-        std::vector<std::vector<int>> ver(n + 1);
+        V < int > id(n);
+        iota(id.begin(), id.end(), 1);
+        V < V < int > > ver(n + 1);
         for (int i = 1; i <= n; i ++)
             ver[i] = {i};
-        std::pair<i64, std::vector<int>> ans = {LLONG_MAX, {}};
+        pair < ll, V < int > > ans = {LLONG_MAX, {}};
 
         while (id.size() > 1) {
-            std::vector<i64> dis(n + 1);
-            std::vector<bool> vis(n + 1);
+            V < ll > dis(n + 1);
+            V < bool > vis(n + 1);
             int pre = 0;
             for (int i = 0; i < int(id.size()); i ++) {
                 int u = 0;
                 for (int v : id)
                     if (!vis[v] && (!u || dis[v] > dis[u])) u = v;
                 if (i + 1 == int(id.size())) {
-                    if (dis[u] < ans.first) ans = {dis[u], ver[u]};
+                    if (dis[u] < ans.fi) ans = {dis[u], ver[u]};
                     for (int v : id)
                         if (v != u && v != pre) {
                             a[pre][v] += a[u][v];

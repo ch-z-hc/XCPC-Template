@@ -5,10 +5,15 @@
 
 #include <bits/stdc++.h>
 
-std::vector<std::vector<std::pair<int, int>>>
-bridge_tree(int cnt, const std::vector<int> &bel,
-            const std::vector<std::pair<int, int>> &edges) {
-    std::vector<std::vector<std::pair<int, int>>> tree(cnt + 1);
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
+V < V < pii > >
+bridge_tree(int cnt, const V < int > &bel,
+            const V < pii > &edges) {
+    V < V < pii > > tree(cnt + 1);
     for (int i = 0; i < int(edges.size()); i ++) {
         auto [u, v] = edges[i];
         u = bel[u];

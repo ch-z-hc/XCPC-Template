@@ -7,10 +7,14 @@ ml、mr 记录两侧搭档，未匹配为 0。cover 用 O(n + m + E) 返回 {左
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct HK {
     int n, m;
-    std::vector<std::vector<int>> g;
-    std::vector<int> ml, mr, dep, cur, vs;
+    V < V < int > > g;
+    V < int > ml, mr, dep, cur, vs;
 
     HK(int n = 0, int m = 0) { init(n, m); }
 
@@ -28,7 +32,7 @@ struct HK {
     void add_edge(int u, int v) { g[u].push_back(v); }
 
     bool bfs() {
-        std::queue<int> q;
+        queue < int > q;
         dep[0] = -1;
         for (int u : vs) {
             dep[u] = ml[u] ? -1 : 0;
@@ -61,8 +65,8 @@ struct HK {
     }
 
     int solve() {
-        std::fill(ml.begin(), ml.end(), 0);
-        std::fill(mr.begin(), mr.end(), 0);
+        fill(ml.begin(), ml.end(), 0);
+        fill(mr.begin(), mr.end(), 0);
         vs.clear();
         for (int u = 1; u <= n; u ++)
             if (!g[u].empty()) vs.push_back(u);
@@ -75,9 +79,9 @@ struct HK {
         return ans;
     }
 
-    std::pair<std::vector<int>, std::vector<int>> cover() {
-        std::vector<int> a(n + 1), b(m + 1), left, right;
-        std::queue<int> q;
+    pair < V < int >, V < int > > cover() {
+        V < int > a(n + 1), b(m + 1), left, right;
+        queue < int > q;
         for (int u = 1; u <= n; u ++)
             if (!ml[u]) a[u] = 1, q.push(u);
         while (!q.empty()) {

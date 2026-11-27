@@ -5,16 +5,20 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct RollbackDSU {
-    std::vector<int> fa, siz;
-    std::vector<int> stk;
+    V < int > fa, siz;
+    V < int > stk;
 
     RollbackDSU(int n = 0) { init(n); }
 
     void init(int n) {
         fa.resize(n + 1);
         siz.assign(n + 1, 1);
-        std::iota(fa.begin(), fa.end(), 0);
+        iota(fa.begin(), fa.end(), 0);
         stk.clear();
     }
 
@@ -32,7 +36,7 @@ struct RollbackDSU {
             stk.push_back(-1);
             return 0;
         }
-        if (siz[u] < siz[v]) std::swap(u, v);
+        if (siz[u] < siz[v]) swap(u, v);
         stk.push_back(v);
         fa[v] = u;
         siz[u] += siz[v];

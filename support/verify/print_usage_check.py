@@ -47,10 +47,10 @@ def main():
     run_example("template/others/莫队.cpp", """
     Mo mo; int n = 5, m = 3;
     mo.a = {0, 1, 2, 1, 3, 2};
-    std::vector<Mo::Query> qs{{1, 3, 0}, {2, 5, 1}, {4, 4, 2}};
+    V < Mo::Query > qs{{1, 3, 0}, {2, 5, 1}, {4, 4, 2}};
     for (int repeat = 0; repeat < 2; ++ repeat) {
         mo.cnt.assign(m + 1, 0); mo.kinds = 0; mo.ans.resize(qs.size());
-        mo.solve(n, qs); assert(mo.ans == std::vector<int>({2, 3, 1}));
+        mo.solve(n, qs); assert(mo.ans == V < int >({2, 3, 1}));
     }
     """)
     run_example("template/others/带修改莫队.cpp", """
@@ -59,7 +59,7 @@ def main():
     mo.modify(2, 1); mo.query(1, 3);
     for (int repeat = 0; repeat < 2; ++ repeat) {
         mo.cnt.assign(5, 0); mo.kinds = 0; mo.ans.resize(mo.qs.size());
-        mo.solve(); assert(mo.ans == std::vector<int>({3, 3, 2}));
+        mo.solve(); assert(mo.ans == V < int >({3, 3, 2}));
     }
     """)
     run_example("template/others/树上莫队.cpp", """
@@ -69,7 +69,7 @@ def main():
     mo.color = {0, 1, 2, 1, 3, 2};
     for (int repeat = 0; repeat < 2; ++ repeat) {
         mo.cnt.assign(4, 0); mo.kinds = 0; mo.ans.resize(mo.qs.size());
-        mo.solve(); assert(mo.ans == std::vector<int>({3, 3, 1, 2}));
+        mo.solve(); assert(mo.ans == V < int >({3, 3, 1, 2}));
     }
     """)
     run_example("template/graph/树上启发式合并.cpp", """
@@ -78,8 +78,8 @@ def main():
     dsu.color = {0, 1, 2, 1, 3, 2};
     dsu.cnt.assign(4, 0); dsu.kinds = 0; dsu.ans.resize(6);
     for (int repeat = 0; repeat < 2; ++ repeat) {
-        dsu.build(1); assert(dsu.ans == std::vector<int>({0, 3, 1, 3, 1, 1}));
-        assert(dsu.kinds == 0 && dsu.cnt == std::vector<int>(4, 0));
+        dsu.build(1); assert(dsu.ans == V < int >({0, 3, 1, 3, 1, 1}));
+        assert(dsu.kinds == 0 && dsu.cnt == V < int >(4, 0));
     }
     """)
     entry = (ROOT / "support/tools/contest_main.cpp").read_text(encoding="utf-8")

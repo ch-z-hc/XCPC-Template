@@ -6,17 +6,21 @@
 
 #include <bits/stdc++.h>
 
-std::vector<std::array<int, 3>> runs(const std::string &s) {
+#define V vector
+
+using namespace std;
+
+V < array < int, 3 > > runs(const string &s) {
     int n = int(s.size());
     if (n < 2) return {};
-    SA sa(s), rsa(std::string(s.rbegin(), s.rend()));
-    std::vector<std::array<int, 3>> ans;
+    SA sa(s), rsa(string(s.rbegin(), s.rend()));
+    V < array < int, 3 > > ans;
     for (int order = 0; order < 2; order ++) {
-        std::string t = s;
+        string t = s;
         if (order)
             for (char &c : t) c = char(255 - (unsigned char)c);
         SA sorted(t);
-        std::vector<int> st{n};
+        V < int > st{n};
         for (int i = n - 1; i >= 0; i --) {
             while (st.back() != n && sorted.rk[st.back()] > sorted.rk[i]) st.pop_back();
             int j = st.back();
@@ -28,8 +32,8 @@ std::vector<std::array<int, 3>> runs(const std::string &s) {
             st.push_back(i);
         }
     }
-    std::sort(ans.begin(), ans.end());
-    ans.erase(std::unique(ans.begin(), ans.end()), ans.end());
+    sort(ans.begin(), ans.end());
+    ans.erase(unique(ans.begin(), ans.end()), ans.end());
     return ans;
 }
 

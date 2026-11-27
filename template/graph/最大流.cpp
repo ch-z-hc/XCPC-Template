@@ -1,21 +1,25 @@
 /*
-有向图最大流，容量非负，总流量须放入 i64。重复调用 flow 沿用残量，只返回本次新增流量。
+有向图最大流，容量非负，总流量须放入 ll。重复调用 flow 沿用残量，只返回本次新增流量。
 一般图 O(n²m)，二分图匹配建成的单位网络 O(m√n)，一般单位容量图 O(m√m)。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Dinic {
     struct Edge {
         int to;
-        i64 cap;
+        ll cap;
     };
 
-    std::vector<Edge> edges;
-    std::vector<std::vector<int>> g;
-    std::vector<int> dep, cur;
+    V < Edge > edges;
+    V < V < int > > g;
+    V < int > dep, cur;
     int n = 0;
 
     Dinic(int n = 0) { init(n); }
@@ -28,7 +32,7 @@ struct Dinic {
         cur.resize(n + 1);
     }
 
-    void add_edge(int u, int v, i64 cap) {
+    void add_edge(int u, int v, ll cap) {
         int id = int(edges.size());
         edges.push_back({v, cap});
         edges.push_back({u, 0});
@@ -37,8 +41,8 @@ struct Dinic {
     }
 
     bool bfs(int s, int t) {
-        std::fill(dep.begin(), dep.end(), -1);
-        std::queue<int> q;
+        fill(dep.begin(), dep.end(), -1);
+        queue < int > q;
         q.push(s);
         dep[s] = 0;
         while (!q.empty()) {
@@ -55,14 +59,14 @@ struct Dinic {
         return dep[t] != -1;
     }
 
-    i64 dfs(int u, int t, i64 flow) {
+    ll dfs(int u, int t, ll flow) {
         if (u == t) return flow;
-        i64 left = flow;
+        ll left = flow;
         for (int &i = cur[u]; i < int(g[u].size()); i ++) {
             int id = g[u][i];
             auto [v, cap] = edges[id];
             if (!cap || dep[v] != dep[u] + 1) continue;
-            i64 pushed = dfs(v, t, std::min(left, cap));
+            ll pushed = dfs(v, t, min(left, cap));
             edges[id].cap -= pushed;
             edges[id ^ 1].cap += pushed;
             left -= pushed;
@@ -71,11 +75,11 @@ struct Dinic {
         return flow - left;
     }
 
-    i64 flow(int s, int t) {
+    ll flow(int s, int t) {
         if (s == t) return 0;
-        i64 ans = 0;
+        ll ans = 0;
         while (bfs(s, t)) {
-            std::fill(cur.begin(), cur.end(), 0);
+            fill(cur.begin(), cur.end(), 0);
             ans += dfs(s, t, LLONG_MAX);
         }
         return ans;
@@ -84,6 +88,6 @@ struct Dinic {
 
 /*
 Dinic dinic; dinic.init(3); dinic.add_edge(1, 2, 4); dinic.add_edge(2, 3, 3);
-i64 ans = dinic.flow(1, 3);
-dinic.add_edge(2, 3, 2); i64 extra = dinic.flow(1, 3);
+ll ans = dinic.flow(1, 3);
+dinic.add_edge(2, 3, 2); ll extra = dinic.flow(1, 3);
 */

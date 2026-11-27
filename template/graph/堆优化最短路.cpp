@@ -1,16 +1,20 @@
-// 非负边权单源最短路，O((n + m) log(n + m))。不可达记 inf，有限距离 < inf，松弛和须放入 i64。
+// 非负边权单源最短路，O((n + m) log(n + m))。不可达记 inf，有限距离 < inf，松弛和须放入 ll。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-using Graph = std::vector<std::vector<std::pair<int, i64>>>;
+typedef long long ll;
 
-std::vector<i64> dijkstra(const Graph &g, int s, i64 inf = (1ll << 62)) {
+using namespace std;
+
+using Graph = V < V < pair < int, ll > > >;
+
+V < ll > dijkstra(const Graph &g, int s, ll inf = (1ll << 62)) {
     int n = int(g.size()) - 1;
-    std::vector<i64> dis(n + 1, inf);
-    std::priority_queue<std::pair<i64, int>, std::vector<std::pair<i64, int>>,
-                        std::greater<std::pair<i64, int>>>
+    V < ll > dis(n + 1, inf);
+    priority_queue < pair < ll, int >, V < pair < ll, int > >,
+                        greater < pair < ll, int > > >
         q;
     dis[s] = 0;
     q.push({0, s});
@@ -30,5 +34,5 @@ std::vector<i64> dijkstra(const Graph &g, int s, i64 inf = (1ll << 62)) {
 /*
 Graph g(n + 1);
 g[u].push_back({v, w});
-std::vector<i64> dis = dijkstra(g, s);
+V < ll > dis = dijkstra(g, s);
 */

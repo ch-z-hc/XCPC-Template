@@ -50,7 +50,7 @@ HTML 为每个文件保留稳定锚点；`/` 或 `Ctrl/Cmd + K` 聚焦搜索。�
 
 复制依赖、精度和溢出限制写在顶部。参数、返回值和重置方式随底部调用示例说明。函数旁只保留不直观的局部原因。中文与英文、数字之间留空格，路径、标识符和代码表达式内部保持原样。计算几何保留原有注释文字，多行注释也用 `/* ... */`。
 
-算法片段参考 C.L. 的标准库写法和对应算法的组织方式，使用 `std::vector<int>`、`using i64 = long long;` 和 `i ++`。比赛主程序、Linux 编译与运行、对拍，以及几何的 6.1–6.4、6.7 沿用个人版本。其余二维几何片段继续复用 `P`、`db`、`EPS`。[参考库源码](https://github.com/Calculatelove/cp-library-v4-LaTeX/tree/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents)
+算法实现参考 C.L. 的组织方式。片段沿用比赛主程序的 `using namespace std;`、`ll`、`ull`、`V < T >`、`fi`、`se` 和 `pii`，循环可写 `i ++`。比赛主程序、Linux 编译与运行、对拍，以及几何的 6.1–6.4、6.7 沿用个人版本。其余二维几何片段继续复用 `P`、`db`、`EPS`。[参考库源码](https://github.com/Calculatelove/cp-library-v4-LaTeX/tree/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents)
 
 常量写 `const`，不写 `constexpr`；少量结构体共用常量使用 `static const`，片段末尾的配套定义也要复制。普通查询函数不加尾部 `const`，不再支持通过 `const` 对象调用；原版几何保留原写法。大数组、字符串等输入仍用 `const &`，避免整份复制并支持临时参数；局部引用直接用 `auto &`。
 
@@ -235,7 +235,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/graph/二分图匹配.cpp` | `Kuhn::add_edge`、`solve` |
 | `template/graph/桥.cpp` | `Bridge::add_edge`、`find` |
 | `template/graph/割点.cpp` | `CutVertex::add_edge`、`find` |
-| `template/graph/差分约束.cpp` | `Diff::add`、`solve`；全 0 初始化，负环返回 false；使用 i64，松弛中间量不得溢出 |
+| `template/graph/差分约束.cpp` | `Diff::add`、`solve`；全 0 初始化，负环返回 false；使用 ll，松弛中间量不得溢出 |
 | `template/graph/堆优化最短路.cpp` | `dijkstra` |
 | `template/graph/树上启发式合并.cpp` | `DSUOnTree::add_edge`、`build(root)`；按题意补全 `add`、`del`、`query` |
 | `template/graph/有向图欧拉路.cpp` | `euler_d` |
@@ -288,7 +288,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/graph/上下界网络流.cpp` | `LRFlow::add_edge`、`solve`；无参为可行循环流，`solve(s, t, mode)` 求可行 / 最大 / 最小流，`f` 保存各边流量 |
 | `template/graph/二分图最大权匹配.cpp` | `KM::add_edge`、`solve`；最大权左侧完全匹配，`ml` / `mr` 为匹配 |
 | `template/graph/分层增广二分图匹配.cpp` | `HK::add_edge`、`solve`、`cover`；`cover` 在最大匹配后返回最小点覆盖 |
-| `template/math/扩展欧几里得与中国剩余定理.cpp` | `exgcd`、`inv`（无逆元返回 `-1`）、`crt(r, m, ans, mod)`（无解或 lcm 超出 i64 返回 `false`） |
+| `template/math/扩展欧几里得与中国剩余定理.cpp` | `exgcd`、`inv`（无逆元返回 `-1`）、`crt(r, m, ans, mod)`（无解或 lcm 超出 ll 返回 `false`） |
 | `template/math/离散对数.cpp` | `bsgs`、`exbsgs`，返回最小非负指数或 `-1` |
 | `template/math/卢卡斯定理.cpp` | `Lucas::init`、`choose` |
 | `template/math/素性测试与整数分解.cpp` | `is_prime`、`factor`，支持 64 位无符号整数 |
@@ -318,9 +318,9 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/graph/全局最小割.cpp` | `MinCut::init`、`add_edge`、`solve`，返回割权与一侧顶点 |
 | `template/graph/最小树形图.cpp` | `DMST::init`、`add_edge`、`solve(root, ans)`；写入最小权，不可达返回 `false` |
 | `template/graph/一般图匹配.cpp` | `Blossom::init`、`add_edge`、`solve`，`match` 保存匹配 |
-| `template/math/类欧几里得.cpp` | `floor_sum`，返回 `i64`，支持有符号参数，所有中间量须放入 `i64` |
+| `template/math/类欧几里得.cpp` | `floor_sum`，返回 `ll`，支持有符号参数，所有中间量须放入 `ll` |
 | `template/math/二次剩余.cpp` | `sqrt_mod`；质数模数，不存在平方根返回 `-1` |
-| `template/math/杜教筛.cpp` | `DuJiao::init`、`phi`、`mu`；前缀和返回 `i64`，`n <= 4e9` |
+| `template/math/杜教筛.cpp` | `DuJiao::init`、`phi`、`mu`；前缀和返回 `ll`，`n <= 4e9` |
 | `template/math/扩展卢卡斯定理.cpp` | `ExLucas::init`、`choose`，任意正 `int` 模数，预处理规模受质数幂大小限制 |
 | `template/math/行列式与矩阵树定理.cpp` | `det`、`matrix_tree`，质数模数；有向版本为从根向外的树 |
 | `template/others/带修改莫队.cpp` | `MoModify::init`、`modify`、`query`、`solve()`；补全 `add`、`del`、`answer`，按值增删 |
@@ -340,7 +340,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 - `template/graph/树上启发式合并.cpp` 的 `add` 与 `del` 必须互为逆操作；`query(u)` 记录子树答案，`build(root)` 结束后统计状态恢复为空。
 - 三种莫队每次 `solve` 前须清空题目统计状态；带修改莫队按值增删，普通莫队按下标增删，树上莫队按顶点增删。
 - `template/others/树哈希.cpp` 是随机化哈希，不能当作严格同构判定。
-- 李超树的整数参数使用有理数精确比较，交叉乘积等全部中间量须放入 `i64`；所有横坐标在 `[0, 40000]` 且 `|k|`、`|b|`、`|y| <= 10^9` 是充分范围。浮点参数仍为浮点比较，不要混用后仍要求精确判等。
-- 李超树按整个密集区间分配约 `4 * (R - L + 1)` 个 `int`，不是动态开点或坐标压缩；坐标范围必须能存下。`query` 是浮点近似值；整数 DP 只用 `add_line`，并在 `query_int(x, ans)` 返回 `true` 后读取 `i64` 答案。
+- 李超树的整数参数使用有理数精确比较，交叉乘积等全部中间量须放入 `ll`；所有横坐标在 `[0, 40000]` 且 `|k|`、`|b|`、`|y| <= 10^9` 是充分范围。浮点参数仍为浮点比较，不要混用后仍要求精确判等。
+- 李超树按整个密集区间分配约 `4 * (R - L + 1)` 个 `int`，不是动态开点或坐标压缩；坐标范围必须能存下。`query` 是浮点近似值；整数 DP 只用 `add_line`，并在 `query_int(x, ans)` 返回 `true` 后读取 `ll` 答案。
 - 莫队和树上启发式合并在文件尾给出不同值 / 颜色数的成员示例和调用示例；先用示例成员替换声明，再按题意修改状态、增删和答案。样例中的值域必须先离散化；带修改莫队还要包含所有将来修改的值。
 - `CHT` 仅用于斜率不增、查询横坐标不减的最小值问题；不满足单调性时使用李超树等结构。

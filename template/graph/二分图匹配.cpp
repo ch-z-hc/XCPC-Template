@@ -6,10 +6,14 @@ ml、mr 按原左、右两侧记录搭档，未匹配为 0。
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct Kuhn {
     int n = 0, m = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> ml, mr;
+    V < V < int > > g;
+    V < int > ml, mr;
 
     Kuhn(int n_ = 0, int m_ = 0) { init(n_, m_); }
 
@@ -23,7 +27,7 @@ struct Kuhn {
 
     void add_edge(int u, int v) { g[u].push_back(v); }
 
-    bool dfs(int u, std::vector<int> &vis, int tim = 1) {
+    bool dfs(int u, V < int > &vis, int tim = 1) {
         for (int v : g[u])
             if (vis[v] != tim) {
                 vis[v] = tim;
@@ -46,10 +50,10 @@ struct Kuhn {
             mr.swap(rev.ml);
             return ans;
         }
-        std::fill(ml.begin(), ml.end(), 0);
-        std::fill(mr.begin(), mr.end(), 0);
+        fill(ml.begin(), ml.end(), 0);
+        fill(mr.begin(), mr.end(), 0);
         int ans = 0;
-        std::vector<int> vis(m + 1, 0);
+        V < int > vis(m + 1, 0);
         for (int u = 1; u <= n; u ++) ans += dfs(u, vis, u);
         return ans;
     }

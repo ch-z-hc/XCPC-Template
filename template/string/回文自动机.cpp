@@ -6,21 +6,25 @@ insert 返回加入字符后最长回文后缀的节点，count 按节点返回�
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct PAM {
     struct Node {
-        std::array<int, 26> ch{};
+        array < int, 26 > ch{};
         int len = 0, fail = 0;
-        i64 cnt = 0;
+        ll cnt = 0;
     };
 
-    std::vector<Node> tr;
-    std::string s;
+    V < Node > tr;
+    string s;
     int last = 0;
 
     PAM() { init(); }
-    PAM(const std::string &s) { build(s); }
+    PAM(const string &s) { build(s); }
 
     void init() {
         tr.assign(2, {});
@@ -51,15 +55,15 @@ struct PAM {
         return last;
     }
 
-    void build(const std::string &str) {
+    void build(const string &str) {
         init();
         for (char c : str) insert(c);
     }
 
     int distinct() { return int(tr.size()) - 2; }
 
-    std::vector<i64> count() {
-        std::vector<i64> ans(tr.size());
+    V < ll > count() {
+        V < ll > ans(tr.size());
         for (int i = 2; i < int(tr.size()); i ++) ans[i] = tr[i].cnt;
         for (int i = int(tr.size()) - 1; i >= 2; i --) ans[tr[i].fail] += ans[i];
         ans[0] = ans[1] = 0;

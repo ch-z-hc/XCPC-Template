@@ -6,14 +6,18 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct MoTree {
     struct Query {
         int l, r, extra, id;
     };
     int n, lg, timer;
-    std::vector<std::vector<int>> g, up;
-    std::vector<int> in, out, ord, dep;
-    std::vector<Query> qs;
+    V < V < int > > g, up;
+    V < int > in, out, ord, dep;
+    V < Query > qs;
 
     void add(int u);
     void del(int u);
@@ -43,7 +47,7 @@ struct MoTree {
     void build(int root = 1) {
         lg = 1;
         while ((1ll << lg) <= n) lg ++;
-        up.assign(lg, std::vector<int>(n + 1));
+        up.assign(lg, V < int >(n + 1));
         in.assign(n + 1, 0);
         out = dep = in;
         ord.assign(2 * n + 1, 0);
@@ -52,7 +56,7 @@ struct MoTree {
         if (n) dfs(root, 0);
     }
     int lca(int u, int v) {
-        if (dep[u] < dep[v]) std::swap(u, v);
+        if (dep[u] < dep[v]) swap(u, v);
         int d = dep[u] - dep[v];
         for (int j = 0; j < lg; j ++)
             if (d >> j & 1) u = up[j][u];
@@ -62,7 +66,7 @@ struct MoTree {
         return up[0][u];
     }
     int query(int u, int v) {
-        if (in[u] > in[v]) std::swap(u, v);
+        if (in[u] > in[v]) swap(u, v);
         int z = lca(u, v), id = int(qs.size());
         if (z == u)
             qs.push_back({in[u], in[v], 0, id});
@@ -72,12 +76,12 @@ struct MoTree {
     }
     void solve() {
         auto queries = qs;
-        int B = std::max(1, int(2 * n / std::max(1.0, std::sqrt(double(qs.size())))));
-        std::sort(queries.begin(), queries.end(), [&](Query a, Query b) {
+        int B = max(1, int(2 * n / max(1.0, sqrt(double(qs.size())))));
+        sort(queries.begin(), queries.end(), [&](Query a, Query b) {
             if (a.l / B != b.l / B) return a.l / B < b.l / B;
             return (a.l / B & 1) ? a.r > b.r : a.r < b.r;
         });
-        std::vector<int> vis(n + 1);
+        V < int > vis(n + 1);
         auto toggle = [&](int u) {
             if (vis[u])
                 del(u);
@@ -99,7 +103,7 @@ struct MoTree {
 };
 
 /*
-std::vector<int> color, cnt, ans; int kinds = 0;
+V < int > color, cnt, ans; int kinds = 0;
 void add(int u) { if (cnt[color[u]] ++ == 0) ++ kinds; }
 void del(int u) { if (-- cnt[color[u]] == 0) -- kinds; }
 void answer(int id) { ans[id] = kinds; }

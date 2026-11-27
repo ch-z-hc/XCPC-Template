@@ -2,7 +2,9 @@
 
 #include <bits/stdc++.h>
 
-int min_rotation(const std::string &s) {
+using namespace std;
+
+int min_rotation(const string &s) {
     int n = int(s.size()), i = 0, j = 1, k = 0;
     while (i < n && j < n && k < n) {
         unsigned char a = s[(i + k) % n], b = s[(j + k) % n];
@@ -15,7 +17,7 @@ int min_rotation(const std::string &s) {
             k = 0;
         }
     }
-    return std::min(i, j);
+    return min(i, j);
 }
 
-// int p = min_rotation(s); std::string t = s.substr(p) + s.substr(0, p);
+// int p = min_rotation(s); string t = s.substr(p) + s.substr(0, p);

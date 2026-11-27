@@ -5,13 +5,17 @@ XOR 逆变换要求奇质数模。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
 
-static void fwt_check(const std::vector<i64> &a) {
+typedef long long ll;
+
+using namespace std;
+
+static void fwt_check(const V < ll > &a) {
     assert(!a.empty() && !(a.size() & (a.size() - 1)));
 }
-static i64 fwt_pow(i64 a, i64 b, i64 mod) {
-    i64 res = 1 % mod;
+static ll fwt_pow(ll a, ll b, ll mod) {
+    ll res = 1 % mod;
     for (; b; b >>= 1) {
         if (b & 1) res = 1ll * res * a % mod;
         a = 1ll * a * a % mod;
@@ -19,53 +23,53 @@ static i64 fwt_pow(i64 a, i64 b, i64 mod) {
     return res;
 }
 
-static void transform_or(std::vector<i64> &a, i64 mod, bool inv) {
+static void transform_or(V < ll > &a, ll mod, bool inv) {
     fwt_check(a);
     int n = int(a.size());
     for (int k = 1; k < n; k *= 2) {
         for (int l = 0; l < n; l += 2 * k) {
             for (int j = l; j < l + k; j ++) {
-                i64 &hi = a[j + k], lo = a[j];
+                ll &hi = a[j + k], lo = a[j];
                 hi = (inv ? hi - lo + mod : hi + lo) % mod;
             }
         }
     }
 }
-void fwt_or(std::vector<i64> &a, i64 mod) { transform_or(a, mod, false); }
-void ifwt_or(std::vector<i64> &a, i64 mod) { transform_or(a, mod, true); }
+void fwt_or(V < ll > &a, ll mod) { transform_or(a, mod, false); }
+void ifwt_or(V < ll > &a, ll mod) { transform_or(a, mod, true); }
 
-static void transform_and(std::vector<i64> &a, i64 mod, bool inv) {
+static void transform_and(V < ll > &a, ll mod, bool inv) {
     fwt_check(a);
     int n = int(a.size());
     for (int k = 1; k < n; k *= 2) {
         for (int l = 0; l < n; l += 2 * k) {
             for (int j = l; j < l + k; j ++) {
-                i64 &lo = a[j], hi = a[j + k];
+                ll &lo = a[j], hi = a[j + k];
                 lo = (inv ? lo - hi + mod : lo + hi) % mod;
             }
         }
     }
 }
-void fwt_and(std::vector<i64> &a, i64 mod) { transform_and(a, mod, false); }
-void ifwt_and(std::vector<i64> &a, i64 mod) { transform_and(a, mod, true); }
+void fwt_and(V < ll > &a, ll mod) { transform_and(a, mod, false); }
+void ifwt_and(V < ll > &a, ll mod) { transform_and(a, mod, true); }
 
-void fwt_xor(std::vector<i64> &a, i64 mod, bool inv = false) {
+void fwt_xor(V < ll > &a, ll mod, bool inv = false) {
     fwt_check(a);
     for (int len = 2; len <= int(a.size()); len <<= 1)
         for (int l = 0; l < int(a.size()); l += len)
             for (int i = 0; i < len / 2; i ++) {
-                i64 x = a[l + i], y = a[l + i + len / 2];
+                ll x = a[l + i], y = a[l + i + len / 2];
                 a[l + i] = (x + y) % mod;
                 a[l + i + len / 2] = (x - y + mod) % mod;
             }
     if (inv) {
-        i64 inv_n = fwt_pow(a.size(), mod - 2, mod);
-        for (i64 &x : a) x = x * inv_n % mod;
+        ll inv_n = fwt_pow(a.size(), mod - 2, mod);
+        for (ll &x : a) x = x * inv_n % mod;
     }
 }
 
 /*
-std::vector<i64> a{0, 1, 2, 3}; i64 mod = 17;
+V < ll > a{0, 1, 2, 3}; ll mod = 17;
 fwt_or(a, mod); ifwt_or(a, mod);
 fwt_and(a, mod); ifwt_and(a, mod);
 fwt_xor(a, mod); fwt_xor(a, mod, true);

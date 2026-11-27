@@ -5,15 +5,19 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct SA {
-    std::string s;
-    std::vector<int> sa, rk, height, lg;
-    std::vector<std::vector<int>> st;
+    string s;
+    V < int > sa, rk, height, lg;
+    V < V < int > > st;
 
     SA() = default;
-    SA(const std::string &s) { build(s); }
+    SA(const string &s) { build(s); }
 
-    void build(const std::string &str) {
+    void build(const string &str) {
         s = str;
         int n = int(s.size()), m = 256;
         sa.resize(n);
@@ -23,7 +27,7 @@ struct SA {
         st.clear();
         if (n == 0) return;
 
-        std::vector<int> old(n), y(n), x(n), cnt(std::max(n, m));
+        V < int > old(n), y(n), x(n), cnt(max(n, m));
         for (int i = 0; i < n; i ++) ++ cnt[rk[i] = (unsigned char)s[i]];
         for (int i = 1; i < m; i ++) cnt[i] += cnt[i - 1];
         for (int i = n - 1; i >= 0; i --) sa[-- cnt[rk[i]]] = i;
@@ -35,7 +39,7 @@ struct SA {
             for (int i = 0; i < n; i ++)
                 if (sa[i] >= k) y[p ++] = sa[i] - k;
 
-            std::fill(cnt.begin(), cnt.begin() + m, 0);
+            fill(cnt.begin(), cnt.begin() + m, 0);
             for (int i = 0; i < n; i ++) ++ cnt[x[i] = rk[y[i]]];
             for (int i = 1; i < m; i ++) cnt[i] += cnt[i - 1];
             for (int i = n - 1; i >= 0; i --) sa[-- cnt[x[i]]] = y[i];
@@ -64,20 +68,20 @@ struct SA {
             height[rk[i]] = len;
         }
 
-        st.assign(lg[n] + 1, std::vector<int>(n));
+        st.assign(lg[n] + 1, V < int >(n));
         st[0] = height;
         for (int j = 1; j <= lg[n]; j ++)
             for (int i = 0; i + (1 << j) <= n; i ++)
-                st[j][i] = std::min(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
+                st[j][i] = min(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
     }
 
     int lcp(int u, int v) {
         if (u == v) return int(s.size()) - u;
         int l = rk[u], r = rk[v];
-        if (l > r) std::swap(l, r);
+        if (l > r) swap(l, r);
         ++ l;
         int j = lg[r - l + 1];
-        return std::min(st[j][l], st[j][r - (1 << j) + 1]);
+        return min(st[j][l], st[j][r - (1 << j) + 1]);
     }
 };
 

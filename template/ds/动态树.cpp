@@ -1,22 +1,26 @@
 /*
-维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 i64，仅查询连通点对。
+维护森林的连边、断边、单点赋值和路径点权和。路径和须放入 ll，仅查询连通点对。
 初始化 O(n)，其余操作均摊 O(log n)。长链注意递归栈。
 link 在两点已连通时失败，cut 只能断开直接相连的边。
 */
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct LCT {
     struct Node {
         int ch[2]{}, fa = 0;
         bool rev = false;
-        i64 val = 0, sum = 0;
+        ll val = 0, sum = 0;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
 
-    void init(const std::vector<i64> &a) {
+    void init(const V < ll > &a) {
         tr.assign(a.size(), {});
         for (int i = 1; i < int(a.size()); i ++) tr[i].val = tr[i].sum = a[i];
     }
@@ -27,7 +31,7 @@ struct LCT {
     void pull(int x) { tr[x].sum = tr[tr[x].ch[0]].sum + tr[x].val + tr[tr[x].ch[1]].sum; }
     void reverse(int x) {
         if (!x) return;
-        std::swap(tr[x].ch[0], tr[x].ch[1]);
+        swap(tr[x].ch[0], tr[x].ch[1]);
         tr[x].rev ^= 1;
     }
     void push(int x) {
@@ -100,12 +104,12 @@ struct LCT {
         pull(v);
         return true;
     }
-    void modify(int u, i64 val) {
+    void modify(int u, ll val) {
         access(u);
         tr[u].val = val;
         pull(u);
     }
-    i64 query(int u, int v) {
+    ll query(int u, int v) {
         make_root(u);
         access(v);
         return tr[v].sum;

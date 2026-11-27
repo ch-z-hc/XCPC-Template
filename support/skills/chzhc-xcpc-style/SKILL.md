@@ -9,7 +9,7 @@ description: 按 chzhc 的个人码风编写、重写或检查 C++17 算法竞�
 
 ## 本仓库算法片段
 
-`template/` 下的算法片段遵循项目 `AGENTS.md` 的 Calculatelove 参考风格。容器和算法显式写 `std::`，64 位整数用 `i64`，循环写 `i ++`。下文的个人基础写法用于比赛起手式、保留的几何篇目及个人解题代码。
+`template/` 下的算法片段遵循项目 `AGENTS.md` 的 Calculatelove 参考风格。算法的组织方式可以参考 C.L.，循环可写 `i ++`。片段沿用比赛起手式的 `using namespace std;`、`ll`、`ull`、`V < T >`、`fi`、`se` 和 `pii`，按需声明。
 
 ## 基础写法
 

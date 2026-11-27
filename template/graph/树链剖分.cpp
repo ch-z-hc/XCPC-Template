@@ -6,10 +6,14 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct HLD {
     int n = 0, tim = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> fa, dep, siz, son, top, in, out, rev;
+    V < V < int > > g;
+    V < int > fa, dep, siz, son, top, in, out, rev;
 
     HLD(int n = 0) { init(n); }
     void init(int n_) {
@@ -63,19 +67,19 @@ struct HLD {
 
     int lca(int u, int v) {
         while (top[u] != top[v]) {
-            if (dep[top[u]] < dep[top[v]]) std::swap(u, v);
+            if (dep[top[u]] < dep[top[v]]) swap(u, v);
             u = fa[top[u]];
         }
         return dep[u] < dep[v] ? u : v;
     }
 
-    template <class F> void path(int u, int v, F f) {
+    template < class F > void path(int u, int v, F f) {
         while (top[u] != top[v]) {
-            if (dep[top[u]] < dep[top[v]]) std::swap(u, v);
+            if (dep[top[u]] < dep[top[v]]) swap(u, v);
             f(in[top[u]], in[u]);
             u = fa[top[u]];
         }
-        if (dep[u] > dep[v]) std::swap(u, v);
+        if (dep[u] > dep[v]) swap(u, v);
         f(in[u], in[v]);
     }
 };
@@ -84,8 +88,8 @@ struct HLD {
 HLD hld; hld.init(n);
 for (auto [u, v] : edges) hld.add_edge(u, v);
 hld.build(root); int p = hld.lca(u, v);
-std::vector<i64> b(n + 1);
+V < ll > b(n + 1);
 for (int u = 1; u <= n; u ++) b[hld.in[u]] = a[u];
-SegTree seg; seg.init(b); i64 ans = 0;
+SegTree seg; seg.init(b); ll ans = 0;
 hld.path(u, v, [&](int l, int r) { ans += seg.query(l, r); });
 */

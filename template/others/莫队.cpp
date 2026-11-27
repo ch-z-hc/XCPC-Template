@@ -7,6 +7,10 @@ qs 每项为 {l, r, 答案下标}。
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct Mo {
     struct Query {
         int l, r, id;
@@ -16,10 +20,10 @@ struct Mo {
     void del(int p);
     void answer(int id);
 
-    void solve(int n, std::vector<Query> qs) {
+    void solve(int n, V < Query > qs) {
         int B =
-            std::max(1, int(n / std::max(1.0, std::sqrt(double(std::max(1, int(qs.size())))))));
-        std::sort(qs.begin(), qs.end(), [&](const Query &a, const Query &b) {
+            max(1, int(n / max(1.0, sqrt(double(max(1, int(qs.size())))))));
+        sort(qs.begin(), qs.end(), [&](const Query &a, const Query &b) {
             int ba = a.l / B, bb = b.l / B;
             if (ba != bb) return ba < bb;
             return (ba & 1) ? a.r < b.r : a.r > b.r;
@@ -36,7 +40,7 @@ struct Mo {
 };
 
 /*
-std::vector<int> a, cnt, ans; int kinds = 0;
+V < int > a, cnt, ans; int kinds = 0;
 void add(int p) { if (cnt[a[p]] ++ == 0) ++ kinds; }
 void del(int p) { if (-- cnt[a[p]] == 0) -- kinds; }
 void answer(int id) { ans[id] = kinds; }

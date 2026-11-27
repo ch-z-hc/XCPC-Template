@@ -5,8 +5,12 @@
 
 #include <bits/stdc++.h>
 
-std::vector<int> get_pi(const std::string &t) {
-    std::vector<int> pi(t.size());
+#define V vector
+
+using namespace std;
+
+V < int > get_pi(const string &t) {
+    V < int > pi(t.size());
     for (int i = 1, j = 0; i < int(t.size()); i ++) {
         while (j > 0 && t[i] != t[j]) j = pi[j - 1];
         if (t[i] == t[j]) ++ j;
@@ -15,13 +19,13 @@ std::vector<int> get_pi(const std::string &t) {
     return pi;
 }
 
-std::vector<int> kmp(const std::string &s, const std::string &t) {
+V < int > kmp(const string &s, const string &t) {
     if (t.empty()) {
-        std::vector<int> ans(s.size() + 1);
-        std::iota(ans.begin(), ans.end(), 0);
+        V < int > ans(s.size() + 1);
+        iota(ans.begin(), ans.end(), 0);
         return ans;
     }
-    std::vector<int> pi = get_pi(t), ans;
+    V < int > pi = get_pi(t), ans;
     int j = 0;
     for (int i = 0; i < int(s.size()); i ++) {
         while (j > 0 && s[i] != t[j]) j = pi[j - 1];

@@ -5,16 +5,20 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Hash {
-    static const i64 mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
+    static const ll mod1 = 1000000007, mod2 = 1000000009, base = 911382323;
     int n = 0;
-    std::vector<i64> h1, h2, p1, p2;
+    V < ll > h1, h2, p1, p2;
 
-    Hash(const std::string &s = "") { build(s); }
+    Hash(const string &s = "") { build(s); }
 
-    void build(const std::string &s) {
+    void build(const string &s) {
         n = int(s.size());
         h1.assign(n + 1, 0);
         h2.assign(n + 1, 0);
@@ -29,15 +33,15 @@ struct Hash {
         }
     }
 
-    std::pair<i64, i64> query(int l, int r) {
+    pair < ll, ll > query(int l, int r) {
         if (l > r) return {0, 0};
-        i64 x = (h1[r + 1] - h1[l] * p1[r - l + 1]) % mod1;
-        i64 y = (h2[r + 1] - h2[l] * p2[r - l + 1]) % mod2;
+        ll x = (h1[r + 1] - h1[l] * p1[r - l + 1]) % mod1;
+        ll y = (h2[r + 1] - h2[l] * p2[r - l + 1]) % mod2;
         return {(x + mod1) % mod1, (y + mod2) % mod2};
     }
 
     int lcp(int u, int v) {
-        int l = 0, r = n - std::max(u, v);
+        int l = 0, r = n - max(u, v);
         while (l < r) {
             int mid = (l + r + 1) >> 1;
             if (query(u, u + mid - 1) == query(v, v + mid - 1))
@@ -48,7 +52,7 @@ struct Hash {
         return l;
     }
 };
-const i64 Hash::mod1, Hash::mod2, Hash::base;
+const ll Hash::mod1, Hash::mod2, Hash::base;
 
 /*
 Hash h; h.build("ababa");

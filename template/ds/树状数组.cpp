@@ -2,27 +2,31 @@
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct Fenwick {
     int n = 0;
-    std::vector<i64> tr;
+    V < ll > tr;
 
     Fenwick(int n = 0) { init(n); }
-    Fenwick(const std::vector<i64> &a) { init(a); }
+    Fenwick(const V < ll > &a) { init(a); }
 
     void init(int n_) {
         n = n_;
         tr.assign(n + 1, 0);
     }
 
-    void init(const std::vector<i64> &a) {
+    void init(const V < ll > &a) {
         if (&a == &tr) {
-            std::vector<i64> b = a;
+            V < ll > b = a;
             init(b);
             return;
         }
-        init(std::max(0, int(a.size()) - 1));
+        init(max(0, int(a.size()) - 1));
         for (int i = 1; i <= n; i ++) {
             tr[i] += a[i];
             int p = i + (i & -i);
@@ -30,21 +34,21 @@ struct Fenwick {
         }
     }
 
-    void add(int x, i64 v) {
+    void add(int x, ll v) {
         for (; x <= n; x += x & -x) tr[x] += v;
     }
 
-    i64 query(int x) {
-        i64 ans = 0;
+    ll query(int x) {
+        ll ans = 0;
         for (; x; x -= x & -x) ans += tr[x];
         return ans;
     }
 
-    i64 query(int l, int r) { return l <= r ? query(r) - query(l - 1) : 0; }
+    ll query(int l, int r) { return l <= r ? query(r) - query(l - 1) : 0; }
 };
 
 /*
 Fenwick bit; bit.init({0, 2, 5}); bit.add(1, 3);
-i64 pre = bit.query(1), sum = bit.query(1, 2);
+ll pre = bit.query(1), sum = bit.query(1, 2);
 bit.init(2);
 */

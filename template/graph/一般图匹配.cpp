@@ -5,16 +5,20 @@
 
 #include <bits/stdc++.h>
 
+#define V vector
+
+using namespace std;
+
 struct Blossom {
     int n = 0;
-    std::vector<std::vector<char>> g;
-    std::vector<int> match, fa, base, vis, used, flower;
+    V < V < char > > g;
+    V < int > match, fa, base, vis, used, flower;
 
     Blossom(int n = 0) { init(n); }
 
     void init(int n_) {
         n = n_;
-        g.assign(n + 1, std::vector<char>(n + 1));
+        g.assign(n + 1, V < char >(n + 1));
         match.assign(n + 1, 0);
         fa.resize(n + 1);
         base.resize(n + 1);
@@ -28,7 +32,7 @@ struct Blossom {
     }
 
     int lca(int u, int v) {
-        std::fill(vis.begin(), vis.end(), 0);
+        fill(vis.begin(), vis.end(), 0);
         while (1) {
             u = base[u];
             vis[u] = 1;
@@ -49,10 +53,10 @@ struct Blossom {
     }
 
     bool bfs(int root) {
-        std::fill(fa.begin(), fa.end(), 0);
-        std::fill(used.begin(), used.end(), 0);
-        std::iota(base.begin(), base.end(), 0);
-        std::queue<int> q;
+        fill(fa.begin(), fa.end(), 0);
+        fill(used.begin(), used.end(), 0);
+        iota(base.begin(), base.end(), 0);
+        queue < int > q;
         q.push(root);
         used[root] = 1;
         while (!q.empty()) {
@@ -62,7 +66,7 @@ struct Blossom {
                 if (!g[u][v] || base[u] == base[v] || match[u] == v) continue;
                 if (v == root || (match[v] && fa[match[v]])) {
                     int b = lca(u, v);
-                    std::fill(flower.begin(), flower.end(), 0);
+                    fill(flower.begin(), flower.end(), 0);
                     mark(u, b, v);
                     mark(v, b, u);
                     for (int i = 1; i <= n; i ++)
@@ -91,7 +95,7 @@ struct Blossom {
     }
 
     int solve() {
-        std::fill(match.begin(), match.end(), 0);
+        fill(match.begin(), match.end(), 0);
         int ans = 0;
         for (int i = 1; i <= n; i ++)
             if (!match[i]) ans += bfs(i);

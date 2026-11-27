@@ -8,6 +8,11 @@ build 默认距离容差为 1e-9，第三个参数启用整数精确判向，第
 
 #include <bits/stdc++.h>
 
+#define V vector
+#define pii pair < int, int >
+
+using namespace std;
+
 #define db long double
 
 struct P3 {
@@ -28,13 +33,13 @@ struct Hull3D {
         int a, b, c;
     };
     struct Tri {
-        std::array<int, 3> v, e;
-        std::vector<int> pts;
+        array < int, 3 > v, e;
+        V < int > pts;
         bool dead = 0;
     };
-    std::vector<P3> p;
-    std::vector<std::array<long long, 3>> ip;
-    std::vector<Face> faces;
+    V < P3 > p;
+    V < array < long long, 3 > > ip;
+    V < Face > faces;
     P3 inside;
     int dim = -1;
     db eps = 1e-9;
@@ -42,8 +47,8 @@ struct Hull3D {
 
     P3 normal(Face f) const { return (p[f.b] - p[f.a]).det(p[f.c] - p[f.a]); }
 
-    std::array<Int, 3> normal_int(int a, int b, int c) const {
-        std::array<long long, 3> u, v;
+    array < Int, 3 > normal_int(int a, int b, int c) const {
+        array < long long, 3 > u, v;
         for (int k = 0; k < 3; k ++) {
             u[k] = ip[b][k] - ip[a][k];
             v[k] = ip[c][k] - ip[a][k];
@@ -53,9 +58,9 @@ struct Hull3D {
     }
 
     struct Plane {
-        std::array<Int, 3> w{};
+        array < Int, 3 > w{};
         P3 v;
-        std::array<double, 3> approx{};
+        array < double, 3 > approx{};
         int a;
         db eps;
     };
@@ -71,7 +76,7 @@ struct Hull3D {
     }
     int side(const Plane &f, int d) const {
         if (integer) {
-            std::array<long long, 3> delta;
+            array < long long, 3 > delta;
             double val = 0, error = 0;
             for (int k = 0; k < 3; k ++) {
                 delta[k] = ip[d][k] - ip[f.a][k];
@@ -79,7 +84,7 @@ struct Hull3D {
                 val += t;
                 error += fabs(t);
             }
-            error *= 64 * std::numeric_limits<double>::epsilon();
+            error *= 64 * numeric_limits < double >::epsilon();
             if (val > error) return 1;
             if (val < -error) return -1;
             Int v = 0;
@@ -99,11 +104,11 @@ struct Hull3D {
         return normal({a, b, c}).abs() <= eps * (p[b] - p[a]).abs();
     }
 
-    void slow(std::vector<int> &id) {
+    void slow(V < int > &id) {
         fallback = 1;
         faces.clear();
         auto add = [&](int a, int b, int c, int d) {
-            if (side(a, b, c, d) > 0) std::swap(b, c);
+            if (side(a, b, c, d) > 0) swap(b, c);
             faces.push_back({a, b, c});
         };
         add(id[0], id[1], id[2], id[3]);
@@ -112,14 +117,14 @@ struct Hull3D {
         add(id[1], id[2], id[3], id[0]);
         for (int t = 4; t < (int)id.size(); t ++) {
             int i = id[t];
-            std::set<std::pair<int, int>> edge;
-            std::vector<Face> keep;
+            set < pii > edge;
+            V < Face > keep;
             for (Face f : faces) {
                 if (side(f.a, f.b, f.c, i) <= 0) {
                     keep.push_back(f);
                     continue;
                 }
-                for (auto [a, b] : {std::pair{f.a, f.b}, std::pair{f.b, f.c}, std::pair{f.c, f.a}}) {
+                for (auto [a, b] : {pair{f.a, f.b}, pair{f.b, f.c}, pair{f.c, f.a}}) {
                     auto it = edge.find({b, a});
                     if (it == edge.end())
                         edge.insert({a, b});
@@ -133,7 +138,7 @@ struct Hull3D {
         }
     }
 
-    void build(const std::vector<P3> &ps, db tolerance = 1e-9, bool exact = 0,
+    void build(const V < P3 > &ps, db tolerance = 1e-9, bool exact = 0,
                unsigned seed = 712367821) {
         p = ps;
         faces.clear();
@@ -149,11 +154,11 @@ struct Hull3D {
                 for (int k = 0; k < 3; k ++) ip[i][k] = (long long)p[i].at(k);
         }
         if (!n) return;
-        std::vector<int> id(n);
-        std::iota(id.begin(), id.end(), 0);
+        V < int > id(n);
+        iota(id.begin(), id.end(), 0);
         if (n > 4) {
-            std::mt19937 rng(seed);
-            std::shuffle(id.begin(), id.end(), rng);
+            mt19937 rng(seed);
+            shuffle(id.begin(), id.end(), rng);
         }
         dim = 0;
         int b = 1;
@@ -162,22 +167,22 @@ struct Hull3D {
                                  : (p[id[b]] - p[id[0]]).abs() <= eps))
             ++ b;
         if (b == n) return;
-        std::swap(id[1], id[b]);
+        swap(id[1], id[b]);
         dim = 1;
         int c = 2;
         while (c < n && line(id[0], id[1], id[c])) ++ c;
         if (c == n) return;
-        std::swap(id[2], id[c]);
+        swap(id[2], id[c]);
         dim = 2;
         int d = 3;
         while (d < n && !side(id[0], id[1], id[2], id[d])) ++ d;
         if (d == n) return;
-        std::swap(id[3], id[d]);
+        swap(id[3], id[d]);
         dim = 3;
         inside = (p[id[0]] + p[id[1]] + p[id[2]] + p[id[3]]) / 4;
-        std::vector<Tri> tr;
-        std::vector<int> at, spare, next(n, -1), cnt(n);
-        std::vector<std::vector<int>> conflict(n);
+        V < Tri > tr;
+        V < int > at, spare, next(n, -1), cnt(n);
+        V < V < int > > conflict(n);
         auto make = [&](int a, int b, int c) {
             int t;
             if (spare.empty()) {
@@ -195,7 +200,7 @@ struct Hull3D {
             return f;
         };
         auto add = [&](int a, int b, int c, int d) {
-            if (side(a, b, c, d) > 0) std::swap(b, c);
+            if (side(a, b, c, d) > 0) swap(b, c);
             make(a, b, c);
         };
         add(id[0], id[1], id[2], id[3]);
@@ -221,7 +226,7 @@ struct Hull3D {
             }
         }
         for (int i = 4; i < n; i ++) {
-            std::vector<int> dead, fresh;
+            V < int > dead, fresh;
             for (int f : conflict[i])
                 if (at[f] >= 0 && !tr[at[f]].dead) {
                     dead.push_back(f);
@@ -229,7 +234,7 @@ struct Hull3D {
                     for (int j : tr[at[f]].pts)
                         if (j > i) -- cnt[j];
                 }
-            std::vector<int>().swap(conflict[i]);
+            V < int >().swap(conflict[i]);
             for (int f : dead) {
                 int t = at[f];
                 auto v = tr[t].v, e = tr[t].e;
@@ -248,8 +253,8 @@ struct Hull3D {
                     tr[at[g]].e[s] = h * 3;
                     Plane eq = plane(a, b, id[i]);
                     auto &x = tr[t].pts, &y = tr[at[g]].pts;
-                    int l = std::upper_bound(x.begin(), x.end(), i) - x.begin();
-                    int r = std::upper_bound(y.begin(), y.end(), i) - y.begin();
+                    int l = upper_bound(x.begin(), x.end(), i) - x.begin();
+                    int r = upper_bound(y.begin(), y.end(), i) - y.begin();
                     while (l < (int)x.size() || r < (int)y.size()) {
                         int j;
                         if (r == (int)y.size() || (l < (int)x.size() && x[l] < y[r]))
@@ -282,7 +287,7 @@ struct Hull3D {
             for (int f : dead) {
                 int t = at[f];
                 at[f] = -1;
-                std::vector<int>().swap(tr[t].pts);
+                V < int >().swap(tr[t].pts);
                 spare.push_back(t);
             }
         }
@@ -303,7 +308,7 @@ struct Hull3D {
 };
 
 /*
-std::vector<P3> ps{{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+V < P3 > ps{{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 Hull3D hull; hull.build(ps);
 hull.build(ps, 0, true, 42);
 db surface = hull.area(), volume = hull.volume();

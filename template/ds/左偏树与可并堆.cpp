@@ -6,14 +6,18 @@ merge 和 pop 均返回新根。
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct LeftistHeap {
     struct Node {
-        i64 val = 0;
+        ll val = 0;
         int l = 0, r = 0, dis = 0;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
 
     LeftistHeap() { init(); }
     void init() {
@@ -21,18 +25,18 @@ struct LeftistHeap {
         tr[0].dis = -1;
     }
 
-    int push(i64 val) {
+    int push(ll val) {
         tr.push_back({val, 0, 0, 0});
         return int(tr.size()) - 1;
     }
 
-    i64 top(int root) { return tr[root].val; }
+    ll top(int root) { return tr[root].val; }
 
     int merge(int u, int v) {
         if (!u || !v) return u | v;
-        if (tr[u].val > tr[v].val || (tr[u].val == tr[v].val && u > v)) std::swap(u, v);
+        if (tr[u].val > tr[v].val || (tr[u].val == tr[v].val && u > v)) swap(u, v);
         tr[u].r = merge(tr[u].r, v);
-        if (tr[tr[u].l].dis < tr[tr[u].r].dis) std::swap(tr[u].l, tr[u].r);
+        if (tr[tr[u].l].dis < tr[tr[u].r].dis) swap(tr[u].l, tr[u].r);
         tr[u].dis = tr[tr[u].r].dis + 1;
         return u;
     }
@@ -46,7 +50,7 @@ struct LeftistHeap {
 
 /*
 LeftistHeap heap; int a = heap.push(7), b = heap.push(3);
-a = heap.merge(a, b); i64 x = heap.top(a);
+a = heap.merge(a, b); ll x = heap.top(a);
 a = heap.pop(a);
 heap.init();
 */

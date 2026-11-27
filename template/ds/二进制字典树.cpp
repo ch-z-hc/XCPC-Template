@@ -5,19 +5,23 @@ erase 每次只删一份，空集查询 max_xor 返回 false。
 
 #include <bits/stdc++.h>
 
-using u64 = unsigned long long;
+#define V vector
+
+typedef unsigned long long ull;
+
+using namespace std;
 
 struct XorTrie {
     struct Node {
-        std::array<int, 2> ch{};
+        array < int, 2 > ch{};
         int cnt = 0;
     };
-    std::vector<Node> tr;
+    V < Node > tr;
 
     XorTrie() { init(); }
     void init() { tr.assign(1, {}); }
 
-    void insert(u64 x) {
+    void insert(ull x) {
         int u = 0;
         tr[u].cnt ++;
         for (int i = 63; i >= 0; i --) {
@@ -31,9 +35,9 @@ struct XorTrie {
         }
     }
 
-    bool erase(u64 x) {
+    bool erase(ull x) {
         int u = 0;
-        std::array<int, 65> path{};
+        array < int, 65 > path{};
         if (!tr[u].cnt) return 0;
         for (int i = 63; i >= 0; i --) {
             u = tr[u].ch[int(x >> i & 1)];
@@ -44,7 +48,7 @@ struct XorTrie {
         return 1;
     }
 
-    bool max_xor(u64 x, u64 &ans) {
+    bool max_xor(ull x, ull &ans) {
         if (!tr[0].cnt) return false;
         int u = 0;
         ans = 0;
@@ -60,7 +64,7 @@ struct XorTrie {
 };
 
 /*
-XorTrie trie; trie.insert(5); u64 ans;
+XorTrie trie; trie.insert(5); ull ans;
 if (trie.max_xor(2, ans)) cout << ans;
 bool erased = trie.erase(5);
 trie.init();

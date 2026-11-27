@@ -6,20 +6,24 @@ modify(l, r, k, b) 将区间内每项 x 改为 kx + b，区间赋值 v 时传 0,
 
 #include <bits/stdc++.h>
 
-using i64 = long long;
+#define V vector
+
+typedef long long ll;
+
+using namespace std;
 
 struct AffineSeg {
     int n = 0;
-    i64 mod = 1;
-    std::vector<i64> sum, mul, add;
+    ll mod = 1;
+    V < ll > sum, mul, add;
 
-    i64 norm(i64 x) {
+    ll norm(ll x) {
         x %= mod;
         return x < 0 ? x + mod : x;
     }
     void pull(int p) { sum[p] = (sum[p * 2] + sum[p * 2 + 1]) % mod; }
 
-    void apply(int p, int l, int r, i64 a, i64 b) {
+    void apply(int p, int l, int r, ll a, ll b) {
         sum[p] = (sum[p] * a + (r - l + 1ll) * b) % mod;
         mul[p] = mul[p] * a % mod;
         add[p] = (add[p] * a + b) % mod;
@@ -33,7 +37,7 @@ struct AffineSeg {
         add[p] = 0;
     }
 
-    void build(int p, int l, int r, const std::vector<i64> &a) {
+    void build(int p, int l, int r, const V < ll > &a) {
         if (l == r) {
             sum[p] = norm(a[l]);
             return;
@@ -44,21 +48,21 @@ struct AffineSeg {
         pull(p);
     }
 
-    void init(const std::vector<i64> &a, i64 mod_) {
+    void init(const V < ll > &a, ll mod_) {
         if (&a == &sum || &a == &mul || &a == &add) {
-            std::vector<i64> b = a;
+            V < ll > b = a;
             init(b, mod_);
             return;
         }
         mod = mod_;
-        n = std::max(0, int(a.size()) - 1);
+        n = max(0, int(a.size()) - 1);
         sum.assign(n * 4 + 5, 0);
         add = sum;
         mul.assign(n * 4 + 5, 1 % mod);
         if (n) build(1, 1, n, a);
     }
 
-    void modify(int p, int l, int r, int x, int y, i64 a, i64 b) {
+    void modify(int p, int l, int r, int x, int y, ll a, ll b) {
         if (x <= l && r <= y) {
             apply(p, l, r, a, b);
             return;
@@ -70,25 +74,25 @@ struct AffineSeg {
         pull(p);
     }
 
-    void modify(int l, int r, i64 a, i64 b) {
+    void modify(int l, int r, ll a, ll b) {
         if (n && l <= r) modify(1, 1, n, l, r, norm(a), norm(b));
     }
 
-    i64 query(int p, int l, int r, int x, int y) {
+    ll query(int p, int l, int r, int x, int y) {
         if (x <= l && r <= y) return sum[p];
         push(p, l, r);
         int mid = (l + r) / 2;
-        i64 ans = 0;
+        ll ans = 0;
         if (x <= mid) ans += query(p * 2, l, mid, x, y);
         if (y > mid) ans += query(p * 2 + 1, mid + 1, r, x, y);
         return ans % mod;
     }
 
-    i64 query(int l, int r) { return n && l <= r ? query(1, 1, n, l, r) : 0; }
+    ll query(int l, int r) { return n && l <= r ? query(1, 1, n, l, r) : 0; }
 };
 
 /*
 AffineSeg st; st.init({0, 2, 3}, 17);
 st.modify(1, 2, 2, 1);
-i64 sum = st.query(1, 2);
+ll sum = st.query(1, 2);
 */
