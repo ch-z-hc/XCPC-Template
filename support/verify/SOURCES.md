@@ -1,18 +1,19 @@
 # 原题与验证题索引
 
-核对日期：2026-10-12。覆盖 `template/` 下全部 145 个 `.cpp` 文件。
+索引覆盖 `template/` 下全部 175 个 C++ 片段。2026-11-27 对照 Calculatelove 参考库补入 25 篇，功能参考链接固定到核对时的提交。
 
-这里的链接是原题题面或公开模板题，不表示代码抄自该题，也不把通用算法强行归到某一道“最初原题”。洛谷收录的历史比赛题保留题目来源；Library Checker 使用其官方题面与数据仓库。
+这里的链接包括原题题面、公开模板题和算法参考，不表示代码抄自该题，也不把通用算法强行归到某一道“最初原题”。洛谷收录的历史比赛题保留题目来源；Library Checker 使用其官方题面与数据仓库。
 
 “直接”仍需写输入输出、转换下标与区间；“应用”还需题目建模或统计逻辑；“部分”表示题目与模板只有部分能力相同，不能直接声称能通过整题。`常用定义.cpp` 是辅助定义，没有独立原题。
 
 验证链接不等于通过记录。本轮实际测试和限制见 [AUDIT.md](AUDIT.md)，每个文件对应的本地测试入口及源码哈希由 `check_sources.py` 记录。
 
-## 数据结构（19 个）
+## 数据结构
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
 | `template/ds/区间集合与最小未出现数.cpp` | [Nyaan Segment Set](https://nyaannyaan.github.io/library/data-structure/segment-set.hpp) | 算法参考；维护整数半开区间的并、删除和 mex，不是逐段赋值 ODT。 |
+| `template/ds/整体加一与集合异或和.cpp` | [01 trie 维护集合异或和](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%2001%20trie%20%E7%BB%B4%E6%8A%A4%E9%9B%86%E5%90%88%E5%BC%82%E6%88%96%E5%92%8C.cpp) | 本地验证见 `reference_string_random.cpp`。 |
 | `template/ds/仿射线段树.cpp` | [Range Affine Range Sum](https://judge.yosupo.jp/problem/range_affine_range_sum)、[P3373 线段树 2](https://www.luogu.com.cn/problem/P3373) | 直接；闭区间与半开区间需转换，模数显式传入。 |
 | `template/ds/可持久化二进制字典树.cpp` | [P4735 最大异或和](https://www.luogu.com.cn/problem/P4735) | 应用；保存前缀异或值的历史根，将询问转为两个前缀版本之差；不是任意两棵无关树的差。 |
 | `template/ds/二维最近邻.cpp` | [CGAL Spatial Searching](https://doc.cgal.org/latest/Spatial_searching/index.html) | 算法参考；静态二维最近邻与矩形计数，随机数据对照直接枚举，不声称在线通过。 |
@@ -33,7 +34,7 @@
 | `template/ds/带权与异或并查集.cpp` | [AOJ DSL_1_B Weighted Union Find Trees](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_B) | 对应差值版 `WDSU`，方向为 `value[v] - value[u]`；异或版另由随机约束对拍覆盖。不是模意义下的势能 DSU。 |
 | `template/ds/二进制字典树.cpp` | [P4551 最长异或路径](https://www.luogu.com.cn/problem/P4551) | 应用；先求根到各点的路径异或值，再插入、查询。模板返回最大异或值，不能直接套求最小值的 `set_xor_min`。 |
 
-## 图论（47 个）
+## 图论
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
@@ -85,11 +86,26 @@
 | `template/graph/虚树.cpp` | [P2495 虚树 / SDOI2011 消耗战](https://www.luogu.com.cn/problem/P2495) | 应用；模板只构造虚树及距离。题目需原树路径最小边权与虚树 DP，距离不能代替最小边权。 |
 | `template/graph/零一最短路.cpp` | [AtCoder ABC077 D Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b) | 应用；构造余数图，边权只能为 0 / 1，起点代价另算。 |
 
-## 数学（34 个）
+## 数学
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
 | `template/math/等距拉格朗日插值.cpp` | [Nyaan Equidistant Interpolation](https://nyaannyaan.github.io/library/fps/lagrange-interpolation-point.hpp) | 算法参考；连续整数采样，质数模数且采样数小于模数，与任意点插值分开。 |
+| `template/math/高精度整数与分数.cpp` | [高精度](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x11%20%E9%AB%98%E7%B2%BE%E5%BA%A6.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/宽整数模乘.cpp` | [快速乘（i128）](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x12%20%E5%BF%AB%E9%80%9F%E4%B9%98%EF%BC%88i128%EF%BC%89.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/固定底数快速幂.cpp` | [光速幂](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x12%20%E5%85%89%E9%80%9F%E5%B9%82.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/二进制最大公约数与位筛.cpp` | [埃氏筛](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x34%20%E5%9F%83%E6%B0%8F%E7%AD%9B.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/值域预处理最大公约数.cpp` | [gcd（基于值域预处理的快速 gcd）](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x34%20gcd%EF%BC%88%E5%9F%BA%E4%BA%8E%E5%80%BC%E5%9F%9F%E9%A2%84%E5%A4%84%E7%90%86%E7%9A%84%E5%BF%AB%E9%80%9F%20gcd%EF%BC%89.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/任意模数原根枚举.cpp` | [所有原根](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x34%20%E6%89%80%E6%9C%89%E5%8E%9F%E6%A0%B9.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/多维整除分块.cpp` | [数学 初等数论](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/0x34%20%E6%95%B0%E5%AD%A6%20%E5%88%9D%E7%AD%89%E6%95%B0%E8%AE%BA.tex) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/math/杨辉三角.cpp` | [数学 组合计数](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/0x33%20%E6%95%B0%E5%AD%A6%20%E7%BB%84%E5%90%88%E8%AE%A1%E6%95%B0.tex) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/多项式微积分与转置卷积.cpp` | [多项式全家桶](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x31%20%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%85%A8%E5%AE%B6%E6%A1%B6.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/多项式平移与等比求值.cpp` | [多项式全家桶](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x31%20%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%85%A8%E5%AE%B6%E6%A1%B6.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/多项式幂投影.cpp` | [Power Projection](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x31%20Power%20Projection.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/分块快速阶乘.cpp` | [快速阶乘算法](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x31%20%E5%BF%AB%E9%80%9F%E9%98%B6%E4%B9%98%E7%AE%97%E6%B3%95.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/拆系数浮点卷积.cpp` | [MTT（拆系数 FFT）](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x31%20MTT%EF%BC%88%E6%8B%86%E7%B3%BB%E6%95%B0%20FFT%EF%BC%89.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/半在线子集卷积.cpp` | [半在线子集卷积](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x32%20%E5%8D%8A%E5%9C%A8%E7%BA%BF%E5%AD%90%E9%9B%86%E5%8D%B7%E7%A7%AF.cpp) | 本地验证见 `reference_math_random.cpp`。 |
+| `template/math/有标号图计数.cpp` | [有标号强连通图计数](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x30%20%E6%95%B0%E5%AD%A6/code/0x33%20%E6%9C%89%E6%A0%87%E5%8F%B7%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%9B%BE%E8%AE%A1%E6%95%B0.cpp) | 本地验证见 `reference_math_random.cpp`。 |
 | `template/math/约数与倍数变换与卷积.cpp` | [GCD Convolution](https://judge.yosupo.jp/problem/gcd_convolution)、[LCM Convolution](https://judge.yosupo.jp/problem/lcm_convolution) | 直接；输入 index 0 为 0；LCM 大于数组上界的项不返回，另测合数模数。 |
 | `template/math/两类斯特林数.cpp` | [Stirling Number of the Second Kind](https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind)、[Nyaan Famous Series](https://nyaannyaan.github.io/library/fps/fps-famous-series.hpp) | 前者对应固定一行第二类卷积版；第一类为无符号版本，另用排列环数枚举验证。 |
 | `template/math/线性递推快速求项.cpp` | [K-th Term of Linearly Recurrent Sequence](https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence)、[Nyaan Bostan–Mori](https://nyaannyaan.github.io/library/fps/nth-term.hpp) | 前者直接；递推系数顺序遵循文件头，模数固定 998244353；有理生成函数接口另对拍。 |
@@ -124,11 +140,15 @@
 | `template/math/整除分块.cpp` | [Enumerate Quotients](https://judge.yosupo.jp/problem/enumerate_quotients) | 直接能力；每块取一次商，题目要求递增输出时需调整顺序。 |
 | `template/math/异或线性基.cpp` | [P3812 线性基](https://www.luogu.com.cn/problem/P3812) | 直接求最大子集异或；`kth` 单独随机枚举验证，0-based 且包含 0、只算不同异或值。 |
 
-## 字符串（14 个）
+## 字符串
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
 | `template/string/二维哈希.cpp` | [Nyaan 2D Rolling Hash](https://nyaannyaan.github.io/library/string/rolling-hash-2d.hpp) | 算法参考；矩阵哈希，比较时同时检查尺寸；随机测试没有碰撞不代表严格判等。 |
+| `template/string/大字符集多模式匹配.cpp` | [AC 自动机（大字符集）](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%20AC%20%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88%E5%A4%A7%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89.cpp) | 本地验证见 `reference_string_random.cpp`。 |
+| `template/string/广义后缀自动机.cpp` | [广义 SAM（在线）](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%20%E5%B9%BF%E4%B9%89%20SAM%EF%BC%88%E5%9C%A8%E7%BA%BF%EF%BC%89.cpp) | 本地验证见 `reference_string_random.cpp`。 |
+| `template/string/后缀自动机双向扩展.cpp` | [SAM 前端操作](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%20SAM%20%E5%89%8D%E7%AB%AF%E6%93%8D%E4%BD%9C.cpp) | 本地验证见 `reference_string_random.cpp`。 |
+| `template/string/回文半长后缀与最少分割.cpp` | [PAM series-link](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x20%20%E5%AD%97%E7%AC%A6%E4%B8%B2/code/0x22%20PAM%20series-link.cpp) | 本地验证见 `reference_string_random.cpp`。 |
 | `template/string/多模式匹配自动机.cpp` | [P5357 AC 自动机](https://www.luogu.com.cn/problem/P5357)、[P3808 AC 自动机（简单版）](https://www.luogu.com.cn/problem/P3808) | 直接返回每个模式串出现次数；P3808 统计次数非零的模式编号，重复模式串不能去重。仅小写字母。 |
 | `template/string/林登分解.cpp` | [Lyndon Factorization](https://judge.yosupo.jp/problem/lyndon_factorization) | 直接；返回 0 和 n 在内的分界点，因子按字典序不增。 |
 | `template/string/极大周期子串.cpp` | [Run Enumerate](https://judge.yosupo.jp/problem/runenumerate) | 直接；最小周期与 0-based 半开区间，结果按 period、l、r 排序；先复制 后缀数组.cpp。 |
@@ -143,11 +163,15 @@
 | `template/string/字典树.cpp` | [P2580 于是他错误的点名开始了](https://www.luogu.com.cn/problem/P2580) | 应用；字典树判断存在性，重复点名需另维护已访问标记。仅小写字母。 |
 | `template/string/扩展字符串匹配.cpp` | [Z Algorithm](https://judge.yosupo.jp/problem/zalgorithm)、[P5410 扩展 KMP](https://www.luogu.com.cn/problem/P5410) | 直接；P5410 还需按题目计算异或校验和。 |
 
-## 其他算法（18 个）
+## 其他算法
 
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
 | `template/others/最长上升子序列与方案.cpp` | [Longest Increasing Subsequence](https://judge.yosupo.jp/problem/longest_increasing_subsequence) | 直接；输入转为 1-based，返回原下标；非递减版另做随机 DP 对拍。 |
+| `template/others/公历日期换算.cpp` | [日期公式](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x11%20%E6%97%A5%E6%9C%9F%E5%85%AC%E5%BC%8F.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/others/整数取整与前缀异或.cpp` | [精确取对数](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x11%20%E7%B2%BE%E7%A1%AE%E5%8F%96%E5%AF%B9%E6%95%B0.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/others/随机抽样与有标号树.cpp` | [生成随机树](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x11%20%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%A0%91.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
+| `template/others/缓冲整数读写.cpp` | [超级快读](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x10%20%E5%9F%BA%E7%A1%80/code/0x11%20%E8%B6%85%E7%BA%A7%E5%BF%AB%E8%AF%BB.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
 | `template/others/博弈状态函数.cpp` | [Nyaan Grundy Number](https://nyaannyaan.github.io/library/math/grundy-number.hpp) | 算法参考；只适用有限无环正常规则公平游戏，组合状态另用直接胜负 DP 验证。 |
 | `template/others/笛卡尔树.cpp` | [Cartesian Tree](https://judge.yosupo.jp/problem/cartesian_tree) | 直接；相等元素的决策、根父亲的输出形式按题目转换。 |
 | `template/others/舞蹈链精确覆盖.cpp` | [P4929 Dancing Links](https://www.luogu.com.cn/problem/P4929) | 直接；精确覆盖第一解，输入行的列编号须合法且不重复；不是重复覆盖或带权最小覆盖。 |
@@ -174,6 +198,7 @@
 | 文件 | 原题 / 验证题 | 对应关系与注意事项 |
 | --- | --- | --- |
 | `template/geometry/嵌套凸多边形切线.cpp` | [QOJ 14714 三角形内部](https://qoj.ac/problem/14714) | 应用；严格嵌套凸多边形的两侧切点与合法弦区间，复用 `点与向量.cpp` 的基础定义。题目计数留在 `inside_triangle_submission.cpp`，官方样例与随机暴力对拍见 `nested_hull_random.cpp`；未声称在线 AC。 |
+| `template/geometry/整点凸壳与闵可夫斯基和.cpp` | [闵可夫斯基和](https://github.com/Calculatelove/cp-library-v4-LaTeX/blob/b71bfa3eed658bfcad33278badcf61fe3ab44ec3/contents/0x70%20%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/code/0x72%20%E9%97%B5%E5%8F%AF%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%92%8C.cpp) | 本地验证见 `reference_basic_random.cpp`。 |
 | `template/geometry/最小面积包围矩形.cpp` | [CGAL Minimum Rectangle](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html) | 算法参考；严格逆时针凸包，另测 0 / 1 / 2 点退化；枚举所有边方向作真值，不声称精确实数几何。 |
 | `template/geometry/圆.cpp` | [AOJ CGL_7_D 圆与直线交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_D)、[CGL_7_E 两圆交点](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_E)、[CGL_7_F 点到圆切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F)、[CGL_7_G 公切线](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G)、[CGL_7_I 两圆交面积](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_I) | 分别对应交点、切点、公切线与交面积；无穷多交点不返回无限列表，退化圆按源码约定。 |
 | `template/geometry/二维凸包最大点积查询.cpp` | [CGAL 2D Convex Hulls and Extreme Points](https://doc.cgal.org/latest/Convex_hull_2/index.html) | 极点查询参考。整数方向的最大点积与包含关系对照直接枚举。 |

@@ -1,6 +1,7 @@
 /*
 查询两个版本的多重集之差中与 x 的最大异或值。左版本必须是右版本的子集（含重数）。
-每次操作 O(64)，每次插入新建 65 个节点。
+插入和查询 O(64)，每次插入新建 65 个节点。merge 求多重集之和并保留两个版本，
+时间和新建节点数与两棵树的重合节点数成正比。
 根 0 为空版本，init 清空所有版本。版本差为空时 max_xor 返回 false。
 */
 
@@ -38,6 +39,15 @@ struct PXorTrie {
         return root;
     }
 
+    int merge(int a, int b) {
+        if (!a || !b) return a | b;
+        int u = int(tr.size());
+        tr.emplace_back();
+        tr[u].cnt = tr[a].cnt + tr[b].cnt;
+        for (int i = 0; i < 2; i ++) tr[u].ch[i] = merge(tr[a].ch[i], tr[b].ch[i]);
+        return u;
+    }
+
     bool max_xor(int left, int right, ull x, ull &ans) {
         if (tr[left].cnt == tr[right].cnt) return false;
         ans = 0;
@@ -56,6 +66,7 @@ struct PXorTrie {
 
 /*
 PXorTrie trie; int a = trie.insert(0, 5), b = trie.insert(a, 9);
+int both = trie.merge(a, b);
 ull ans; if (trie.max_xor(a, b, 2, ans)) cout << ans;
 trie.init();
 */

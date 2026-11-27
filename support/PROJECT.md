@@ -161,6 +161,8 @@ bash support/verify/run_linux.sh
 
 前批新增的 14 个片段由 `batch_math_random.cpp`、`batch_string_random.cpp` 和各专项 `*_random.cpp` 验证；包含匹配穷举、流量穷举、字符串穷举、几何独立真值和历史版本分叉。算法参考与改写来源见 [参考资料](verify/REFERENCES.md)。
 
+参考库补充篇目由 `reference_basic_random.cpp`、`reference_string_random.cpp` 和 `reference_math_random.cpp` 验证。覆盖整点凸集和、版本合并、广义后缀自动机、回文分割、多项式幂投影以及六类有标号图的穷举计数。
+
 常用补充由 `completion_math_random.cpp`、`completion_structures_random.cpp` 和 `min_rectangle_random.cpp` 验证，覆盖等距插值、线段树搜索、LIS、整除变换、函数图、斯特林数、二维哈希、包围矩形、区间集合、SG 和 Bostan–Mori；递归深链另加入 `deep_stack.cpp`。
 
 ## 接口索引
@@ -179,16 +181,41 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | 文件 | 对外接口 |
 | --- | --- |
 | `template/math/等距拉格朗日插值.cpp` | `LagrangeEq::build`、`query`；连续整数采样的线性时间求值，依赖 `组合数.cpp` |
+| `template/math/高精度整数与分数.cpp` | `BigInt`、`Fraction` |
+| `template/math/宽整数模乘.cpp` | `Wide`、`wide_mul` |
+| `template/math/固定底数快速幂.cpp` | `FixedPower::init`、`pow` |
+| `template/math/二进制最大公约数与位筛.cpp` | `binary_gcd`、`prime_flags` |
+| `template/math/值域预处理最大公约数.cpp` | `GcdTable::init`、`query` |
+| `template/math/任意模数原根枚举.cpp` | `min_root`、`all_roots` |
+| `template/math/多维整除分块.cpp` | `quotient_blocks` |
+| `template/math/杨辉三角.cpp` | `pascal` |
+| `template/math/多项式微积分与转置卷积.cpp` | `poly_deriv`、`poly_integ`、`cyclic_fold`、`poly_corr`、`sparse_power` |
+| `template/math/多项式平移与等比求值.cpp` | `taylor_shift`、`chirp_z`、`shift_samples` |
+| `template/math/多项式幂投影.cpp` | `power_projection` |
+| `template/math/分块快速阶乘.cpp` | `fast_factorial` |
+| `template/math/拆系数浮点卷积.cpp` | `split_conv` |
+| `template/math/半在线子集卷积.cpp` | `subset_recurrence` |
+| `template/math/有标号图计数.cpp` | `GraphCount::connected`、`dag`、`strong`、`bipartite` |
 | `template/others/最长上升子序列与方案.cpp` | `lis(a, strict)`；1-based 数组，返回严格递增 / 非递减子序列的下标方案 |
+| `template/others/公历日期换算.cpp` | `day_number`、`civil_date` |
+| `template/others/整数取整与前缀异或.cpp` | `floor_div`、`ceil_div`、`int_sqrt`、`int_log`、`prefix_xor` |
+| `template/others/随机抽样与有标号树.cpp` | `Sampler::integer`、`real`、`sample`、`tree`、`mix` |
+| `template/others/缓冲整数读写.cpp` | `FastInput::read`、`FastOutput::write`、`put`、`flush` |
 | `template/math/约数与倍数变换与卷积.cpp` | `divisor_zeta`、`multiple_zeta`、`gcd_conv`、`lcm_conv`；支持合数模数 |
 | `template/graph/函数图分解与跳跃.cpp` | `FuncGraph::build`、`jump`、`dis`；每点恰有一条出边，保存环与入环信息 |
 | `template/math/两类斯特林数.cpp` | `stirling1`、`stirling2`、`stirling2_row`；无符号第一类、第二类与 NTT 求固定一行 |
 | `template/string/二维哈希.cpp` | `Hash2D::build`、`query`；字节矩阵双模哈希，0-based 闭矩形 |
+| `template/string/大字符集多模式匹配.cpp` | `SparseAC::insert`、`build`、`step`、`count` |
+| `template/string/广义后缀自动机.cpp` | `GSAM::extend`、`insert`、`build`、`contains`、`distinct` |
+| `template/string/后缀自动机双向扩展.cpp` | `BiSAM::build`、`prepend`、`append`、`lcs` |
+| `template/string/回文半长后缀与最少分割.cpp` | `PalPartition::init`、`insert`、`build`、`half`、`series`、`cut` |
 | `template/geometry/最小面积包围矩形.cpp` | `min_rectangle(hull)`；严格逆时针凸包，返回面积与四角，依赖 `点与向量.cpp` |
+| `template/geometry/整点凸壳与闵可夫斯基和.cpp` | `IntHull::chain`、`hull`、`sum` |
 | `template/ds/区间集合与最小未出现数.cpp` | `IntervalSet::insert`、`erase`、`contains`、`mex`、`clear`；维护整数半开区间的并 |
+| `template/ds/整体加一与集合异或和.cpp` | `XorSet::add`、`add_one`、`query` |
 | `template/others/博弈状态函数.cpp` | `grundy(g, sg)`；写入 SG 值，有向环返回 `false` |
 | `template/math/线性递推快速求项.cpp` | `bostan_mori`、`linear_kth`；有理生成函数系数与大阶递推，依赖 `多项式基本运算.cpp` |
-| `template/ds/可持久化二进制字典树.cpp` | `PXorTrie::init`、`insert`、`max_xor(left, right, x, ans)`；空差集返回 `false` |
+| `template/ds/可持久化二进制字典树.cpp` | `PXorTrie::init`、`insert`、`merge`、`max_xor(left, right, x, ans)`；空差集返回 `false` |
 | `template/ds/二维最近邻.cpp` | `KDTree::build`、`nearest(x, y, ans, exclude)`、`query`；最近邻为空返回 `false` |
 | `template/graph/第几短游走.cpp` | `KWalk::init`、`add_edge`、`query(s, t, k)`；非负边权，按边序列区分游走 |
 | `template/graph/上下界最小费用流.cpp` | `LRCostFlow::init`、`add_edge`、`add_supply`、`solve`；上下界与点的净供给，支持负费用与负环 |
@@ -259,7 +286,7 @@ CRT 与 Pollard–Rho 保留大模数范围，使用倍增模乘；Pollard–Rho
 | `template/others/笛卡尔树.cpp` | `Cartesian::build` |
 | `template/others/莫队.cpp` | `Mo::Query`、`Mo::solve(n, qs)`；按题意补全 `add`、`del`、`answer` |
 | `template/others/滑动窗口最值.cpp` | `window_min`、`window_max` |
-| `template/others/稀疏表.cpp` | `ST::build`、`query` |
+| `template/others/稀疏表.cpp` | `ST::build`、`query`、`SparseTable<T, op>` |
 | `template/others/常用定义.cpp` | `chkmin`、`chkmax`、`add`、`sub` 及常用宏、类型别名 |
 | `template/others/三分搜索.cpp` | `ternary_min`、`ternary_max` |
 | `template/string/多模式匹配自动机.cpp` | `AC::insert`、`build`、`query` |

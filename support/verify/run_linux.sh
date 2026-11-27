@@ -22,8 +22,26 @@ for source in template/*/*.cpp support/tools/contest_main.cpp support/tools/stre
         includes=(-include template/graph/势能最短路费用流.cpp)
     elif [[ "$source" == template/string/极大周期子串.cpp ]]; then
         includes=(-include template/string/后缀数组.cpp)
+    elif [[ "$source" == template/string/后缀自动机双向扩展.cpp ]]; then
+        includes=(-include template/string/后缀自动机.cpp)
+    elif [[ "$source" == template/string/回文半长后缀与最少分割.cpp ]]; then
+        includes=(-include template/string/回文自动机.cpp)
+    elif [[ "$source" == template/math/多项式微积分与转置卷积.cpp ]]; then
+        includes=(-include template/math/多项式基本运算.cpp)
+    elif [[ "$source" == template/math/多项式平移与等比求值.cpp ]]; then
+        includes=(-include template/math/组合数.cpp -include template/math/多项式基本运算.cpp)
+    elif [[ "$source" == template/math/多项式幂投影.cpp ]]; then
+        includes=(-include template/math/多项式基本运算.cpp)
+    elif [[ "$source" == template/math/分块快速阶乘.cpp ]]; then
+        includes=(-include template/math/多项式基本运算.cpp -include template/math/多项式多点求值与快速插值.cpp)
+    elif [[ "$source" == template/math/拆系数浮点卷积.cpp ]]; then
+        includes=(-include template/math/快速傅里叶变换与任意模数卷积.cpp)
+    elif [[ "$source" == template/math/半在线子集卷积.cpp ]]; then
+        includes=(-include template/math/快速沃尔什变换.cpp)
+    elif [[ "$source" == template/math/有标号图计数.cpp ]]; then
+        includes=(-include template/math/组合数.cpp -include template/math/多项式基本运算.cpp)
     fi
-    if [[ "$source" == template/geometry/* && "$source" != template/geometry/点与向量.cpp && "$source" != template/geometry/三维凸包.cpp ]]; then
+    if [[ "$source" == template/geometry/* && "$source" != template/geometry/点与向量.cpp && "$source" != template/geometry/整点凸壳与闵可夫斯基和.cpp && "$source" != template/geometry/三维凸包.cpp ]]; then
         includes=(-include template/geometry/点与向量.cpp -include template/geometry/直线与线段.cpp)
         if [[ "$source" == template/geometry/直线与线段.cpp ]]; then
             includes=(-include template/geometry/点与向量.cpp)
